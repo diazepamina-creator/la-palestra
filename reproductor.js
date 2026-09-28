@@ -117,8 +117,12 @@ function crea(o){
         await espera(1000);
       }else if(paso.tipo === 'retira'){
         if(idsIdos.length){
-          idsIdos.forEach(id => { const n = campo.querySelector('.tirador[data-id="' + id + '"]'); if(n) n.classList.add('saliendo'); });
-          await espera(500); if(!vivo()) return;
+          /* en la cuerda, retirarse es cosa de Zeus: se asoma, rayo, y humo */
+          const id = idsIdos[0], nodo = campo.querySelector('.tirador[data-id="' + id + '"]');
+          const q = antes.cuerda.find(x => x.id === id) || {f: 1};
+          if(raiz.Zeus && nodo) await raiz.Zeus.fulmina(campo, nodo, q.f, espera);
+          else await espera(500);
+          if(!vivo()) return;
           R.muestra(k + 1);
           tiron(campo);
           await espera(1000);

@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="src/tablilla.css">
 <link rel="stylesheet" href="src/banquillo.css">
 <link rel="stylesheet" href="src/cartela.css">
+<link rel="stylesheet" href="src/personajes.css">
 <style>
   :root{
     --bg:#0F0C18; --panel:#171226; --panel-2:#1F1930; --line:#372E4E;
@@ -39,13 +40,13 @@
 <body>
 <main>
   <h1>La palestra</h1>
-  <p class="sub">Prototipo 0.5 · la cartela ilumina el trozo que se juega; antes de un paso clave, ¿dónde acabará?</p>
+  <p class="sub">Prototipo 0.6 · Zeus fulmina a quien se retira; Listillón y Jeferión comentan.</p>
 
   <section class="tablilla" aria-label="La tablilla">
     <h2>La tablilla</h2>
     <div class="tl-tabla" aria-live="polite"><span id="tlEscrito"></span><span class="tl-cursor" aria-hidden="true"></span></div>
     <div class="tl-teclas" id="tlTeclas"></div>
-    <p class="tl-aviso" id="tlAviso" role="status"></p>
+    <div class="habla"><span class="cara lis" aria-hidden="true"></span><p class="aviso tl-aviso" id="tlAviso" role="status"></p></div>
     <div class="tl-pie">
       <button type="button" id="tlLimpia">Tablilla limpia</button>
       <button type="button" id="tlMuestra">Una de muestra</button>
@@ -64,6 +65,7 @@
       <button type="button" id="todo" aria-label="Repasar de un tirón" hidden>▶▶</button>
       <span class="paso-t" id="pasoT"></span>
     </div>
+    <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><p class="aviso" id="jefAviso" role="status"></p></div>
   </section>
 </main>
 <script src="motor.js"></script>
@@ -71,8 +73,10 @@
 <script src="campo.js"></script>
 <script src="tablilla.js"></script>
 <script src="reproductor.js"></script>
+<script src="personajes.js"></script>
+<script src="zeus.js"></script>
 <script>
-  const P = window.Palestra, C = window.Campo, TL = window.Tablilla;
+  const P = window.Palestra, C = window.Campo, TL = window.Tablilla, PJ = window.Personajes;
   const $ = id => document.getElementById(id);
   const n = f => ({t:'n', f}), mas = {t:'+'}, menos = {t:'-'}, ab = {t:'('}, ci = {t:')'};
   const po = k => ({t:'p', k, pre:false}), pre = k => ({t:'p', k, pre:true}), e = x => ({t:'e', n:x});
@@ -151,11 +155,23 @@
     c.hidden = false;
     c.classList.remove('nueva'); void c.offsetWidth; c.classList.add('nueva');
   }
+  /* Jeferión comenta el veredicto y el final de la función */
+  function jeferion(R){
+    const k = R.k, n = R.pel.pasos.length;
+    let h = '';
+    if(R.veredicto){
+      const v = R.veredicto;
+      h = v.clavado ? '<b>¡Clavado!</b> Así se gana un pulso.'
+        : 'Dijiste <b>' + P.conSigno(v.dicho) + '</b> y acaba en <b>' + P.conSigno(v.real) + '</b>. Mira hacia dónde tira cada uno.';
+    }else if(k === n && !R.jugando) h = 'La cuenta vale <b>' + P.fracTxt(R.pel.exacto) + '</b>.';
+    $('jefAviso').innerHTML = h;
+  }
   /* los mandos, cada vez que el reproductor cambia */
   function pintaMandos(R){
     if(!R.pel) return;
     const k = R.k, foto = k ? R.pel.pasos[k - 1] : null;
     cartela(R);
+    jeferion(R);
     $('pasoT').textContent = 'fotograma ' + k + ' de ' + R.pel.pasos.length;
     $('atras').disabled = k === 0 || R.jugando;
     $('sig').disabled = k >= R.pel.pasos.length || R.jugando;
@@ -180,6 +196,15 @@
     if(tk){ ev.preventDefault(); tecla(tk); }
   });
   window.addEventListener('resize', () => { if(R.pel && !R.jugando) R.muestra(R.k); });
+  /* las caras: cada aviso nuevo pone la pose que le va y mueve el pico */
+  document.querySelectorAll('.cara.jef').forEach(c => PJ.ponCara(c, 'jef', 'habla'));
+  document.querySelectorAll('.cara.lis').forEach(c => PJ.ponCara(c, 'lis', 'habla'));
+  document.querySelectorAll('.habla').forEach(h => {
+    const av = h.querySelector('.aviso'), c = h.querySelector('.cara');
+    const quien = c.classList.contains('jef') ? 'jef' : 'lis';
+    new MutationObserver(() => { const p = PJ.poseDeTexto(av.innerHTML); if(p) PJ.ponCara(c, quien, p, true); })
+      .observe(av, {childList: true, subtree: true, characterData: true});
+  });
   pintaTablilla();
 </script>
 </body>
