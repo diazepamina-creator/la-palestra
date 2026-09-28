@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap">
 <link rel="stylesheet" href="src/campo.css">
 <link rel="stylesheet" href="src/tablilla.css">
+<link rel="stylesheet" href="src/banquillo.css">
 <style>
   :root{
     --bg:#0F0C18; --panel:#171226; --panel-2:#1F1930; --line:#372E4E;
@@ -27,7 +28,7 @@
   .fila{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
   .fila button{font:inherit;color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 14px;min-height:44px;cursor:pointer;font-size:18px}
   .fila button:disabled{opacity:.4;cursor:default}
-  .paso-t{font-family:'Space Mono',monospace;font-size:13px;color:var(--muted);flex:1;text-align:right}
+  .paso-t{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);flex:1;text-align:right;white-space:nowrap}
   .que{margin:8px 0 0;color:var(--muted);font-size:14px;font-family:'Space Mono',monospace;min-height:22px}
   .que b{color:var(--ink)}
   .bq-lista{margin:6px 0 0;font-size:14px;color:var(--muted)}
@@ -38,7 +39,7 @@
 <body>
 <main>
   <h1>La palestra</h1>
-  <p class="sub">Prototipo 0.3 · la tablilla escribe la cuenta; el campo la enseña fotograma a fotograma.</p>
+  <p class="sub">Prototipo 0.4 · el reproductor: cada ▶ juega un paso; el banquillo prepara los términos.</p>
 
   <section class="tablilla" aria-label="La tablilla">
     <h2>La tablilla</h2>
@@ -53,12 +54,14 @@
 
   <section class="panel" id="panelCampo" hidden aria-label="El campo">
     <h2>Tira y afloja</h2>
+    <div class="banquillo" id="banquillo" hidden><span class="bq-t">banquillo</span><div class="bq-sitio"></div><div class="bq-banco"></div></div>
     <div id="campo"></div>
     <p class="que" id="que"></p>
-    <p class="bq-lista" id="bq"></p>
     <div class="fila">
       <button type="button" id="atras" aria-label="Atrás">◀</button>
       <button type="button" id="sig" aria-label="Adelante">▶</button>
+      <button type="button" id="inicio" aria-label="Volver al principio">⟲</button>
+      <button type="button" id="todo" aria-label="Repasar de un tirón" hidden>▶▶</button>
       <span class="paso-t" id="pasoT"></span>
     </div>
   </section>
@@ -67,6 +70,7 @@
 <script src="tirador.js"></script>
 <script src="campo.js"></script>
 <script src="tablilla.js"></script>
+<script src="reproductor.js"></script>
 <script>
   const P = window.Palestra, C = window.Campo, TL = window.Tablilla;
   const $ = id => document.getElementById(id);
@@ -80,15 +84,16 @@
   let muestra = 0;
 
   /* ── el estado de la página: la cuenta escrita y, si se ha pulsado =, su película ── */
-  const S = {tok: [], pel: null, k: 0};
+  const S = {tok: [], pel: null, visto: false};
 
   const campo = C.monta($('campo'));
+  const R = window.Reproductor.crea({campo, banquillo: $('banquillo'), alCambiar: pintaMandos});
   TL.monta($('tlTeclas'), tecla);
 
   function tecla(tk){
     if(tk.t === '='){ igual(); return; }
     const r = TL.pulsa(S.tok, tk);
-    S.tok = r.tok; S.pel = null; S.k = 0;
+    S.tok = r.tok; S.pel = null; S.visto = false; R.para();
     $('tlAviso').innerHTML = r.aviso;
     pintaTablilla();
     $('panelCampo').hidden = true;
@@ -97,8 +102,7 @@
     if(!S.tok.length){ $('tlAviso').innerHTML = 'Todavía no has escrito nada.'; return; }
     try{ S.pel = P.graba(S.tok); }
     catch(err){ $('tlAviso').innerHTML = err.message; return; }
-    S.pel.alcance = Math.max(8, ...S.pel.pasos.map(p => Math.abs(p.bandera)));
-    S.k = 0;
+    S.visto = false;
     if(S.pel.sinTeatro){
       $('tlAviso').innerHTML = S.pel.sinTeatro + ' Así que esta va <b>sin teatro</b>: te la calculo igual.';
       $('panelCampo').hidden = true;
@@ -108,41 +112,45 @@
       $('panelCampo').scrollIntoView({behavior: 'smooth', block: 'start'});
     }
     pintaTablilla();
-    pintaCampo();
+    if(!S.pel.sinTeatro) R.carga(S.pel);
   }
   function pintaTablilla(){
     let h = TL.htmlCuenta(S.tok);
     if(S.pel){
-      const fin = S.pel.sinTeatro || S.k === S.pel.pasos.length;
+      const fin = S.pel.sinTeatro || (R.pel === S.pel && R.k === S.pel.pasos.length);
       if(fin) h += '<span class="op"> = </span><b class="tl-res' + (S.pel.exacto[1] !== 1 ? ' frac' : '') + '">' + P.fracTxt(S.pel.exacto) + '</b>';
     }
     $('tlEscrito').innerHTML = h || '<span class="tl-vacia">escribe aquí…</span>';
   }
-  function pintaCampo(){
-    if(!S.pel || S.pel.sinTeatro) return;
-    const foto = S.k ? S.pel.pasos[S.k - 1] : {cuerda: [], banquillo: [], bandera: 0};
-    C.pinta(campo, foto, {alcance: S.pel.alcance});
-    $('que').innerHTML = S.k ? (foto.tipo + (foto.x ? ': <b>' + foto.x + '</b>' : '')) : 'pulsa ▶';
-    $('bq').innerHTML = foto.banquillo.length ? 'banquillo: ' +
-      foto.banquillo.map(p => '<b class="' + (p.f < 0 ? 'izq' : 'der') + '">' + P.conSigno(p.f) + '</b>').join(' ') : '';
-    $('pasoT').textContent = 'fotograma ' + S.k + ' de ' + S.pel.pasos.length;
-    $('atras').disabled = S.k === 0;
-    $('sig').disabled = S.k >= S.pel.pasos.length;
+  /* los mandos y el texto de cada paso, cada vez que el reproductor cambia */
+  function pintaMandos(R){
+    if(!R.pel) return;
+    const k = R.k, foto = k ? R.pel.pasos[k - 1] : null;
+    $('que').innerHTML = foto ? (foto.tipo + (foto.x ? ': <b>' + foto.x + '</b>' : '')) : 'pulsa ▶';
+    $('pasoT').textContent = 'fotograma ' + k + ' de ' + R.pel.pasos.length;
+    $('atras').disabled = k === 0 || R.jugando;
+    $('sig').disabled = k >= R.pel.pasos.length || R.jugando;
+    $('inicio').disabled = R.jugando;
+    if(k === R.pel.pasos.length) S.visto = true;
+    $('todo').hidden = !S.visto;
+    $('todo').disabled = R.jugando;
     pintaTablilla();
   }
-  $('sig').addEventListener('click', () => { if(S.pel && S.k < S.pel.pasos.length){ S.k++; pintaCampo(); } });
-  $('atras').addEventListener('click', () => { if(S.pel && S.k > 0){ S.k--; pintaCampo(); } });
-  $('tlLimpia').addEventListener('click', () => { S.tok = []; S.pel = null; S.k = 0; $('tlAviso').innerHTML = 'Tablilla limpia.'; pintaTablilla(); $('panelCampo').hidden = true; });
-  $('tlMuestra').addEventListener('click', () => { S.tok = MUESTRAS[muestra++ % MUESTRAS.length].slice(); S.pel = null; $('tlAviso').innerHTML = ''; pintaTablilla(); $('panelCampo').hidden = true; });
+  $('sig').addEventListener('click', () => R.avanza());
+  $('atras').addEventListener('click', () => R.retrocede());
+  $('inicio').addEventListener('click', () => R.principio());
+  $('todo').addEventListener('click', () => R.repasa());
+  $('tlLimpia').addEventListener('click', () => { S.tok = []; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Tablilla limpia.'; pintaTablilla(); $('panelCampo').hidden = true; });
+  $('tlMuestra').addEventListener('click', () => { S.tok = MUESTRAS[muestra++ % MUESTRAS.length].slice(); S.pel = null; R.para(); $('tlAviso').innerHTML = ''; pintaTablilla(); $('panelCampo').hidden = true; });
   document.addEventListener('keydown', ev => {
     if(ev.target && /INPUT|TEXTAREA|SELECT/.test(ev.target.tagName)) return;
     if(S.pel && !S.pel.sinTeatro && (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft')){
-      ev.preventDefault(); $(ev.key === 'ArrowRight' ? 'sig' : 'atras').click(); return;
+      ev.preventDefault(); if(ev.key === 'ArrowRight') R.avanza(); else R.retrocede(); return;
     }
     const tk = TL.teclaDeTeclado(ev);
     if(tk){ ev.preventDefault(); tecla(tk); }
   });
-  window.addEventListener('resize', pintaCampo);
+  window.addEventListener('resize', () => { if(R.pel && !R.jugando) R.muestra(R.k); });
   pintaTablilla();
 </script>
 </body>

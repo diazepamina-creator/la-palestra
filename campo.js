@@ -55,7 +55,7 @@ function pintaRegla(regla, alcance, paso, bandera, hayGente){
 }
 
 /* pinta la foto. opciones: {alcance} para que la regla no cambie de tamaño
-   a mitad de una película */
+   a mitad de una película; {nuevos: [ids]} los que acaban de llegar */
 function pinta(el, foto, opciones){
   opciones = opciones || {};
   const cuerda = foto.cuerda || [], bandera = foto.bandera || 0;
@@ -70,10 +70,11 @@ function pinta(el, foto, opciones){
   const U = Math.min(27, 104 / (1 + 0.34 * Math.log(maxF)));
   const izq = el.querySelector('.equipo.izq'), der = el.querySelector('.equipo.der');
   izq.innerHTML = ''; der.innerHTML = '';
+  const nuevos = opciones.nuevos || [];
   cuerda.forEach(p => {
     const d = document.createElement('div');
     d.className = 'tirador ' + (p.f < 0 ? 'izq' : 'der') + (p.venia ? ' venia-' + p.venia : '') +
-      (Math.abs(p.f) === maxF && maxF > 1 ? ' laureado' : '');
+      (Math.abs(p.f) === maxF && maxF > 1 ? ' laureado' : '') + (nuevos.indexOf(p.id) >= 0 ? ' nuevo' : '');
     d.dataset.id = p.id;
     d.setAttribute('aria-label', 'Tirador de fuerza ' + Math.abs(p.f) + ' del lado ' + (p.f < 0 ? 'izquierdo' : 'derecho'));
     d.innerHTML = T.dibujaTirador(p, U);

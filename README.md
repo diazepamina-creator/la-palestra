@@ -18,14 +18,15 @@ El tira y afloja de los números enteros, rehecho desde cero a partir de lo apre
 - `tirador.js` — el dibujo del tirador en SVG (viene tal cual de El pulso de los dioses).
 - `campo.js` y `src/campo.css` — el campo: pinta una foto del motor (cuerda, regla, bandera). Sin animación.
 - `tablilla.js` y `src/tablilla.css` — la tablilla: las teclas de barro, qué pieza puede ir tras cuál (`pulsa`, función pura) y la cuenta escrita con colores (`htmlCuenta`).
-- `index.html` — la página: la tablilla escribe la cuenta, `=` la graba con el motor y el campo la enseña fotograma a fotograma, quieto.
+- `reproductor.js` y `src/banquillo.css` — el reproductor: enseña la foto k al instante y, al avanzar, anima solo el paso que toca (llegar, beber en el banquillo, juntarse, salir a tirar, retirarse). ▶▶ repasa de un tirón.
+- `index.html` — la página: la tablilla escribe la cuenta, `=` la graba con el motor y el reproductor la pasa con ◀ ▶ ⟲ ▶▶.
 
 ## Pasos
 
 1. ✅ El estado y el intérprete.
 2. ✅ El campo quieto: tiradores, regla y bandera dibujados desde el estado.
 3. ✅ La tablilla: teclas de barro, escribir la cuenta y el cálculo exacto.
-4. El reproductor de fotogramas, con el banquillo.
+4. ✅ El reproductor de fotogramas, con el banquillo.
 5. Predicción y cartela.
 6. Personajes y pociones.
 7. Ejercicios y ruta.
