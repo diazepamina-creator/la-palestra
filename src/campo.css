@@ -1,8 +1,8 @@
-.campo{position:relative;height:252px;border-radius:10px;overflow:hidden;
+.campo{position:relative;height:308px;--cielo:56px;border-radius:10px;overflow:hidden;
     -webkit-user-select:none;user-select:none;
     border:1px solid rgba(233,184,78,.18);
     background:
-      radial-gradient(circle at 82% 15%, rgba(240,230,200,.20) 0 8px,
+      radial-gradient(circle at 82% 11%, rgba(240,230,200,.20) 0 8px,
         rgba(240,230,200,.07) 8px 15px, rgba(240,230,200,0) 16px),
       radial-gradient(ellipse 120% 55% at 50% 100%, rgba(233,184,78,.09),
         rgba(233,184,78,0) 62%),
@@ -45,17 +45,17 @@
   .marca-n.cero{color:var(--ink);font-weight:700}
   .marca-n.cero i{width:2px;height:36px;margin-top:-10px;background:linear-gradient(180deg,
     rgba(242,237,226,.06),rgba(242,237,226,.75))}
-      .friso{position:absolute;left:0;right:0;top:0;height:18px;z-index:1;
+      .friso{position:absolute;left:0;right:0;top:var(--cielo);height:18px;z-index:2;
     pointer-events:none;
     background:
       url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='18'><g fill='none' stroke='rgba(233,184,78,.2)' stroke-width='1'><path d='M0 3.5 H26'/><path d='M0 14.5 H26'/></g><path d='M13 14 V5 H5 V10 H9' fill='none' stroke='rgba(233,184,78,.42)' stroke-width='1.8'/></svg>") repeat-x center / 26px 18px,
       linear-gradient(180deg, rgba(43,32,62,.9), rgba(26,19,40,.55));
     border-bottom:1px solid rgba(233,184,78,.16)}
-      .columnata{position:absolute;left:0;right:0;top:17px;bottom:50px;z-index:0;
+      .columnata{position:absolute;left:0;right:0;top:calc(var(--cielo) + 17px);bottom:50px;z-index:0;
     pointer-events:none;
     background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='92' height='158'><g fill='rgba(226,210,188,.16)'><rect x='29' y='4' width='34' height='6' rx='1'/><path d='M32 10 L60 10 L57 17 L35 17 Z'/><rect x='36' y='17' width='20' height='131'/><rect x='32' y='148' width='28' height='5' rx='1'/><rect x='29' y='153' width='34' height='5' rx='1'/></g><g fill='rgba(10,6,18,.2)'><rect x='40' y='18' width='1.6' height='129'/><rect x='45.5' y='18' width='1.6' height='129'/><rect x='51' y='18' width='1.6' height='129'/></g><g fill='rgba(244,240,230,.13)'><rect x='36.5' y='17' width='2' height='131'/></g></svg>") repeat-x;
     background-size:92px 100%}
-  .escena{position:absolute;left:50%;top:0;bottom:0;width:100%;
+  .escena{position:absolute;left:50%;top:var(--cielo);bottom:0;width:100%;z-index:1;
     transform:translateX(-50%);transform-origin:50% 100%;
     transition:transform .5s ease, width .5s ease}
           .equipo{transition:transform calc(1s * var(--lento,1)) cubic-bezier(.22,1.18,.36,1)}
@@ -289,3 +289,14 @@
     background:currentColor;animation:sopla calc(.9s * var(--lento,1)) ease-out forwards}
   @keyframes sopla{0%{transform:translate(0,0) scale(.4);opacity:0}
     25%{opacity:.9}100%{transform:translate(var(--dx,0), -30px) scale(1);opacity:0}}
+
+/* ── EL OLIMPO: la franja de cielo de arriba. Zeus sube desde detrás del
+   friso, se apoya en él, lanza y vuelve a bajar; lo que asoma por debajo del
+   friso queda recortado, así que nunca tapa el campo ── */
+.olimpo{position:absolute;left:0;right:0;top:0;height:calc(var(--cielo) + 12px);overflow:hidden;z-index:1;pointer-events:none}
+.olimpo .zeus{top:auto;bottom:-12px;width:104px;height:78px;margin-left:-52px;z-index:0;transform:translateY(105%)}
+.olimpo .zeus.fuera{transform:translateY(0)}
+/* el suelo del templo, quieto bajo la regla: cuando la cámara se aleja y la
+   regla se estrecha, no queda hueco a los lados */
+.suelo{position:absolute;left:0;right:0;bottom:0;height:52px;z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(48,35,44,.65) 0,#2B1F2C 30%,#1A1322 100%);border-top:1px solid rgba(233,184,78,.5)}

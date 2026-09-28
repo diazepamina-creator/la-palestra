@@ -16,7 +16,7 @@ html:not([data-tema="noche"]) .columnata{
 html[data-tema="proyector"] .columnata{opacity:.6}
 html:not([data-tema="noche"]) .marca{background:repeating-linear-gradient(180deg,
   rgba(80,70,90,.45) 0 7px, transparent 7px 13px);box-shadow:none}
-html:not([data-tema="noche"]) .regla{background:linear-gradient(180deg,#efe4ca 0,#e9dcbf 100%);
+html:not([data-tema="noche"]) :is(.regla,.suelo){background:linear-gradient(180deg,#efe4ca 0,#e9dcbf 100%);
   border-top:1.5px solid #c9a24f;box-shadow:none}
 html:not([data-tema="noche"]) .regla::before{background:none}
 html:not([data-tema="noche"]) .marca-n{color:#3a3040}
@@ -28,7 +28,7 @@ html:not([data-tema="noche"]) .marca-n.aqui i{background:var(--green)}
 html:not([data-tema="noche"]) .nudo .cifra{color:var(--ink);text-shadow:0 0 4px rgba(255,250,238,.95)}
 html:not([data-tema="noche"]) .nudo.sin .cifra{color:#5f5040}
 html:not([data-tema="noche"]) .regla.viva .marca-n.impar{color:#5f5040}
-html[data-tema="proyector"] .regla{border-top:2px solid #1a1a1a;background:#fff}
+html[data-tema="proyector"] :is(.regla,.suelo){border-top:2px solid #1a1a1a;background:#fff}
 html[data-tema="proyector"] .marca-n{color:#000;font-weight:700}
 html[data-tema="proyector"] .marca-n i{background:#555}
 html[data-tema="proyector"] .marca{background:repeating-linear-gradient(180deg, rgba(0,0,0,.55) 0 7px, transparent 7px 13px)}
