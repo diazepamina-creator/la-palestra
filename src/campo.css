@@ -86,7 +86,9 @@
   .equipo.der{right:6px;justify-content:flex-start}
       .tirador{position:relative;flex:0 0 auto;cursor:pointer;padding:0;line-height:0;
     border:1px solid transparent;border-radius:7px;background:rgba(244,240,230,.03);
-    animation:llega .4s cubic-bezier(.34,1.56,.64,1) backwards}
+    }
+  /* solo el que acaba de llegar se anima; los demás se quedan donde están */
+  .tirador.nuevo{animation:llega .4s cubic-bezier(.34,1.56,.64,1) backwards}
   .tirador svg{display:block;overflow:visible}
     .tirador.izq{--piel:#E2725B;--linea:#8C3A28}
   .tirador.der{--piel:#57B8D6;--linea:#2C6C82}
@@ -253,3 +255,7 @@
     78%{filter:drop-shadow(0 0 18px rgba(225,79,198,.55)) brightness(1.02)}
     100%{filter:drop-shadow(0 0 0 rgba(225,79,198,0)) brightness(1);
        transform:scale(1)}}
+
+@keyframes llega{0%{opacity:0;transform:translateY(-10px) scale(.5)}
+  60%{opacity:1;transform:translateY(2px) scale(1.06)}
+  100%{opacity:1;transform:none}}
