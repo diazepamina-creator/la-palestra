@@ -31,8 +31,10 @@ function frascoHtml(po){
 }
 const clasePoc = po => 'pocion ' + (po.k < 0 ? 'bando' : (Math.abs(po.k) > 1 ? 'crece' : 'mengua')) +
   (Math.abs(po.k) < 1 ? ' mengua' : '');
+/* el tirador pequeño de la tecla: se echa hacia atrás, hacia donde tira
+   (los rojos hacia la izquierda, los azules hacia la derecha) */
 function miniTirador(f){
-  const c = f < 0 ? 'var(--izq)' : 'var(--der)', s = f < 0 ? 1 : -1;
+  const c = f < 0 ? 'var(--izq)' : 'var(--der)', s = f < 0 ? -1 : 1;
   return '<svg viewBox="0 0 26 26" aria-hidden="true">' +
     '<path d="M' + (13 + 11 * s) + ' 15 H' + (13 - 12 * s) + '" stroke="#8a7442" stroke-width="2.2" stroke-linecap="round"/>' +
     '<circle cx="' + (13 + 3 * s) + '" cy="6" r="4.4" fill="' + c + '" stroke="#241C36" stroke-width="1"/>' +
