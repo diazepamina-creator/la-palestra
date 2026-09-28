@@ -298,7 +298,7 @@ function poseDeTexto(h){
 const ZV = {piel:'#E7B58C', sombra:'#C98E66', barba:'#F4F1EA', barbaS:'#CFCBD8', toga:'#EEF0F6', togaS:'#C9CEDF',
             oro:'#E9B84E', ojo:'#FFE27A', rayo:'#F5C542'};
 function rayoZ(x, y, esc, giro){
-  return '<g transform="translate(' + x + ' ' + y + ') rotate(' + giro + ') scale(' + esc + ')">' +
+  return '<g class="rz" transform="translate(' + x + ' ' + y + ') rotate(' + giro + ') scale(' + esc + ')">' +
     '<path d="M0 -22 L9 -22 L3 -6 L11 -6 L-5 22 L-1 2 L-8 2 Z" fill="' + ZV.rayo + '" stroke="' + TINTA +
     '" stroke-width="1.6" stroke-linejoin="round"/>' +
     '<path d="M2 -19 L6 -19 L1.5 -8" fill="none" stroke="#fff" stroke-width="1.2" opacity=".75"/></g>';
@@ -375,7 +375,6 @@ function zeus(pose){
    cómicas, pero cada una lleva dentro una idea de los enteros. Algunas
    preguntas abren otra («repregunta»), y alguna respuesta invita a
    comprobarlo en la tablilla de Listillón.                                  */
-DIBUJA.zeus = zeus;
 DIBUJA.zeus = zeus;
 raiz.Personajes = {jeferion, listillon, zeus, DIBUJA, ponCara, poseDeTexto, ZEUS_SVG, TINTA, JV, LV, ZV};
 })(window);

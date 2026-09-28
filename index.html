@@ -862,6 +862,40 @@ html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;
 .ev-p.repregunta{border-style:dashed;border-color:var(--ambar)}
 .ev-re{font-family:var(--rotulo);font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ambar)}
 @media (max-width:420px){ .ev-cara{width:104px;height:104px} .ev-respuesta{font-size:14.5px} }
+
+/* ── ZEUS, IMPONENTE: más grande, en su nube, con una aureola de rayos que
+   gira despacio, el rayo de la mano chisporroteando y, cuando se enfada,
+   un trueno. Su bocadillo, con borde de oro y la capital como en una
+   inscripción ── */
+#entrevista[data-quien="zeus"] .ev-cara{position:relative;isolation:isolate;width:172px;height:172px}
+#entrevista[data-quien="zeus"] .ev-cara svg{position:relative;z-index:1;animation:zRespira 4s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes zRespira{50%{transform:scale(1.025)}}
+#entrevista[data-quien="zeus"] .ev-cara::before{content:"";position:absolute;inset:-26%;z-index:0;pointer-events:none;
+  background:repeating-conic-gradient(from 0deg, rgba(240,197,94,.42) 0 5deg, rgba(240,197,94,0) 5deg 15deg),
+    radial-gradient(circle, rgba(255,226,140,.55) 0, rgba(255,226,140,0) 55%);
+  -webkit-mask:radial-gradient(circle, #000 18%, transparent 66%);mask:radial-gradient(circle, #000 18%, transparent 66%);
+  animation:zAureola 40s linear infinite}
+@keyframes zAureola{to{transform:rotate(360deg)}}
+#entrevista[data-quien="zeus"] .ev-cara::after{content:"";position:absolute;left:-18%;right:-12%;bottom:-8%;height:36%;z-index:2;pointer-events:none;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 64'><path d='M14 58 Q0 58 3 46 Q6 33 22 35 Q24 18 44 20 Q54 4 76 12 Q90 -2 110 9 Q126 0 140 13 Q160 6 170 24 Q192 22 195 40 Q199 58 182 58 Z' fill='%23FFFFFF' stroke='%23C9D0DC' stroke-width='2.2' stroke-linejoin='round'/><path d='M30 50 Q46 44 60 50 M92 44 Q108 38 122 45 M146 50 Q160 45 172 51' fill='none' stroke='%23D7DDE7' stroke-width='3' stroke-linecap='round'/></svg>") no-repeat center bottom / 100% 100%;
+  filter:drop-shadow(0 3px 3px rgba(40,40,70,.25))}
+html[data-tema="noche"] #entrevista[data-quien="zeus"] .ev-cara::after{filter:drop-shadow(0 3px 4px rgba(0,0,0,.6)) brightness(.82)}
+#entrevista[data-quien="zeus"] .ev-cara .rz{animation:zChispa 1.4s ease-in-out infinite}
+@keyframes zChispa{0%,100%{filter:none}45%{filter:drop-shadow(0 0 3px #FFE27A) brightness(1.35)}55%{filter:drop-shadow(0 0 6px #FFF4C2) brightness(1.6)}}
+#entrevista[data-quien="zeus"] .ev-globo{border-color:#C9962E;
+  box-shadow:0 0 0 1px rgba(233,184,78,.35), 0 0 22px rgba(233,184,78,.28)}
+#entrevista[data-quien="zeus"] .ev-globo::before{border-left-color:#C9962E;border-bottom-color:#C9962E}
+#entrevista[data-quien="zeus"] .ev-respuesta::first-letter{font-family:var(--rotulo);font-style:normal;font-weight:700;font-size:2.05em;
+  line-height:.85;float:left;margin:4px 6px 0 0;color:var(--oro);text-shadow:0 1px 0 rgba(0,0,0,.15)}
+/* el trueno: un fogonazo y la escena que tiembla */
+#entrevista.ev-trueno .ev-escena{animation:zTiembla .5s ease}
+#entrevista.ev-trueno .ev-cara::before{animation:zAureola 40s linear infinite, zFogonazo .6s ease-out}
+@keyframes zTiembla{15%{transform:translate(2px,-1px)}30%{transform:translate(-3px,1px)}45%{transform:translate(2px,1px)}60%{transform:translate(-1px,0)}100%{transform:none}}
+@keyframes zFogonazo{0%{filter:brightness(1)}15%{filter:brightness(2.6)}100%{filter:brightness(1)}}
+@media (max-width:420px){ #entrevista[data-quien="zeus"] .ev-cara{width:136px;height:136px} }
+@media (prefers-reduced-motion: reduce){
+  #entrevista[data-quien="zeus"] .ev-cara svg, #entrevista[data-quien="zeus"] .ev-cara::before,
+  #entrevista[data-quien="zeus"] .ev-cara .rz, #entrevista.ev-trueno .ev-escena{animation:none} }
 </style>
 <style>
 /* ── LOS TEMAS EN EL CAMPO Y EL MODO AULA ──
@@ -1099,7 +1133,7 @@ html[data-inicio="si"] main{visibility:hidden}
     <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><div><div class="quien">Jeferión</div><p class="aviso" id="jefAviso" role="status"></p></div></div>
   </section>
 
-  <footer>versión 0.19</footer>
+  <footer>versión 0.20</footer>
 </main>
 
 <div class="modal" id="mActa" hidden>
@@ -2688,7 +2722,7 @@ function poseDeTexto(h){
 const ZV = {piel:'#E7B58C', sombra:'#C98E66', barba:'#F4F1EA', barbaS:'#CFCBD8', toga:'#EEF0F6', togaS:'#C9CEDF',
             oro:'#E9B84E', ojo:'#FFE27A', rayo:'#F5C542'};
 function rayoZ(x, y, esc, giro){
-  return '<g transform="translate(' + x + ' ' + y + ') rotate(' + giro + ') scale(' + esc + ')">' +
+  return '<g class="rz" transform="translate(' + x + ' ' + y + ') rotate(' + giro + ') scale(' + esc + ')">' +
     '<path d="M0 -22 L9 -22 L3 -6 L11 -6 L-5 22 L-1 2 L-8 2 Z" fill="' + ZV.rayo + '" stroke="' + TINTA +
     '" stroke-width="1.6" stroke-linejoin="round"/>' +
     '<path d="M2 -19 L6 -19 L1.5 -8" fill="none" stroke="#fff" stroke-width="1.2" opacity=".75"/></g>';
@@ -2765,7 +2799,6 @@ function zeus(pose){
    cómicas, pero cada una lleva dentro una idea de los enteros. Algunas
    preguntas abren otra («repregunta»), y alguna respuesta invita a
    comprobarlo en la tablilla de Listillón.                                  */
-DIBUJA.zeus = zeus;
 DIBUJA.zeus = zeus;
 raiz.Personajes = {jeferion, listillon, zeus, DIBUJA, ponCara, poseDeTexto, ZEUS_SVG, TINTA, JV, LV, ZV};
 })(window);
@@ -3220,6 +3253,7 @@ function monta(el, o){
   function elige(q){
     ev.quien = q; ev.hechas = new Set();
     $('.ev-cara').dataset.q = q;          // para que mire hacia el bocadillo
+    el.dataset.quien = q;                 // Zeus, además, sale en su nube y con su aureola
     quien.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.q === q)));
     const E = ENTREVISTAS[q];
     $('.ev-cartel').innerHTML = 'Hoy entrevistamos a <b>' + E.nombre + '</b>, ' + E.cargo + '.';
@@ -3260,6 +3294,9 @@ function monta(el, o){
       if(ev.tok !== tok) return;
       txt.innerHTML = html;
       cara.innerHTML = dibu(pose);
+      /* Zeus enfadado: truena */
+      el.classList.remove('ev-trueno');
+      if(ev.quien === 'zeus' && pose === 'enfada' && !REDUCIDO){ void el.offsetWidth; el.classList.add('ev-trueno'); }
       if(conZoom && zoom){ zoom.innerHTML = TABLILLA_DE_CERCA; zoom.hidden = false; }
       if(prueba && o && o.alPrueba){
         bp.hidden = false;

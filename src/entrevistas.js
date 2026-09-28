@@ -127,6 +127,7 @@ function monta(el, o){
   function elige(q){
     ev.quien = q; ev.hechas = new Set();
     $('.ev-cara').dataset.q = q;          // para que mire hacia el bocadillo
+    el.dataset.quien = q;                 // Zeus, además, sale en su nube y con su aureola
     quien.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.q === q)));
     const E = ENTREVISTAS[q];
     $('.ev-cartel').innerHTML = 'Hoy entrevistamos a <b>' + E.nombre + '</b>, ' + E.cargo + '.';
@@ -167,6 +168,9 @@ function monta(el, o){
       if(ev.tok !== tok) return;
       txt.innerHTML = html;
       cara.innerHTML = dibu(pose);
+      /* Zeus enfadado: truena */
+      el.classList.remove('ev-trueno');
+      if(ev.quien === 'zeus' && pose === 'enfada' && !REDUCIDO){ void el.offsetWidth; el.classList.add('ev-trueno'); }
       if(conZoom && zoom){ zoom.innerHTML = TABLILLA_DE_CERCA; zoom.hidden = false; }
       if(prueba && o && o.alPrueba){
         bp.hidden = false;
