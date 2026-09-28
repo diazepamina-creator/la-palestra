@@ -42,13 +42,15 @@ function pintaBanquillo(el, foto, k, pel, anim){
 
 /* ── el reproductor ── */
 function crea(o){
-  const R = {pel: null, k: 0, jugando: false, tok: 0, repaso: 0, alcance: 8};
+  const R = {pel: null, k: 0, jugando: false, tok: 0, repaso: 0, alcance: 8,
+             pregunta: 0, dichos: {}, pin: null, pinPara: 0, veredicto: null};
   const campo = o.campo, banquillo = o.banquillo;
   const fotoDe = k => k ? R.pel.pasos[k - 1] : {cuerda: [], banquillo: [], bandera: 0, tipo: '', x: ''};
   const avisa = () => { if(o.alCambiar) o.alCambiar(R); };
 
   R.carga = function(pel){
     R.pel = pel; R.k = 0; R.jugando = false; R.tok++;
+    R.pregunta = 0; R.dichos = {}; R.pin = null; R.pinPara = 0; R.veredicto = null;
     pel.conBanquillo = pel.pasos.some(p => p.banquillo.length) || pel.tok.some(t => t.t === 'p' && t.pre);
     R.alcance = Math.max(8, ...pel.pasos.map(p => Math.abs(p.bandera)));
     R.muestra(0);
@@ -58,16 +60,30 @@ function crea(o){
     if(!R.pel) return;
     R.k = Math.max(0, Math.min(R.pel.pasos.length, k));
     const foto = fotoDe(R.k);
-    C.pinta(campo, foto, {alcance: R.alcance, nuevos: (anim && anim.nuevos) || []});
+    C.pinta(campo, foto, {alcance: R.alcance, nuevos: (anim && anim.nuevos) || [],
+      viva: R.pregunta === R.k + 1, pin: R.pinPara === R.k || (R.jugando && R.pinPara === R.k + 1) ? R.pin : null});
     pintaBanquillo(banquillo, foto, R.k, R.pel, anim);
     avisa();
   };
   /* el paso k+1, animado */
+  /* ▶: antes de un paso clave, primero la pregunta. Un segundo ▶ sin tocar la
+     regla lo juega igual (para el profe en la pizarra) */
   R.avanza = async function(){
     if(!R.pel || R.jugando || R.k >= R.pel.pasos.length) return;
+    const k = R.k, paso = R.pel.pasos[k];
+    if(paso.clave && !(k in R.dichos) && !R.pregunta && !o.sinPreguntas){
+      R.pregunta = k + 1;
+      R.muestra(k);
+      return;
+    }
+    R.pregunta = 0;
+    /* el pronóstico solo vale la primera vez que se juega ese paso */
+    if(!R.pendiente){ R.pin = null; R.pinPara = 0; }
+    R.pendiente = false;
+    R.veredicto = null;
     const tok = ++R.tok, vivo = () => R.tok === tok;
     R.jugando = true; avisa();
-    const k = R.k, paso = R.pel.pasos[k], antes = fotoDe(k);
+    const antes = fotoDe(k);
     const enBanco = id => antes.banquillo.some(q => q.id === id) || paso.banquillo.some(q => q.id === id);
     const idsNuevos = paso.cuerda.filter(q => !antes.cuerda.some(a => a.id === q.id)).map(q => q.id);
     const idsBqNuevos = paso.banquillo.filter(q => !antes.banquillo.some(a => a.id === q.id)).map(q => q.id);
@@ -118,22 +134,39 @@ function crea(o){
         await espera(idsNuevos.length ? 1000 : 700);
       }
     }finally{
-      if(vivo()){ R.jugando = false; R.muestra(k + 1); }
+      if(vivo()){
+        R.jugando = false;
+        /* el veredicto del pronóstico, si lo hubo */
+        if(R.pinPara === k + 1 && R.pin !== null)
+          R.veredicto = {dicho: R.pin, real: paso.bandera, clavado: R.pin === paso.bandera};
+        R.muestra(k + 1);
+      }
     }
   };
-  R.retrocede = function(){ R.repaso++; if(!R.jugando && R.k > 0) R.muestra(R.k - 1); };
-  R.principio = function(){ R.repaso++; if(!R.jugando) R.muestra(0); };
+  /* el alumno toca la regla: se apunta lo que dijo y se juega el paso */
+  R.elige = function(v){
+    if(!R.pregunta || R.jugando) return;
+    const k = R.pregunta - 1;
+    R.dichos[k] = v; R.pin = v; R.pinPara = k + 1; R.pendiente = true;
+    R.pregunta = 0;
+    R.avanza();
+  };
+  R.retrocede = function(){ R.repaso++; R.pregunta = 0; R.veredicto = null; if(!R.jugando && R.k > 0) R.muestra(R.k - 1); };
+  R.principio = function(){ R.repaso++; R.pregunta = 0; R.veredicto = null; if(!R.jugando) R.muestra(0); };
   /* ▶▶: la película de un tirón; se para en cuanto se toca otro botón */
   R.repasa = async function(){
     if(!R.pel || R.jugando) return;
-    R.muestra(0);
+    R.pregunta = 0; R.muestra(0);
     const yo = ++R.repaso;
-    while(R.k < R.pel.pasos.length && R.repaso === yo){
-      await espera(350); if(R.repaso !== yo) return;
-      await R.avanza();
-    }
+    o.sinPreguntas = true;
+    try{
+      while(R.k < R.pel.pasos.length && R.repaso === yo){
+        await espera(350); if(R.repaso !== yo) return;
+        await R.avanza();
+      }
+    }finally{ o.sinPreguntas = false; }
   };
-  R.para = function(){ R.tok++; R.repaso++; R.jugando = false; };
+  R.para = function(){ R.tok++; R.repaso++; R.jugando = false; R.pregunta = 0; };
   return R;
 }
 

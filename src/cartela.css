@@ -1,0 +1,22 @@
+/* ── LA CARTELA: la cuenta escrita encima del campo, con el trozo que se está
+   jugando iluminado (karaoke), lo ya jugado atenuado y, debajo, la cuenta
+   pequeña de lo que pasa. Va fuera de la escena: no tapa nada ── */
+.cartela{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:76px;
+  margin:0 auto 8px;max-width:100%;width:max-content;padding:4px 12px;border-radius:5px;text-align:center;
+  font-family:'Space Mono',monospace;font-size:16px;line-height:1.35;color:#F2EDE2;
+  background:rgba(12,8,20,.86);border:2px solid #E9B84E;box-shadow:0 0 0 3px rgba(12,8,20,.86)}
+.cartela[hidden]{display:none}
+.cartela b{color:#F9D98A}
+.cartela.nueva{animation:cartelaEntra .25s steps(3, end)}
+@keyframes cartelaEntra{from{opacity:0;transform:translateY(-6px)}}
+.ct-cuenta{display:block;font-size:17px;line-height:1.5}
+.ct-cuenta .op{color:#C9BFD6}
+.ct-cuenta .izq{color:var(--izq)} .ct-cuenta .der{color:var(--der)} .ct-cuenta .poc{color:#E9A0DD;font-weight:700}
+.ct-on{background:#E9B84E;border-radius:4px;padding:2px 3px;margin:0 1px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.ct-on, .ct-on *{color:#1A1206 !important}
+.ct-hecho{opacity:.38}
+.ct-res{color:#F9D98A;font-size:19px;font-weight:700}
+.ct-x{display:block;font-size:12.5px;color:#F9D98A;margin-top:1px;letter-spacing:.2px}
+.ct-x.pregunta b{color:#FFF}
+.ct-x.clavado{color:#9BD164;font-weight:700}
+@media (prefers-reduced-motion: reduce){ .cartela.nueva{animation:none} }
