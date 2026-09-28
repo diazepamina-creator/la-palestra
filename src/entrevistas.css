@@ -22,6 +22,13 @@
 .ev-respuesta b{color:var(--ink)}
 .ev-prueba{margin-top:8px;font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
   color:#1A1206;background:var(--oro);border:1px solid var(--oro);border-radius:8px;padding:8px 12px;min-height:44px;cursor:pointer}
+/* la tablilla de Listillón, de cerca: se acerca como con una lupa */
+.ev-zoom{margin:-6px 0 14px;padding:0 6px}
+.ev-zoom[hidden]{display:none}
+.ev-zoom svg{display:block;width:100%;max-width:360px;height:auto;margin:0 auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
+  animation:evZoom .55s cubic-bezier(.2,1.2,.4,1) backwards}
+@keyframes evZoom{from{transform:scale(.55) translateY(-30px);opacity:0}}
+@media (prefers-reduced-motion: reduce){ .ev-zoom svg{animation:none} }
 .ev-rotulo{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
 .ev-lista{display:flex;flex-direction:column;gap:6px}
 .ev-p{text-align:left;font:inherit;font-size:14px;padding:9px 12px;min-height:44px;color:var(--ink);background:var(--panel-2);

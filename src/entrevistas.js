@@ -53,8 +53,8 @@ const ENTREVISTAS = {
   lis: {nombre:'Listillón', cargo:'escriba oficial de Jeferión y autor de las tablillas',
     hola:['habla', 'Apunto las preguntas y contesto las respuestas. Por ese orden.'],
     preguntas:[
-      {id:'l1', p:'¿Qué apunta en su tablilla?', pose:'habla',
-       r:'Todo lo que pasa en el campo, <b>con signos</b>. Si entra un −3, escribo <b>+ (−3)</b>. Si se retira, <b>− (−3)</b>. Así el jefe no puede decir que no pasó.'},
+      {id:'l1', p:'¿Qué apunta en su tablilla?', pose:'habla', zoom:true,
+       r:'Todo lo que pasa en el campo, <b>con signos</b>. Si entra un −3, escribo <b>+ (−3)</b>. Si se retira, <b>− (−3)</b>. Así el jefe no puede decir que no pasó. Y… bueno, algún dibujo.'},
       {id:'l2', p:'¿Por qué dice que el signo y la fuerza son dos preguntas?', pose:'senala',
        r:'Porque lo son. La <b>fuerza</b> es cuánto tira: el número sin signo. El <b>signo</b> es hacia dónde. El jefe mezcla las dos cosas y luego se enfada con la regla.'},
       {id:'l3', p:'¿Por qué el frasco espera en el banquillo?', pose:'senala',
@@ -72,6 +72,44 @@ const ENTREVISTAS = {
        r:'La juego en el campo. Si la bandera para donde dice la cuenta, está bien. Si no, alguien se ha equivocado de signo. <b>Casi siempre es el signo</b>.'}
     ]}
 };
+
+/* LA TABLILLA DE LISTILLÓN, DE CERCA: lo que apunta hoy y, en un rincón,
+   una caricatura del jefe riéndose, rayada a escondidas */
+const TABLILLA_DE_CERCA = (() => {
+  const T = '#4a3418';   // el trazo rayado en el barro
+  const raya = (d, w) => '<path d="' + d + '" fill="none" stroke="' + T + '" stroke-width="' + (w || 1.6) + '" stroke-linecap="round" stroke-linejoin="round"/>';
+  const texto = (x, y, s, tam, giro) => '<text x="' + x + '" y="' + y + '" font-family="Space Mono, monospace" font-size="' + tam + '" fill="' + T + '"' +
+    (giro ? ' transform="rotate(' + giro + ' ' + x + ' ' + y + ')"' : '') + '>' + s + '</text>';
+  return '<svg viewBox="0 0 320 200" role="img" aria-label="La tablilla de Listillón, de cerca: la cuenta con signos y una caricatura de Jeferión riéndose">' +
+    '<defs><linearGradient id="tdc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6d4ac"/><stop offset="1" stop-color="#d2bb8a"/></linearGradient></defs>' +
+    '<rect x="6" y="6" width="308" height="188" rx="14" fill="url(#tdc)" stroke="#8a6a3b" stroke-width="3"/>' +
+    '<rect x="14" y="14" width="292" height="172" rx="9" fill="none" stroke="#b8a074" stroke-width="1.2" stroke-dasharray="3 4"/>' +
+    /* lo apuntado, con signos */
+    texto(26, 44, 'hoy, en el campo:', 11, -1) +
+    texto(26, 72, 'entra −3   →  + (−3)', 14, -1.5) +
+    texto(26, 98, 'se va −3   →  − (−3)', 14, -.5) +
+    texto(26, 124, 'total: 0 (empate)', 11, -1) +
+    raya('M24 132 q40 3 82 0 t50 1', 1.2) +
+    texto(26, 160, 'el jefe: «escríbelo más bonito»', 11, -.8) +
+    texto(26, 178, 'ya es bonito.', 11, .6) +
+    /* la caricatura del jefe: cabezón, gafas, dientes y carcajada */
+    '<g transform="translate(226 92) rotate(6)">' +
+      raya('M-18 -8 Q-30 -30 -4 -36 Q26 -40 40 -26 L52 -22 L38 -14 Q30 -4 0 2 Q-14 4 -18 -8 Z', 2.2) +   /* cabeza y hocico */
+      raya('M-2 -14 L48 -20', 1.8) +                                                                  /* la boca, abierta de risa */
+      raya('M6 -16 l2 -6 l3 6 l3 -6 l3 6 l3 -6 l3 6 l3 -6 l3 6', 1.3) +                              /* dientes arriba */
+      raya('M8 -12 l3 6 l3 -6 l3 6 l3 -6 l3 6 l3 -6', 1.3) +                                          /* dientes abajo */
+      raya('M2 -28 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 M22 -30 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 M10 -28 L14 -30', 1.8) + /* gafas */
+      raya('M-4 -30 l4 3 M18 -32 l4 3', 1.4) +                                                        /* ojos apretados de reír */
+      raya('M-14 -34 q6 -8 14 -6 q8 -6 16 -2 q8 -6 14 0', 1.6) +                                      /* el laurel, a rayas */
+      raya('M-8 4 q-6 18 4 30 M14 4 q6 16 -2 30 M-6 32 h32', 1.8) +                                    /* el cuerpo, de palo */
+      raya('M-6 12 l-14 -8 M12 12 l16 -6 l-2 6', 1.6) +                                                /* los brazos, uno señalando */
+      texto(-30, -50, 'JA JA JA', 13, -8) +
+      texto(30, 44, 'el jefe', 10, 4) +
+    '</g>' +
+    /* la mano de Listillón tapando la esquina, que esto no lo vea nadie */
+    raya('M262 186 q10 -22 34 -18 q16 4 18 22', 2) +
+  '</svg>';
+})();
 
 /* monta la entrevista en su sección; o.alPrueba(tok) abre una cuenta en la tablilla */
 function monta(el, o){
@@ -113,20 +151,23 @@ function monta(el, o){
     $('.ev-pregunta').innerHTML = '— ' + q.p;
     const esc = $('.ev-escena');       // en el móvil, que se vea quién contesta
     if(esc.getBoundingClientRect().top < 0) esc.scrollIntoView({behavior: 'smooth', block: 'start'});
-    contesta(q.pose, q.r, q.prueba);
+    contesta(q.pose, q.r, q.prueba, q.zoom);
     pintaPreguntas();
   }
   /* la respuesta sale letra a letra, con la boca moviéndose; al acabar, la postura */
-  function contesta(pose, html, prueba){
+  function contesta(pose, html, prueba, conZoom){
     const tok = ++ev.tok;
     const cara = $('.ev-cara'), dibu = DIBUJA[ev.quien], txt = $('.ev-respuesta'), bp = $('.ev-prueba');
     bp.hidden = true;
+    const zoom = $('.ev-zoom');
+    if(zoom){ zoom.hidden = true; zoom.innerHTML = ''; }
     const trozos = html.split(/(<[^>]+>)/).filter(Boolean);
     const total = trozos.reduce((n, t) => n + (t[0] === '<' ? 0 : t.length), 0);
     const cierre = () => {
       if(ev.tok !== tok) return;
       txt.innerHTML = html;
       cara.innerHTML = dibu(pose);
+      if(conZoom && zoom){ zoom.innerHTML = TABLILLA_DE_CERCA; zoom.hidden = false; }
       if(prueba && o && o.alPrueba){
         bp.hidden = false;
         bp.onclick = () => o.alPrueba(prueba.map(t => Object.assign({}, t, t.t === 'p' ? {pre: true} : {})));
@@ -151,5 +192,5 @@ function monta(el, o){
   }
   return {elige, abre: () => elige(ev.quien), calla: () => { ev.tok++; }};
 }
-raiz.Entrevistas = {ENTREVISTAS, monta};
+raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
 })(window);
