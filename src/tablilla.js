@@ -1,6 +1,9 @@
 /* ══════════════════════════════════════════════════════════════════════
    LA PALESTRA · la tablilla
-   Donde se escribe la cuenta con teclas de barro: tiradores con su signo,
+   La TABLI·CAS·IO, hecha como una calculadora científica de clase: arriba
+   las teclas grises de función (pociones, paréntesis y potencias) y abajo
+   las negras grandes (tiradores con su signo, + y −), con DEL y AC en
+   amarillo. Donde se escribe la cuenta: tiradores con su signo,
    pociones, + y − como acciones, paréntesis y potencias. Sabe qué pieza
    puede ir después de cuál, escribe la cuenta como en el cuaderno y avisa
    cuando algo no encaja. No juega nada: eso es del motor.
@@ -103,41 +106,51 @@ function pulsa(tok, tk){
     T.push({t: 'e', n: tk.n});
   }else if(tk.t === 'borra'){
     T.pop();
+  }else if(tk.t === 'ac'){
+    return {tok: [], aviso: ''};
   }
   return {tok: T, aviso: ''};
 }
 
-/* ── montar las teclas dentro de un elemento. «al» recibe cada tecla pulsada ── */
+/* las pociones con tecla: seis, una fila de la calculadora. El motor conoce
+   más (:3, ·(−3)) y las misiones las usan; para escribir a mano bastan estas */
+const TECLAS_POC = [2, 3, 1/2, -1, -2, -1/2];
+
+/* ── montar las teclas dentro de un elemento. «al» recibe cada tecla pulsada.
+   «sobre» es el rótulo amarillo de encima, como las segundas funciones de
+   una calculadora; aquí dice qué hace la tecla ── */
 function monta(el, al){
   const fila = cls => { const d = document.createElement('div'); d.className = 'tl-fila ' + cls; el.appendChild(d); return d; };
-  const tecla = (fil, html, cls, etq, tk) => {
+  const tecla = (fil, html, cls, etq, tk, sobre) => {
     const b = document.createElement('button');
     b.type = 'button'; b.className = cls; b.innerHTML = html;
     b.setAttribute('aria-label', etq); b.title = etq;
+    if(sobre) b.dataset.sobre = sobre;
     b.addEventListener('click', () => al(tk));
     fil.appendChild(b);
     return b;
   };
-  const fi = fila('tl-tir');
-  [-1, -2, -3, -4, -5].forEach(f => tecla(fi, miniTirador(f) + '<b>' + P.conSigno(f) + '</b>', 'tl-t izq', 'Tirador de ' + P.conSigno(f), {t: 'n', f}));
-  const fd = fila('tl-tir');
-  [1, 2, 3, 4, 5].forEach(f => tecla(fd, miniTirador(f) + '<b>' + P.conSigno(f) + '</b>', 'tl-t der', 'Tirador de ' + P.conSigno(f), {t: 'n', f}));
-  const fp = fila('tl-poc');
-  P.POCIONES.forEach(po => tecla(fp, frascoHtml(po) + '<span class="etq">' + po.e + '</span>', clasePoc(po) + ' tl-p', po.n + ', ' + po.e + ': ' + po.d, {t: 'p', k: po.k}));
-  const fo = fila('tl-ops');
-  tecla(fo, '+', 'tl-o', 'Más: que entre', {t: '+'});
-  tecla(fo, '−', 'tl-o', 'Menos: que se retire', {t: '-'});
-  tecla(fo, '(', 'tl-o', 'Abre paréntesis', {t: '('});
-  tecla(fo, ')', 'tl-o', 'Cierra paréntesis', {t: ')'});
-  tecla(fo, '²', 'tl-o', 'Al cuadrado', {t: 'e', n: 2});
-  tecla(fo, '³', 'tl-o', 'Al cubo', {t: 'e', n: 3});
-  tecla(fo, '⌫', 'tl-o', 'Borra lo último', {t: 'borra'});
-  tecla(fo, '=', 'tl-o tl-igual', 'Igual: a jugar', {t: '='});
+  /* las grises de función: las pociones, los paréntesis y las potencias */
+  const ff = fila('tl-fun');
+  TECLAS_POC.map(P.pocionDe).forEach(po => tecla(ff, frascoHtml(po) + '<span class="etq">' + po.e + '</span>', clasePoc(po) + ' tl-p', po.n + ', ' + po.e + ': ' + po.d, {t: 'p', k: po.k}));
+  tecla(ff, '(', 'tl-o', 'Abre paréntesis', {t: '('}, 'abre');
+  tecla(ff, ')', 'tl-o', 'Cierra paréntesis', {t: ')'}, 'cierra');
+  tecla(ff, 'x²', 'tl-o tl-pot', 'Al cuadrado', {t: 'e', n: 2}, 'cuadrado');
+  tecla(ff, 'x³', 'tl-o tl-pot', 'Al cubo', {t: 'e', n: 3}, 'cubo');
+  /* las negras grandes: los tiradores, y + − DEL AC = */
+  const fn = fila('tl-num');
+  [-1, -2, -3, -4, -5].forEach(f => tecla(fn, miniTirador(f) + '<b>' + P.conSigno(f) + '</b>', 'tl-t izq', 'Tirador de ' + P.conSigno(f), {t: 'n', f}));
+  [1, 2, 3, 4, 5].forEach(f => tecla(fn, miniTirador(f) + '<b>' + P.conSigno(f) + '</b>', 'tl-t der', 'Tirador de ' + P.conSigno(f), {t: 'n', f}));
+  tecla(fn, '+', 'tl-o', 'Más: que entre', {t: '+'}, 'entra');
+  tecla(fn, '−', 'tl-o', 'Menos: que se retire', {t: '-'}, 'se retira');
+  tecla(fn, 'DEL', 'tl-o tl-amarilla', 'Borra lo último', {t: 'borra'}, 'borra uno');
+  tecla(fn, 'AC', 'tl-o tl-amarilla', 'Borra la cuenta entera', {t: 'ac'}, 'borra todo');
+  tecla(fn, '=', 'tl-o tl-igual', 'Igual: a jugar', {t: '='}, '¡a tirar!');
 }
 
 /* las teclas también desde el teclado del ordenador */
 function teclaDeTeclado(ev){
-  const m = {'+': {t: '+'}, '-': {t: '-'}, '(': {t: '('}, ')': {t: ')'}, 'Backspace': {t: 'borra'}, '=': {t: '='}, 'Enter': {t: '='}};
+  const m = {'+': {t: '+'}, '-': {t: '-'}, '(': {t: '('}, ')': {t: ')'}, 'Backspace': {t: 'borra'}, 'Delete': {t: 'ac'}, '=': {t: '='}, 'Enter': {t: '='}};
   if(m[ev.key]) return m[ev.key];
   if(/^[1-5]$/.test(ev.key)) return {t: 'n', f: ev.shiftKey || ev.altKey ? -Number(ev.key) : Number(ev.key)};
   return null;

@@ -1,77 +1,96 @@
-/* ── LA TABLILLA: es de barro, con su propia paleta ── */
+/* ── LA TABLI·CAS·IO: la tablilla de arcilla de Listillón, y de broma con
+   hechura de calculadora científica de clase: la marca grabada arriba, la
+   serie pintada en almagre, una «pantalla» de barro alisado donde se raya
+   la cuenta, teclas de barro claro para las funciones, de barniz negro
+   —como los vasos de figuras negras— para los números, y DEL y AC
+   esmaltadas en ocre ── */
 .tablilla{--panel:#efe4ca; --panel-2:#f7f0de; --line:#c4b08a; --ink:#241b36; --muted:#5f5040;
   --panel2:#f7f0de; --linea:#c4b08a; --tinta:#241b36; --tenue:#5f5040; --noche:#fbf6ea;
   --oro:#7f5a0e; --green:#2f6b28; --izq:#a8432d; --der:#1f6a88;
-  background:var(--panel);color:var(--ink);border:3px solid #8a6a3b;border-radius:14px;padding:12px;
-  box-shadow:inset 0 0 0 2px var(--panel), inset 0 0 0 3px #b8a589, 0 2px 0 rgba(90,64,30,.25)}
-.tablilla h2{font-family:var(--rotulo);text-transform:uppercase;letter-spacing:1.5px;font-size:11px;
-  color:var(--muted);margin:0;font-weight:500}
-/* la cabecera: el rótulo y la placa de marca, grabada en el barro */
-.tl-cab{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}
-.tl-placa{display:inline-flex;flex-direction:column;align-items:flex-end;line-height:1.1;padding:4px 9px 5px;border-radius:6px;
-  background:linear-gradient(180deg,#d9c59a,#c4ac7b);border:1px solid #8a6a3b;
-  box-shadow:inset 0 1px 0 rgba(255,250,235,.7), inset 0 -1px 0 rgba(90,64,30,.35), 0 1px 0 rgba(90,64,30,.25)}
-.tl-placa b{font-family:var(--rotulo);font-weight:700;font-size:12px;letter-spacing:2.2px;color:#3a2a14;
-  text-shadow:0 1px 0 rgba(255,250,235,.7)}
-.tl-placa .tl-modelo{font-weight:400;letter-spacing:.6px;font-family:'Space Mono',monospace;font-size:11px}
-.tl-placa i{font-style:normal;font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.3px;color:#5f5040;margin-top:1px}
-/* la greca por arriba, como el friso del campo */
-.tablilla{position:relative}
-.tablilla::before{content:"";position:absolute;left:10px;right:10px;top:-3px;height:7px;border-radius:0 0 4px 4px;
-  background:repeating-linear-gradient(90deg,#8a6a3b 0 6px,transparent 6px 9px,#8a6a3b 9px 12px,transparent 12px 18px);opacity:.55}
-.tl-tabla{position:relative;min-height:66px;margin:0 0 10px;padding:12px 14px;border-radius:10px;
-  font-family:'Space Mono',monospace;font-size:20px;line-height:1.5;word-break:break-word;color:var(--ink);
-  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .3  0 0 0 0 .14  0 0 0 .55 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"), linear-gradient(180deg,#e2d0a8,#eee0c0);
+  --grano:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .3  0 0 0 0 .14  0 0 0 .55 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+  position:relative;color:var(--ink);padding:14px 14px 16px;border-radius:26px 26px 34px 34px;
+  border:4px solid #8a6a3b;
+  background:var(--grano), radial-gradient(ellipse at 30% 10%, #f3e7cb 0, #e8d6ae 50%, #dcc596 100%);
   background-size:140px 140px, 100% 100%;
-  border:2px solid #9a7a45;box-shadow:inset 0 3px 8px rgba(90,64,30,.35), inset 0 -1px 0 rgba(255,250,235,.6)}
+  box-shadow:inset 0 0 0 2px #efe0bd, inset 0 0 0 3px #b8a589, inset 0 -6px 14px rgba(110,78,30,.25), 0 8px 18px var(--sombra, rgba(0,0,0,.3))}
+.tl-oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* el rótulo de arriba, grabado en el barro; la serie, pintada en almagre */
+.tl-cab{display:grid;grid-template-columns:1fr auto;align-items:end;gap:0 10px;margin:2px 4px 10px}
+.tl-logo{font-family:'Arial Black','Helvetica Neue',Arial,sans-serif;font-weight:900;font-size:21px;letter-spacing:1px;color:#5a4122;
+  line-height:1;transform:scaleY(.92);transform-origin:left bottom;
+  text-shadow:0 1px 0 rgba(255,250,235,.8), 0 -1px 0 rgba(60,40,10,.35)}
+.tl-modelo{display:flex;flex-direction:column;align-items:flex-end;line-height:1.05;color:#5a4122;text-shadow:0 1px 0 rgba(255,250,235,.7)}
+.tl-modelo b{font-family:'Space Mono',monospace;font-size:12.5px;font-weight:700}
+.tl-modelo i{font-style:normal;font-family:'Space Mono',monospace;font-size:11px}
+.tl-serie{grid-column:1;margin-top:6px;font-family:var(--rotulo);font-weight:700;font-size:14px;letter-spacing:4px;color:#A8432D}
+.tl-lema{grid-column:2;align-self:end;font-family:'Space Mono',monospace;font-size:8.5px;color:#6f5c44;text-align:right;line-height:1.2;max-width:170px}
+/* la «pantalla»: un hueco de barro alisado, con su reborde */
+.tl-marco{margin:0 0 12px;padding:7px;border-radius:12px 12px 16px 16px;
+  background:var(--grano), linear-gradient(180deg,#b8955e,#a07e4a);background-size:140px 140px, 100% 100%;
+  box-shadow:inset 0 2px 4px rgba(60,40,10,.45), 0 1px 0 rgba(255,250,235,.6)}
+.tl-tabla{position:relative;min-height:86px;padding:16px 12px 8px;border-radius:7px;
+  font-family:'Space Mono',monospace;font-size:20px;line-height:1.45;word-break:break-word;color:#2e2114;
+  background:var(--grano), linear-gradient(180deg,#e2d0a8,#eee0c0);background-size:140px 140px, 100% 100%;
+  box-shadow:inset 0 3px 8px rgba(90,64,30,.4), inset 0 -1px 0 rgba(255,250,235,.6)}
+.tl-ind{position:absolute;left:10px;top:3px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1px;color:#6f5c44}
 .tl-tabla .op{color:var(--muted)}
 .tl-tabla .izq{color:var(--izq)} .tl-tabla .der{color:var(--der)}
 .tl-tabla .poc{color:#8a2f7a;font-weight:700}
-.tl-tabla .tl-res{color:var(--ink);font-size:23px;font-weight:700}
-.tl-tabla .tl-res.frac{font-size:20px}
-.tl-vacia{color:rgba(95,80,64,.55);font-style:italic;font-family:system-ui,sans-serif;font-size:15px}
+/* el resultado, grande y abajo a la derecha, como en la calculadora */
+.tl-tabla .tl-res{display:block;text-align:right;color:#2e2114;font-size:32px;line-height:1.15;font-weight:700}
+.tl-tabla .tl-res.frac{font-size:26px}
+.tl-vacia{color:rgba(95,80,64,.55);font-style:italic;font-family:var(--letra);font-size:15px}
 .tl-cursor{display:inline-block;width:2px;height:1.1em;margin-left:2px;vertical-align:-3px;
   background:var(--ink);animation:parpadea 1s steps(1) infinite}
 @keyframes parpadea{50%{opacity:0}}
+.tl-tabla:has(.tl-res) .tl-cursor{display:none}
 .tl-exp{font-size:.62em;vertical-align:.9em;margin-left:1px}
-.tl-teclas{display:flex;flex-direction:column;gap:6px}
-.tl-fila{display:grid;gap:6px}
-.tl-tir{grid-template-columns:repeat(5,1fr)}
-.tl-poc{grid-template-columns:repeat(4,1fr)}
-.tl-ops{grid-template-columns:repeat(4,1fr)}
 
-/* las teclas, de barro cocido: grano, cantos algo irregulares, relieve y el
-   texto grabado. Al pulsar, se hunden */
-.tl-teclas button{position:relative;cursor:pointer;color:var(--ink);font:inherit;min-height:44px;padding:4px 2px;
-  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .3  0 0 0 0 .14  0 0 0 .55 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"), radial-gradient(ellipse at 30% 20%, #fbf3dc 0, #efdfbb 45%, #dcc493 100%);
-  background-size:140px 140px, 100% 100%;
-  border:2px solid #7a5a2e;border-radius:11px 13px 10px 12px / 12px 10px 13px 11px;
-  box-shadow:0 4px 0 #7a5a2e, 0 6px 7px rgba(40,25,5,.35),
-    inset 0 2px 0 rgba(255,250,235,.75), inset 0 -4px 6px rgba(110,78,30,.3), inset 2px 0 3px rgba(255,250,235,.3);
-  text-shadow:0 1px 0 rgba(255,250,235,.8), 0 -1px 0 rgba(90,60,20,.25);
-  transition:transform .07s ease, box-shadow .07s ease;margin-bottom:3px}
-.tl-teclas button:nth-child(3n+1){border-radius:13px 10px 12px 11px / 10px 13px 11px 12px}
-.tl-teclas button:nth-child(3n+2){border-radius:10px 12px 13px 10px / 13px 11px 10px 12px}
-.tl-teclas button:hover{filter:brightness(1.04)}
+/* ── LAS TECLAS: arriba las grises de función, abajo las negras grandes.
+   El rótulo de encima, en almagre, dice qué hace cada una. Al pulsar, se hunden */
+.tl-teclas{display:flex;flex-direction:column;gap:14px;padding-top:4px}
+.tl-fila{display:grid;gap:15px 7px}
+.tl-fun{grid-template-columns:repeat(6,1fr)}
+/* la segunda fila gris, ( ) x² x³, centrada bajo las seis pociones */
+.tl-fun button:nth-child(7){grid-column-start:2}
+.tl-num{grid-template-columns:repeat(5,1fr);gap:17px 8px}
+.tl-teclas button{position:relative;cursor:pointer;font:inherit;min-width:0;padding:3px 2px;color:var(--ink);
+  transition:transform .07s ease, box-shadow .07s ease}
+.tl-teclas button[data-sobre]::before{content:attr(data-sobre);position:absolute;left:-4px;right:-4px;top:-14px;text-align:center;
+  font-family:var(--letra);font-weight:700;font-size:10.5px;line-height:1;color:#A8432D;white-space:nowrap;pointer-events:none;
+  text-shadow:0 1px 0 rgba(255,250,235,.6)}
 .tl-teclas button:focus-visible{outline:3px solid #7f5a0e;outline-offset:2px}
-.tl-teclas button:active{transform:translateY(3px);
-  box-shadow:0 1px 0 #7a5a2e, 0 2px 3px rgba(40,25,5,.3),
-    inset 0 2px 5px rgba(110,78,30,.35), inset 0 -1px 0 rgba(255,250,235,.4)}
-.tl-teclas button:disabled{opacity:.6;transform:none;cursor:default}
-.tl-t{display:flex;align-items:center;justify-content:center;gap:2px;font-family:var(--rotulo);font-size:15px}
-.tl-t svg{width:24px;height:24px;flex:0 0 auto}
-.tl-teclas .tl-t.izq{color:var(--izq);border-color:#8c3a28;box-shadow:0 4px 0 #8c3a28, 0 6px 7px rgba(40,25,5,.35),
-    inset 0 2px 0 rgba(255,250,235,.75), inset 0 -4px 6px rgba(140,58,40,.25)}
-.tl-teclas .tl-t.der{color:var(--der);flex-direction:row-reverse;border-color:#2c6c82;box-shadow:0 4px 0 #2c6c82, 0 6px 7px rgba(40,25,5,.35),
-    inset 0 2px 0 rgba(255,250,235,.75), inset 0 -4px 6px rgba(44,108,130,.25)}
-.tl-teclas .tl-t.izq:active,.tl-teclas .tl-t.der:active{box-shadow:0 1px 0 #5a4020, inset 0 2px 5px rgba(110,78,30,.35)}
-.tl-teclas .tl-o{font-weight:700;font-size:24px;font-family:'Space Mono',monospace;color:#3a2a14;min-height:46px}
-.tl-teclas .tl-igual{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .3  0 0 0 0 .14  0 0 0 .55 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"), radial-gradient(ellipse at 30% 20%, #f7d98a 0, #dcaa45 55%, #b8862a 100%);
-  background-size:140px 140px, 100% 100%;border-color:#6e4e14;color:#2a1a04;
-  box-shadow:0 4px 0 #6e4e14, 0 6px 7px rgba(40,25,5,.35), inset 0 2px 0 rgba(255,245,210,.7), inset 0 -4px 6px rgba(110,70,10,.35)}
+.tl-teclas button:active{transform:translateY(3px)}
+/* las de función: óvalos de barro claro, con los cantos a mano */
+.tl-fun button{min-height:44px;color:var(--ink);border:2px solid #7a5a2e;border-radius:15px 17px 14px 16px / 17px 14px 16px 15px;
+  background:var(--grano), radial-gradient(ellipse at 30% 20%, #fbf3dc 0, #efdfbb 45%, #dcc493 100%);background-size:140px 140px, 100% 100%;
+  box-shadow:0 3px 0 #7a5a2e, 0 5px 6px rgba(40,25,5,.3), inset 0 2px 0 rgba(255,250,235,.75), inset 0 -3px 5px rgba(110,78,30,.3);
+  text-shadow:0 1px 0 rgba(255,250,235,.8)}
+.tl-fun button:active{box-shadow:0 0 0 #7a5a2e, inset 0 2px 5px rgba(110,78,30,.35)}
+.tl-teclas .tl-o{font-family:var(--letra);font-weight:700;font-size:19px}
+.tl-teclas .tl-pot{font-family:'Space Mono',monospace;font-size:16px;font-style:italic}
+/* las de número: barro con barniz negro, como un vaso de figuras negras */
+.tl-num button{min-height:50px;color:#F3E6CC;border:2px solid #1a110b;border-radius:10px 12px 9px 11px / 11px 9px 12px 10px;
+  background:radial-gradient(ellipse at 30% 15%, #4a3528 0, #2a1c14 55%, #1a110b 100%);
+  box-shadow:0 3px 0 #0f0906, 0 5px 6px rgba(40,25,5,.35), inset 0 1px 0 rgba(255,235,200,.22)}
+.tl-num button:active{box-shadow:0 0 0 #0f0906, inset 0 1px 0 rgba(255,235,200,.12)}
+.tl-num .tl-o{font-size:24px}
+.tl-t{display:flex;align-items:center;justify-content:center;gap:1px;font-family:'Space Mono',monospace;font-size:16px}
+.tl-t svg{width:22px;height:22px;flex:0 0 auto}
+.tl-teclas .tl-t.izq{color:#F08A72;--izq:#F08A72}
+.tl-teclas .tl-t.der{color:#72C7E8;--der:#72C7E8;flex-direction:row-reverse}
+/* DEL y AC, esmaltadas en ocre */
+.tl-teclas .tl-amarilla{color:#2a1a04;font-family:'Arial Black','Helvetica Neue',Arial,sans-serif;font-size:16px;letter-spacing:.5px;
+  border-color:#6e4e14;background:radial-gradient(ellipse at 30% 20%, #f7d98a 0, #dcaa45 55%, #b8862a 100%);
+  box-shadow:0 3px 0 #6e4e14, 0 5px 6px rgba(40,25,5,.35), inset 0 2px 0 rgba(255,245,210,.7)}
+.tl-teclas .tl-amarilla:active{box-shadow:0 0 0 #6e4e14}
+
+/* las pociones, en su tecla de barro claro */
+.tl-teclas .tl-p{min-height:52px;padding:4px 1px 3px}
+.tl-teclas .pocion .etq{font-size:10.5px}
+.tl-teclas .pocion .frasco{width:22px;height:31px}
 
 /* los frascos, dibujados en CSS; valen en una tecla y en el banquillo */
-.tl-teclas .tl-p{min-width:0;padding:5px 2px 4px;min-height:52px}
 .pocion{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px}
 .pocion .etq{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0;opacity:.8}
 .pocion .frasco{position:relative;width:24px;height:34px}
