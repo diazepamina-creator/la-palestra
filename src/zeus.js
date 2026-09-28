@@ -7,7 +7,13 @@
 (function (raiz) {
 'use strict';
 const REDUCIDO = raiz.matchMedia && raiz.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const rect = el => el.getBoundingClientRect();
+/* las medidas, en píxeles del campo: el modo aula agranda la página con zoom
+   y getBoundingClientRect las da ya agrandadas */
+const rect = el => {
+  const r = el.getBoundingClientRect(), k = parseFloat(getComputedStyle(document.body).zoom) || 1;
+  if(k === 1) return r;
+  return {left: r.left / k, right: r.right / k, top: r.top / k, bottom: r.bottom / k, width: r.width / k, height: r.height / k};
+};
 const varaDe = f => Math.max(0, Math.min(1, Math.log(Math.max(1, Math.abs(f))) / Math.log(12)));
 
 /* Zeus se asoma encima del tirador (a un lado, para no taparlo) */

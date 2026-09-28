@@ -1,5 +1,5 @@
 /* Funde la página en un solo index.html, como las demás apps: cada hoja de
-   estilos y cada módulo van dentro. Se edita src/, no index.html.
+   estilos y cada módulo van dentro. Se edita src/, no index.html. La versión va en el fichero VERSION.
      node construye.mjs
 */
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -12,6 +12,8 @@ export function construye(){
   const lee = f => readFileSync(join(raiz, f), 'utf8').trim();
   h = h.replace(/<link rel="stylesheet" href="(src\/[^"]+\.css)">/g, (_, f) => '<style>\n' + lee(f) + '\n</style>');
   h = h.replace(/<script src="(src\/[^"]+\.js)"><\/script>/g, (_, f) => '<script>\n' + lee(f) + '\n</script>');
+  /* la versión sale de un solo sitio: el fichero VERSION */
+  h = h.replaceAll('{{versión}}', lee('VERSION'));
   h = h.replace('<!doctype html>', '<!doctype html>\n<!-- Generado por construye.mjs a partir de src/: edita src/pagina.html y los módulos, no este fichero. -->');
   return h;
 }

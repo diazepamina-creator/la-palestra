@@ -11,7 +11,10 @@
 const P = raiz.Palestra, C = raiz.Campo, T = raiz.Tirador, TL = raiz.Tablilla;
 
 const REDUCIDO = raiz.matchMedia && raiz.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const espera = ms => new Promise(ok => setTimeout(ok, REDUCIDO ? 0 : ms));
+/* el ritmo: 1 normal, más para ir despacio (Ajustes · velocidad). Las
+   animaciones de CSS se alargan igual con --lento */
+let ritmo = 1;
+const espera = ms => new Promise(ok => setTimeout(ok, REDUCIDO ? 0 : ms * ritmo));
 
 /* ── el banquillo: los que se preparan y los frascos que esperan ── */
 function pintaBanquillo(el, foto, k, pel, anim){
@@ -41,7 +44,7 @@ function pintaBanquillo(el, foto, k, pel, anim){
 /* ── el reproductor ── */
 function crea(o){
   const R = {pel: null, k: 0, jugando: false, tok: 0, repaso: 0, alcance: 8,
-             pregunta: 0, dichos: {}, pin: null, pinPara: 0, veredicto: null};
+             pregunta: 0, dichos: {}, pin: null, pinPara: 0, veredicto: null, preguntas: true};
   const campo = o.campo, banquillo = o.banquillo;
   const fotoDe = k => k ? R.pel.pasos[k - 1] : {cuerda: [], banquillo: [], bandera: 0, tipo: '', x: ''};
   const avisa = () => { if(o.alCambiar) o.alCambiar(R); };
@@ -69,7 +72,7 @@ function crea(o){
   R.avanza = async function(){
     if(!R.pel || R.jugando || R.k >= R.pel.pasos.length) return;
     const k = R.k, paso = R.pel.pasos[k];
-    if(paso.clave && !(k in R.dichos) && !R.pregunta && !o.sinPreguntas){
+    if(paso.clave && R.preguntas && !(k in R.dichos) && !R.pregunta && !o.sinPreguntas){
       R.pregunta = k + 1;
       R.muestra(k);
       return;
@@ -215,5 +218,5 @@ function tiron(campo){
   setTimeout(() => campo.classList.remove('tiron'), 620);
 }
 
-raiz.Reproductor = {crea, pintaBanquillo};
+raiz.Reproductor = {crea, pintaBanquillo, ponRitmo: r => { ritmo = r > 0 ? r : 1; }};
 })(window);
