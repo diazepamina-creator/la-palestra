@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="src/banquillo.css">
 <link rel="stylesheet" href="src/cartela.css">
 <link rel="stylesheet" href="src/personajes.css">
+<link rel="stylesheet" href="src/entrevistas.css">
 <style>
   :root{
     --bg:#0F0C18; --panel:#171226; --panel-2:#1F1930; --line:#372E4E;
@@ -79,7 +80,7 @@
 <body>
 <main>
   <h1>La palestra</h1>
-  <p class="sub">Prototipo 0.7 · la ruta: seis misiones, de entrar gente a las potencias, y el acta para el profe.</p>
+  <p class="sub">Prototipo 0.8 · las entrevistas: Zeus, Jeferión y Listillón contestan.</p>
 
   <section class="panel ruta" id="ruta" aria-label="La ruta">
     <div class="rt-cab"><h2 id="rtCab">Misión 1 de 6</h2><p class="rt-titulo" id="rtTitulo"></p></div>
@@ -89,7 +90,25 @@
       <button type="button" id="rtSigue" class="scan" hidden>Siguiente misión</button>
       <button type="button" id="rtSalta">Saltar</button>
       <button type="button" id="rtLibre">Modo libre</button>
+      <button type="button" id="rtEntrevista">Entrevistas</button>
     </div>
+  </section>
+
+  <section class="panel entrevista" id="entrevista" hidden aria-label="Entrevistas">
+    <h2>Entrevistas en la palestra</h2>
+    <div class="ev-quien" role="group" aria-label="A quién entrevistar"></div>
+    <p class="ev-cartel"></p>
+    <div class="ev-escena">
+      <div class="ev-cara" aria-hidden="true"></div>
+      <div class="ev-globo">
+        <p class="ev-pregunta"></p>
+        <p class="ev-respuesta" aria-live="polite"></p>
+        <button type="button" class="ev-prueba" hidden>Verlo en la tablilla</button>
+      </div>
+    </div>
+    <p class="ev-rotulo">Pregúntale:</p>
+    <div class="ev-lista"></div>
+    <div class="rt-btns"><button type="button" id="evSalir">Volver a la palestra</button></div>
   </section>
 
   <section class="tablilla" aria-label="La tablilla">
@@ -109,6 +128,7 @@
       <button type="button" id="tlLimpia">Tablilla limpia</button>
       <button type="button" id="tlMuestra">Una de muestra</button>
       <button type="button" id="tlRuta">Volver a la ruta</button>
+      <button type="button" id="tlEntrevista">Entrevistas</button>
     </div>
   </section>
 
@@ -142,6 +162,7 @@
 <script src="personajes.js"></script>
 <script src="zeus.js"></script>
 <script src="ejercicios.js"></script>
+<script src="entrevistas.js"></script>
 <script>
   const P = window.Palestra, C = window.Campo, TL = window.Tablilla, PJ = window.Personajes, E = window.Ejercicios;
   const $ = id => document.getElementById(id);
@@ -364,6 +385,23 @@
     new MutationObserver(() => { const p = PJ.poseDeTexto(av.innerHTML); if(p) PJ.ponCara(c, quien, p, true); })
       .observe(av, {childList: true, subtree: true, characterData: true});
   });
+  /* ── LAS ENTREVISTAS ── */
+  let enRuta = true;
+  const EV = window.Entrevistas.monta($('entrevista'), {alPrueba: tok => {
+    entrevista(false);
+    modoRuta(false);
+    S.tok = tok; pintaTablilla(); igual();
+  }});
+  function entrevista(si){
+    $('entrevista').hidden = !si;
+    document.querySelector('.tablilla').hidden = si;
+    if(si){ enRuta = !$('ruta').hidden; $('ruta').hidden = true; $('panelCampo').hidden = true; $('acta').hidden = true; EV.abre(); window.scrollTo({top: 0, behavior: 'smooth'}); }
+    else{ EV.calla(); $('acta').hidden = false; $('ruta').hidden = !enRuta; }
+  }
+  $('rtEntrevista').addEventListener('click', () => entrevista(true));
+  $('tlEntrevista').addEventListener('click', () => entrevista(true));
+  $('evSalir').addEventListener('click', () => entrevista(false));
+
   pintaTablilla();
   modoRuta(true);
   pintaActa();

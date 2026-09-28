@@ -22,6 +22,7 @@ El tira y afloja de los números enteros, rehecho desde cero a partir de lo apre
 - `personajes.js` y `src/personajes.css` — Jeferión, Listillón y Zeus dibujados por código (de El pulso de los dioses), las caras que hablan según el aviso y el rayo.
 - `zeus.js` — los efectos del rayo cuando alguien se retira: Zeus se asoma, lanza, trueno, chamusca y humo. Solo efectos: el estado ya lo decide el motor.
 - `ejercicios.js` y `pruebas/ejercicios.test.mjs` — los ejercicios y la ruta: seis misiones por niveles, el generador de cuentas comprobado con el motor, el acta de la jornada y el turno guardado 90 minutos.
+- `entrevistas.js` y `src/entrevistas.css` — las entrevistas a Zeus, Jeferión y Listillón, con sus preguntas y repreguntas; alguna respuesta se ve en la tablilla.
 - `src/cartela.css` — la cartela: la cuenta encima del campo con el trozo que se juega iluminado, la pregunta y el veredicto.
 - `index.html` — la página: arranca en la ruta (la cuenta escrita, «¿dónde acaba la bandera?», ▶ Verlo en el campo); en modo libre la tablilla escribe la cuenta, `=` la graba con el motor y el reproductor la pasa con ◀ ▶ ⟲ ▶▶. Antes de un paso clave pregunta dónde acabará la bandera.
 
@@ -34,4 +35,5 @@ El tira y afloja de los números enteros, rehecho desde cero a partir de lo apre
 5. ✅ Predicción y cartela.
 6. ✅ Personajes: Zeus y el rayo, Listillón en la tablilla, Jeferión en el campo.
 7. ✅ Ejercicios y ruta: seis misiones, el acta y el turno guardado.
-8. Entrevistas.
+8. ✅ Entrevistas.
+9. Fundirlo todo en un solo HTML, como las demás apps.
