@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La palestra</title>
+<style>
+  /* Solo para comprobar que el motor arranca: la app de verdad llega en los
+     pasos siguientes (campo, tablilla, fotogramas). */
+  :root{--bg:#0F0C18;--panel:#171226;--line:#372E4E;--ink:#F2EDE2;--muted:#A79DB5;--oro:#E9B84E;--izq:#E2725B;--der:#57B8D6}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,sans-serif;padding:24px 16px}
+  main{max-width:620px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 4px}
+  p{margin:0 0 12px;color:var(--muted)}
+  pre{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto;font-size:13px;line-height:1.45}
+  b.izq{color:var(--izq)} b.der{color:var(--der)} b.oro{color:var(--oro)}
+</style>
+</head>
+<body>
+<main>
+  <h1>La palestra</h1>
+  <p>Prototipo 0.1 · el motor, sin campo todavía.</p>
+  <pre id="salida"></pre>
+</main>
+<script src="motor.js"></script>
+<script>
+  /* una película de muestra, paso a paso, para ver que el motor responde */
+  const P = window.Palestra;
+  const tok = [{t:'n',f:3},{t:'-'},{t:'n',f:-4},{t:'p',k:-2,pre:false}];
+  const pel = P.graba(tok);
+  const lista = l => l.map(p => '<b class="' + (p.f < 0 ? 'izq' : 'der') + '">' + P.conSigno(p.f) + '</b>').join(' ') || '—';
+  let h = '<b class="oro">' + P.escribe(pel.arbol) + ' = ' + P.fracTxt(pel.exacto) + '</b>   (nivel ' + pel.nivel + ')\n\n';
+  pel.pasos.forEach((p, i) => {
+    h += (i + 1) + '. ' + p.tipo.padEnd(7) + ' bandera ' + String(p.bandera).padStart(3) +
+      '   cuerda: ' + lista(p.cuerda) + '   banquillo: ' + lista(p.banquillo) +
+      (p.x ? '\n   ' + p.x : '') + (p.clave ? '   ← ¿dónde acabará?' : '') + '\n';
+  });
+  document.getElementById('salida').innerHTML = h;
+</script>
+</body>
+</html>
