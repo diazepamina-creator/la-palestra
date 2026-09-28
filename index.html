@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Generado por construye.mjs a partir de src/: edita src/pagina.html y los módulos, no este fichero. -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -7,12 +8,578 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap">
-<link rel="stylesheet" href="src/campo.css">
-<link rel="stylesheet" href="src/tablilla.css">
-<link rel="stylesheet" href="src/banquillo.css">
-<link rel="stylesheet" href="src/cartela.css">
-<link rel="stylesheet" href="src/personajes.css">
-<link rel="stylesheet" href="src/entrevistas.css">
+<style>
+.campo{position:relative;height:252px;border-radius:10px;overflow:hidden;
+    -webkit-user-select:none;user-select:none;
+    border:1px solid rgba(233,184,78,.18);
+    background:
+      radial-gradient(circle at 82% 15%, rgba(240,230,200,.20) 0 8px,
+        rgba(240,230,200,.07) 8px 15px, rgba(240,230,200,0) 16px),
+      radial-gradient(ellipse 120% 55% at 50% 100%, rgba(233,184,78,.09),
+        rgba(233,184,78,0) 62%),
+      linear-gradient(180deg,#161027 0%,#1B1230 48%,#231738 79%,#150F20 100%)}
+    .campo::after{content:'';position:absolute;inset:0;z-index:12;pointer-events:none;
+    background:radial-gradient(ellipse 115% 95% at 50% 46%,
+      transparent 58%, rgba(8,5,14,.34) 100%)}
+    .marca{position:absolute;top:24px;bottom:52px;width:2px;left:50%;
+    transform:translateX(-50%);background:repeating-linear-gradient(180deg,
+      rgba(242,237,226,.32) 0 7px, transparent 7px 13px);
+    box-shadow:0 0 5px rgba(242,237,226,.08)}
+      .cuerda{position:absolute;left:0;right:0;bottom:82px;height:7px;z-index:3;
+    background:linear-gradient(180deg,#c2a86a,#8a7442 55%,#5e4e2c);
+    border-radius:4px;box-shadow:0 2px 3px rgba(0,0,0,.45)}
+    .cuerda{transition:opacity .45s ease}
+  .campo:not(.tensa) .cuerda{opacity:0}
+    .cuerdaFloja{position:absolute;left:0;right:0;width:100%;bottom:66px;height:40px;
+    z-index:3;overflow:visible;pointer-events:none;opacity:1;transition:opacity .45s ease}
+  .cuerdaFloja path{fill:none;stroke:url(#gFloja);stroke-width:7;stroke-linecap:round;
+    vector-effect:non-scaling-stroke}
+  .campo.tensa .cuerdaFloja, .campo.forcejeo .cuerdaFloja{opacity:0}
+  .cuerda::after{content:'';position:absolute;inset:0;border-radius:4px;opacity:.5;
+    background:repeating-linear-gradient(72deg,
+      rgba(0,0,0,.25) 0 2px, transparent 2px 5px)}
+          .regla{position:absolute;left:0;right:0;bottom:0;height:52px;pointer-events:none;z-index:1;
+    background:linear-gradient(180deg,rgba(21,15,32,0) 0,rgba(48,35,44,.65) 16%,
+      #2B1F2C 44%,#1A1322 100%);
+    border-top:1px solid rgba(233,184,78,.5);
+    box-shadow:inset 0 1px 0 rgba(255,236,196,.12), 0 -6px 12px rgba(0,0,0,.35)}
+    .regla::before{content:'';position:absolute;left:0;right:0;top:-14px;height:14px;
+    background:linear-gradient(180deg,rgba(196,160,104,0),rgba(196,160,104,.16))}
+    .marca-n{position:absolute;bottom:5px;transform:translateX(-50%);text-align:center;
+    font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);line-height:1.2;
+    width:var(--paso,14px);padding:2px 0 1px;border-radius:5px}
+  .regla.ancha .marca-n{font-size:13px}
+  .regla.estrecha .marca-n.impar i{height:18px;margin-bottom:13px}
+    .marca-n i{display:block;width:1px;height:26px;margin:0 auto 5px;
+    background:linear-gradient(180deg,rgba(167,157,181,.06),rgba(167,157,181,.6));
+    font-style:normal}
+  .marca-n.cero{color:var(--ink);font-weight:700}
+  .marca-n.cero i{width:2px;height:36px;margin-top:-10px;background:linear-gradient(180deg,
+    rgba(242,237,226,.06),rgba(242,237,226,.75))}
+      .friso{position:absolute;left:0;right:0;top:0;height:18px;z-index:1;
+    pointer-events:none;
+    background:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='18'><g fill='none' stroke='rgba(233,184,78,.2)' stroke-width='1'><path d='M0 3.5 H26'/><path d='M0 14.5 H26'/></g><path d='M13 14 V5 H5 V10 H9' fill='none' stroke='rgba(233,184,78,.42)' stroke-width='1.8'/></svg>") repeat-x center / 26px 18px,
+      linear-gradient(180deg, rgba(43,32,62,.9), rgba(26,19,40,.55));
+    border-bottom:1px solid rgba(233,184,78,.16)}
+      .columnata{position:absolute;left:0;right:0;top:17px;bottom:50px;z-index:0;
+    pointer-events:none;
+    background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='92' height='158'><g fill='rgba(226,210,188,.16)'><rect x='29' y='4' width='34' height='6' rx='1'/><path d='M32 10 L60 10 L57 17 L35 17 Z'/><rect x='36' y='17' width='20' height='131'/><rect x='32' y='148' width='28' height='5' rx='1'/><rect x='29' y='153' width='34' height='5' rx='1'/></g><g fill='rgba(10,6,18,.2)'><rect x='40' y='18' width='1.6' height='129'/><rect x='45.5' y='18' width='1.6' height='129'/><rect x='51' y='18' width='1.6' height='129'/></g><g fill='rgba(244,240,230,.13)'><rect x='36.5' y='17' width='2' height='131'/></g></svg>") repeat-x;
+    background-size:92px 100%}
+  .escena{position:absolute;left:50%;top:0;bottom:0;width:100%;
+    transform:translateX(-50%);transform-origin:50% 100%;
+    transition:transform .5s ease, width .5s ease}
+          .equipo{transition:transform 1s cubic-bezier(.22,1.18,.36,1)}
+  .nudo{transition:transform 1s cubic-bezier(.22,1.18,.36,1)}
+  .marca-n{transition:color .35s ease}
+  .marca-n i{transition:background .35s ease}
+  .nudo{position:absolute;bottom:84px;left:50%;width:2px;height:28px;margin-left:-1px;
+    background:linear-gradient(180deg,#d9d3c4,#8a8272);border-radius:1px;z-index:8}
+    .nudo::before{content:'';position:absolute;bottom:-2px;left:-5px;width:12px;height:7px;
+    border-radius:50%;background:radial-gradient(circle at 40% 35%,#ffd97a,#f0a018 65%,#a35f06);
+    box-shadow:0 0 0 1.5px rgba(16,11,26,.5), 0 0 9px rgba(255,176,32,.6)}
+  .nudo .tela{position:absolute;top:0;left:2px;width:22px;height:15px;
+    background:linear-gradient(135deg,#c9a227,#a5821a);
+    clip-path:polygon(0 0, 100% 22%, 62% 50%, 100% 78%, 0 100%);
+    transform-origin:left center;transition:transform .5s ease}
+    .nudo .cifra{position:absolute;top:-19px;left:50%;
+    transform:translateX(calc(-50% + 12px));transition:transform .5s ease;
+    font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;color:#F2EDE2;
+    text-shadow:0 0 5px rgba(16,11,26,.95);white-space:nowrap}
+    .nudo.haciaIzq .tela{left:auto;right:2px;transform-origin:right center;
+    clip-path:polygon(100% 0, 0 22%, 38% 50%, 0 78%, 100% 100%)}
+  .nudo.haciaIzq .cifra{transform:translateX(calc(-50% - 12px))}
+  .nudo.sin .tela{background:linear-gradient(135deg,#4a5568,#39414f)}
+  .nudo.sin .cifra{color:#A79DB5}
+  .equipo{position:absolute;bottom:52px;z-index:6;display:flex;gap:1px;align-items:flex-end;
+    width:47%;flex-wrap:nowrap}
+  .equipo.izq{left:6px;justify-content:flex-end}
+  .equipo.der{right:6px;justify-content:flex-start}
+      .tirador{position:relative;flex:0 0 auto;cursor:pointer;padding:0;line-height:0;
+    border:1px solid transparent;border-radius:7px;background:rgba(244,240,230,.03);
+    }
+  /* solo el que acaba de llegar se anima; los demás se quedan donde están */
+  .tirador.nuevo{animation:llega .4s cubic-bezier(.34,1.56,.64,1) backwards}
+  .tirador svg{display:block;overflow:visible}
+    .tirador.izq{--piel:#E2725B;--linea:#8C3A28}
+  .tirador.der{--piel:#57B8D6;--linea:#2C6C82}
+      .tirador.izq{--lanzaX:30px}
+  .tirador.der{--lanzaX:-30px}
+    .tirador .parpado{fill:var(--piel);transform:scaleY(0);
+    animation:parpadea 5.4s linear infinite;animation-delay:var(--guino,0s)}
+  @keyframes parpadea{0%,95.4%,98.6%,100%{transform:scaleY(0)}
+    96.6%,97.4%{transform:scaleY(1)}}
+  @keyframes suda{0%{opacity:0;transform:translateY(0)}
+    30%{opacity:.95}100%{opacity:0;transform:translateY(6px)}}
+    .tirador .laurel{display:none}
+  .tirador.laureado .laurel{display:block}
+  .tirador .laurel ellipse{fill:#A6C566;stroke:rgba(16,11,26,.45);stroke-width:.7}
+    .tirador .laurel .rama{stroke:#5E7F3C;stroke-width:1.05;stroke-linecap:round}
+  .tirador .laurel .baya{fill:var(--oro)}
+    .campo.tiron .brilloPuno, .campo.forcejeo .brilloPuno{fill:rgba(244,240,230,.55)}
+    .tirador .sombraM2{transition:opacity .3s ease}
+  .tirador.trago .sombraM2{opacity:0}
+    .tirador .cuerpo{fill:var(--piel);stroke:var(--linea);stroke-width:1.6;
+    paint-order:stroke fill}
+    .tirador .trazo{stroke:var(--piel);fill:none}
+  .tirador .contorno{stroke:var(--linea);fill:none}
+    .tirador .borde{fill:var(--linea);stroke:var(--linea);stroke-width:2.6;
+    stroke-linejoin:round}
+  .tirador .carne{fill:var(--piel);stroke:none}
+    .tirador.venia-izq{--vieja:#E2725B;--vieja-linea:#8C3A28}
+  .tirador.venia-der{--vieja:#57B8D6;--vieja-linea:#2C6C82}
+  .tirador.venia-izq .carne.pata, .tirador.venia-der .carne.pata{fill:var(--vieja)}
+  .tirador.venia-izq .borde.pata-c, .tirador.venia-der .borde.pata-c{
+    fill:var(--vieja-linea);stroke:var(--vieja-linea)}
+  .tirador .oscuro{fill:rgba(16,11,26,.55)}
+  .tirador .brillo{fill:rgba(244,240,230,.26)}
+  .tirador .sombraP{fill:rgba(0,0,0,.22)}
+    .tirador .trama{stroke:none}
+    .tirador .penumbra{fill:rgba(16,11,26,.3);stroke:none}
+    .tirador .entredos{fill:#9c8449;stroke:rgba(16,11,26,.45);stroke-width:.8}
+    .tirador .surco{fill:none;stroke:var(--linea);stroke-width:1.1;
+    stroke-linecap:round;opacity:.5}
+  .tirador .suela{fill:none;stroke:var(--linea);stroke-width:1.5;
+    stroke-linecap:round;opacity:.7}
+  .tirador.venia-izq .suela, .tirador.venia-der .suela{stroke:var(--vieja-linea)}
+    .tirador.trago .trasCuerda{clip-path:none}
+    .tirador .banda{fill:#f2f6fb;opacity:.9}
+  .tirador .num{fill:var(--ink);font-family:'Oswald',sans-serif;font-weight:700;
+    font-size:13px;text-anchor:middle}
+  .tirador .blanco{fill:#f2f6fb} .tirador .pupila{fill:#140F1F}
+  .tirador .rasgo{fill:rgba(16,11,26,.72)}
+    .tirador .ceja{opacity:.9}
+        .tirador svg *{transform-origin:0 0}
+  .tirador .ceja{transition:opacity .25s ease}
+  .tirador.cara-mas .ceja, .tirador.cara-menos .ceja, .tirador.cara-bando .ceja{opacity:1}
+      .tirador.cara-mas .cejaI{transform:translateY(.6px) rotate(calc(22deg * var(--dir,1)))}
+  .tirador.cara-mas .cejaD{transform:translateY(.6px) rotate(calc(-22deg * var(--dir,1)))}
+  .tirador.cara-mas .boca{animation:bocaBruto calc(3s * var(--lento,1)) ease}
+  .tirador.cara-mas .ojoI, .tirador.cara-mas .ojoD{
+    animation:ojoRabia calc(3s * var(--lento,1)) ease}
+  @keyframes bocaBruto{0%,100%{transform:scale(1)}
+    10%,88%{transform:scaleX(1.9) scaleY(1.3) translateY(1px)}}
+  @keyframes ojoRabia{0%,100%{transform:scaleY(1)}
+    10%,88%{transform:scaleY(.5) translateY(1px)}}
+    .tirador.cara-menos .cejaI{transform:translateY(-1.4px) rotate(calc(-16deg * var(--dir,1)))}
+  .tirador.cara-menos .cejaD{transform:translateY(-1.4px) rotate(calc(16deg * var(--dir,1)))}
+  .tirador.cara-menos .boca{animation:bocaSusto calc(3s * var(--lento,1)) ease}
+  .tirador.cara-menos .ojoI, .tirador.cara-menos .ojoD{
+    animation:ojoSusto calc(3s * var(--lento,1)) ease}
+  @keyframes bocaSusto{0%,100%{transform:scale(1)}
+    10%,88%{transform:scale(.5, 1.5)}}
+  @keyframes ojoSusto{0%,100%{transform:scale(1)}
+    10%{transform:scale(2)}
+    88%{transform:scale(1.75)}}
+      .tirador.cara-bando .cejaD{transform:translateY(-1.5px) rotate(calc(-20deg * var(--dir,1)))}
+  .tirador.cara-bando .cejaI{transform:translateY(.6px) rotate(calc(14deg * var(--dir,1)))}
+  .tirador.cara-bando .boca{animation:bocaMalvada calc(3.2s * var(--lento,1)) ease}
+  .tirador.cara-bando .ojoI, .tirador.cara-bando .ojoD{
+    animation:ojoMalvado calc(3.2s * var(--lento,1)) ease}
+  @keyframes bocaMalvada{0%,100%{transform:rotate(0) scale(1)}
+    9%,90%{transform:rotate(-18deg) scaleX(1.6) scaleY(.9) translateX(1px)}}
+  @keyframes ojoMalvado{0%,100%{transform:scaleY(1)}
+    9%,90%{transform:scaleY(.45) translateY(-1px)}}
+    .tirador.trago .boca{animation:bocaBebe calc(2.1s * var(--lento,1)) ease}
+    @keyframes bocaBebe{0%,20%{transform:scale(1)}
+    27%{transform:scale(1.2, 2.3)} 33%{transform:scale(1.5, .9)}
+    40%{transform:scale(1.2, 2.3)} 46%{transform:scale(1.5, .9)}
+    53%{transform:scale(1.2, 2.3)} 59%{transform:scale(1.5, .9)}
+    66%{transform:scale(1.25, 2.2)} 76%{transform:scale(1.6, 1.1)}
+    88%,100%{transform:scale(1)}}
+    .tirador.infla svg{animation:seInfla calc(.8s * var(--lento,1)) cubic-bezier(.34,1.7,.5,1)}
+  .tirador.desinfla svg{animation:seDesinfla calc(.8s * var(--lento,1)) cubic-bezier(.4,0,.4,1)}
+  .tirador.posa svg{animation:sacaMusculo calc(1s * var(--lento,1)) cubic-bezier(.34,1.6,.5,1)}
+  @keyframes sacaMusculo{0%,100%{transform:scale(1)}
+    30%{transform:scale(1.16,1.06)}70%{transform:scale(1.12,1.04)}}
+  @keyframes seInfla{0%{transform:scale(1)}30%{transform:scale(1.28) rotate(-3deg)}
+                     60%{transform:scale(.94)}100%{transform:scale(1)}}
+  @keyframes seDesinfla{0%{transform:scale(1)}35%{transform:scale(.62) rotate(4deg)}
+                        70%{transform:scale(1.06)}100%{transform:scale(1)}}
+          .tirador.trago svg{animation:echaAtras calc(2.1s * var(--lento,1)) cubic-bezier(.4,.1,.4,1)}
+  .tirador.izq.trago svg{--nuca:7deg} .tirador.der.trago svg{--nuca:-7deg}
+  @keyframes echaAtras{0%,14%{transform:rotate(0)}
+    30%,68%{transform:rotate(var(--nuca,7deg))}
+        78%{transform:rotate(calc(var(--nuca,7deg) * -0.25))}
+    90%,100%{transform:rotate(0)}}
+      .tirador .frascoMano{opacity:0}
+    .tirador .fr-vidrio{fill:var(--pocion,#9BD164);fill-opacity:.3;
+    stroke:rgba(244,240,230,.6);stroke-width:.8}
+  .tirador .fr-liq{fill:var(--pocion,#9BD164);opacity:1}
+  .tirador.trago .frascoMano{filter:drop-shadow(0 0 2.6px var(--pocion,#9BD164))
+    drop-shadow(0 0 6px var(--pocion,#9BD164))}
+  .tirador .fr-cuello{fill:rgba(244,240,230,.16)}
+    .tirador .fr-forma.via{display:none}
+  .tirador.vial .fr-forma.anf{display:none}
+  .tirador.vial .fr-forma.via{display:block}
+  .tirador .fr-pie{fill:var(--pocion,#9BD164);fill-opacity:.22;
+    stroke:rgba(244,240,230,.5);stroke-width:.7}
+  .tirador .fr-asa{fill:none;stroke:rgba(244,240,230,.42);stroke-width:.9;
+    stroke-linecap:round}
+  .tirador .fr-corcho{fill:#8a6f45}
+    html[data-pausa="1"] .tirador.trago *{animation-play-state:paused !important}
+  .tirador.trago .frascoMano{animation:frascoSale calc(2.1s * var(--lento,1)) ease}
+      @keyframes frascoSale{
+    0%{opacity:0;transform:translate(0,0) rotate(var(--subeF,0deg)) scale(.4)}
+    8%{opacity:1;transform:translate(0,0) rotate(var(--subeF,0deg)) scale(1)}
+    22%{opacity:1;transform:translate(0,0) rotate(var(--subeF,0deg)) scale(1)}
+        36%,66%{opacity:1;transform:translate(0,0) rotate(var(--vuelcaF,125deg)) scale(1)}
+    71%{opacity:1;transform:translate(0,0) rotate(calc(var(--subeF,0deg) + 14deg)) scale(1)}
+            78%{opacity:1;transform:translate(calc(var(--lanzaX,-28px) * .5), -20px)
+      rotate(calc(var(--vuelcaF,90deg) + var(--giraF,150deg) * .55)) scale(1)}
+    86%{opacity:1;transform:translate(calc(var(--lanzaX,-28px) * .95), 2px)
+      rotate(calc(var(--vuelcaF,90deg) + var(--giraF,150deg))) scale(.96)}
+    93%,100%{opacity:0;transform:translate(calc(var(--lanzaX,-28px) * 1.15), 14px)
+      rotate(calc(var(--vuelcaF,90deg) + var(--giraF,150deg) * 1.45)) scale(.9)}}
+    .tirador.trago .fr-liqG{animation:frascoVacia calc(2.1s * var(--lento,1)) ease-in-out}
+    @keyframes frascoVacia{0%,34%{transform:scaleY(1)}
+    41%{transform:scaleY(.72)} 46%{transform:scaleY(.70)}
+    53%{transform:scaleY(.44)} 58%{transform:scaleY(.42)}
+    66%{transform:scaleY(.06)} 100%{transform:scaleY(.02)}}
+  .tirador.trago .brazoFuera{animation:dobla calc(2.1s * var(--lento,1)) cubic-bezier(.4,.1,.4,1)}
+  .tirador.trago .anteFuera{animation:doblaAnte calc(2.1s * var(--lento,1)) cubic-bezier(.4,.1,.4,1)}
+      @keyframes dobla{
+    0%{transform:rotate(0)}
+    14%{transform:rotate(calc((var(--gHum,-40deg) + var(--ajHum,0deg)) * .45))}
+    30%,70%{transform:rotate(calc(var(--gHum,-40deg) + var(--ajHum,0deg)))}
+    76%{transform:rotate(calc((var(--gHum,-40deg) + var(--ajHum,0deg)) * .95))}
+    82%,88%{transform:rotate(calc((var(--gHum,-40deg) + var(--ajHum,0deg)) * .78))}
+    96%,100%{transform:rotate(0)}}
+  @keyframes doblaAnte{
+    0%{transform:rotate(0)}
+    14%{transform:rotate(calc((var(--gAnt,-70deg) + var(--ajCod,0deg)) * .35))}
+    30%,70%{transform:rotate(calc(var(--gAnt,-70deg) + var(--ajCod,0deg)))}
+    76%{transform:rotate(calc((var(--gAnt,-70deg) + var(--ajCod,0deg)) * 1.06))}
+    82%{transform:rotate(calc((var(--gAnt,-70deg) + var(--ajCod,0deg)) * 1.26))}
+    88%{transform:rotate(calc((var(--gAnt,-70deg) + var(--ajCod,0deg)) * 1.16))}
+    96%,100%{transform:rotate(0)}}
+        .equipo{perspective:520px}
+    .tirador.traidor{animation:cambiaBando calc(2.2s * var(--lento,1)) ease-out;z-index:8}
+  @keyframes cambiaBando{
+    0%{filter:drop-shadow(0 0 0 rgba(225,79,198,0)) brightness(2.6);
+       transform:scale(1.14)}
+    10%{filter:drop-shadow(0 0 16px rgba(225,79,198,.95)) brightness(1.5);
+       transform:scale(1.06)}
+    30%{filter:drop-shadow(0 0 22px rgba(225,79,198,.85)) brightness(1.12);
+       transform:scale(1)}
+    55%{filter:drop-shadow(0 0 12px rgba(225,79,198,.75)) brightness(1.06)}
+    78%{filter:drop-shadow(0 0 18px rgba(225,79,198,.55)) brightness(1.02)}
+    100%{filter:drop-shadow(0 0 0 rgba(225,79,198,0)) brightness(1);
+       transform:scale(1)}}
+
+@keyframes llega{0%{opacity:0;transform:translateY(-10px) scale(.5)}
+  60%{opacity:1;transform:translateY(2px) scale(1.06)}
+  100%{opacity:1;transform:none}}
+
+/* dónde está la bandera, en verde */
+.marca-n.aqui{color:var(--green);font-weight:700}
+.marca-n.aqui i{height:36px;margin-top:-10px;background:linear-gradient(180deg,rgba(155,209,100,.08),var(--green))}
+/* la regla viva: antes de un paso clave, se toca para decir dónde acabará */
+.regla.viva{pointer-events:auto;animation:reglaLlama 1.2s ease-in-out infinite alternate}
+.regla.viva .marca-n{pointer-events:auto;cursor:pointer}
+.regla.viva .marca-n::after{content:'';position:absolute;left:0;right:0;top:-30px;bottom:-6px}
+.regla.viva .marca-n:hover{background:rgba(233,184,78,.14)}
+.regla.viva .marca-n.impar{color:var(--muted)}
+@keyframes reglaLlama{to{border-top-color:#F9D98A;box-shadow:inset 0 1px 0 rgba(255,236,196,.3), 0 -8px 18px rgba(233,184,78,.25)}}
+/* el pronóstico del alumno, marcado mientras se juega el paso */
+.marca-n.pronostico{color:var(--ambar);font-weight:700;background:rgba(233,184,78,.18)}
+.marca-n.pronostico::before{content:"tú";position:absolute;left:50%;top:-15px;transform:translateX(-50%);
+  font-size:9px;line-height:1.3;padding:0 3px;border-radius:3px;background:#E9B84E;color:#1A1206;font-weight:700}
+@media (prefers-reduced-motion: reduce){ .regla.viva{animation:none} }
+</style>
+<style>
+/* ── LA TABLILLA: es de barro, con su propia paleta ── */
+.tablilla{--panel:#efe4ca; --panel-2:#f7f0de; --line:#c4b08a; --ink:#241b36; --muted:#5f5040;
+  --oro:#7f5a0e; --green:#2f6b28; --izq:#a8432d; --der:#1f6a88;
+  background:var(--panel);color:var(--ink);border:3px solid #8a6a3b;border-radius:14px;padding:12px;
+  box-shadow:inset 0 0 0 2px var(--panel), inset 0 0 0 3px #b8a589, 0 2px 0 rgba(90,64,30,.25)}
+.tablilla h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;
+  color:var(--muted);margin:0 0 10px;font-weight:500}
+.tl-tabla{position:relative;min-height:66px;margin:0 0 10px;padding:12px 14px;border-radius:10px;
+  font-family:'Space Mono',monospace;font-size:20px;line-height:1.5;word-break:break-word;color:var(--ink);
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .3  0 0 0 0 .14  0 0 0 .55 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"), linear-gradient(180deg,#e2d0a8,#eee0c0);
+  background-size:140px 140px, 100% 100%;
+  border:2px solid #9a7a45;box-shadow:inset 0 3px 8px rgba(90,64,30,.35), inset 0 -1px 0 rgba(255,250,235,.6)}
+.tl-tabla .op{color:var(--muted)}
+.tl-tabla .izq{color:var(--izq)} .tl-tabla .der{color:var(--der)}
+.tl-tabla .poc{color:#8a2f7a;font-weight:700}
+.tl-tabla .tl-res{color:var(--ink);font-size:23px;font-weight:700}
+.tl-tabla .tl-res.frac{font-size:20px}
+.tl-vacia{color:rgba(95,80,64,.55);font-style:italic;font-family:system-ui,sans-serif;font-size:15px}
+.tl-cursor{display:inline-block;width:2px;height:1.1em;margin-left:2px;vertical-align:-3px;
+  background:var(--ink);animation:parpadea 1s steps(1) infinite}
+@keyframes parpadea{50%{opacity:0}}
+.tl-exp{font-size:.62em;vertical-align:.9em;margin-left:1px}
+.tl-teclas{display:flex;flex-direction:column;gap:6px}
+.tl-fila{display:grid;gap:6px}
+.tl-tir{grid-template-columns:repeat(5,1fr)}
+.tl-poc{grid-template-columns:repeat(4,1fr)}
+.tl-ops{grid-template-columns:repeat(4,1fr)}
+
+/* las teclas, de barro cocido: grano, cantos algo irregulares, relieve y el
+   texto grabado. Al pulsar, se hunden */
+.tl-teclas button{position:relative;cursor:pointer;color:var(--ink);font:inherit;min-height:44px;padding:4px 2px;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .3  0 0 0 0 .14  0 0 0 .55 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"), radial-gradient(ellipse at 30% 20%, #fbf3dc 0, #efdfbb 45%, #dcc493 100%);
+  background-size:140px 140px, 100% 100%;
+  border:2px solid #7a5a2e;border-radius:11px 13px 10px 12px / 12px 10px 13px 11px;
+  box-shadow:0 4px 0 #7a5a2e, 0 6px 7px rgba(40,25,5,.35),
+    inset 0 2px 0 rgba(255,250,235,.75), inset 0 -4px 6px rgba(110,78,30,.3), inset 2px 0 3px rgba(255,250,235,.3);
+  text-shadow:0 1px 0 rgba(255,250,235,.8), 0 -1px 0 rgba(90,60,20,.25);
+  transition:transform .07s ease, box-shadow .07s ease;margin-bottom:3px}
+.tl-teclas button:nth-child(3n+1){border-radius:13px 10px 12px 11px / 10px 13px 11px 12px}
+.tl-teclas button:nth-child(3n+2){border-radius:10px 12px 13px 10px / 13px 11px 10px 12px}
+.tl-teclas button:hover{filter:brightness(1.04)}
+.tl-teclas button:focus-visible{outline:3px solid #7f5a0e;outline-offset:2px}
+.tl-teclas button:active{transform:translateY(3px);
+  box-shadow:0 1px 0 #7a5a2e, 0 2px 3px rgba(40,25,5,.3),
+    inset 0 2px 5px rgba(110,78,30,.35), inset 0 -1px 0 rgba(255,250,235,.4)}
+.tl-teclas button:disabled{opacity:.6;transform:none;cursor:default}
+.tl-t{display:flex;align-items:center;justify-content:center;gap:2px;font-family:'Oswald',sans-serif;font-size:15px}
+.tl-t svg{width:24px;height:24px;flex:0 0 auto}
+.tl-teclas .tl-t.izq{color:var(--izq);border-color:#8c3a28;box-shadow:0 4px 0 #8c3a28, 0 6px 7px rgba(40,25,5,.35),
+    inset 0 2px 0 rgba(255,250,235,.75), inset 0 -4px 6px rgba(140,58,40,.25)}
+.tl-teclas .tl-t.der{color:var(--der);flex-direction:row-reverse;border-color:#2c6c82;box-shadow:0 4px 0 #2c6c82, 0 6px 7px rgba(40,25,5,.35),
+    inset 0 2px 0 rgba(255,250,235,.75), inset 0 -4px 6px rgba(44,108,130,.25)}
+.tl-teclas .tl-t.izq:active,.tl-teclas .tl-t.der:active{box-shadow:0 1px 0 #5a4020, inset 0 2px 5px rgba(110,78,30,.35)}
+.tl-teclas .tl-o{font-weight:700;font-size:24px;font-family:'Space Mono',monospace;color:#3a2a14;min-height:46px}
+.tl-teclas .tl-igual{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .3  0 0 0 0 .14  0 0 0 .55 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"), radial-gradient(ellipse at 30% 20%, #f7d98a 0, #dcaa45 55%, #b8862a 100%);
+  background-size:140px 140px, 100% 100%;border-color:#6e4e14;color:#2a1a04;
+  box-shadow:0 4px 0 #6e4e14, 0 6px 7px rgba(40,25,5,.35), inset 0 2px 0 rgba(255,245,210,.7), inset 0 -4px 6px rgba(110,70,10,.35)}
+
+/* los frascos, dibujados en CSS; valen en una tecla y en el banquillo */
+.tl-teclas .tl-p{min-width:0;padding:5px 2px 4px;min-height:52px}
+.pocion{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px}
+.pocion .etq{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0;opacity:.8}
+.pocion .frasco{position:relative;width:24px;height:34px}
+.pocion .frasco::after{content:'';position:absolute;left:8px;right:8px;bottom:0;height:4px;border-radius:1px 1px 3px 3px;
+  background:rgba(60,40,10,.08);border:1px solid rgba(60,40,10,.3);border-top:0}
+.pocion.mengua .frasco::after{left:9px;right:9px}
+.pocion .vidrio{position:absolute;left:2px;right:2px;bottom:4px;height:22px;
+  border-radius:10px 10px 8px 8px / 8px 8px 15px 15px;background:rgba(255,255,255,.18);
+  border:1px solid rgba(60,40,10,.35);overflow:hidden}
+.pocion .asa{position:absolute;top:8px;width:7px;height:11px;border:1.5px solid rgba(60,40,10,.35);background:none}
+.pocion .asa.i{left:-1px;border-right:0;border-radius:7px 0 0 7px}
+.pocion .asa.d{right:-1px;border-left:0;border-radius:0 7px 7px 0}
+.pocion.mengua .asa{display:none}
+.pocion .liquido{position:absolute;left:0;right:0;bottom:0;height:64%;background:currentColor;opacity:.85}
+.pocion.mengua .liquido{height:34%}
+.pocion.mengua .vidrio{left:6px;right:6px;border-radius:4px 4px 6px 6px / 4px 4px 9px 9px}
+.pocion.mengua .cuello{left:9px;right:9px}
+.pocion.mengua .corcho{left:7px;right:7px}
+.pocion .liquido::after{content:'';position:absolute;left:0;right:0;top:-3px;height:6px;border-radius:50%;background:currentColor;opacity:.55}
+.pocion .cuello{position:absolute;left:8px;right:8px;top:4px;height:7px;background:rgba(255,255,255,.12);
+  border-left:1px solid rgba(60,40,10,.3);border-right:1px solid rgba(60,40,10,.3)}
+.pocion .corcho{position:absolute;left:6px;right:6px;top:0;height:5px;border-radius:2px;background:#8a6f45;box-shadow:inset 0 -2px 0 rgba(0,0,0,.25)}
+.pocion.crece{color:var(--green)} .pocion.mengua{color:#3d63b0}
+.pocion.bando{color:#a5308f}
+.pocion.bando .vidrio{border-color:rgba(165,48,143,.55);box-shadow:0 0 8px rgba(225,79,198,.25)}
+.pocion .calavera{position:absolute;top:-8px;right:-9px;width:21px;height:21px;border-radius:50%;background:#fff;
+  border:1.5px solid #E14FC6;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(225,79,198,.55)}
+.pocion .calavera svg{width:14px;height:14px;display:block}
+
+.tablilla .habla{margin-top:10px}
+.tl-aviso b{color:var(--ink)}
+.tl-pie{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tl-pie button{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
+  color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-height:44px;cursor:pointer}
+</style>
+<style>
+/* ── EL BANQUILLO: un término compuesto se prepara aquí, fuera de la cuerda,
+   y sale a tirar ya hecho. Lo que tira en la cuerda es lo que suma ── */
+.banquillo{position:relative;height:112px;margin:0 0 8px;border-radius:10px;overflow:hidden;
+  border:1px dashed rgba(233,184,78,.35);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(0,0,0,.18))}
+.banquillo[hidden]{display:none}
+.banquillo::after{content:"";position:absolute;left:14%;right:14%;bottom:12px;height:9px;border-radius:3px;
+  background:linear-gradient(180deg,#8a6a3b,#5c4424);box-shadow:0 3px 0 #3a2a14}
+.bq-t{position:absolute;left:8px;top:5px;font:600 10px/1 'Oswald',sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.bq-sitio{position:absolute;left:0;right:0;bottom:17px;display:flex;justify-content:center;align-items:flex-end;gap:6px;z-index:1}
+.bq{position:relative;line-height:0;transition:transform .3s ease, opacity .3s ease}
+.bq svg{height:72px;width:auto}
+.bq .num{display:none}
+.bq-sitio:has(.bq:nth-child(4)) .bq svg{height:56px}
+.bq .bq-f{position:absolute;left:50%;top:-16px;transform:translateX(-50%);font:700 13px/1 'Oswald',sans-serif;color:var(--ink);white-space:nowrap}
+.bq.llega{animation:bqLlega .45s cubic-bezier(.34,1.56,.64,1) backwards}
+@keyframes bqLlega{from{transform:translateY(-24px);opacity:0}}
+.bq.trago{animation:bqTrago .5s ease}
+@keyframes bqTrago{40%{transform:scale(1.18) rotate(-6deg)}}
+.bq.se-va{transform:translateY(60px);opacity:0}
+.bq.junta{animation:bqJunta .9s ease forwards}
+@keyframes bqJunta{60%{transform:scale(.8);opacity:.9}100%{transform:scale(.3);opacity:0}}
+/* el frasco que se bebe: aparece, se vuelca y se vacía */
+.bq-frasco{position:absolute;left:78%;top:-4px;width:30px;transform:translateX(-50%);z-index:2;line-height:0;
+  filter:drop-shadow(0 0 4px rgba(249,217,138,.7));animation:bqFrasco 1s ease forwards}
+.bq-frasco .frasco{width:30px;height:42px}
+@keyframes bqFrasco{0%{transform:translate(-50%,-26px) scale(.6);opacity:0}25%{transform:translate(-50%,-18px) scale(1);opacity:1}
+  70%{transform:translate(-50%,2px) rotate(-60deg);opacity:1}100%{transform:translate(-50%,6px) rotate(-80deg);opacity:0}}
+/* los frascos de delante esperan de pie a la derecha y bajan hacia el jugador cuando le toca */
+.bq-banco{position:absolute;right:10px;bottom:24px;display:flex;gap:8px;z-index:2}
+.bq-espera{display:flex;flex-direction:column;align-items:center;gap:1px;animation:frascoEspera 2.4s ease-in-out infinite alternate;
+  transition:transform .6s ease, opacity .6s ease}
+.bq-espera i{font-style:normal;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--ink)}
+@keyframes frascoEspera{to{transform:translateY(-3px)}}
+.bq-espera.baja{animation:none;transform:translateX(-80px) translateY(10px) scale(.5);opacity:0}
+@media (prefers-reduced-motion: reduce){ .bq-espera, .bq.llega, .bq.trago, .bq.junta, .bq-frasco{animation:none} }
+</style>
+<style>
+/* ── LA CARTELA: la cuenta escrita encima del campo, con el trozo que se está
+   jugando iluminado (karaoke), lo ya jugado atenuado y, debajo, la cuenta
+   pequeña de lo que pasa. Va fuera de la escena: no tapa nada ── */
+.cartela{position:relative;display:flex;flex-direction:column;justify-content:center;min-height:76px;
+  margin:0 auto 8px;max-width:100%;width:max-content;padding:4px 12px;border-radius:5px;text-align:center;
+  font-family:'Space Mono',monospace;font-size:16px;line-height:1.35;color:#F2EDE2;
+  background:rgba(12,8,20,.86);border:2px solid #E9B84E;box-shadow:0 0 0 3px rgba(12,8,20,.86)}
+.cartela[hidden]{display:none}
+.cartela b{color:#F9D98A}
+.cartela.nueva{animation:cartelaEntra .25s steps(3, end)}
+@keyframes cartelaEntra{from{opacity:0;transform:translateY(-6px)}}
+.ct-cuenta{display:block;font-size:17px;line-height:1.5}
+.ct-cuenta .op{color:#C9BFD6}
+.ct-cuenta .izq{color:var(--izq)} .ct-cuenta .der{color:var(--der)} .ct-cuenta .poc{color:#E9A0DD;font-weight:700}
+.ct-on{background:#E9B84E;border-radius:4px;padding:2px 3px;margin:0 1px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.ct-on, .ct-on *{color:#1A1206 !important}
+.ct-hecho{opacity:.38}
+.ct-res{color:#F9D98A;font-size:19px;font-weight:700}
+.ct-x{display:block;font-size:12.5px;color:#F9D98A;margin-top:1px;letter-spacing:.2px}
+.ct-x.pregunta b{color:#FFF}
+.ct-x.clavado{color:#9BD164;font-weight:700}
+@media (prefers-reduced-motion: reduce){ .cartela.nueva{animation:none} }
+</style>
+<style>
+/* ── LOS PERSONAJES: Zeus y su rayo, y las caras que hablan ── */
+.campo .zeus{z-index:4}
+          .zeus{position:absolute;top:0;width:126px;height:94px;margin-left:-63px;
+    z-index:0;pointer-events:none;transform:translateY(-108%);
+    transition:transform calc(.3s * var(--lento,1)) cubic-bezier(.3,1.2,.5,1),
+      left calc(.24s * var(--lento,1)) ease,
+      opacity calc(.34s * var(--lento,1)) ease,
+      filter calc(.35s * var(--lento,1)) ease}
+  .zeus.fuera{transform:translateY(var(--asomo,-14%))}
+    .zeus.disipa{opacity:0;filter:none}
+  .zeus svg{display:block;width:100%;height:100%;overflow:visible}
+        .zeus{filter:drop-shadow(0 0 3px rgba(233,184,78,.45))
+    drop-shadow(0 0 10px rgba(233,184,78,.22))}
+  .zeus .siluZ{fill:url(#zLuna);stroke:none}
+  .zeus .siluTrazoZ{stroke:url(#zLuna)}
+  .zeus .rimTrazoZ{stroke:transparent}   .zeus .rimZ{stroke:rgba(233,184,78,.42);
+    transition:stroke calc(.35s * var(--lento,1)) ease}
+  .zeus .laurelZ ellipse, .zeus .laurelZ circle{fill:#E9B84E;opacity:.5;
+    transition:opacity calc(.35s * var(--lento,1)) ease}
+  .zeus .cenoZ{fill:#2B2240}
+  .zeus .ojoZ{fill:#F0C55E;
+    transition:fill calc(.3s * var(--lento,1)) ease}
+  .zeus .haloZ{fill:rgba(255,214,120,.28);
+    transition:fill calc(.3s * var(--lento,1)) ease}
+    .zeus.resplandece{filter:drop-shadow(0 0 5px rgba(240,197,94,.85))
+    drop-shadow(0 0 16px rgba(240,197,94,.45))
+    drop-shadow(0 0 36px rgba(233,184,78,.22))}
+  .zeus.resplandece .rimZ{stroke:rgba(240,197,94,.95)}
+  .zeus.resplandece .laurelZ ellipse, .zeus.resplandece .laurelZ circle{opacity:1}
+  .zeus.resplandece .ojoZ{fill:#FFF}
+  .zeus.resplandece .haloZ{fill:rgba(255,236,196,.5)}
+      .zeus .brazoZ{transform-box:view-box;transform-origin:82px 62px;     transition:transform calc(.1s * var(--lento,1)) ease}
+  .zeus.lanza .brazoZ{transform:rotate(-20deg)}
+    .zeus.zurdo svg{transform:scaleX(-1)}
+    .zeus .boltZ{transition:opacity calc(.08s * var(--lento,1)) ease}
+    .zeus.sinCetro .boltZ{opacity:0}
+    .campo.trueno{animation:trueno calc(.34s * var(--lento,1)) ease}
+    @keyframes trueno{20%{transform:translate(calc(1.6px * var(--sac,1)),calc(-1px * var(--sac,1)))}
+    45%{transform:translate(calc(-2px * var(--sac,1)),calc(1.2px * var(--sac,1)))}
+    70%{transform:translate(calc(1.2px * var(--sac,1)),calc(.6px * var(--sac,1)))}
+    100%{transform:translate(0,0)}}
+      .chamusca{position:absolute;bottom:46px;width:calc(42px * var(--mn,1));
+    height:calc(11px * var(--mn,1));margin-left:calc(-21px * var(--mn,1));
+    border-radius:50%;z-index:2;pointer-events:none;
+    background:radial-gradient(ellipse at center,rgba(16,10,8,.85),rgba(16,10,8,0) 72%);
+    animation:chamusca calc(4s * var(--lento,1)) ease-out forwards}
+  .chamusca::after{content:"";position:absolute;inset:22% 30%;border-radius:50%;
+    background:radial-gradient(ellipse at center,rgba(233,150,60,.7),rgba(233,150,60,0) 70%);
+    animation:rescoldo calc(1.4s * var(--lento,1)) ease-out forwards}
+  @keyframes rescoldo{0%{opacity:1}100%{opacity:0}}
+  @keyframes chamusca{0%{opacity:0}6%{opacity:1}55%{opacity:.75}100%{opacity:0}}
+  .rayo{position:absolute;left:0;top:0;z-index:11;pointer-events:none;
+    animation:relampago calc(.55s * var(--lento,1)) ease-out forwards}
+    .rayo .r-halo{fill:none;stroke:rgba(255,214,120,var(--ah,.55));
+    stroke-width:var(--gh,7);
+    stroke-linecap:round;stroke-linejoin:round;filter:blur(var(--bh,2px))}
+  .rayo .r-nucleo{fill:none;stroke:#fff;stroke-width:var(--gn,2.2);
+    stroke-linecap:round;stroke-linejoin:round}
+  @keyframes relampago{
+    0%{opacity:0}   8%{opacity:1}   22%{opacity:.25}
+    34%{opacity:1}  62%{opacity:.9} 100%{opacity:0}}
+  .fogonazo{position:absolute;inset:0;z-index:10;pointer-events:none;
+    background:radial-gradient(ellipse at center,
+      rgba(255,246,214,var(--af,.5)),transparent 68%);
+    animation:fogona calc(.4s * var(--lento,1)) ease-out forwards}
+  @keyframes fogona{0%{opacity:0} 12%{opacity:1} 100%{opacity:0}}
+    .tirador.fulminado svg{animation:achicharra calc(.5s * var(--lento,1)) ease-out}
+  @keyframes achicharra{
+    0%,100%{filter:none}
+    14%{filter:brightness(3.2) saturate(.2)}
+    40%{filter:brightness(1.6)}}
+    .humo{position:absolute;width:10px;height:10px;border-radius:50%;
+    background:rgba(200,193,175,.45);pointer-events:none;z-index:8;
+    animation:humea calc(.65s * var(--lento,1)) ease-out forwards}
+  @keyframes humea{0%{transform:translate(-50%,-50%) scale(.4);opacity:.8}
+    100%{transform:translate(calc(-50% + var(--hx,10px)), calc(-50% + var(--hy,-10px))) scale(1.8);opacity:0}}
+:root{--habla-j:rgba(226,114,91,.10); --habla-j-b:rgba(226,114,91,.5);
+  --habla-l:rgba(87,184,214,.09); --habla-l-b:rgba(87,184,214,.45)}
+.cara{display:block;flex:0 0 auto}
+.cara svg{display:block;width:100%;height:auto}
+.cara.jef{width:64px}
+.habla{display:contents}
+.habla:has(> .aviso:not(:empty):not([hidden])){display:flex;gap:10px;align-items:center;
+  background:var(--habla-l);border:1.5px solid var(--habla-l-b);border-radius:10px;
+  padding:6px 8px 6px 12px;margin:8px 0 0}
+.habla > .aviso{flex:1;margin:0;color:var(--ink);font-style:italic;min-height:0}
+.habla:has(> .aviso:empty) .cara,
+.habla:has(> .aviso[hidden]) .cara{display:none}
+.habla .cara.lis{width:48px;order:2}
+/* los dibujos miran a la derecha (Listillón) o a la izquierda (Jeferión): en
+   el bocadillo se voltean para mirar hacia lo que dicen */
+.habla .cara.lis svg, .ruta .rt-habla .cara.jef svg{transform:scaleX(-1)}
+.habla .aviso b{color:var(--ink)}
+@media (max-width:420px){ .cara.jef{width:52px} .habla .cara.lis{width:40px} }
+
+/* Jeferión habla a la izquierda, con su color; Listillón a la derecha */
+.habla.jef:has(> .aviso:not(:empty):not([hidden])){background:var(--habla-j);border-color:var(--habla-j-b);padding:6px 12px 6px 8px}
+.habla .cara.jef{width:56px;order:0}
+.habla.jef .cara.jef svg{transform:none}
+.habla > .aviso{font-size:14px;line-height:1.5}
+.habla > .aviso b{color:var(--ink)}
+@media (max-width:420px){ .habla .cara.jef{width:48px} }
+</style>
+<style>
+/* ── LAS ENTREVISTAS: Zeus, Jeferión y Listillón contestan a lo que se les pregunte ── */
+.ev-quien{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 8px}
+.ev-quien button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px 5px;min-height:0;
+  font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:12px;
+  color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;cursor:pointer}
+.ev-quien button[aria-pressed="true"]{border-color:var(--ambar);color:var(--ambar);box-shadow:inset 0 0 0 1px var(--ambar)}
+.ev-mini{width:46px;height:46px;display:block}
+.ev-mini svg{width:100%;height:100%}
+.ev-cartel{font-size:13px;color:var(--muted);margin:2px 0 8px;font-style:italic}
+.ev-cartel b{color:var(--ink)}
+.ev-escena{display:flex;gap:10px;align-items:flex-end;margin:0 0 10px}
+.ev-cara{flex:0 0 auto;width:132px;height:132px}
+.ev-cara svg{width:100%;height:100%;display:block}
+.ev-globo{flex:1;min-width:0;position:relative;min-height:112px;padding:10px 13px;border-radius:12px;
+  background:var(--habla-l);border:1.5px solid var(--habla-l-b);margin-bottom:18px}
+.ev-globo::before{content:'';position:absolute;left:-9px;bottom:16px;width:14px;height:14px;
+  background:inherit;border-left:1.5px solid var(--habla-l-b);border-bottom:1.5px solid var(--habla-l-b);transform:rotate(45deg)}
+.ev-pregunta{margin:0 0 5px;font-size:12.5px;color:var(--muted);font-family:'Oswald',sans-serif;letter-spacing:.4px}
+.ev-respuesta{margin:0;font-size:15.5px;line-height:1.5;font-style:italic;color:var(--ink);min-height:1.5em}
+.ev-respuesta b{color:var(--ink)}
+.ev-prueba{margin-top:8px;font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
+  color:#1A1206;background:var(--oro);border:1px solid var(--oro);border-radius:8px;padding:8px 12px;min-height:44px;cursor:pointer}
+.ev-rotulo{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.ev-lista{display:flex;flex-direction:column;gap:6px}
+.ev-p{text-align:left;font:inherit;font-size:14px;padding:9px 12px;min-height:44px;color:var(--ink);background:var(--panel-2);
+  border:1px solid var(--line);border-radius:8px;cursor:pointer}
+.ev-p.hecha{opacity:.55}
+.ev-p.repregunta{border-style:dashed;border-color:var(--ambar)}
+.ev-re{font-family:'Oswald',sans-serif;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ambar)}
+@media (max-width:420px){ .ev-cara{width:104px;height:104px} .ev-respuesta{font-size:14.5px} }
+</style>
 <style>
   :root{
     --bg:#0F0C18; --panel:#171226; --panel-2:#1F1930; --line:#372E4E;
@@ -80,7 +647,7 @@
 <body>
 <main>
   <h1>La palestra</h1>
-  <p class="sub">Prototipo 0.8 · las entrevistas: Zeus, Jeferión y Listillón contestan.</p>
+  <p class="sub">Prototipo 0.9 · en un solo fichero, como las demás apps.</p>
 
   <section class="panel ruta" id="ruta" aria-label="La ruta">
     <div class="rt-cab"><h2 id="rtCab">Misión 1 de 6</h2><p class="rt-titulo" id="rtTitulo"></p></div>
@@ -154,15 +721,2029 @@
     <div class="ac-fila"><input id="acNombre" type="text" placeholder="Nombre" aria-label="Nombre"><button type="button" id="acCopia">Copiar acta</button></div>
   </details>
 </main>
-<script src="motor.js"></script>
-<script src="tirador.js"></script>
-<script src="campo.js"></script>
-<script src="tablilla.js"></script>
-<script src="reproductor.js"></script>
-<script src="personajes.js"></script>
-<script src="zeus.js"></script>
-<script src="ejercicios.js"></script>
-<script src="entrevistas.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   LA PALESTRA · el motor
+   El estado del campo, la cuenta escrita en la tablilla, el intérprete que
+   la juega y el grabador que la convierte en fotogramas. Aquí no se dibuja
+   nada: todo lo de la pantalla vive aparte y lee lo que sale de aquí.
+
+   Las reglas que manda todo esto:
+   · Lo que tira en la cuerda es lo que suma. La bandera nunca se congela.
+   · Un término compuesto se prepara en el banquillo y sale a tirar hecho.
+       nivel 1: un jugador solo (4·(−2), (−3)², −(−4)·(−2))
+       nivel 2: un paréntesis de sumas: se reduce a uno y luego bebe
+       nivel 3 o más: sin teatro; la cuenta se hace exacta, con fracciones
+   · El signo va dentro del tirador; + y − son «que entre» y «que se retire».
+   ══════════════════════════════════════════════════════════════════════ */
+(function (raiz) {
+'use strict';
+
+const MAX_F = 12;      // fuerza máxima de un tirador en la palestra
+const TOPE_LADO = 5;   // en cada lado tiran cinco como mucho
+
+const POCIONES = [
+  {k: 2,    e: '·2',    n: 'Doblón',          d: 'tira el doble'},
+  {k: 3,    e: '·3',    n: 'Triplón',         d: 'tira el triple'},
+  {k: 1/2,  e: ':2',    n: 'Aguada',          d: 'se queda en la mitad'},
+  {k: 1/3,  e: ':3',    n: 'Aguachirle',      d: 'se queda en un tercio'},
+  {k: -1,   e: '·(−1)', n: 'Traición',        d: 'misma fuerza, otro bando'},
+  {k: -2,   e: '·(−2)', n: 'Traición doble',  d: 'el doble de fuerza, y en contra'},
+  {k: -3,   e: '·(−3)', n: 'Traición triple', d: 'el triple de fuerza, y en contra'},
+  {k: -1/2, e: ':(−2)', n: 'Traición aguada', d: 'la mitad de fuerza, y en contra'}
+];
+const pocionDe = k => POCIONES.find(p => Math.abs(p.k - k) < 1e-9) || null;
+
+/* ── cómo se escriben los números ── */
+const conSigno = n => n === 0 ? '0' : (n > 0 ? '+' : '−') + Math.abs(n);
+/* como en el cuaderno: el primero sin paréntesis, los negativos de después
+   entre paréntesis y los positivos sin signo */
+const numCuaderno = (f, primero) => primero ? (f < 0 ? conSigno(f) : String(f))
+  : (f < 0 ? '(' + conSigno(f) + ')' : String(f));
+const etqDe = k => { const po = pocionDe(k); return po ? po.e : '·' + k; };
+const preTxt = k => (k < 0 ? '(' + conSigno(k) + ')' : String(k)) + '·';
+
+class ErrorPalestra extends Error {
+  constructor(msg, tipo){ super(msg); this.tipo = tipo || 'campo'; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   EL CAMPO: la cuerda y el banquillo. Un solo objeto con todo el estado.
+   Cada tirador: {id, f, venia}. «venia» guarda de qué bando venía quien
+   cambió de bando con una traición: sale con los pantalones de antes.
+   ══════════════════════════════════════════════════════════════════════ */
+class Campo {
+  constructor(){ this.cuerda = []; this.banquillo = []; this.sig = 1; }
+  suma(){ return this.cuerda.reduce((a, p) => a + p.f, 0); }
+  busca(id){ return this.cuerda.find(p => p.id === id) || this.banquillo.find(p => p.id === id) || null; }
+  enBanquillo(id){ return this.banquillo.some(p => p.id === id); }
+  foto(){
+    const copia = l => l.map(p => ({id: p.id, f: p.f, venia: p.venia || null}));
+    return {cuerda: copia(this.cuerda), banquillo: copia(this.banquillo), bandera: this.suma()};
+  }
+  /* la cuerda tiene sus límites; el banquillo no */
+  comprueba(){
+    const izq = this.cuerda.filter(p => p.f < 0).length, der = this.cuerda.length - izq;
+    if(izq > TOPE_LADO || der > TOPE_LADO)
+      throw new ErrorPalestra('No caben: en cada lado tiran cinco como mucho, y aquí serían ' + Math.max(izq, der) + '.');
+    const s = this.suma();
+    if(Math.abs(s) > MAX_F)
+      throw new ErrorPalestra('La bandera se saldría de la regla, que llega hasta ±' + MAX_F + ': acabaría en ' + conSigno(s) + '.');
+  }
+  entra(f, alBanquillo){
+    const p = {id: this.sig++, f, venia: null};
+    (alBanquillo ? this.banquillo : this.cuerda).push(p);
+    if(!alBanquillo) this.comprueba();
+    return p.id;
+  }
+  retira(id){
+    const p = this.busca(id);
+    if(!p) throw new ErrorPalestra('No hay nadie con ese número a quien retirar.');
+    this.cuerda = this.cuerda.filter(q => q.id !== id);
+    this.banquillo = this.banquillo.filter(q => q.id !== id);
+  }
+  /* beber: la fuerza se multiplica; si cambia de signo, cambia de bando */
+  bebe(id, k){
+    const p = this.busca(id);
+    if(!p) return;
+    const v = p.f * k;
+    if(!Number.isInteger(v))
+      throw new ErrorPalestra('El de ' + conSigno(p.f) + ' no se puede repartir así: le tocaría ' +
+        String(Math.round(v * 100) / 100).replace('.', ',') + ', y aquí se tira con fuerzas enteras.');
+    if(Math.abs(v) > MAX_F)
+      throw new ErrorPalestra('Un tirador de fuerza ' + Math.abs(v) + ' no cabe en la palestra: como mucho ' + MAX_F + '.');
+    if((p.f < 0) !== (v < 0) && v !== 0) p.venia = p.venia || (p.f < 0 ? 'izq' : 'der');
+    p.f = v;
+    if(!this.enBanquillo(id)) this.comprueba();
+  }
+  /* varios se juntan en uno que vale su suma (0: no queda nadie) */
+  junta(ids){
+    if(!ids.length) return null;
+    const enBanco = this.enBanquillo(ids[0]);
+    const lista = enBanco ? this.banquillo : this.cuerda;
+    const s = ids.reduce((a, id) => a + ((lista.find(p => p.id === id) || {f: 0}).f), 0);
+    const resto = lista.filter(p => ids.indexOf(p.id) < 0);
+    let nuevo = null;
+    if(s){ nuevo = {id: this.sig++, f: s, venia: null}; resto.push(nuevo); }
+    if(enBanco) this.banquillo = resto; else this.cuerda = resto;
+    if(!enBanco) this.comprueba();
+    return nuevo ? nuevo.id : null;
+  }
+  /* del banquillo a la cuerda, ya hecho */
+  sale(ids){
+    ids.forEach(id => {
+      const p = this.banquillo.find(q => q.id === id);
+      if(!p) return;
+      this.banquillo = this.banquillo.filter(q => q.id !== id);
+      this.cuerda.push(p);
+    });
+    this.comprueba();
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   LA CUENTA. Piezas de la tablilla:
+     {t:'n', f}          un tirador con su signo
+     {t:'+'} {t:'-'}     que entre, que se retire
+     {t:'('} {t:')'}
+     {t:'p', k, pre}     una poción: delante (3·) o detrás (·3)
+     {t:'e', n}          al cuadrado (2) o al cubo (3)
+   El analizador la convierte en un árbol:
+     expr  = {terms:[term]}
+     term  = {sign, si, pre:[{k, ti}], factor, exp, ei, post:[k], postI:[i]}
+     factor= {t:'n', f, a, z} | {t:'g', expr, a, z}
+   Las letras a, z, si, ti, ei, postI son posiciones en la tablilla: con
+   ellas la cartela ilumina el trozo que se está jugando.
+   ══════════════════════════════════════════════════════════════════════ */
+function analiza(T){
+  let i = 0;
+  const err = m => { throw new ErrorPalestra(m, 'cuenta'); };
+  function expr(){
+    const terms = [];
+    let sign = '+', si = null;
+    if(T[i] && T[i].t === '-'){ sign = '-'; si = i; i++; }
+    for(;;){
+      terms.push(Object.assign({sign, si}, term()));
+      if(T[i] && (T[i].t === '+' || T[i].t === '-')){ sign = T[i].t; si = i; i++; continue; }
+      break;
+    }
+    return {terms};
+  }
+  function term(){
+    const pre = [], post = [], postI = [];
+    while(T[i] && T[i].t === 'p' && T[i].pre){ pre.push({k: T[i].k, ti: i}); i++; }
+    let factor;
+    if(!T[i]) err('La cuenta se ha quedado a medias: falta a quién darle el frasco o el número de detrás.');
+    if(T[i].t === 'n'){ factor = {t: 'n', f: T[i].f, a: i, z: i}; i++; }
+    else if(T[i].t === '('){
+      const a = i; i++;
+      const dentro = expr();
+      if(!T[i] || T[i].t !== ')') err('Falta cerrar un paréntesis.');
+      factor = {t: 'g', expr: dentro, a, z: i}; i++;
+    }else err('Ahí falta un tirador o un paréntesis.');
+    let exp = 1, ei = null;
+    if(T[i] && T[i].t === 'e'){ exp = T[i].n; ei = i; i++; }
+    while(T[i] && T[i].t === 'p' && !T[i].pre){ post.push(T[i].k); postI.push(i); i++; }
+    return {pre, factor, exp, ei, post, postI};
+  }
+  if(!T || !T.length) err('Todavía no has escrito nada.');
+  const e = expr();
+  if(i < T.length) err('Sobra algo al final: ' + (T[i].t === ')' ? 'un paréntesis que no se abrió.' : 'revisa la cuenta.'));
+  return e;
+}
+
+/* la cuenta escrita, en texto plano (la pantalla la colorea aparte) */
+const SUP = {2: '²', 3: '³'};
+function escribe(e, primero){
+  let h = '';
+  e.terms.forEach((t, n) => {
+    if(t.sign === '-') h += (n === 0 ? '−' : ' − ');
+    else if(n > 0) h += ' + ';
+    const ini = (primero === undefined || primero) && n === 0 && t.sign === '+';
+    t.pre.forEach(p => { h += preTxt(p.k); });
+    h += t.factor.t === 'n' ? numCuaderno(t.factor.f, ini && !t.pre.length && !(t.exp > 1 && t.factor.f < 0))
+                            : '(' + escribe(t.factor.expr, true) + ')';
+    if(t.exp > 1) h += SUP[t.exp] || '^' + t.exp;
+    t.post.forEach(k => { h += etqDe(k); });
+  });
+  return h;
+}
+
+/* ── la cuenta hecha a mano, en fracciones exactas: para lo que no cabe ── */
+const mcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while(b){ [a, b] = [b, a % b]; } return a || 1; };
+const frac = (n, d) => { if(d < 0){ n = -n; d = -d; } const g = mcd(n, d); return [n / g, d / g]; };
+const fracDe = k => Number.isInteger(k) ? [k, 1] : frac(Math.sign(k), Math.round(1 / Math.abs(k)));
+function exacto(e){
+  let tot = [0, 1];
+  e.terms.forEach(t => {
+    let v = t.factor.t === 'n' ? [t.factor.f, 1] : exacto(t.factor.expr);
+    if(t.exp > 1) v = [Math.pow(v[0], t.exp), Math.pow(v[1], t.exp)];
+    t.pre.map(p => p.k).concat(t.post).forEach(k => { const f = fracDe(k); v = frac(v[0] * f[0], v[1] * f[1]); });
+    if(t.sign === '-') v = [-v[0], v[1]];
+    tot = frac(tot[0] * v[1] + v[0] * tot[1], tot[1] * v[1]);
+  });
+  return tot;
+}
+const fracTxt = ([n, d]) => d === 1 ? (n < 0 ? conSigno(n) : String(n)) : (n < 0 ? '−' : '') + Math.abs(n) + '/' + d;
+
+/* ══════════════════════════════════════════════════════════════════════
+   EL INTÉRPRETE. Juega el árbol sobre un campo y va contando cada paso
+   a «cuenta(paso)». Un paso es {tipo, m, x}: qué ha pasado, qué trozo de la
+   tablilla se ilumina (posiciones) y la cuenta pequeña en palabras.
+   ══════════════════════════════════════════════════════════════════════ */
+const rango = (a, z) => { const r = []; for(let q = a; q <= z; q++) r.push(q); return r; };
+const conSi = (t, r) => t.si === null || t.si === undefined ? r : [t.si].concat(r);
+const trozoFactor = t => rango(t.factor.a, t.factor.z).concat(t.ei !== null && t.ei !== undefined ? [t.ei] : []);
+const trozoTermino = t => conSi(t, rango(t.pre.length ? t.pre[0].ti : t.factor.a,
+  t.postI.length ? t.postI[t.postI.length - 1] : (t.ei !== null && t.ei !== undefined ? t.ei : t.factor.z)));
+const opTxt = k => Number.isInteger(k) ? '·' + (k < 0 ? '(' + conSigno(k) + ')' : k) : etqDe(k);
+const cuentaBebe = (f, k) => '(' + conSigno(f) + ')' + opTxt(k) + ' = ' + conSigno(f * k);
+
+const esSuelto = t => t.factor.t === 'n' && !t.pre.length && !t.post.length && !(t.exp > 1);
+const esCompuesto = t => !!(t.pre.length || t.post.length || t.exp > 1 || (t.sign === '-' && !esSuelto(t)));
+/* nivel de un término: 0 suelto, 1 un jugador, 2 un paréntesis de sumas, 3 más hondo */
+function nivelDe(t){
+  if(!esCompuesto(t)) return t.factor.t === 'g' ? Math.max(0, ...t.factor.expr.terms.map(nivelDe)) : 0;
+  if(t.factor.t === 'n') return 1;
+  return t.factor.expr.terms.some(u => esCompuesto(u) || u.factor.t === 'g') ? 3 : 2;
+}
+const nivelCuenta = e => Math.max(0, ...e.terms.map(nivelDe));
+
+function juega(arbol, campo, cuenta){
+  const di = (tipo, m, x) => cuenta({tipo, m, x: x || ''});
+  let enBanco = false;
+
+  function expr(e, ambito){
+    for(const t of e.terms){
+      if(t.sign === '-' && esSuelto(t)){
+        /* restar: se retira uno con ese número; si no lo hay, entra su pareja
+           nula (suman 0) y se retira el que toca */
+        const f = t.factor.f;
+        const id = ambito.find(q => campo.busca(q).f === f);
+        if(id !== undefined){
+          ambito.splice(ambito.indexOf(id), 1);
+          campo.retira(id);
+          di('retira', conSi(t, [t.factor.a]), 'se va el ' + conSigno(f));
+        }else{
+          const a = campo.entra(f, enBanco), b = campo.entra(-f, enBanco);
+          di('pareja', conSi(t, [t.factor.a]), 'no hay ' + conSigno(f) + ': entran ' + conSigno(f) + ' y ' + conSigno(-f) + ' (suman 0)');
+          ambito.push(b);
+          campo.retira(a);
+          di('retira', conSi(t, [t.factor.a]), 'se va el ' + conSigno(f));
+        }
+        continue;
+      }
+      if(esCompuesto(t)){
+        if(enBanco) throw new ErrorPalestra('Aquí hay un paréntesis que bebe con otra operación dentro: demasiados niveles para el teatro.', 'nivel');
+        enBanco = true;
+        let ids = termino(t);
+        enBanco = false;
+        const v = ids.length === 1 ? campo.busca(ids[0]).f : null;
+        campo.sale(ids);
+        di('sale', trozoTermino(t), !ids.length ? 'vale 0: no sale nadie'
+          : (v !== null ? 'sale a tirar el ' + conSigno(v) : 'salen a tirar'));
+        ambito.push(...ids);
+      }else{
+        ambito.push(...termino(t));
+      }
+    }
+    return ambito;
+  }
+
+  function termino(t){
+    let ids;
+    if(t.factor.t === 'n'){
+      ids = [campo.entra(t.factor.f, enBanco)];
+      di('entra', esCompuesto(t) ? [t.factor.a] : conSi(t, [t.factor.a]), enBanco ? 'se prepara en el banquillo' : '');
+    }else{
+      ids = expr(t.factor.expr, []);
+      if(enBanco && ids.length !== 1){
+        /* en el banquillo, lo normal: primero se reduce el paréntesis */
+        const s = ids.reduce((a, id) => a + campo.busca(id).f, 0);
+        const nuevo = campo.junta(ids);
+        di('junta', rango(t.factor.a, t.factor.z), 'el paréntesis vale ' + (s ? conSigno(s) : '0'));
+        ids = nuevo === null ? [] : [nuevo];
+      }
+    }
+    /* la potencia: elevar es multiplicar por sí mismo; el tirador se bebe su
+       propio frasco una vez menos que el exponente */
+    if(t.exp > 1 && ids.length){
+      const v = campo.busca(ids[0]).f;
+      if(v !== 1 && v !== 0){
+        if(!pocionDe(v)) throw new ErrorPalestra('Para elevar, el tirador se bebe su propio frasco, y no hay frasco de ·' + v + '.');
+        for(let r = 1; r < t.exp; r++){
+          const f0 = campo.busca(ids[0]).f;
+          campo.bebe(ids[0], v);
+          di('bebe', trozoFactor(t), cuentaBebe(f0, v));
+        }
+      }
+    }
+    const beben = (k, m) => ids.forEach(id => { const f0 = campo.busca(id).f; campo.bebe(id, k); di('bebe', m, cuentaBebe(f0, k)); });
+    /* primero los frascos de delante (el más cercano antes), luego los de detrás */
+    t.pre.slice().reverse().forEach(p => beben(p.k, [p.ti].concat(trozoFactor(t))));
+    t.post.forEach((k, n) => beben(k, trozoFactor(t).concat([t.postI[n]])));
+    /* el menos de delante de un término compuesto: cambia de bando */
+    if(t.sign === '-' && !esSuelto(t))
+      ids.forEach(id => { const f0 = campo.busca(id).f; campo.bebe(id, -1); di('bebe', trozoTermino(t), 'el menos: cambia de bando'); });
+    return ids;
+  }
+
+  return expr(arbol, []);
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   EL GRABADOR. Juega la cuenta entera de una vez y guarda una foto del
+   campo tras cada paso: la película. Quien la reproduce solo tiene que
+   enseñar la foto k y animar el paso de la k−1 a la k.
+   ══════════════════════════════════════════════════════════════════════ */
+function graba(tok){
+  const arbol = analiza(tok);
+  const nivel = nivelCuenta(arbol);
+  const pel = {arbol, tok, nivel, pasos: [], valor: null, exacto: null, sinTeatro: null};
+  const campo = new Campo();
+  try{
+    juega(arbol, campo, paso => {
+      const foto = campo.foto();
+      const antes = pel.pasos.length ? pel.pasos[pel.pasos.length - 1].bandera : 0;
+      pel.pasos.push(Object.assign(paso, foto, {
+        /* paso clave: mueve la bandera y merece una predicción antes */
+        clave: (paso.tipo === 'retira' || paso.tipo === 'sale') && foto.bandera !== antes
+      }));
+    });
+    pel.valor = campo.suma();
+  }catch(e){
+    if(!(e instanceof ErrorPalestra) || e.tipo === 'cuenta') throw e;
+    /* no cabe en el campo o es demasiado hondo: sin teatro, pero la cuenta se hace igual */
+    pel.pasos = [];
+    pel.exacto = exacto(arbol);
+    pel.valor = pel.exacto[1] === 1 ? pel.exacto[0] : null;
+    pel.sinTeatro = e.message;
+  }
+  if(pel.exacto === null) pel.exacto = [pel.valor, 1];
+  return pel;
+}
+
+const motor = {MAX_F, TOPE_LADO, POCIONES, pocionDe, conSigno, numCuaderno, etqDe, preTxt,
+  ErrorPalestra, Campo, analiza, escribe, exacto, fracTxt, nivelDe, nivelCuenta, juega, graba};
+if(typeof module !== 'undefined' && module.exports) module.exports = motor;
+else raiz.Palestra = motor;
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>
+/* El tirador, dibujado en SVG a partir de su fuerza y su bando. Viene tal cual de El pulso de los dioses (v8.7): la geometría del cuerpo, la pose de tirar y el frasco en la mano. */
+(function (raiz) {
+'use strict';
+const conSigno = n => n === 0 ? '0' : (n > 0 ? '+' : '−') + Math.abs(n);
+const SUELO_CSS = 52, CUERDA_CSS = 82, CUERDA_ALTO = 7;
+const CUERDA_Y = CUERDA_CSS + CUERDA_ALTO / 2 - SUELO_CSS;
+const CAB_ALTA = 0.78;
+function medidasDe(fz, U){
+  const torso  = U * (1 + 0.34 * Math.log(fz));
+  const ancho  = Math.min(32, 14 * (1 + 0.55 * Math.log(fz)));
+  const m      = Math.max(0, Math.min(11, Math.round(Math.log(fz) * 4.2)));
+  const cab    = 17 + m * 0.5;
+  const pierna = 17 + m * 0.4;
+  const brazoL = 16 + m * 0.6, brazoH = 8 + m * 0.4;
+      const w = Math.max(cab + 10, ancho + brazoL + 22);
+  const h = pierna + torso + cab + 22;
+  return {torso, ancho, m, cab, pierna, brazoL, brazoH, w, h, u:Math.max(3, torso/fz)};
+}
+function frascoEnMano(mx, my, gr, parte){
+    const an = gr * 1.12, al = gr * 1.95;
+    const bocaX = mx, bocaY = my - gr * .5;
+  const cuello =
+    '<rect class="fr-corcho" x="' + (-an * .28).toFixed(1) + '" y="-2" width="' +
+      (an * .56).toFixed(1) + '" height="2.2" rx="1"/>' +
+    '<rect class="fr-cuello" x="' + (-an * .22).toFixed(1) + '" y="0" width="' +
+      (an * .44).toFixed(1) + '" height="' + (al * .22).toFixed(1) + '" rx="1"/>';
+    const X = n => n.toFixed(1);
+    const anfora =
+    '<g class="fr-forma anf">' +
+      '<path class="fr-vidrio" d="M' + X(-an*.22) + ' ' + X(al*.2) +
+        ' C' + X(-an*.62) + ' ' + X(al*.3) + ' ' + X(-an*.56) + ' ' + X(al*.6) +
+          ' ' + X(-an*.3) + ' ' + X(al*.8) +
+        ' Q' + X(-an*.22) + ' ' + X(al*.87) + ' ' + X(-an*.2) + ' ' + X(al*.93) +
+        ' L' + X(an*.2) + ' ' + X(al*.93) +
+        ' Q' + X(an*.22) + ' ' + X(al*.87) + ' ' + X(an*.3) + ' ' + X(al*.8) +
+        ' C' + X(an*.56) + ' ' + X(al*.6) + ' ' + X(an*.62) + ' ' + X(al*.3) +
+          ' ' + X(an*.22) + ' ' + X(al*.2) + ' Z"/>' +
+            '<rect class="fr-pie" x="' + X(-an*.24) + '" y="' + X(al*.93) +
+        '" width="' + X(an*.48) + '" height="' + X(al*.07) + '" rx="' + X(al*.02) + '"/>' +
+            '<path class="fr-asa" d="M' + X(-an*.2) + ' ' + X(al*.26) +
+        ' q' + X(-an*.34) + ' ' + X(al*.06) + ' ' + X(-an*.28) + ' ' + X(al*.2) + '"/>' +
+      '<path class="fr-asa" d="M' + X(an*.2) + ' ' + X(al*.26) +
+        ' q' + X(an*.34) + ' ' + X(al*.06) + ' ' + X(an*.28) + ' ' + X(al*.2) + '"/>' +
+      '<g class="fr-liqG">' +
+        '<rect class="fr-liq" x="' + X(-an*.3) + '" y="' + X(al*.34) +
+          '" width="' + X(an*.6) + '" height="' + X(al*.55) + '" rx="' + X(an*.08) + '"/>' +
+      '</g>' +
+    '</g>';
+  const vial =
+    '<g class="fr-forma via">' +
+      '<path class="fr-vidrio" d="M' + X(-an*.2) + ' ' + X(al*.2) +
+        ' L' + X(-an*.2) + ' ' + X(al*.82) +
+        ' Q' + X(-an*.2) + ' ' + X(al*.99) + ' 0 ' + X(al*.99) +
+        ' Q' + X(an*.2) + ' ' + X(al*.99) + ' ' + X(an*.2) + ' ' + X(al*.82) +
+        ' L' + X(an*.2) + ' ' + X(al*.2) + ' Z"/>' +
+      '<g class="fr-liqG">' +
+        '<rect class="fr-liq" x="' + X(-an*.19) + '" y="' + X(al*.46) +
+          '" width="' + X(an*.38) + '" height="' + X(al*.5) + '" rx="' + X(an*.06) + '"/>' +
+      '</g>' +
+    '</g>';
+  const panza = anfora + vial;
+  return '<g transform="translate(' + bocaX.toFixed(1) + ' ' + bocaY.toFixed(1) + ')">' +
+    '<g class="frascoMano">' + (parte === 'cuello' ? cuello : panza) + '</g>' +
+  '</g>';
+}
+function dibujaTirador(p, U){
+  const fz = Math.abs(p.f), d = medidasDe(fz, U);
+  const cx = d.w / 2, suelo = d.h;
+  const dir = p.f < 0 ? 1 : -1;
+  const ang = -dir * 19 * Math.PI / 180;
+  const co = Math.cos(ang), si = Math.sin(ang);
+    const gira = (x, y) => [ cx + (x - cx) * co - (y - suelo) * si,
+                           suelo + (x - cx) * si + (y - suelo) * co ];
+  const [hx, hy] = gira(cx, suelo - d.pierna - d.torso);
+  const [kx, ky] = gira(cx, suelo - d.pierna);
+    const bx0 = cx + dir * d.cab * 0.16;
+  const by0 = suelo - d.pierna - d.torso - d.cab * CAB_ALTA + d.cab * 0.28;
+  const yCuerda = suelo - CUERDA_Y;
+  const m1x = cx + dir * (d.brazoL + 4), m2x = m1x - dir * (d.brazoH * 1.1);
+  const p1x = cx + dir * d.pierna * 0.52, p2x = cx - dir * d.pierna * 0.34;
+    const codoX = hx + (m2x - hx) * 0.48 - dir * 2;
+  const codoY = hy + (yCuerda - hy) * 0.52 + 3;
+    const dxA = m1x - hx, dyA = yCuerda - hy;
+  const lA = Math.hypot(dxA, dyA) || 1;
+  const nxA = -dir * dyA / lA, nyA = dir * dxA / lA;
+  const flexA = Math.min(8, lA * 0.17);
+    const c1x = hx + dxA * 0.46 + nxA * flexA;
+  const c1y = hy + dyA * 0.46 + nyA * flexA;
+    const bicX = hx + (c1x - hx) * 0.42, bicY = hy + (c1y - hy) * 0.42;
+  const bicA = Math.atan2(c1y - hy, c1x - hx) * 180 / Math.PI;
+    const L1 = Math.hypot(codoX - hx, codoY - hy);
+  const L2 = Math.hypot(m2x - codoX, yCuerda - codoY);
+  const bocaSvgX = cx + (bx0 - cx) * Math.cos(ang) - (by0 - suelo) * Math.sin(ang);
+  const bocaSvgY = suelo + (bx0 - cx) * Math.sin(ang) + (by0 - suelo) * Math.cos(ang);
+  const dist = Math.min(L1 + L2 - 0.5, Math.hypot(bocaSvgX - hx, bocaSvgY - hy));
+  const cosCodo = Math.max(-1, Math.min(1, (dist*dist - L1*L1 - L2*L2) / (2*L1*L2)));
+  const th2 = Math.acos(cosCodo) * (dir > 0 ? -1 : 1);
+  const th1 = Math.atan2(bocaSvgY - hy, bocaSvgX - hx) -
+              Math.atan2(L2 * Math.sin(th2), L1 + L2 * Math.cos(th2));
+    const gr = x => {
+    let g = x * 180 / Math.PI;
+    while(g > 180) g -= 360;
+    while(g < -180) g += 360;
+    return g.toFixed(1) + 'deg';
+  };
+    const lado = p.f < 0 ? -1 : 1;
+  const AJ_HOMBRO = -28 * Math.PI / 180, AJ_CODO = -30 * Math.PI / 180;
+  const giroHumero = th1 - Math.atan2(codoY - hy, codoX - hx) + lado * AJ_HOMBRO;
+  const giroAnte   = (th1 + th2) - Math.atan2(yCuerda - codoY, m2x - codoX) -
+                     (th1 - Math.atan2(codoY - hy, codoX - hx)) + lado * AJ_CODO;
+    const capsula = (x1, y1, r1, x2, y2, r2) => {
+    const dx = x2 - x1, dy = y2 - y1, dist = Math.hypot(dx, dy) || 1;
+    const a = Math.atan2(dy, dx);
+    const b = Math.acos(Math.max(-1, Math.min(1, (r1 - r2) / dist)));
+    const pt = (x, y, r, ang) => (x + r * Math.cos(ang)).toFixed(1) + ' ' +
+                                 (y + r * Math.sin(ang)).toFixed(1);
+    return 'M' + pt(x1, y1, r1, a + b) + ' L' + pt(x2, y2, r2, a + b) +
+      ' A' + r2.toFixed(1) + ' ' + r2.toFixed(1) + ' 0 0 0 ' + pt(x2, y2, r2, a - b) +
+      ' L' + pt(x1, y1, r1, a - b) +
+      ' A' + r1.toFixed(1) + ' ' + r1.toFixed(1) + ' 0 1 0 ' + pt(x1, y1, r1, a + b) + ' Z';
+  };
+  const miembro = (x1, y1, r1, x2, y2, r2, cl) => {
+    const d = capsula(x1, y1, r1, x2, y2, r2);
+    return ['<path class="borde ' + (cl ? cl + '-c' : '') + '" d="' + d + '"/>',
+            '<path class="carne ' + (cl || '') + '" d="' + d + '"/>'];
+  };
+      const asomaCuerda = (x, y, r) =>
+    '<rect class="entredos" x="' + (x - r * .55).toFixed(1) + '" y="' +
+      (y - CUERDA_ALTO * .30).toFixed(1) + '" width="' + (r * 1.1).toFixed(1) +
+      '" height="' + (CUERDA_ALTO * .60).toFixed(1) + '" rx="1"/>';
+    const puno = (x, y, r, ang, extra, voltea) => {
+    const w = r * 2.1, h = r * 1.72;
+        const ar = (Math.abs(ang) > 90 ? 1 : -1) * (voltea ? -1 : 1);
+        const puBase = capsula(-w * .34, ar * h * .16, h * .34,
+                            w * .02, ar * h * .44, h * .27);
+    const puYema = capsula( w * .02, ar * h * .44, h * .27,
+                            w * .30, ar * h * .06, h * .17);
+    return '<g transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) +
+      ') rotate(' + ang.toFixed(1) + ')">' +
+      '<rect class="cuerpo puno' + (extra ? ' ' + extra : '') + '" x="' + (-w / 2).toFixed(1) +
+        '" y="' + (-h / 2).toFixed(1) + '" width="' + w.toFixed(1) +
+        '" height="' + h.toFixed(1) + '" rx="' + (h * .42).toFixed(1) + '"/>' +
+      '<path class="surco" d="M' + (w * .30).toFixed(1) + ' ' + (-h * .30).toFixed(1) +
+        ' q' + (w * .13).toFixed(1) + ' ' + (h * .30).toFixed(1) + ' 0 ' + (h * .60).toFixed(1) +
+        ' M' + (w * .08).toFixed(1) + ' ' + (-h * .32).toFixed(1) +
+        ' q' + (w * .13).toFixed(1) + ' ' + (h * .32).toFixed(1) + ' 0 ' + (h * .64).toFixed(1) + '"/>' +
+      '<path class="borde" d="' + puBase + '"/>' +
+      '<path class="borde" d="' + puYema + '"/>' +
+      '<path class="carne pulgar" d="' + puBase + '"/>' +
+      '<path class="carne pulgar" d="' + puYema + '"/>' +
+            '<path class="surco" d="M' + (-w * .02).toFixed(1) + ' ' + (ar * h * .22).toFixed(1) +
+        ' Q' + (w * .06).toFixed(1) + ' ' + (ar * h * .40).toFixed(1) +
+        ' ' + (w * .10).toFixed(1) + ' ' + (ar * h * .58).toFixed(1) + '"/>' +
+            '<path class="surco" d="M' + (-w * .44).toFixed(1) + ' ' + (-h * .24).toFixed(1) +
+        ' Q' + (-w * .38).toFixed(1) + ' 0 ' + (-w * .44).toFixed(1) + ' ' + (h * .24).toFixed(1) + '"/>' +
+      '<path class="surco" d="M' + (-w * .40).toFixed(1) + ' ' + (ar * h * .48).toFixed(1) +
+        ' Q' + (-w * .31).toFixed(1) + ' ' + (ar * h * .30).toFixed(1) +
+        ' ' + (-w * .22).toFixed(1) + ' ' + (ar * h * .48).toFixed(1) + '"/>' +
+      '<ellipse class="brillo brilloPuno" cx="' + (-w * .06).toFixed(1) + '" cy="' +
+        (ar * h * .34).toFixed(1) + '" rx="' + (w * .16).toFixed(1) +
+        '" ry="' + (h * .10).toFixed(1) + '"/>' +
+    '</g>';
+  };
+    const zapato = (cx0, base, largo, hacia) => {
+    const p = (dx, dy) => (cx0 + hacia * dx).toFixed(1) + ' ' + (base + dy).toFixed(1);
+    return '<path class="cuerpo pie" d="M' + p(-largo * .42, 0) +
+      ' L' + p(largo * .46, 0) +
+      ' Q' + p(largo * .62, 0) + ' ' + p(largo * .58, -2.1) +
+      ' Q' + p(largo * .22, -3.6) + ' ' + p(-largo * .12, -3.4) +
+      ' Q' + p(-largo * .42, -3.2) + ' ' + p(-largo * .42, 0) + ' Z"/>' +
+      '<path class="suela" d="M' + p(-largo * .40, -.3) + ' L' + p(largo * .52, -.3) + '"/>';
+  };
+    const huso = (largo, alto, ang, sesgo) => {
+    const a = largo, ar = (Math.abs(ang) > 90 ? 1 : -1) * alto, k = sesgo || 0;
+    return '<path class="cuerpo" d="M' + (-a).toFixed(1) + ' 0' +
+      ' C' + (-a * (.45 + k)).toFixed(1) + ' ' + ar.toFixed(1) +
+      ',' + (a * (.30 - k * 1.6)).toFixed(1) + ' ' + (ar * .96).toFixed(1) +
+      ',' + a.toFixed(1) + ' 0' +
+      ' C' + (a * .35).toFixed(1) + ' ' + (-ar * .40).toFixed(1) +
+      ',' + (-a * .45).toFixed(1) + ' ' + (-ar * .46).toFixed(1) +
+      ',' + (-a).toFixed(1) + ' 0 Z"/>';
+  };
+    const trazoUno = (x1, y1, x2, y2, gr, cl) =>
+    '<line class="' + cl + '" x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) +
+    '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) +
+    '" stroke-width="' + gr.toFixed(1) + '" stroke-linecap="round"/>';
+  const linea = (x1, y1, x2, y2, gr, cl, clC) =>
+    trazoUno(x1, y1, x2, y2, gr + 2.6, 'contorno ' + (clC || '')) +
+    trazoUno(x1, y1, x2, y2, gr, cl || 'trazo');
+  let bloques = '';
+    for(let b = 0; b < fz; b++){
+    const y = suelo - d.pierna - d.u * (b + 1) + 0.5;
+    const x0 = cx - d.ancho / 2;
+    bloques += '<rect class="cuerpo" x="' + x0.toFixed(1) + '" y="' + y.toFixed(1) +
+      '" width="' + d.ancho.toFixed(1) + '" height="' + (d.u - 1).toFixed(1) + '" rx="2"/>';
+        if(p.f < 0)
+      bloques += '<rect class="trama" x="' + x0.toFixed(1) + '" y="' + y.toFixed(1) +
+        '" width="' + d.ancho.toFixed(1) + '" height="' + (d.u - 1).toFixed(1) +
+        '" rx="2" fill="url(#trama' + p.id + ')"/>';
+    bloques += '<rect class="brillo" x="' + (x0 + 1.5).toFixed(1) + '" y="' + (y + 1).toFixed(1) +
+      '" width="' + (d.ancho - 3).toFixed(1) + '" height="1.5" rx="1"/>';
+  }
+    const yCab = suelo - d.pierna - d.torso - d.cab * CAB_ALTA;
+  const yHombros = suelo - d.pierna - d.torso;
+  const ojoX = cx + dir * d.cab * 0.16;
+  return '<svg width="' + d.w.toFixed(0) + '" height="' + d.h.toFixed(0) +
+      '" viewBox="0 0 ' + d.w.toFixed(0) + ' ' + d.h.toFixed(0) +
+      '" style="--gHum:' + gr(giroHumero) + ';--gAnt:' + gr(giroAnte) +
+            ';--dir:' + dir + '" aria-hidden="true">' +
+        '<defs>' +
+    '<pattern id="trama' + p.id + '" width="7" height="7" patternUnits="userSpaceOnUse" ' +
+      'patternTransform="rotate(35)">' +
+      '<rect x="0" y="0" width="2.6" height="7" fill="rgba(16,11,26,.32)"/>' +
+    '</pattern>' +
+    '<clipPath id="clip' + p.id + '">' +
+      '<rect x="-40" y="-40" width="' + (d.w + 80).toFixed(0) + '" height="' +
+        (yCuerda - CUERDA_ALTO / 2 + 40).toFixed(1) + '"/>' +
+      '<rect x="-40" y="' + (yCuerda + CUERDA_ALTO / 2).toFixed(1) + '" width="' +
+        (d.w + 80).toFixed(0) + '" height="' + (d.h + 40).toFixed(0) + '"/>' +
+    '</clipPath></defs>' +
+    '<ellipse class="sombraP" cx="' + cx.toFixed(1) + '" cy="' + (suelo - 1) +
+      '" rx="' + (d.pierna * .6).toFixed(1) + '" ry="2.5"/>' +
+                miembro(kx, ky, d.pierna * .19, p2x, suelo - 3.4, d.pierna * .11, 'pata').join('') +
+    miembro(kx, ky, d.pierna * .20, p1x, suelo - 3.4, d.pierna * .115, 'pata').join('') +
+        zapato(p1x + dir * 1.5, suelo - .6, d.pierna * .42, dir) +
+    zapato(p2x - dir * .5, suelo - .6, d.pierna * .38, dir) +
+    '<g transform="rotate(' + (-dir * 19) + ' ' + cx.toFixed(1) + ' ' + suelo + ')">' +
+      bloques +
+            linea(cx, yHombros + 1, cx, yCab + d.cab * .42, d.cab * .34) +
+      '<circle class="cuerpo" cx="' + cx.toFixed(1) + '" cy="' + yCab.toFixed(1) +
+        '" r="' + (d.cab / 2).toFixed(1) + '"/>' +
+            '<path class="oscuro" d="M' + (cx - d.cab*.44).toFixed(1) + ' ' + (yCab - d.cab*.27).toFixed(1) +
+        ' a' + (d.cab/2+1).toFixed(1) + ' ' + (d.cab/2+1).toFixed(1) + ' 0 0 1 ' +
+        (d.cab*.88).toFixed(1) + ' 0 z"/>' +
+            (p.f < 0
+        ? '<rect class="banda" x="' + (cx - d.cab*.44).toFixed(1) + '" y="' +
+          (yCab - d.cab*.27).toFixed(1) + '" width="' + (d.cab*.88).toFixed(1) +
+          '" height="1.6" rx=".8"/>'
+        : '') +
+                        (() => {
+        const by = yCab - d.cab * .27, R = d.cab * .5;
+        let g = '';
+        for(const s of [-1, 1]){
+                    g += '<path class="rama" d="M' + (cx + s * R * .88).toFixed(1) + ' ' +
+            (by + 1.2).toFixed(1) + ' Q' + (cx + s * R * .72).toFixed(1) + ' ' +
+            (by - 3.1).toFixed(1) + ' ' + (cx + s * 1.2).toFixed(1) + ' ' +
+            (by - 4.1).toFixed(1) + '" fill="none"/>';
+          for(let i = 0; i < 5; i++){
+            const u = i / 4;
+            const hx = cx + s * (R * (.86 - .30 * u) - u * u * 1.6);
+            const hy = by + .9 - u * 5.1;
+            const lado = i % 2 ? -1 : 1;
+            const rot = -s * (16 + i * 15) + lado * 8 * s;
+            g += '<ellipse cx="' + (hx + s * lado * .55).toFixed(1) + '" cy="' +
+              (hy - lado * .5).toFixed(1) + '" rx="' + (2.35 - i * .21).toFixed(2) +
+              '" ry="' + (.86 - i * .07).toFixed(2) + '" transform="rotate(' +
+              rot.toFixed(0) + ' ' + hx.toFixed(1) + ' ' + hy.toFixed(1) + ')"/>';
+          }
+        }
+        return '<g class="laurel">' + g +
+          '<circle class="baya" cx="' + (cx - 1.15).toFixed(1) + '" cy="' + (by - 4.15).toFixed(1) + '" r=".78"/>' +
+          '<circle class="baya" cx="' + (cx + 1.15).toFixed(1) + '" cy="' + (by - 4.15).toFixed(1) + '" r=".78"/>' +
+          '<circle class="baya" cx="' + cx.toFixed(1) + '" cy="' + (by - 5.3).toFixed(1) + '" r=".72"/></g>';
+      })() +
+            (() => {
+        const yOjo = yCab + 1.8;
+                const techo = d.cab * .28 - 2.75;
+        const ax = -2.45, ay = .55;
+        const k = Math.max(.40, Math.min(1, (techo - ay) / 3.22));
+        const bx = ax + .98 * k, by = ay + 2.19 * k;
+        const px = bx - 2.03 * k, py = by + 1.03 * k;
+        const X = f => (ojoX + dir * f).toFixed(1), Y = v => (yOjo + v).toFixed(1);
+        return '<path d="M' + X(ax) + ' ' + Y(ay) + ' L' + X(bx) + ' ' + Y(by) +
+          ' L' + X(px) + ' ' + Y(py) + '" fill="none" stroke="rgba(16,11,26,.72)" ' +
+          'stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>';
+      })() +
+      '<circle class="blanco" cx="' + ojoX.toFixed(1) + '" cy="' + (yCab + 1.8).toFixed(1) + '" r="2.3"/>' +
+      '<circle class="blanco" cx="' + (ojoX - dir * 5).toFixed(1) + '" cy="' + (yCab + 1.8).toFixed(1) + '" r="2"/>' +
+      '<g transform="translate(' + (ojoX + dir * .7).toFixed(1) + ' ' + (yCab + 2).toFixed(1) +
+        ')"><circle class="pupila ojoD" r="1.1"/></g>' +
+      '<g transform="translate(' + (ojoX - dir * 4.4).toFixed(1) + ' ' + (yCab + 2).toFixed(1) +
+        ')"><circle class="pupila ojoI" r="1"/></g>' +
+            '<g transform="translate(' + (ojoX - dir * 2.15).toFixed(1) + ' ' + (yCab - .8).toFixed(1) +
+        ')"><rect class="parpado" x="-5.2" y="0" width="10.4" height="5.6" rx="2.6"/></g>' +
+            '<g transform="translate(' + (cx - dir * d.cab * .36).toFixed(1) + ' ' +
+        (yCab - d.cab * .04).toFixed(1) +
+        ')"><path class="sudor" d="M0 -2.3 C1.6 -.4 1.6 1.1 0 2 C-1.6 1.1 -1.6 -.4 0 -2.3 Z"/></g>' +
+                        '<g transform="translate(' + (ojoX - dir * 1).toFixed(1) + ' ' +
+        (yCab + d.cab*.28 + 1).toFixed(1) + ')"><rect class="rasgo boca" ' +
+        'x="-2.5" y="-1" width="5" height="2" rx="1"/></g>' +
+            '<g transform="translate(' + ojoX.toFixed(1) + ' ' + (yCab - d.cab*.13).toFixed(1) +
+        ')"><rect class="rasgo ceja cejaD" x="-2.3" y="-.7" width="4.6" height="1.4" rx=".7"/></g>' +
+      '<g transform="translate(' + (ojoX - dir * 5).toFixed(1) + ' ' + (yCab - d.cab*.13).toFixed(1) +
+        ')"><rect class="rasgo ceja cejaI" x="-2.3" y="-.7" width="4.6" height="1.4" rx=".7"/></g>' +
+    '</g>' +
+            '<g class="trasCuerda" clip-path="url(#clip' + p.id + ')">' +
+    '<g transform="translate(' + hx.toFixed(1) + ' ' + hy.toFixed(1) + ')">' +
+      '<g class="brazoFuera">' +
+        miembro(0, 0, d.brazoH * .5, codoX - hx, codoY - hy, d.brazoH * .38)[0] +
+                '<g transform="translate(' + ((codoX - hx) * .42).toFixed(1) + ' ' +
+          ((codoY - hy) * .42).toFixed(1) + ') rotate(' +
+          (Math.atan2(codoY - hy, codoX - hx) * 180 / Math.PI).toFixed(1) + ')">' +
+          huso(d.brazoH * .82, d.brazoH * .84,
+               Math.atan2(codoY - hy, codoX - hx) * 180 / Math.PI, 0) +
+        '</g>' +
+        miembro(0, 0, d.brazoH * .5, codoX - hx, codoY - hy, d.brazoH * .38)[1] +
+        '<g transform="translate(' + (codoX - hx).toFixed(1) + ' ' + (codoY - hy).toFixed(1) + ')">' +
+          '<g class="anteFuera">' +
+            (() => {
+              const dxF = m2x - codoX, dyF = yCuerda - codoY;
+              const angF = Math.atan2(dyF, dxF) * 180 / Math.PI;
+              const capF = miembro(0, 0, d.brazoH * .4, dxF, dyF, d.brazoH * .24);
+              return capF[0] +
+                '<g transform="translate(' + (dxF * .36).toFixed(1) + ' ' +
+                  (dyF * .36).toFixed(1) + ') rotate(' + angF.toFixed(1) + ')">' +
+                  huso(d.brazoH * 1.30, d.brazoH * .60, angF, .16) +
+                '</g>' +
+                capF[1];
+            })() +
+            frascoEnMano(m2x - codoX, yCuerda - codoY, d.brazoH, 'panza') +
+                        puno(m2x - codoX, yCuerda - codoY, d.brazoH * .58,
+                 Math.atan2(yCuerda - codoY, m2x - codoX) * 180 / Math.PI, 'palma', true) +
+                        frascoEnMano(m2x - codoX, yCuerda - codoY, d.brazoH, 'cuello') +
+            '<ellipse class="penumbra" cx="' + (m2x - codoX).toFixed(1) + '" cy="' +
+              (yCuerda - codoY).toFixed(1) + '" rx="' + (d.brazoH * .62).toFixed(1) +
+              '" ry="' + (d.brazoH * .54).toFixed(1) + '"/>' +
+          '</g>' +
+        '</g>' +
+      '</g>' +
+    '</g>' +
+    '</g>' +
+        (() => {
+            const cap = miembro(hx, hy, d.brazoH * .56, c1x, c1y, d.brazoH * .42);
+      const triX = hx + (c1x - hx) * .34, triY = hy + (c1y - hy) * .34;
+      return cap[0] +
+        '<g transform="translate(' + bicX.toFixed(1) + ' ' + bicY.toFixed(1) +
+          ') rotate(' + bicA.toFixed(1) + ')">' +
+                    huso(d.brazoH * .95, d.brazoH * 1.02, bicA, 0) +
+        '</g>' +
+        '<g transform="translate(' + triX.toFixed(1) + ' ' + triY.toFixed(1) +
+          ') rotate(' + (bicA + 180).toFixed(1) + ')">' +
+          huso(d.brazoH * .88, d.brazoH * .66, bicA + 180, .1) +
+        '</g>' +
+        cap[1];
+    })() +
+    '<g transform="translate(' + bicX.toFixed(1) + ' ' + bicY.toFixed(1) +
+      ') rotate(' + bicA.toFixed(1) + ')">' +
+      (() => {
+        const a = d.brazoH * 1.22, h = d.brazoH * 1.02;
+        const ar = (Math.abs(bicA) > 90 ? 1 : -1) * h;
+        return '<ellipse class="brillo" cx="' + (-a * .18).toFixed(1) + '" cy="' +
+          (ar * .5).toFixed(1) + '" rx="' + (a * .32).toFixed(1) +
+          '" ry="' + (Math.abs(ar) * .2).toFixed(1) + '"/>';
+      })() +
+    '</g>' +
+    '<ellipse class="cuerpo" cx="' + c1x.toFixed(1) + '" cy="' + c1y.toFixed(1) +
+      '" rx="' + (d.brazoH * .44).toFixed(1) + '" ry="' + (d.brazoH * .42).toFixed(1) + '"/>' +
+        (() => {
+      const dxA2 = m1x - c1x, dyA2 = yCuerda - c1y;
+      const angA = Math.atan2(dyA2, dxA2) * 180 / Math.PI;
+      const cxA = c1x + dxA2 * .36, cyA = c1y + dyA2 * .36;
+            const cap = miembro(c1x, c1y, d.brazoH * .44, m1x, yCuerda, d.brazoH * .26);
+      return cap[0] +
+        '<g transform="translate(' + cxA.toFixed(1) + ' ' + cyA.toFixed(1) +
+          ') rotate(' + angA.toFixed(1) + ')">' +
+                    huso(d.brazoH * 1.45, d.brazoH * .70, angA, .16) +
+        '</g>' +
+        cap[1] +
+        '<g transform="translate(' + cxA.toFixed(1) + ' ' + cyA.toFixed(1) +
+          ') rotate(' + angA.toFixed(1) + ')">' +
+          '<ellipse class="brillo" cx="' + (-d.brazoH * .22).toFixed(1) + '" cy="' +
+          ((Math.abs(angA) > 90 ? 1 : -1) * d.brazoH * .36).toFixed(1) +
+          '" rx="' + (d.brazoH * .34).toFixed(1) +
+          '" ry="' + (d.brazoH * .14).toFixed(1) + '"/>' +
+        '</g>';
+    })() +
+        '<ellipse class="sombraP" cx="' + m1x.toFixed(1) + '" cy="' + (yCuerda + 3.4).toFixed(1) +
+      '" rx="' + (d.brazoH * .58).toFixed(1) + '" ry="1.5"/>' +
+    '<ellipse class="sombraP sombraM2" cx="' + m2x.toFixed(1) + '" cy="' + (yCuerda + 3.4).toFixed(1) +
+      '" rx="' + (d.brazoH * .52).toFixed(1) + '" ry="1.4"/>' +
+    puno(m1x, yCuerda, d.brazoH * .52,
+         Math.atan2(yCuerda - c1y, m1x - c1x) * 180 / Math.PI) +
+    asomaCuerda(m1x, yCuerda, d.brazoH * .52) +
+        '<text class="num" x="' +
+      Math.max(8, Math.min(d.w - 8, gira(cx, yCab)[0])).toFixed(1) +
+      '" y="12">' + fz + '</text>' +
+    '</svg>';
+}
+raiz.Tirador = {dibujaTirador, medidasDe, frascoEnMano, conSigno, SUELO_CSS, CUERDA_CSS, CUERDA_Y};
+})(window);
+</script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   LA PALESTRA · el campo
+   Dibuja una foto del motor: la cuerda con sus equipos, la regla y la
+   bandera. No sabe nada de la cuenta ni de los pasos: le das una foto
+   {cuerda, banquillo, bandera} y la pinta. Sin animación: eso es del
+   reproductor, que vendrá después.
+   ══════════════════════════════════════════════════════════════════════ */
+(function (raiz) {
+'use strict';
+const T = raiz.Tirador;
+
+const PLANTILLA =
+  '<div class="escena">' +
+    '<div class="friso" aria-hidden="true"></div>' +
+    '<div class="columnata" aria-hidden="true"></div>' +
+    '<div class="equipo izq"></div>' +
+    '<div class="equipo der"></div>' +
+    '<div class="marca"></div>' +
+    '<div class="cuerda"></div>' +
+    '<svg class="cuerdaFloja" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">' +
+      '<defs><linearGradient id="gFloja" gradientUnits="userSpaceOnUse" x1="0" y1="17" x2="0" y2="24">' +
+      '<stop offset="0" stop-color="#c2a86a"/><stop offset=".55" stop-color="#8a7442"/>' +
+      '<stop offset="1" stop-color="#5e4e2c"/></linearGradient></defs>' +
+      '<path d="M0 20.5 Q50 28.5 100 20.5"/></svg>' +
+    '<div class="regla"></div>' +
+    '<div class="nudo sin"><span class="tela"></span><span class="cifra">?</span></div>' +
+  '</div>';
+
+const PANDEO = 4;   // cuánto cuelga la bandera cuando nadie tira
+
+/* prepara el campo dentro de un elemento vacío */
+function monta(el){
+  el.classList.add('campo');
+  el.innerHTML = PLANTILLA;
+  return el;
+}
+
+/* cuánto mide un paso de la regla para que quepa entera */
+function pasoQueCabe(ancho, alcance){
+  const p = Math.floor((ancho / 2 - 16) / (alcance + 1.4));
+  return Math.max(15, Math.min(24, p));
+}
+
+function pintaRegla(regla, alcance, paso, bandera, hayGente, opciones){
+  let h = '';
+  for(let v = -alcance; v <= alcance; v++){
+    const clase = (v === 0 ? ' cero' : '') + (hayGente && v === bandera ? ' aqui' : '') +
+      (opciones.pin === v ? ' pronostico' : '') + (v % 2 === 0 ? ' par' : ' impar');
+    h += '<span class="marca-n' + clase + '" data-v="' + v + '" style="left:calc(50% + ' + (v * paso) + 'px)"><i></i>' + v + '</span>';
+  }
+  regla.innerHTML = h;
+  regla.style.setProperty('--paso', paso + 'px');
+  regla.classList.toggle('ancha', paso >= 19);
+  regla.classList.toggle('estrecha', paso < 18 || alcance > 8);
+  /* «viva»: se puede tocar para decir dónde acabará la bandera */
+  regla.classList.toggle('viva', !!opciones.viva);
+}
+
+/* pinta la foto. opciones: {alcance} para que la regla no cambie de tamaño
+   a mitad de una película; {nuevos: [ids]} los que acaban de llegar;
+   {viva} la regla se puede tocar; {pin} el número que dijo el alumno */
+function pinta(el, foto, opciones){
+  opciones = opciones || {};
+  const cuerda = foto.cuerda || [], bandera = foto.bandera || 0;
+  const alcance = Math.max(8, Math.min(12, opciones.alcance || Math.ceil(Math.abs(bandera))));
+  const anchoCampo = el.clientWidth || 470;
+  const paso = pasoQueCabe(anchoCampo, alcance);
+  const hayGente = cuerda.length > 0;
+
+  /* los tiradores: cuanta más fuerza, más grandes, y con la misma escala
+     para todos los que están en el campo */
+  const maxF = Math.max(1, ...cuerda.map(p => Math.abs(p.f)));
+  const U = Math.min(27, 104 / (1 + 0.34 * Math.log(maxF)));
+  const izq = el.querySelector('.equipo.izq'), der = el.querySelector('.equipo.der');
+  izq.innerHTML = ''; der.innerHTML = '';
+  const nuevos = opciones.nuevos || [];
+  cuerda.forEach(p => {
+    const d = document.createElement('div');
+    d.className = 'tirador ' + (p.f < 0 ? 'izq' : 'der') + (p.venia ? ' venia-' + p.venia : '') +
+      (Math.abs(p.f) === maxF && maxF > 1 ? ' laureado' : '') + (nuevos.indexOf(p.id) >= 0 ? ' nuevo' : '');
+    d.dataset.id = p.id;
+    d.setAttribute('aria-label', 'Tirador de fuerza ' + Math.abs(p.f) + ' del lado ' + (p.f < 0 ? 'izquierdo' : 'derecho'));
+    d.innerHTML = T.dibujaTirador(p, U);
+    (p.f < 0 ? izq : der).appendChild(d);
+  });
+
+  /* la bandera se desplaza con la suma; los equipos, con ella */
+  const arrastre = hayGente ? Math.max(-alcance * paso, Math.min(alcance * paso, bandera * paso)) : 0;
+  el.style.setProperty('--arrastre', arrastre + 'px');
+
+  /* la cámara: si los equipos no caben, la escena entera se encoge */
+  const anchoDe = f => T.medidasDe(Math.abs(f), U).w + 3;
+  const anchoLado = neg => cuerda.filter(p => (p.f < 0) === neg).reduce((a, p) => a + anchoDe(p.f), 0);
+  const bordeIzq = Math.min(-anchoLado(true) + arrastre, -(alcance + 1.4) * paso);
+  const bordeDer = Math.max(anchoLado(false) + arrastre, (alcance + 1.4) * paso);
+  const zoom = Math.max(0.45, Math.floor(Math.min(1, anchoCampo / (bordeDer - bordeIzq + 26)) * 20) / 20);
+  const pan = Math.round((-(bordeIzq + bordeDer) / 2) * zoom / 4) * 4;
+  const esc = el.querySelector('.escena');
+  esc.style.width = (100 / zoom).toFixed(2) + '%';
+  esc.style.transform = 'translateX(calc(-50% + ' + pan + 'px)) scale(' + zoom.toFixed(3) + ')';
+  [izq, der].forEach(e => {
+    e.style.transform = 'translateX(var(--arrastre,0px))';
+    e.style.transformOrigin = (e === izq ? 'right' : 'left') + ' bottom';
+  });
+
+  const nudo = el.querySelector('.nudo');
+  nudo.style.transform = 'translate(' + arrastre + 'px, ' + (hayGente ? 0 : PANDEO) + 'px)';
+  nudo.classList.toggle('sin', !hayGente);
+  nudo.classList.toggle('haciaIzq', hayGente && bandera < 0);
+  nudo.querySelector('.cifra').textContent = bandera === 0 ? '0' : T.conSigno(bandera);
+  el.classList.toggle('tensa', hayGente);
+  pintaRegla(el.querySelector('.regla'), alcance, paso, bandera, hayGente, opciones);
+  return {paso, zoom, alcance};
+}
+/* quién se entera de que se toca la regla (recibe el número tocado) */
+function alTocarRegla(el, fn){
+  el.querySelector('.regla').addEventListener('click', ev => {
+    const m = ev.target.closest('.marca-n');
+    if(m && el.querySelector('.regla').classList.contains('viva')) fn(parseInt(m.dataset.v, 10));
+  });
+}
+
+raiz.Campo = {monta, pinta, pasoQueCabe, alTocarRegla};
+})(window);
+</script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   LA PALESTRA · la tablilla
+   Donde se escribe la cuenta con teclas de barro: tiradores con su signo,
+   pociones, + y − como acciones, paréntesis y potencias. Sabe qué pieza
+   puede ir después de cuál, escribe la cuenta como en el cuaderno y avisa
+   cuando algo no encaja. No juega nada: eso es del motor.
+   ══════════════════════════════════════════════════════════════════════ */
+(function (raiz) {
+'use strict';
+const P = raiz.Palestra;
+const SUP = {2: '²', 3: '³'};
+
+/* ── dibujos de las teclas ── */
+const CALAVERA =
+  '<svg viewBox="0 0 16 16" aria-hidden="true">' +
+    '<path fill="#2b0a22" d="M8 2.1c-3.1 0-5.2 2.1-5.2 4.9 0 1.6.7 2.8 1.7 3.5v1.3' +
+      'c0 .7.6 1.3 1.3 1.3h4.4c.7 0 1.3-.6 1.3-1.3v-1.3c1-.7 1.7-1.9 1.7-3.5' +
+      'c0-2.8-2.1-4.9-5.2-4.9z"/>' +
+    '<circle fill="#fff" cx="5.9" cy="6.7" r="1.6"/><circle fill="#fff" cx="10.1" cy="6.7" r="1.6"/>' +
+    '<path fill="#fff" d="M8 8.6l.85 1.5h-1.7z"/>' +
+    '<rect fill="#fff" x="6.15" y="10.9" width="1.1" height="2.2" rx=".4"/>' +
+    '<rect fill="#fff" x="8.75" y="10.9" width="1.1" height="2.2" rx=".4"/>' +
+  '</svg>';
+function frascoHtml(po){
+  return '<span class="frasco">' +
+      '<span class="corcho"></span><span class="cuello"></span>' +
+      '<span class="asa i"></span><span class="asa d"></span>' +
+      '<span class="vidrio"><span class="liquido"></span></span>' +
+      (po.k < 0 ? '<span class="calavera">' + CALAVERA + '</span>' : '') +
+    '</span>';
+}
+const clasePoc = po => 'pocion ' + (po.k < 0 ? 'bando' : (Math.abs(po.k) > 1 ? 'crece' : 'mengua')) +
+  (Math.abs(po.k) < 1 ? ' mengua' : '');
+function miniTirador(f){
+  const c = f < 0 ? 'var(--izq)' : 'var(--der)', s = f < 0 ? 1 : -1;
+  return '<svg viewBox="0 0 26 26" aria-hidden="true">' +
+    '<path d="M' + (13 + 11 * s) + ' 15 H' + (13 - 12 * s) + '" stroke="#8a7442" stroke-width="2.2" stroke-linecap="round"/>' +
+    '<circle cx="' + (13 + 3 * s) + '" cy="6" r="4.4" fill="' + c + '" stroke="#241C36" stroke-width="1"/>' +
+    '<path d="M' + (13 + 4 * s) + ' 10.5 L' + (13 - 1 * s) + ' 18.5" stroke="' + c + '" stroke-width="5.5" stroke-linecap="round"/>' +
+    '<path d="M' + (13 - 1 * s) + ' 18.5 L' + (13 - 5 * s) + ' 24 M' + (13 - 1 * s) + ' 18.5 L' + (13 + 3 * s) + ' 24"' +
+    ' stroke="' + c + '" stroke-width="2.6" stroke-linecap="round"/></svg>';
+}
+
+/* ── la cuenta escrita, pieza a pieza; «clase(i)» marca las que se iluminan ── */
+const numHtml = (f, primero) => '<span class="' + (f < 0 ? 'izq' : 'der') + '">' + P.numCuaderno(f, primero) + '</span>';
+function htmlCuenta(tok, clase){
+  let h = '', primero = true, abierta = '';
+  tok.forEach((t, i) => {
+    const sig = tok[i + 1];
+    let x = '';
+    /* un negativo elevado va siempre entre paréntesis: (−2)² no es −2² */
+    if(t.t === 'n'){ x = numHtml(t.f, primero && !(sig && sig.t === 'e' && t.f < 0)); primero = false; }
+    else if(t.t === 'e') x = '<sup class="tl-exp">' + t.n + '</sup>';
+    else if(t.t === '+'){ x = '<span class="op"> + </span>'; primero = false; }
+    else if(t.t === '-'){ x = '<span class="op">' + (primero ? '−' : ' − ') + '</span>'; primero = false; }
+    else if(t.t === '('){ x = '<span class="op">(</span>'; primero = true; }
+    else if(t.t === ')') x = '<span class="op">)</span>';
+    else if(t.t === 'p'){ x = '<span class="poc">' + (t.pre ? P.preTxt(t.k) : P.etqDe(t.k)) + '</span>'; primero = false; }
+    /* las piezas seguidas con la misma marca van en un solo recuadro */
+    const c = clase ? clase(i) : '';
+    if(c !== abierta){ if(abierta) h += '</span>'; if(c) h += '<span class="' + c + '">'; abierta = c; }
+    h += x;
+  });
+  if(abierta) h += '</span>';
+  return h;
+}
+
+/* ── qué pasa al pulsar una tecla: devuelve la cuenta nueva y, si algo no
+   encaja, el aviso. Es una función pura: no toca la pantalla ── */
+const esFactor = t => t && (t.t === 'n' || t.t === ')' || t.t === 'e' || (t.t === 'p' && !t.pre));
+function pulsa(tok, tk){
+  const T = tok.slice(), ult = T[T.length - 1];
+  const abiertos = T.filter(t => t.t === '(').length - T.filter(t => t.t === ')').length;
+  const no = aviso => ({tok, aviso});
+  if(tk.t === 'n'){
+    if(esFactor(ult)) T.push({t: '+'});          // dos tiradores seguidos: se suman
+    T.push({t: 'n', f: tk.f});
+  }else if(tk.t === '+' || tk.t === '-'){
+    if(!ult || ult.t === '('){
+      if(tk.t === '-') T.push({t: '-'});          // un menos delante del todo: vale
+    }else if(ult.t === '+' || ult.t === '-') T[T.length - 1] = {t: tk.t};
+    else if(ult.t === 'p' && ult.pre)
+      return no('Después de <b>' + P.preTxt(ult.k) + '</b> tiene que venir a quién se lo das: un tirador o un paréntesis.');
+    else T.push({t: tk.t});
+  }else if(tk.t === '('){
+    if(esFactor(ult)) T.push({t: '+'});
+    T.push({t: '('});
+  }else if(tk.t === ')'){
+    if(abiertos <= 0) return no('No hay ningún paréntesis abierto que cerrar.');
+    if(!esFactor(ult)) return no('Antes de cerrar, termina lo de dentro.');
+    T.push({t: ')'});
+  }else if(tk.t === 'p'){
+    const po = P.pocionDe(tk.k);
+    if(!po) return no('');
+    if(esFactor(ult)) T.push({t: 'p', k: po.k, pre: false});
+    else if(Number.isInteger(po.k)) T.push({t: 'p', k: po.k, pre: true});
+    else return no('Un frasco de repartir no se puede poner <b>delante</b>: <b>2 : (…)</b> no es lo mismo que <b>(…) : 2</b>. Escribe primero a quién se reparte y luego el frasco.');
+  }else if(tk.t === 'e'){
+    if(!ult || (ult.t !== 'n' && ult.t !== ')'))
+      return no('El <b>' + SUP[tk.n] + '</b> va pegado a un tirador o a un paréntesis: <b>(−2)²</b> o <b>(1 − 3)²</b>.');
+    T.push({t: 'e', n: tk.n});
+  }else if(tk.t === 'borra'){
+    T.pop();
+  }
+  return {tok: T, aviso: ''};
+}
+
+/* ── montar las teclas dentro de un elemento. «al» recibe cada tecla pulsada ── */
+function monta(el, al){
+  const fila = cls => { const d = document.createElement('div'); d.className = 'tl-fila ' + cls; el.appendChild(d); return d; };
+  const tecla = (fil, html, cls, etq, tk) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = cls; b.innerHTML = html;
+    b.setAttribute('aria-label', etq); b.title = etq;
+    b.addEventListener('click', () => al(tk));
+    fil.appendChild(b);
+    return b;
+  };
+  const fi = fila('tl-tir');
+  [-1, -2, -3, -4, -5].forEach(f => tecla(fi, miniTirador(f) + '<b>' + P.conSigno(f) + '</b>', 'tl-t izq', 'Tirador de ' + P.conSigno(f), {t: 'n', f}));
+  const fd = fila('tl-tir');
+  [1, 2, 3, 4, 5].forEach(f => tecla(fd, miniTirador(f) + '<b>' + P.conSigno(f) + '</b>', 'tl-t der', 'Tirador de ' + P.conSigno(f), {t: 'n', f}));
+  const fp = fila('tl-poc');
+  P.POCIONES.forEach(po => tecla(fp, frascoHtml(po) + '<span class="etq">' + po.e + '</span>', clasePoc(po) + ' tl-p', po.n + ', ' + po.e + ': ' + po.d, {t: 'p', k: po.k}));
+  const fo = fila('tl-ops');
+  tecla(fo, '+', 'tl-o', 'Más: que entre', {t: '+'});
+  tecla(fo, '−', 'tl-o', 'Menos: que se retire', {t: '-'});
+  tecla(fo, '(', 'tl-o', 'Abre paréntesis', {t: '('});
+  tecla(fo, ')', 'tl-o', 'Cierra paréntesis', {t: ')'});
+  tecla(fo, '²', 'tl-o', 'Al cuadrado', {t: 'e', n: 2});
+  tecla(fo, '³', 'tl-o', 'Al cubo', {t: 'e', n: 3});
+  tecla(fo, '⌫', 'tl-o', 'Borra lo último', {t: 'borra'});
+  tecla(fo, '=', 'tl-o tl-igual', 'Igual: a jugar', {t: '='});
+}
+
+/* las teclas también desde el teclado del ordenador */
+function teclaDeTeclado(ev){
+  const m = {'+': {t: '+'}, '-': {t: '-'}, '(': {t: '('}, ')': {t: ')'}, 'Backspace': {t: 'borra'}, '=': {t: '='}, 'Enter': {t: '='}};
+  if(m[ev.key]) return m[ev.key];
+  if(/^[1-5]$/.test(ev.key)) return {t: 'n', f: ev.shiftKey || ev.altKey ? -Number(ev.key) : Number(ev.key)};
+  return null;
+}
+
+raiz.Tablilla = {htmlCuenta, pulsa, monta, teclaDeTeclado, frascoHtml, clasePoc, miniTirador, CALAVERA};
+})(window);
+</script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   LA PALESTRA · el reproductor
+   Pasa los fotogramas de una película del motor. Enseña la foto k al
+   instante (campo y banquillo) y, al avanzar, anima solo el paso que toca:
+   el que llega, el que bebe, el que se retira, los que se juntan, el que
+   sale a tirar. Al acabar cada paso, la foto siguiente manda: nada de lo
+   que se ve sale de la animación, todo sale del motor.
+   ══════════════════════════════════════════════════════════════════════ */
+(function (raiz) {
+'use strict';
+const P = raiz.Palestra, C = raiz.Campo, T = raiz.Tirador, TL = raiz.Tablilla;
+
+const REDUCIDO = raiz.matchMedia && raiz.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const espera = ms => new Promise(ok => setTimeout(ok, REDUCIDO ? 0 : ms));
+
+/* ── el banquillo: los que se preparan y los frascos que esperan ── */
+function pintaBanquillo(el, foto, k, pel, anim){
+  anim = anim || {};
+  const sitio = el.querySelector('.bq-sitio');
+  sitio.innerHTML = foto.banquillo.map(q => {
+    let c = 'bq tirador ' + (q.f < 0 ? 'izq' : 'der') + (q.venia ? ' venia-' + q.venia : '');
+    if(anim.llega && anim.llega.indexOf(q.id) >= 0) c += ' llega';
+    if(anim.trago === q.id) c += ' trago';
+    if(anim.se && anim.se.indexOf(q.id) >= 0) c += ' se-va';
+    if(anim.junta && anim.junta.indexOf(q.id) >= 0) c += ' junta';
+    const po = anim.bebe === q.id ? P.pocionDe(anim.k) : null;
+    return '<span class="' + c + '" data-bq="' + q.id + '">' + T.dibujaTirador(q, 13) +
+      '<b class="bq-f">' + P.conSigno(q.f) + '</b>' +
+      (po ? '<span class="bq-frasco pocion ' + TL.clasePoc(po).replace('pocion ', '') + '">' + TL.frascoHtml(po) + '</span>' : '') + '</span>';
+  }).join('');
+  /* los frascos de delante esperan aquí hasta que hay a quién dárselos */
+  const usados = new Set();
+  pel.pasos.slice(0, k).forEach(p => { if(p.tipo === 'bebe') p.m.forEach(i => usados.add(i)); });
+  const esperan = pel.tok.map((t, i) => ({t, i})).filter(x => x.t.t === 'p' && x.t.pre && !usados.has(x.i));
+  el.querySelector('.bq-banco').innerHTML = esperan.map(x => {
+    const po = P.pocionDe(x.t.k);
+    return '<span class="bq-espera pocion ' + TL.clasePoc(po).replace('pocion ', '') + (anim.baja === x.i ? ' baja' : '') + '" data-ti="' + x.i + '">' +
+      TL.frascoHtml(po) + '<i>' + P.preTxt(x.t.k) + '</i></span>';
+  }).join('');
+  el.hidden = !pel.conBanquillo;
+}
+
+/* ── el reproductor ── */
+function crea(o){
+  const R = {pel: null, k: 0, jugando: false, tok: 0, repaso: 0, alcance: 8,
+             pregunta: 0, dichos: {}, pin: null, pinPara: 0, veredicto: null};
+  const campo = o.campo, banquillo = o.banquillo;
+  const fotoDe = k => k ? R.pel.pasos[k - 1] : {cuerda: [], banquillo: [], bandera: 0, tipo: '', x: ''};
+  const avisa = () => { if(o.alCambiar) o.alCambiar(R); };
+
+  R.carga = function(pel){
+    R.pel = pel; R.k = 0; R.jugando = false; R.tok++;
+    R.pregunta = 0; R.dichos = {}; R.pin = null; R.pinPara = 0; R.veredicto = null;
+    pel.conBanquillo = pel.pasos.some(p => p.banquillo.length) || pel.tok.some(t => t.t === 'p' && t.pre);
+    R.alcance = Math.max(8, ...pel.pasos.map(p => Math.abs(p.bandera)));
+    R.muestra(0);
+  };
+  /* la foto k, al instante */
+  R.muestra = function(k, anim){
+    if(!R.pel) return;
+    R.k = Math.max(0, Math.min(R.pel.pasos.length, k));
+    const foto = fotoDe(R.k);
+    C.pinta(campo, foto, {alcance: R.alcance, nuevos: (anim && anim.nuevos) || [],
+      viva: R.pregunta === R.k + 1, pin: R.pinPara === R.k || (R.jugando && R.pinPara === R.k + 1) ? R.pin : null});
+    pintaBanquillo(banquillo, foto, R.k, R.pel, anim);
+    avisa();
+  };
+  /* el paso k+1, animado */
+  /* ▶: antes de un paso clave, primero la pregunta. Un segundo ▶ sin tocar la
+     regla lo juega igual (para el profe en la pizarra) */
+  R.avanza = async function(){
+    if(!R.pel || R.jugando || R.k >= R.pel.pasos.length) return;
+    const k = R.k, paso = R.pel.pasos[k];
+    if(paso.clave && !(k in R.dichos) && !R.pregunta && !o.sinPreguntas){
+      R.pregunta = k + 1;
+      R.muestra(k);
+      return;
+    }
+    R.pregunta = 0;
+    /* el pronóstico solo vale la primera vez que se juega ese paso */
+    if(!R.pendiente){ R.pin = null; R.pinPara = 0; }
+    R.pendiente = false;
+    R.veredicto = null;
+    const tok = ++R.tok, vivo = () => R.tok === tok;
+    R.jugando = true; avisa();
+    const antes = fotoDe(k);
+    const enBanco = id => antes.banquillo.some(q => q.id === id) || paso.banquillo.some(q => q.id === id);
+    const idsNuevos = paso.cuerda.filter(q => !antes.cuerda.some(a => a.id === q.id)).map(q => q.id);
+    const idsBqNuevos = paso.banquillo.filter(q => !antes.banquillo.some(a => a.id === q.id)).map(q => q.id);
+    const idsIdos = antes.cuerda.filter(q => !paso.cuerda.some(a => a.id === q.id)).map(q => q.id);
+    const idsBqIdos = antes.banquillo.filter(q => !paso.banquillo.some(a => a.id === q.id)).map(q => q.id);
+    try{
+      if(paso.tipo === 'bebe'){
+        /* bebe el del banquillo cuya fuerza cambia entre una foto y la otra */
+        const cambia = antes.banquillo.find(q => { const n = paso.banquillo.find(x => x.id === q.id); return n && n.f !== q.f; });
+        const id = (cambia || antes.banquillo[0] || {}).id;
+        /* el frasco que baja del banco, si venía de delante */
+        const ti = paso.m.find(i => R.pel.tok[i] && R.pel.tok[i].t === 'p' && R.pel.tok[i].pre);
+        const k0 = kDe(paso);
+        pintaBanquillo(banquillo, antes, k, R.pel, {baja: ti});
+        await espera(ti !== undefined ? 500 : 0); if(!vivo()) return;
+        pintaBanquillo(banquillo, antes, k, R.pel, {bebe: id, k: k0});
+        await espera(1000); if(!vivo()) return;
+        C.pinta(campo, paso, {alcance: R.alcance});
+        pintaBanquillo(banquillo, paso, k + 1, R.pel, {trago: id});
+        await espera(700);
+      }else if(paso.tipo === 'junta'){
+        pintaBanquillo(banquillo, antes, k, R.pel, {junta: idsBqIdos});
+        await espera(900); if(!vivo()) return;
+        R.muestra(k + 1, {llega: idsBqNuevos});
+        await espera(500);
+      }else if(paso.tipo === 'sale'){
+        pintaBanquillo(banquillo, antes, k, R.pel, {se: idsBqIdos});
+        await espera(450); if(!vivo()) return;
+        R.muestra(k + 1, {nuevos: idsNuevos});
+        tiron(campo);
+        await espera(1000);
+      }else if(paso.tipo === 'retira'){
+        if(idsIdos.length){
+          /* en la cuerda, retirarse es cosa de Zeus: se asoma, rayo, y humo */
+          const id = idsIdos[0], nodo = campo.querySelector('.tirador[data-id="' + id + '"]');
+          const q = antes.cuerda.find(x => x.id === id) || {f: 1};
+          if(raiz.Zeus && nodo) await raiz.Zeus.fulmina(campo, nodo, q.f, espera);
+          else await espera(500);
+          if(!vivo()) return;
+          R.muestra(k + 1);
+          tiron(campo);
+          await espera(1000);
+        }else{
+          pintaBanquillo(banquillo, antes, k, R.pel, {se: idsBqIdos});
+          await espera(450); if(!vivo()) return;
+          R.muestra(k + 1);
+          await espera(300);
+        }
+      }else{ /* entra, pareja */
+        R.muestra(k + 1, {nuevos: idsNuevos, llega: idsBqNuevos});
+        if(idsNuevos.length && paso.bandera !== antes.bandera) tiron(campo);
+        await espera(idsNuevos.length ? 1000 : 700);
+      }
+    }finally{
+      if(vivo()){
+        R.jugando = false;
+        /* el veredicto del pronóstico, si lo hubo */
+        if(R.pinPara === k + 1 && R.pin !== null)
+          R.veredicto = {dicho: R.pin, real: paso.bandera, clavado: R.pin === paso.bandera};
+        R.muestra(k + 1);
+      }
+    }
+  };
+  /* el alumno toca la regla: se apunta lo que dijo y se juega el paso */
+  R.elige = function(v){
+    if(!R.pregunta || R.jugando) return;
+    const k = R.pregunta - 1;
+    R.dichos[k] = v; R.pin = v; R.pinPara = k + 1; R.pendiente = true;
+    R.pregunta = 0;
+    R.avanza();
+  };
+  R.retrocede = function(){ R.repaso++; R.pregunta = 0; R.veredicto = null; if(!R.jugando && R.k > 0) R.muestra(R.k - 1); };
+  R.principio = function(){ R.repaso++; R.pregunta = 0; R.veredicto = null; if(!R.jugando) R.muestra(0); };
+  /* ▶▶: la película de un tirón; se para en cuanto se toca otro botón */
+  R.repasa = async function(){
+    if(!R.pel || R.jugando) return;
+    R.pregunta = 0; R.muestra(0);
+    const yo = ++R.repaso;
+    o.sinPreguntas = true;
+    try{
+      while(R.k < R.pel.pasos.length && R.repaso === yo){
+        await espera(350); if(R.repaso !== yo) return;
+        await R.avanza();
+      }
+    }finally{ o.sinPreguntas = false; }
+  };
+  R.para = function(){ R.tok++; R.repaso++; R.jugando = false; R.pregunta = 0; };
+  return R;
+}
+
+/* qué factor lleva un paso de beber: se lee de la cuenta pequeña «(−4)·(−2) = +8» */
+function kDe(paso){
+  const m = /\)\s*(·|:)\s*\(?([−+-]?\d+)\)?\s*=/.exec(paso.x || '');
+  if(!m) return -1;
+  const v = Number(m[2].replace('−', '-'));
+  return m[1] === ':' ? 1 / v : v;
+}
+function tiron(campo){
+  campo.classList.remove('tiron'); void campo.offsetWidth; campo.classList.add('tiron');
+  setTimeout(() => campo.classList.remove('tiron'), 620);
+}
+
+raiz.Reproductor = {crea, pintaBanquillo};
+})(window);
+</script>
+<script>
+/* LA PALESTRA · los personajes: Jeferión, Listillón y Zeus, dibujados en SVG por código. Vienen tal cual de El pulso de los dioses (v8.7), con la pezuña de Jeferión y el pico de Listillón. */
+(function (raiz) {
+'use strict';
+const MOV_REDUCIDO = raiz.matchMedia && raiz.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ZEUS_SVG =
+  '<svg viewBox="0 0 120 90">' +
+        '<defs>' +
+      '<linearGradient id="zLuna" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#463D50"/>' +
+        '<stop offset="1" stop-color="#2E2740"/>' +
+      '</linearGradient>' +
+      '<filter id="zSoft" x="-30%" y="-30%" width="160%" height="160%">' +
+        '<feGaussianBlur stdDeviation=".7"/>' +
+      '</filter>' +
+            '<filter id="zGlow" x="-60%" y="-60%" width="220%" height="220%">' +
+        '<feGaussianBlur stdDeviation="2.2" result="borroso"/>' +
+        '<feMerge><feMergeNode in="borroso"/>' +
+        '<feMergeNode in="SourceGraphic"/></feMerge>' +
+      '</filter>' +
+    '</defs>' +
+        '<g transform="translate(0 10)">' +
+        '<path class="siluZ" d="M43.5 28 L38 12 L46.5 18 L49 0 L54 14 L58 -6 ' +
+      'L62 14 L67 0 L69.5 18 L74 12 L68.5 28 Q64 20 56 20 Q48 20 43.5 28 Z"/>' +
+        '<path class="siluZ" d="M18 80 Q22 60 40 54 L84 54 Q102 59 106 80 Z"/>' +
+            '<path class="rimZ" d="M40 56 Q62 65 88 80" fill="none" filter="url(#zSoft)" stroke-width="2.2"/>' +
+    '<path class="rimZ" d="M36 61 Q57 69.5 80 80" fill="none" filter="url(#zSoft)" stroke-width="2"/>' +
+        '<g class="brazoZ">' +
+            '<path class="rimTrazoZ" d="M82 52 L100 42 L96 20" fill="none" ' +
+        'filter="url(#zSoft)" ' +
+        'stroke-width="14.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path class="siluTrazoZ" d="M82 52 L100 42 L96 20" fill="none" ' +
+        'stroke-width="11.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+            '<g class="punoZ" transform="rotate(-30 96 16)">' +
+        '<rect class="siluZ" x="90.5" y="11" width="11" height="10" rx="3.2"/>' +
+        '<circle class="siluZ" cx="93.6" cy="11.4" r="1.7"/>' +
+        '<circle class="siluZ" cx="96.6" cy="11" r="1.7"/>' +
+        '<circle class="siluZ" cx="99.4" cy="11.5" r="1.6"/>' +
+        '<path class="rimZ" fill="none" stroke-width="1.3" d="M91.3 15.2 Q95 18 100.2 16.6"/>' +
+      '</g>' +
+            '<g class="boltZ" transform="rotate(-36 96 16)">' +
+        '<path d="M99 -24 L103 -12 L98 -8 L104 4 L99 8 L105 20 L99 26 ' +
+          'L105 38 L93 58 L96 38 L91 34 L96 22 L91 18 L96 6 L91 2 L96 -10 Z" ' +
+          'fill="#E9B84E" stroke="rgba(16,11,26,.5)" stroke-width="1.1" ' +
+          'filter="url(#zGlow)" stroke-linejoin="round"/>' +
+        '<path d="M98.5 -20 L95.5 -8 L100.5 4 L95.9 9 L101.5 21 L96 27 ' +
+          'L101 37 L94.6 53" ' +
+          'fill="none" stroke="#FFF" stroke-width="1.2" ' +
+          'stroke-linecap="round" opacity=".8"/>' +
+      '</g>' +
+    '</g>' +
+        '<circle class="siluZ" cx="56" cy="26" r="13"/>' +
+        '<g class="laurelZ">' +
+    (() => {
+      let h = '';
+      for(const s of [-1, 1]) for(let i = 0; i < 5; i++){
+        const hx = 56 + s * (12.2 - 2.35 * i), hy = 20.6 - i * 2.35;
+        const rot = -s * (10 + i * 17);
+        h += '<ellipse cx="' + hx + '" cy="' + hy + '" rx="2.05" ry=".95" ' +
+          'transform="rotate(' + rot + ' ' + hx + ' ' + hy + ')"/>';
+      }
+      return h + '<circle cx="56" cy="10.9" r="1.15"/>';
+    })() +
+    '</g>' +
+                '<ellipse class="haloZ" cx="51.6" cy="26.8" rx="3.5" ry="2.2" filter="url(#zSoft)"/>' +
+    '<ellipse class="haloZ" cx="60.8" cy="26.8" rx="3.5" ry="2.2" filter="url(#zSoft)"/>' +
+    '<path class="ojoZ" d="M48 25.6 L54.4 27.3 Q53.6 29.2 51.2 28.9 Q48.8 28.5 48 25.6 Z"/>' +
+    '<path class="ojoZ" d="M64.4 25.6 L58 27.3 Q58.8 29.2 61.2 28.9 Q63.6 28.5 64.4 25.6 Z"/>' +
+        '<path class="siluZ" d="M44.5 29 Q41 44 45.5 56 Q48.5 52.5 51.5 57.5 Q54 53.5 56.5 58 ' +
+      'Q59 53.5 61.5 57.5 Q64.5 52.5 67.5 56 Q71.5 44 68.5 29 ' +
+      'Q63 37 56.5 37 Q50 37 44.5 29 Z"/>' +
+        '<path class="rimZ" filter="url(#zSoft)" opacity=".5" stroke-width="1.3" ' +
+      'fill="none" d="M45.5 56 Q48.5 52.5 51.5 57.5 Q54 53.5 56.5 58 ' +
+      'Q59 53.5 61.5 57.5 Q64.5 52.5 67.5 56"/>' +
+        '<path class="rimZ" filter="url(#zSoft)" opacity=".55" stroke-width="1.2" ' +
+      'fill="none" d="M49.5 34 Q47.5 42 50.5 50 M62.5 34 Q64.5 42 61.5 50 ' +
+      'M56 38 Q56 45 56 51"/>' +
+    '<path class="rimZ" filter="url(#zSoft)" opacity=".4" stroke-width="1.5" ' +
+      'fill="none" d="M40 68 Q48 73 56 70 M66 70 Q74 73 82 68"/>' +
+    '</g>' +
+  '</svg>';
+const TINTA = '#241C36';
+function brazo(x0, y0, ang, largo, grosor, color, mano){
+  const r = ang * Math.PI / 180;
+  const x1 = x0 + Math.cos(r) * largo, y1 = y0 + Math.sin(r) * largo;
+  return '<path d="M' + x0 + ' ' + y0 + ' L' + x1.toFixed(1) + ' ' + y1.toFixed(1) + '" stroke="' + TINTA +
+    '" stroke-width="' + (grosor + 2.4) + '" stroke-linecap="round"/>' +
+    '<path d="M' + x0 + ' ' + y0 + ' L' + x1.toFixed(1) + ' ' + y1.toFixed(1) + '" stroke="' + color +
+    '" stroke-width="' + grosor + '" stroke-linecap="round"/>' +
+    (mano ? mano(x1, y1, ang) : '');
+}
+/* brazo con codo: dos tramos */
+function brazo2(x0, y0, a1, l1, a2, l2, g, color, mano){
+  const r1 = a1 * Math.PI / 180, r2 = a2 * Math.PI / 180;
+  const xc = x0 + Math.cos(r1) * l1, yc = y0 + Math.sin(r1) * l1;
+  const x1 = xc + Math.cos(r2) * l2, y1 = yc + Math.sin(r2) * l2;
+  const d = 'M' + x0 + ' ' + y0 + ' L' + xc.toFixed(1) + ' ' + yc.toFixed(1) + ' L' + x1.toFixed(1) + ' ' + y1.toFixed(1);
+  return '<path d="' + d + '" fill="none" stroke="' + TINTA + '" stroke-width="' + (g + 2.4) +
+    '" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="' + g +
+    '" stroke-linecap="round" stroke-linejoin="round"/>' + (mano ? mano(x1, y1, a2) : '');
+}
+/* ── JEFERIÓN ── cocodrilo jefe: gafas redondas, laurel, banda morada */
+const JV = {piel:'#8CBF4F', sombra:'#5F8F32', vientre:'#C9DE8A', banda:'#7E5C86', oro:'#E9B84E', laurel:'#6E9A2E'};
+/* la mano de Jeferión es la pezuña de la manaza, en pequeño: una bola con
+   dos dedos rechonchos y la punta de cuerno, mirando hacia donde va el brazo.
+   Contorno y relleno por separado, para que el contorno salga de una pieza */
+function manoJ(x, y, ang, k){
+  const formas = '<circle r="4.2"/><ellipse cx="3.6" cy="-2.3" rx="3.3" ry="2.5"/><ellipse cx="3.6" cy="2.3" rx="3.3" ry="2.5"/>';
+  const cuerno = cy => '<path d="M4.6 ' + (cy - 2.28).toFixed(2) + ' A3.3 2.5 0 0 1 4.6 ' + (cy + 2.28).toFixed(2) +
+    ' Z" fill="#9A7650" stroke="' + TINTA + '" stroke-width=".8" stroke-linejoin="round"/>';
+  return '<g transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + (ang || 0).toFixed(0) + ') scale(' + (k || 1.4) + ')">' +
+    '<g fill="' + TINTA + '" stroke="' + TINTA + '" stroke-width="2">' + formas + '</g>' +
+    '<g fill="' + JV.piel + '">' + formas + '</g>' +
+    cuerno(-2.3) + cuerno(2.3) +
+    '<path d="M1.6 0 H4.4" stroke="' + TINTA + '" stroke-width=".9" stroke-linecap="round"/></g>';
+}
+/* señalar con pezuña: la pezuña entera apunta, un poco más grande */
+function manoJdedo(x, y, ang){
+  return manoJ(x, y, ang, 1.55);
+}
+function jeferion(pose){
+  pose = pose || 'habla';
+  const P = {
+    habla:   {bI:[100,14,80,12], bD:[-70,16,-100,12], boca:.6, ojo:'normal', mira:[-1,0]},
+    senala:  {bI:[100,14,80,12], bD:[-10,14,-5,8,'dedo'], boca:.3, ojo:'normal', mira:[1,0]},
+    sorpresa:{bI:[-160,12,-110,12], bD:[-40,16,-60,12], boca:1, ojo:'grande', mira:[0,-.3]},
+    celebra: {bI:[-165,12,-105,13], bD:[-30,16,-80,13], boca:.85, ojo:'feliz', mira:[0,0]},
+    piensa:  {bI:[100,14,80,12], bD:[200,16,225,14], boca:0, ojo:'arriba', mira:[.3,-1]},
+    calla:   {bI:[100,14,80,12], bD:[110,14,80,12], boca:0, ojo:'normal', mira:[-1,0]},
+    asoma:   {boca:0, ojo:'normal', mira:[1,.2]}
+  }[pose];
+  const asoma = pose === 'asoma';
+  const brazoDe = (x, y, b) => brazo2(x, y, b[0], b[1], b[2], b[3], 6.2, JV.piel, b[4] === 'dedo' ? manoJdedo : manoJ);
+  let s = '<svg viewBox="0 0 100 100" class="pj pj-jef pose-' + pose + '" aria-hidden="true">';
+  if(asoma) s += '<g transform="translate(4 40)">';
+  if(!asoma){
+  /* cola, por detrás */
+  s += '<path d="M66 88 Q88 90 95 76 Q90 84 80 83 Q72 82 66 80 Z" fill="' + JV.sombra + '" stroke="' + TINTA + '" stroke-width="1.4" stroke-linejoin="round"/>';
+  s += '<path d="M78 82 l2 -4 l2 3.4 l2.4 -4.2 l1.8 3.6" fill="none" stroke="' + TINTA + '" stroke-width="1.1" stroke-linejoin="round"/>';
+  /* brazo de atrás */
+  s += brazoDe(33, 62, P.bI);
+  /* cuerpo */
+  s += '<path d="M24 98 Q22 66 38 56 L62 56 Q78 64 76 98 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  s += '<path d="M36 98 Q36 72 48 64 Q60 70 62 98 Z" fill="' + JV.vientre + '" opacity=".9"/>';
+  s += '<path d="M40 76 H58 M39 84 H60 M38 92 H61" stroke="' + JV.sombra + '" stroke-width="1" opacity=".55"/>';
+  /* banda */
+  s += '<path d="M30 60 Q50 76 70 96" stroke="' + TINTA + '" stroke-width="9.4" fill="none"/>';
+  s += '<path d="M30 60 Q50 76 70 96" stroke="' + JV.banda + '" stroke-width="7.2" fill="none"/>';
+  s += '<path d="M30.6 58.4 Q51 74.4 71.4 94.4" stroke="' + JV.oro + '" stroke-width="1.2" fill="none" opacity=".9"/>';
+  }
+  /* cabeza: cráneo y hocico largo hacia la izquierda */
+  const ab = P.boca * 7;                         // cuánto se abre la mandíbula
+  s += '<g class="cabeza">';
+  const giro = 'rotate(' + (-P.boca * 16).toFixed(1) + ' 42 44)';
+  if(P.boca > .1) s += '<path d="M10 41 Q26 46 42 44 L40 52 Q24 54 10 46 Z" fill="#B5484A" stroke="' + TINTA + '" stroke-width="1.2" transform="rotate(' + (-P.boca * 8).toFixed(1) + ' 42 44)"/>';
+  s += '<path d="M42 50 Q30 54 14 52 Q6 51 6 46 Q6 42 12 42 L38 43 Z" transform="' + giro + '" fill="' + JV.sombra + '" stroke="' + TINTA + '" stroke-width="1.5" stroke-linejoin="round"/>';
+  if(P.boca > .1) s += '<path d="M13 43 l1.6 -2.4 l1.6 2.4 M21 43.6 l1.6 -2.4 l1.6 2.4" transform="' + giro + '" fill="#fff" stroke="' + TINTA + '" stroke-width=".7"/>';
+  s += '<path d="M60 44 Q62 22 46 18 Q36 16 32 24 L10 29 Q3 30 3 36 Q3 42 10 42 L38 44 Q48 50 60 44 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  /* dientes */
+  s += '<path d="M12 42 l1.6 2.6 l1.6 -2.6 M19 42.4 l1.6 2.6 l1.6 -2.6 M26 43 l1.6 2.6 l1.6 -2.6" fill="#fff" stroke="' + TINTA + '" stroke-width=".7" stroke-linejoin="round"/>';
+  /* orificios y escamas */
+  s += '<circle cx="7.5" cy="33.2" r="1.1" fill="' + TINTA + '"/><circle cx="11" cy="32.2" r="1.1" fill="' + TINTA + '"/>';
+  s += '<path d="M18 33 q2 -1.6 4 0 M25 32 q2 -1.6 4 0" fill="none" stroke="' + JV.sombra + '" stroke-width="1"/>';
+  /* ojos con gafas redondas */
+  const [mx, my] = P.mira;
+  const ojo = (cx, cy) => {
+    let o = '<circle cx="' + cx + '" cy="' + cy + '" r="6.6" fill="#F4F7FB" stroke="' + TINTA + '" stroke-width="2.4"/>';
+    if(P.ojo === 'feliz') o += '<path d="M' + (cx - 3.4) + ' ' + (cy + 1) + ' q3.4 -4 6.8 0" fill="none" stroke="' + TINTA + '" stroke-width="1.8" stroke-linecap="round"/>';
+    else{
+      const r = P.ojo === 'grande' ? 3.1 : 2.4;
+      o += '<circle cx="' + (cx + mx * 2.4) + '" cy="' + (cy + my * 2.4) + '" r="' + r + '" fill="#140F1F"/>' +
+           '<circle cx="' + (cx + mx * 2.4 + .9) + '" cy="' + (cy + my * 2.4 - .9) + '" r=".8" fill="#fff"/>';
+    }
+    return o;
+  };
+  s += ojo(37, 22) + ojo(51, 21);
+  s += '<path d="M43.6 21.6 H44.4" stroke="' + TINTA + '" stroke-width="2"/>';
+  /* laurel */
+  s += '<path d="M31 17 Q44 5 60 14" fill="none" stroke="' + JV.laurel + '" stroke-width="1.6" stroke-linecap="round"/>';
+  [[33,14,-40],[37,10.6,-25],[42,8.6,-10],[47,8.2,5],[52,9.2,18],[57,11.6,32]].forEach(([x,y,a]) => {
+    s += '<ellipse cx="' + x + '" cy="' + y + '" rx="3.2" ry="1.4" transform="rotate(' + a + ' ' + x + ' ' + y + ')" fill="#8DB84A" stroke="' + TINTA + '" stroke-width=".6"/>';
+  });
+  s += '</g>';
+  if(asoma){
+    s += '</g>';
+    /* las pezuñas agarradas al borde, con los cuernos por encima */
+    [[26,97,-80],[70,97,-100]].forEach(([x,y,a]) => { s += manoJ(x, y, a, 1.7); });
+  }else s += brazoDe(64, 62, P.bD);
+  s += '</svg>';
+  return s;
+}
+/* ── LISTILLÓN ── escriba: pájaro azul, gorra roja, su tablilla bajo el ala */
+const LV = {pluma:'#57B8D6', sombra:'#3F9CBC', gorra:'#C0392B', pico:'#E9B84E', tabla:'#C8B48B'};
+function listillon(pose){
+  pose = pose || 'habla';
+  const P = {
+    habla:   {ala:[10,13,-40,9], tabla:'bajo', pico:.6, ceja:'seria', mira:[1,0]},
+    senala:  {ala:[-15,16,-10,10], tabla:'bajo', pico:.3, ceja:'seria', mira:[1,0], dedo:true},
+    sorpresa:{ala:[5,14,-40,9], tabla:'bajo', pico:1, ceja:'alta', mira:[0,-.3]},
+    celebra: {ala:[-8,15,-50,11], tabla:'arriba', pico:.8, ceja:'alegre', mira:[0,0]},
+    piensa:  {ala:[160,10,-120,12], tabla:'bajo', pico:0, ceja:'piensa', mira:[.4,-1]},
+    calla:   {ala:[110,12,80,8], tabla:'bajo', pico:0, ceja:'seria', mira:[1,0]},
+    asoma:   {pico:0, ceja:'seria', mira:[.6,.3]}
+  }[pose];
+  const asoma = pose === 'asoma';
+  let s = '<svg viewBox="0 0 100 100" class="pj pj-lis pose-' + pose + '" aria-hidden="true">';
+  if(asoma) s += '<g transform="translate(-4 42)">';
+  if(!asoma){
+  /* patas */
+  s += '<path d="M42 90 v8 M40 98 h6 M56 90 v8 M54 98 h6" stroke="#D9962B" stroke-width="2.4" stroke-linecap="round"/>';
+  /* cuerpo */
+  s += '<ellipse cx="50" cy="70" rx="26" ry="23" fill="' + LV.pluma + '" stroke="' + TINTA + '" stroke-width="1.6"/>';
+  s += '<ellipse cx="54" cy="76" rx="15" ry="14" fill="#9ED7EA" opacity=".75"/>';
+  s += '<path d="M24 74 q-8 4 -10 12 q7 -3 12 -4" fill="' + LV.sombra + '" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
+  /* tablilla bajo el ala (o en alto) */
+  const tabla = P.tabla === 'arriba'
+    ? '<g transform="rotate(-8 30 22)"><rect x="18" y="12" width="26" height="18" rx="2" fill="' + LV.tabla + '" stroke="' + TINTA + '" stroke-width="1.4"/><path d="M22 18 H40 M22 22 H36 M22 26 H38" stroke="' + TINTA + '" stroke-width=".9" opacity=".5"/></g>'
+    : '<g transform="rotate(-6 30 70)"><rect x="16" y="60" width="26" height="18" rx="2" fill="' + LV.tabla + '" stroke="' + TINTA + '" stroke-width="1.4"/><path d="M20 66 H38 M20 70 H34 M20 74 H36" stroke="' + TINTA + '" stroke-width=".9" opacity=".5"/></g>';
+  if(P.tabla !== 'arriba') s += tabla;
+  /* ala que sujeta la tablilla */
+  s += P.tabla === 'arriba'
+    ? brazo2(34, 58, -120, 14, -80, 10, 7, LV.pluma, null)
+    : '<path d="M30 62 Q40 58 44 70 Q38 76 30 74 Z" fill="' + LV.pluma + '" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
+  if(P.tabla === 'arriba') s += tabla;
+  }
+  /* cabeza */
+  s += '<g class="cabeza">';
+  /* pico: abre por la mandíbula de abajo. Va por detrás de la cabeza, así
+     sale del contorno en vez de parecer pegado encima */
+  const ab = P.pico * 6;
+  s += '<path d="M63 40 L85 ' + (43.5 + ab * .5).toFixed(1) + ' Q80 ' + (46 + ab).toFixed(1) + ' 69 ' + (46 + ab).toFixed(1) + ' L63 45 Z" fill="#D9962B" stroke="' + TINTA + '" stroke-width="1.2" stroke-linejoin="round"/>';
+  s += '<path d="M63 32 Q78 34 89 40.5 Q80 43 63 43 Z" fill="' + LV.pico + '" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
+  s += '<circle cx="54" cy="36" r="19" fill="' + LV.pluma + '" stroke="' + TINTA + '" stroke-width="1.6"/>';
+  /* ojos */
+  const [mx, my] = P.mira;
+  const ojo = (cx, cy, r) => (P.ceja === 'alegre'
+    ? '<path d="M' + (cx - 3) + ' ' + (cy + 1) + ' q3 -4 6 0" fill="none" stroke="' + TINTA + '" stroke-width="1.8" stroke-linecap="round"/>'
+    : '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r + (P.ceja === 'alta' ? 1 : 0)) + '" fill="#F4F7FB" stroke="' + TINTA + '" stroke-width="1"/>' +
+      '<circle cx="' + (cx + mx * 1.6) + '" cy="' + (cy + my * 1.6) + '" r="' + (r * .5) + '" fill="#140F1F"/>');
+  s += ojo(58, 34, 4.4) + ojo(68, 33, 4);
+  /* cejas: la cara es la de las fichas, cejijunto */
+  const cj = {seria:[[53,27,62,29],[64,28.6,72,26]], alta:[[53,25,62,23.4],[64,23,72,24.6]],
+              alegre:[[53,27,62,26],[64,25.6,72,27]], piensa:[[53,26,62,28],[64,26,72,24]]}[P.ceja];
+  cj.forEach(c => { s += '<path d="M' + c[0] + ' ' + c[1] + ' L' + c[2] + ' ' + c[3] + '" stroke="' + TINTA + '" stroke-width="2.4" stroke-linecap="round"/>'; });
+  /* gorra con visera hacia delante */
+  s += '<path d="M36 26 Q40 8 56 9 Q70 10 72 24 Z" fill="' + LV.gorra + '" stroke="' + TINTA + '" stroke-width="1.5" stroke-linejoin="round"/>';
+  s += '<path d="M60 22 Q74 19 82 24 Q74 26 62 26 Z" fill="#A5301F" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
+  s += '<path d="M37 24 Q54 20 71 23" fill="none" stroke="#fff" stroke-width="1.2" opacity=".55"/>';
+  s += '<circle cx="54" cy="9.6" r="2" fill="#A5301F" stroke="' + TINTA + '" stroke-width="1"/>';
+  s += '</g>';
+  if(asoma){
+    s += '</g>';
+    [[22,97],[80,97]].forEach(([x,y]) => {
+      s += '<path d="M' + (x - 8) + ' ' + (y + 3) + ' Q' + x + ' ' + (y - 9) + ' ' + (x + 8) + ' ' + (y + 3) + '" fill="' + LV.pluma + '" stroke="' + TINTA + '" stroke-width="1.4"/>' +
+        '<path d="M' + (x - 3) + ' ' + (y - 3) + ' l-1 4 M' + x + ' ' + (y - 4) + ' v4 M' + (x + 3) + ' ' + (y - 3) + ' l1 4" stroke="' + TINTA + '" stroke-width=".9" stroke-linecap="round"/>';
+    });
+  }
+  /* ala libre */
+  if(!asoma){
+    const a = P.ala;
+    s += brazo2(70, 62, a[0], a[1], a[2], a[3], 7, LV.pluma, P.dedo ? (x, y, g) => {
+      const r = g * Math.PI / 180;
+      return '<path d="M' + x.toFixed(1) + ' ' + y.toFixed(1) + ' l' + (Math.cos(r) * 5).toFixed(1) + ' ' + (Math.sin(r) * 5).toFixed(1) +
+        '" stroke="' + TINTA + '" stroke-width="3.6" stroke-linecap="round"/>' +
+        '<path d="M' + x.toFixed(1) + ' ' + y.toFixed(1) + ' l' + (Math.cos(r) * 5).toFixed(1) + ' ' + (Math.sin(r) * 5).toFixed(1) +
+        '" stroke="' + LV.sombra + '" stroke-width="1.8" stroke-linecap="round"/>';
+    } : null);
+  }
+  s += '</svg>';
+  return s;
+}
+
+/* ── LAS CARAS SEGÚN LO QUE DICEN ── Listillón celebra cuando se acierta,
+   piensa cuando algo no sale y señala cuando manda mirar; al hablar, mueve
+   el pico. Jeferión celebra al cumplir la misión. */
+const DIBUJA = {jef: jeferion, lis: listillon};
+function ponCara(c, quien, pose, hablar){
+  if(!c) return;
+  clearInterval(c._parla);
+  c.innerHTML = DIBUJA[quien](pose);
+  c.dataset.pose = pose;
+  if(!hablar || MOV_REDUCIDO || (pose !== 'habla' && pose !== 'senala')) return;
+  let n = 0;
+  c._parla = setInterval(() => {
+    n++;
+    c.innerHTML = DIBUJA[quien](n % 2 ? 'calla' : pose);
+    if(n >= 7){ clearInterval(c._parla); c.innerHTML = DIBUJA[quien](pose); }
+  }, 170);
+}
+function poseDeTexto(h){
+  const t = String(h).replace(/<[^>]+>/g, '').trim();
+  if(!t) return null;
+  if(/^(Correcto|Eso es|Bien|Exacto|Muy bien|Cazad|¡)|La bandera acaba en|Misión cumplida|tu cuenta vale|Y sin abrir/.test(t)) return 'celebra';
+  if(/^(No\b|Ahí no|Espera|Falta|Todavía no)|no se puede|No caben|se saldría|a medias|Sobra|no es lo mismo|torcido|se ha quedado en suma|sin mirar el bando|Has sumado antes|Has quitado solo|Has juntado/.test(t)) return 'piensa';
+  if(/^(Mira|Fíjate|Ábrel|Si no l|Cada ▶|Arrastra)/.test(t)) return 'senala';
+  return 'habla';
+}
+const ZV = {piel:'#E7B58C', sombra:'#C98E66', barba:'#F4F1EA', barbaS:'#CFCBD8', toga:'#EEF0F6', togaS:'#C9CEDF',
+            oro:'#E9B84E', ojo:'#FFE27A', rayo:'#F5C542'};
+function rayoZ(x, y, esc, giro){
+  return '<g transform="translate(' + x + ' ' + y + ') rotate(' + giro + ') scale(' + esc + ')">' +
+    '<path d="M0 -22 L9 -22 L3 -6 L11 -6 L-5 22 L-1 2 L-8 2 Z" fill="' + ZV.rayo + '" stroke="' + TINTA +
+    '" stroke-width="1.6" stroke-linejoin="round"/>' +
+    '<path d="M2 -19 L6 -19 L1.5 -8" fill="none" stroke="#fff" stroke-width="1.2" opacity=".75"/></g>';
+}
+function manoZ(x, y){
+  return '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="4.8" fill="' + ZV.piel + '" stroke="' + TINTA + '" stroke-width="1.3"/>';
+}
+function zeus(pose){
+  pose = pose || 'habla';
+  const P = {
+    habla:   {bI:[110,14,70,12], bD:[-50,15,-95,12], rayo:'mano', boca:.5, ceja:'serio', ojo:'abierto'},
+    enfada:  {bI:[110,14,70,12], bD:[-80,15,-100,14], rayo:'alto', boca:.7, ceja:'furia', ojo:'abierto'},
+    rie:     {bI:[140,10,40,14], bD:[40,12,150,12], rayo:'suelo', boca:1, ceja:'alegre', ojo:'cerrado'},
+    piensa:  {bI:[110,14,70,12], bD:[200,14,240,12], rayo:'suelo', boca:0, ceja:'piensa', ojo:'arriba'},
+    sorpresa:{bI:[-140,14,-110,12], bD:[-40,14,-70,12], rayo:'suelo', boca:.9, ceja:'alta', ojo:'grande'},
+    calla:   {bI:[110,14,70,12], bD:[110,14,70,12], rayo:'suelo', boca:0, ceja:'serio', ojo:'abierto'}
+  }[pose];
+  const brazoDe = (x, y, b) => brazo2(x, y, b[0], b[1], b[2], b[3], 7.4, ZV.piel, manoZ);
+  const fin = (x0, y0, b) => {
+    const r1 = b[0] * Math.PI / 180, r2 = b[2] * Math.PI / 180;
+    return [x0 + Math.cos(r1) * b[1] + Math.cos(r2) * b[3], y0 + Math.sin(r1) * b[1] + Math.sin(r2) * b[3]];
+  };
+  let s = '<svg viewBox="0 0 100 100" class="pj pj-zeus pose-' + pose + '" aria-hidden="true">';
+  if(P.rayo === 'suelo') s += rayoZ(88, 80, .8, 18);
+  /* brazo de atrás */
+  s += brazoDe(32, 64, P.bI);
+  /* túnica */
+  s += '<path d="M18 100 Q18 70 34 60 L66 60 Q82 70 82 100 Z" fill="' + ZV.toga + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  s += '<path d="M34 60 Q46 78 44 100 M58 62 Q54 80 60 100" fill="none" stroke="' + ZV.togaS + '" stroke-width="1.4"/>';
+  s += '<path d="M30 62 L70 96" stroke="' + TINTA + '" stroke-width="6.2"/><path d="M30 62 L70 96" stroke="' + ZV.oro + '" stroke-width="4.2"/>';
+  /* barba: nube por debajo de la cara */
+  const nube = (pts, fill) => pts.map(([x, y, r]) => '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="' + fill + '"/>').join('');
+  const barba = [[38,50,8],[46,56,9],[54,56,9],[62,50,8],[42,62,7],[50,66,8],[58,62,7],[50,72,6]];
+  s += '<g>' + nube(barba.map(([x,y,r]) => [x,y,r + 1.3]), TINTA) + nube(barba, ZV.barba) + '</g>';
+  /* pelo: nube por detrás de la cabeza */
+  const pelo = [[34,34,7],[35,24,7],[42,17,7],[50,15,7],[58,17,7],[65,24,7],[66,34,7]];
+  s += nube(pelo.map(([x,y,r]) => [x,y,r + 1.3]), TINTA) + nube(pelo, ZV.barba);
+  /* corona de puntas, como su silueta en el campo */
+  s += '<path d="M36 18 L38 6 L42 14 L46 2 L50 12 L54 2 L58 14 L62 6 L64 18 Z" fill="' + ZV.oro + '" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
+  /* cara */
+  s += '<ellipse cx="50" cy="36" rx="13" ry="14" fill="' + ZV.piel + '" stroke="' + TINTA + '" stroke-width="1.5"/>';
+  s += '<path d="M48 38 Q50 44 52 38" fill="' + ZV.sombra + '" stroke="' + TINTA + '" stroke-width="1"/>';
+  /* ojos: brillan como en el campo */
+  const ojo = (cx) => {
+    if(P.ojo === 'cerrado') return '<path d="M' + (cx - 3) + ' 33 q3 -3 6 0" fill="none" stroke="' + TINTA + '" stroke-width="1.8" stroke-linecap="round"/>';
+    const r = P.ojo === 'grande' ? 3.4 : 2.6, dy = P.ojo === 'arriba' ? -1.2 : 0;
+    return '<circle cx="' + cx + '" cy="' + (33 + dy) + '" r="' + (r + 1.6) + '" fill="' + ZV.ojo + '" opacity=".35"/>' +
+      '<circle cx="' + cx + '" cy="' + (33 + dy) + '" r="' + r + '" fill="' + ZV.ojo + '" stroke="' + TINTA + '" stroke-width="1"/>' +
+      '<circle cx="' + cx + '" cy="' + (33 + dy) + '" r="' + (r * .42) + '" fill="#140F1F"/>';
+  };
+  s += ojo(44.5) + ojo(55.5);
+  /* cejas pobladas */
+  const cj = {serio:[[39,28,48,29],[52,29,61,28]], furia:[[39,26,48,30.5],[52,30.5,61,26]],
+              alegre:[[39,28,48,26],[52,26,61,28]], piensa:[[39,27,48,29],[52,27,61,25]],
+              alta:[[39,24,48,23],[52,23,61,24]]}[P.ceja];
+  cj.forEach(c => { s += '<path d="M' + c[0] + ' ' + c[1] + ' L' + c[2] + ' ' + c[3] + '" stroke="' + TINTA + '" stroke-width="4.4" stroke-linecap="round"/>' +
+    '<path d="M' + c[0] + ' ' + c[1] + ' L' + c[2] + ' ' + c[3] + '" stroke="' + ZV.barba + '" stroke-width="2.6" stroke-linecap="round"/>'; });
+  /* bigote y boca */
+  const ab = P.boca * 5;
+  if(P.boca > .1) s += '<ellipse cx="50" cy="' + (48 + ab * .3) + '" rx="' + (3 + P.boca * 2) + '" ry="' + (1 + ab * .6) + '" fill="#7A2B2B" stroke="' + TINTA + '" stroke-width="1"/>';
+  s += '<path d="M40 46 Q45 42 50 45 Q55 42 60 46 Q55 48 50 46.4 Q45 48 40 46 Z" fill="' + ZV.barba + '" stroke="' + TINTA + '" stroke-width="1.1" stroke-linejoin="round"/>';
+  /* brazo de delante, con el rayo si lo lleva */
+  const [hx, hy] = fin(68, 64, P.bD);
+  if(P.rayo === 'alto') s += rayoZ(hx, hy - 12, 1.05, 12);
+  if(P.rayo === 'mano') s += rayoZ(hx + 4, hy - 8, .75, 20);
+  s += brazoDe(68, 64, P.bD);
+  s += '</svg>';
+  return s;
+}
+
+/* ── LAS ENTREVISTAS ──────────────────────────────────────────────────────
+   Se elige a quién entrevistar y qué preguntarle; contesta con su voz y su
+   postura. Son respuestas escritas a mano (nada de inteligencia artificial):
+   cómicas, pero cada una lleva dentro una idea de los enteros. Algunas
+   preguntas abren otra («repregunta»), y alguna respuesta invita a
+   comprobarlo en la tablilla de Listillón.                                  */
+DIBUJA.zeus = zeus;
+DIBUJA.zeus = zeus;
+raiz.Personajes = {jeferion, listillon, zeus, DIBUJA, ponCara, poseDeTexto, ZEUS_SVG, TINTA, JV, LV, ZV};
+})(window);
+</script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   LA PALESTRA · Zeus y el rayo
+   Cuando alguien se retira de la cuerda, Zeus se asoma por arriba, lanza
+   el rayo y el tirador se va entre humo. Todo son efectos sobre el campo:
+   no cambian el estado, que ya viene decidido por el motor.
+   ══════════════════════════════════════════════════════════════════════ */
+(function (raiz) {
+'use strict';
+const REDUCIDO = raiz.matchMedia && raiz.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const rect = el => el.getBoundingClientRect();
+const varaDe = f => Math.max(0, Math.min(1, Math.log(Math.max(1, Math.abs(f))) / Math.log(12)));
+
+/* Zeus se asoma encima del tirador (a un lado, para no taparlo) */
+function asoma(campo, elT){
+  const rc = rect(campo), rn = rect(elT);
+  const cxV = rn.left + rn.width / 2 - rc.left;
+  let cx = cxV - 72, zurdo = false;
+  if(cx < 66){ cx = Math.min(rc.width - 66, cxV + 72); zurdo = true; }
+  let z = campo.querySelector('.zeus');
+  if(!z){
+    z = document.createElement('div');
+    z.className = 'zeus';
+    z.innerHTML = raiz.Personajes.ZEUS_SVG;
+    campo.appendChild(z);
+  }
+  z.classList.remove('disipa', 'sinCetro', 'resplandece', 'lanza');
+  z.classList.toggle('zurdo', zurdo);
+  z.style.left = cx.toFixed(0) + 'px';
+  z.style.setProperty('--asomo', '-12px');
+  requestAnimationFrame(() => z.classList.add('fuera'));
+  return z;
+}
+function lanza(z){
+  z.classList.add('lanza', 'resplandece');
+  setTimeout(() => z.classList.remove('lanza'), 240);
+}
+function seVa(z){
+  z.classList.remove('resplandece');
+  z.classList.add('disipa');
+  setTimeout(() => { z.classList.remove('fuera'); setTimeout(() => z.classList.remove('sinCetro', 'disipa'), 430); }, 560);
+}
+function trueno(campo, fza){
+  campo.style.setProperty('--sac', (.55 + 1.15 * varaDe(fza)).toFixed(2));
+  campo.classList.remove('trueno'); void campo.offsetWidth; campo.classList.add('trueno');
+  setTimeout(() => campo.classList.remove('trueno'), 380);
+}
+function chamusca(campo, elT, fza){
+  const rc = rect(campo), rn = rect(elT);
+  const m = document.createElement('span');
+  m.className = 'chamusca';
+  m.style.left = (rn.left + rn.width / 2 - rc.left).toFixed(0) + 'px';
+  m.style.bottom = Math.max(8, Math.round(rc.bottom - rn.bottom + 2)) + 'px';
+  m.style.setProperty('--mn', (.7 + .75 * varaDe(fza)).toFixed(2));
+  campo.appendChild(m);
+  setTimeout(() => m.remove(), 4200);
+}
+function rayo(campo, elT, fza){
+  const u = varaDe(fza);
+  const rc = rect(campo), rn = rect(elT);
+  const cx = rn.left + rn.width / 2 - rc.left;
+  const cy = Math.max(12, rn.top - rc.top + 6);
+  let sx = cx, sy = 12;
+  const punoZ = campo.querySelector('.zeus.fuera .punoZ');
+  if(punoZ){ const rz = rect(punoZ); sx = rz.left + rz.width / 2 - rc.left; sy = rz.top + rz.height - rc.top + 1; }
+  let d = 'M' + sx.toFixed(0) + ' ' + sy.toFixed(0);
+  const tramos = 4 + Math.round(3 * u), amplitud = 8 + 14 * u, dirV = cx >= sx ? 1 : -1;
+  for(let i = 1; i <= tramos; i++){
+    const t = i / tramos;
+    const dx = (i === tramos ? 0 : dirV * (i % 2 ? 1 : -1) * (amplitud * (1 - t) + 3));
+    d += ' L' + (sx + (cx - sx) * t + dx).toFixed(0) + ' ' + (sy + (cy - sy) * t).toFixed(0);
+  }
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('class', 'rayo');
+  svg.style.setProperty('--gh', (4.4 + 7.6 * u).toFixed(1));
+  svg.style.setProperty('--gn', (1.4 + 2.4 * u).toFixed(1));
+  svg.style.setProperty('--bh', (1.3 + 2.4 * u).toFixed(1) + 'px');
+  svg.style.setProperty('--ah', (.42 + .3 * u).toFixed(2));
+  svg.setAttribute('width', String(Math.round(rc.width)));
+  svg.setAttribute('height', String(Math.round(rc.height)));
+  [['r-halo'], ['r-nucleo']].forEach(([c]) => { const p = document.createElementNS(NS, 'path'); p.setAttribute('d', d); p.setAttribute('class', c); svg.appendChild(p); });
+  campo.appendChild(svg);
+  setTimeout(() => svg.remove(), 700);
+  const fog = document.createElement('span');
+  fog.className = 'fogonazo';
+  fog.style.setProperty('--af', (.28 + .42 * u).toFixed(2));
+  campo.appendChild(fog);
+  setTimeout(() => fog.remove(), 420);
+}
+function humo(campo, elT){
+  const rc = rect(campo), rn = rect(elT);
+  const cx = rn.left + rn.width / 2 - rc.left, cy = rn.top + rn.height * 0.55 - rc.top;
+  for(let i = 0; i < 7; i++){
+    const h = document.createElement('span');
+    h.className = 'humo';
+    h.style.left = cx.toFixed(0) + 'px'; h.style.top = cy.toFixed(0) + 'px';
+    h.style.setProperty('--hx', (Math.random() * 26 - 13).toFixed(0) + 'px');
+    h.style.setProperty('--hy', (-4 - Math.random() * 16).toFixed(0) + 'px');
+    h.style.animationDelay = (i * 35) + 'ms';
+    campo.appendChild(h);
+    setTimeout(() => h.remove(), 950);
+  }
+}
+/* la escena entera: Zeus se asoma, lanza, el tirador se va. Devuelve una
+   promesa que se cumple cuando el tirador ya no está; Zeus se retira solo */
+function fulmina(campo, elT, fza, espera){
+  if(REDUCIDO || !elT){ if(elT) elT.classList.add('saliendo'); return espera(REDUCIDO ? 60 : 500); }
+  const z = asoma(campo, elT);
+  return espera(560).then(() => {
+    lanza(z);
+    return espera(180);
+  }).then(() => {
+    z.classList.add('sinCetro');
+    rayo(campo, elT, fza); trueno(campo, fza); chamusca(campo, elT, fza);
+    elT.classList.add('fulminado', 'saliendo');
+    humo(campo, elT);
+    setTimeout(() => seVa(z), 700);
+    return espera(520);
+  });
+}
+raiz.Zeus = {fulmina, asoma, seVa, rayo, trueno, humo};
+})(window);
+</script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   LA PALESTRA · los ejercicios y la ruta
+   Genera cuentas de cada nivel del andamiaje y las comprueba con el motor:
+   una cuenta vale si tiene teatro (cabe en el campo, sin niveles de más)
+   y da un entero. La ruta son las misiones, en orden, con su meta.
+   Sin pantalla: la página decide cómo enseñarlo.
+   ══════════════════════════════════════════════════════════════════════ */
+(function (raiz) {
+'use strict';
+const P = raiz.Palestra;
+
+const n = f => ({t: 'n', f}), MAS = {t: '+'}, MENOS = {t: '-'}, AB = {t: '('}, CI = {t: ')'};
+const po = k => ({t: 'p', k, pre: false}), pre = k => ({t: 'p', k, pre: true}), e = x => ({t: 'e', n: x});
+
+const MISIONES = [
+  {t: 'Entra gente',        nivel: 0, meta: 4, d: 'Entrar es <b>sumar</b>, con su signo.'},
+  {t: 'Alguien se retira',  nivel: 1, meta: 4, d: 'Retirarse es <b>restar</b>. Si no está, entra su pareja.'},
+  {t: 'Pociones',           nivel: 2, meta: 4, d: 'El frasco se bebe en el <b>banquillo</b>. Con calavera, cambia de bando.'},
+  {t: 'El paréntesis',      nivel: 3, meta: 4, d: 'Primero se <b>reduce</b> el paréntesis; luego bebe.'},
+  {t: 'Potencias',          nivel: 4, meta: 3, d: '<b>(−2)²</b> no es <b>−2²</b>.'},
+  {t: 'Todo junto',         nivel: 5, meta: 5, d: 'De todo un poco.'}
+];
+
+/* el azar se puede sustituir en las pruebas */
+let azar = Math.random;
+const elige = lista => lista[Math.floor(azar() * lista.length)];
+const fuerza = () => elige([1, 2, 3, 4, 5]);
+const conSigno = () => elige([1, -1]) * fuerza();
+const POC_ENTERAS = [2, 3, -1, -2, -3], POC_TODAS = [2, 3, 1/2, 1/3, -1, -2, -3, -1/2];
+
+/* una cuenta al azar de cada nivel; puede no valer (se comprueba después) */
+function plantilla(nivel){
+  switch(nivel){
+    case 0: return azar() < .5 ? [n(conSigno()), MAS, n(conSigno())] : [n(conSigno()), MAS, n(conSigno()), MAS, n(conSigno())];
+    case 1: {
+      const a = conSigno();
+      /* la mitad de las veces se retira alguien que está; la otra mitad, pareja nula */
+      if(azar() < .5) return [n(a), MENOS, n(a)].length && [n(a), MAS, n(conSigno()), MENOS, n(a)];
+      return azar() < .5 ? [n(a), MENOS, n(conSigno())] : [n(a), MAS, n(conSigno()), MENOS, n(conSigno())];
+    }
+    case 2: {
+      const k = elige(POC_TODAS), a = conSigno(), b = conSigno();
+      return elige([
+        [n(a), MAS, n(b), po(k)],
+        [n(a), MENOS, n(b), po(k)],
+        [n(b), po(k), MAS, n(a)],
+        Number.isInteger(k) ? [n(a), MAS, pre(k), n(b)] : [n(a), MAS, n(b), po(k)]
+      ]);
+    }
+    case 3: {
+      const k = elige(POC_ENTERAS), a = conSigno(), b = conSigno(), c = conSigno();
+      return elige([
+        [n(a), MAS, pre(k), AB, n(b), MAS, n(c), CI],
+        [n(a), MENOS, AB, n(b), MAS, n(c), CI],
+        [n(a), MENOS, AB, n(b), MENOS, n(c), CI],
+        [AB, n(b), MAS, n(c), CI, po(k)],
+        [pre(k), AB, n(b), MAS, n(c), CI, MAS, n(a)]
+      ]);
+    }
+    case 4: {
+      const a = conSigno(), b = elige([1, 2, 3]);
+      return elige([
+        [n(a), MAS, n(-b), e(2)],
+        [MENOS, n(b), e(2)],
+        [n(-b), e(3)],
+        [n(a), MENOS, n(-b), e(2)],
+        [n(-b), e(2), MAS, n(a)]
+      ]);
+    }
+    default: return plantilla(1 + Math.floor(azar() * 4));
+  }
+}
+
+/* una cuenta del nivel que vale: con teatro y resultado entero */
+function genera(nivel){
+  for(let i = 0; i < 60; i++){
+    const tok = plantilla(nivel);
+    let pel;
+    try{ pel = P.graba(tok); }catch(err){ continue; }
+    if(pel.sinTeatro || pel.valor === null) continue;
+    if(pel.pasos.length < 2) continue;
+    return {tok, valor: pel.valor, pel};
+  }
+  /* si el azar se empeña, una segura */
+  const tok = [n(2), MAS, n(-3)];
+  return {tok, valor: -1, pel: P.graba(tok)};
+}
+
+/* ── la ruta: dónde va el alumno ── */
+function nuevaRuta(){ return {i: 0, hechas: 0, hecho: false, tropezo: false}; }
+/* un acierto: devuelve si con este se cumple la misión */
+function acierta(ruta){
+  const m = MISIONES[ruta.i];
+  if(ruta.hechas < m.meta) ruta.hechas++;
+  if(ruta.hechas >= m.meta && !ruta.hecho){ ruta.hecho = true; return true; }
+  return false;
+}
+function siguiente(ruta){
+  if(ruta.i >= MISIONES.length - 1) return false;
+  ruta.i++; ruta.hechas = 0; ruta.hecho = false; ruta.tropezo = false;
+  return true;
+}
+
+/* ── el acta de la jornada ── */
+function nuevaSesion(){ return {t0: Date.now(), bien: 0, mal: 0, mision: {}}; }
+function anota(sesion, ruta, ok){
+  sesion[ok ? 'bien' : 'mal']++;
+  const m = sesion.mision[ruta.i] || (sesion.mision[ruta.i] = {bien: 0, mal: 0});
+  m[ok ? 'bien' : 'mal']++;
+}
+function reloj(ms){
+  const s = Math.max(0, Math.round(ms / 1000));
+  return Math.floor(s / 60) + ' min ' + String(s % 60).padStart(2, '0') + ' s';
+}
+function actaEnTexto(sesion, ahora){
+  ahora = ahora || Date.now();
+  const total = sesion.bien + sesion.mal, f = new Date(ahora), dos = x => String(x).padStart(2, '0');
+  let t = 'LA PALESTRA · acta de la jornada\n';
+  t += 'Nombre: ' + (sesion.nombre || '(sin nombre)') + '\n';
+  t += 'Fecha: ' + dos(f.getDate()) + '/' + dos(f.getMonth() + 1) + '/' + f.getFullYear() + '  ' + dos(f.getHours()) + ':' + dos(f.getMinutes()) + '\n';
+  t += 'Tiempo: ' + reloj(ahora - sesion.t0) + '\n';
+  t += 'Resueltas: ' + sesion.bien + '   Falladas: ' + sesion.mal + '   Acierto: ' + (total ? Math.round(100 * sesion.bien / total) : 0) + '%\n';
+  t += 'Por misión:\n';
+  const claves = Object.keys(sesion.mision).sort((a, b) => a - b);
+  if(!claves.length) t += '  (ninguna anotada)\n';
+  claves.forEach(i => {
+    const m = sesion.mision[i];
+    t += '  ' + (Number(i) + 1) + '. ' + MISIONES[i].t + ' — ' + m.bien + ' de ' + (m.bien + m.mal) + (m.mal > m.bien ? '  (floja)' : '') + '\n';
+  });
+  return t;
+}
+
+/* ── el turno guardado: se retoma al recargar, dentro de la misma clase ── */
+const GUARDADO = 'palestra.turno.v1', CADUCA = 90 * 60 * 1000;
+function guarda(ruta, sesion, alm){
+  try{ (alm || raiz.localStorage).setItem(GUARDADO, JSON.stringify({v: 1, ts: Date.now(), ruta, sesion})); }catch(err){}
+}
+function lee(alm, ahora){
+  try{
+    const d = JSON.parse((alm || raiz.localStorage).getItem(GUARDADO) || 'null');
+    if(!d || d.v !== 1 || !d.ruta || !d.sesion) return null;
+    if((ahora || Date.now()) - d.sesion.t0 > CADUCA){ borra(alm); return null; }
+    if(d.ruta.i < 0 || d.ruta.i >= MISIONES.length) return null;
+    return d;
+  }catch(err){ return null; }
+}
+function borra(alm){ try{ (alm || raiz.localStorage).removeItem(GUARDADO); }catch(err){} }
+
+const E = {MISIONES, genera, plantilla, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto,
+  guarda, lee, borra, conAzar: f => { azar = f; }};
+if(typeof module !== 'undefined' && module.exports) module.exports = E;
+else raiz.Ejercicios = E;
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   LA PALESTRA · las entrevistas
+   Zeus, Jeferión y Listillón contestan a lo que se les pregunte. Las
+   preguntas y respuestas vienen tal cual de El pulso de los dioses; alguna
+   respuesta trae una cuenta para verla en la tablilla.
+   ══════════════════════════════════════════════════════════════════════ */
+(function (raiz) {
+'use strict';
+const REDUCIDO = raiz.matchMedia && raiz.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const HABLAN = {jef: 'habla', lis: 'habla', zeus: 'habla'};
+const ENTREVISTAS = {
+  zeus: {nombre:'Zeus', cargo:'dios del rayo y árbitro de la palestra',
+    hola:['enfada', 'Primera entrevista a cara descubierta en tres mil años. Tiene cinco minutos: los rayos no se lanzan solos.'],
+    preguntas:[
+      {id:'z1', p:'¿Por qué fulmina a los que se retiran?', pose:'enfada',
+       r:'¡Porque abandonar un pulso a medias es de muy mala educación! Y además alguien tiene que llevar la cuenta: <b>cada rayo es una resta</b>. Sin rayo, nadie se enteraría de que el total ha cambiado.'},
+      {id:'z1b', tras:'z1', p:'¿Y a los que entran no los fulmina?', pose:'rie',
+       r:'¿A los que entran? ¡Si vienen a ayudar! <b>Entrar es sumar</b>, y sumar no necesita rayos. Necesita ganas.'},
+      {id:'z2', p:'¿Es verdad que restar un negativo es sumar?', pose:'habla',
+       r:'Mira: si retiro a uno que tiraba hacia la izquierda, la izquierda pierde fuerza y la bandera se va a la derecha. Eso es <b>− (−3) = +3</b>. No es magia. Bueno, un poco sí: la magia soy yo.'},
+      {id:'z3', p:'¿Y si le mandan retirar a alguien que no está en el campo?', pose:'piensa',
+       r:'No me voy a quedar con el rayo en la mano. Hago entrar una <b>pareja nula</b>, un +3 y un −3, que se anulan, y fulmino al −3. La bandera ni se inmuta… hasta que cae el rayo.'},
+      {id:'z4', p:'¿Cuál es su número favorito?', pose:'rie',
+       r:'El <b>cero</b>. Empate perfecto: nadie gana, nadie pierde, y yo me echo la siesta.'},
+      {id:'z5', p:'¿Le duele el brazo de tanto lanzar rayos?', pose:'sorpresa',
+       r:'Nadie me había preguntado eso en tres mil años… Un poco, sí. Sobre todo con el <b>menos delante de un paréntesis</b>: ¡hay rayo para todos los de dentro!'},
+      {id:'z6', p:'¿Qué opina de Jeferión?', pose:'enfada',
+       r:'Me paga en aceitunas. Y encima me pide que fulmine a los que tiran en su contra. ¡Yo soy <b>árbitro</b>, no su guardaespaldas! El rayo no mira de qué bando eres: mira a quién se retira.'},
+      {id:'z7', p:'¿Alguna vez ha fallado un rayo?', pose:'calla', r:'Siguiente pregunta.'},
+      {id:'z7b', tras:'z7', p:'Venga, en serio: ¿alguna vez?', pose:'piensa',
+       r:'…Una vez. Me mandaron retirar a un <b>+2</b> y fulminé a un <b>−2</b>. La bandera se fue justo al revés: cuatro casillas de golpe. Desde entonces miro el <b>signo</b> dos veces antes de lanzar.'}
+    ]},
+  jef: {nombre:'Jeferión', cargo:'jefe del almacén de carros y patrocinador del equipo de la derecha',
+    hola:['habla', 'Pregunte rápido, que tengo carros que cargar. Y hable bien de mí.'],
+    preguntas:[
+      {id:'j1', p:'¿Por qué lleva gafas, si es un cocodrilo?', pose:'habla',
+       r:'Para leer las tablillas de Listillón. Escribe muy pequeño y con <b>muchos paréntesis</b>.'},
+      {id:'j2', p:'¿Por qué siempre va con los de la derecha?', pose:'celebra',
+       r:'¡Porque los de la derecha tiran hacia los positivos! Aunque Listillón dice que un <b>−5 tira más fuerte que un +3</b>. Me sigue doliendo.'},
+      {id:'j2b', tras:'j2', p:'Entonces, ¿−5 es más que +3?', pose:'piensa',
+       r:'Más <b>fuerte</b>, sí; más <b>grande</b>, no. El −5 tira con fuerza 5, pero en la regla queda más a la izquierda, así que es <b>menor</b>. Me lo ha explicado cuatro veces. Cinco con esta.'},
+      {id:'j3', p:'¿Qué es lo que más le cuesta?', pose:'piensa',
+       r:'Restar negativos. Si me quitan una deuda, gano, eso lo entiendo. Pero cuando lo veo escrito, <b>− (−3)</b>, me mareo. Hasta que cae el rayo y lo veo claro.'},
+      {id:'j4', p:'¿Qué opina de las pociones de Traición?', pose:'celebra',
+       r:'¡Mi poción favorita! Le cambia el bando al rival: <b>es un menos que se bebe</b>. Aunque una vez me la bebí yo por error y me pasé la tarde tirando en mi contra.'},
+      {id:'j5', p:'¿Por qué Listillón tiene que escribirlo todo?', pose:'senala',
+       r:'Porque lo que pasa en el campo se lo lleva el viento. Lo que se escribe con signos <b>se puede comprobar</b>. Y así nadie me discute las cuentas. Bueno, Listillón sí.'},
+      {id:'j6', p:'¿Es usted buen jefe?', pose:'sorpresa',
+       r:'¿Cómo que si soy…? ¡Pues claro! Pregúntele a Listillón. …Mejor no le pregunte.'},
+      {id:'j7', p:'¿Qué haría con mil tiradores?', pose:'celebra',
+       r:'¡Ganar! Aunque en el campo solo caben <b>cinco por lado</b>. Listillón dice que es una restricción del problema. Yo digo que es una injusticia.'}
+    ]},
+  lis: {nombre:'Listillón', cargo:'escriba oficial de Jeferión y autor de las tablillas',
+    hola:['habla', 'Apunto las preguntas y contesto las respuestas. Por ese orden.'],
+    preguntas:[
+      {id:'l1', p:'¿Qué apunta en su tablilla?', pose:'habla',
+       r:'Todo lo que pasa en el campo, <b>con signos</b>. Si entra un −3, escribo <b>+ (−3)</b>. Si se retira, <b>− (−3)</b>. Así el jefe no puede decir que no pasó.'},
+      {id:'l2', p:'¿Por qué dice que el signo y la fuerza son dos preguntas?', pose:'senala',
+       r:'Porque lo son. La <b>fuerza</b> es cuánto tira: el número sin signo. El <b>signo</b> es hacia dónde. El jefe mezcla las dos cosas y luego se enfada con la regla.'},
+      {id:'l3', p:'¿Por qué el frasco espera en el banquillo?', pose:'senala',
+       r:'Porque en <b>3·(−2 + 1)</b> el 3 está escrito antes de que haya nadie a quien dárselo. Se escribe en un orden y se juega en otro: eso es la <b>jerarquía</b>. ¿Quiere verlo?',
+       prueba:[{t:'p',k:3},{t:'('},{t:'n',f:-2},{t:'+'},{t:'n',f:1},{t:')'}]},
+      {id:'l4', p:'¿Qué es lo más difícil de ser escriba de Jeferión?', pose:'piensa',
+       r:'Que lo quiere todo en positivo. Le digo que el total es −4 y me contesta: «Escríbelo más bonito». <b>El −4 ya es bonito</b>, jefe.'},
+      {id:'l5', p:'¿Se lleva bien con Zeus?', pose:'sorpresa',
+       r:'Nos respetamos. Él lanza los rayos y yo apunto las restas. Una vez se equivocó de tirador y… eso pregúnteselo a él.'},
+      {id:'l6', p:'¿Por qué lleva gorra?', pose:'celebra',
+       r:'Para que no me caigan encima los paréntesis. Hay días que llueven.'},
+      {id:'l7', p:'¿Qué le diría a quien odia los números negativos?', pose:'celebra',
+       r:'Que no son malos: son <b>del otro bando</b>. Sin ellos no habría pulso, solo gente tirando de una cuerda hacia el mismo lado. Qué aburrimiento.'},
+      {id:'l8', p:'¿Cómo sabe que una cuenta está bien?', pose:'senala',
+       r:'La juego en el campo. Si la bandera para donde dice la cuenta, está bien. Si no, alguien se ha equivocado de signo. <b>Casi siempre es el signo</b>.'}
+    ]}
+};
+
+/* monta la entrevista en su sección; o.alPrueba(tok) abre una cuenta en la tablilla */
+function monta(el, o){
+  const DIBUJA = raiz.Personajes.DIBUJA;
+  const $ = c => el.querySelector(c);
+  const ev = {quien: 'zeus', hechas: new Set(), tok: 0};
+  const quien = $('.ev-quien');
+  [['zeus', 'Zeus'], ['jef', 'Jeferión'], ['lis', 'Listillón']].forEach(([id, nom]) => {
+    const b = document.createElement('button');
+    b.dataset.q = id; b.type = 'button';
+    b.innerHTML = '<span class="ev-mini">' + DIBUJA[id]('calla') + '</span>' + nom;
+    b.addEventListener('click', () => elige(id));
+    quien.appendChild(b);
+  });
+  function elige(q){
+    ev.quien = q; ev.hechas = new Set();
+    quien.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.q === q)));
+    const E = ENTREVISTAS[q];
+    $('.ev-cartel').innerHTML = 'Hoy entrevistamos a <b>' + E.nombre + '</b>, ' + E.cargo + '.';
+    $('.ev-pregunta').textContent = '';
+    contesta(E.hola[0], E.hola[1]);
+    pintaPreguntas();
+  }
+  function pintaPreguntas(){
+    const E = ENTREVISTAS[ev.quien], L = $('.ev-lista');
+    L.innerHTML = '';
+    E.preguntas.filter(q => !q.tras || ev.hechas.has(q.tras)).forEach(q => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'ev-p' + (ev.hechas.has(q.id) ? ' hecha' : '') + (q.tras ? ' repregunta' : '');
+      b.innerHTML = (q.tras ? '<span class="ev-re">repregunta</span> ' : '') + q.p;
+      b.addEventListener('click', () => pregunta(q));
+      L.appendChild(b);
+    });
+  }
+  function pregunta(q){
+    ev.hechas.add(q.id);
+    $('.ev-pregunta').innerHTML = '— ' + q.p;
+    const esc = $('.ev-escena');       // en el móvil, que se vea quién contesta
+    if(esc.getBoundingClientRect().top < 0) esc.scrollIntoView({behavior: 'smooth', block: 'start'});
+    contesta(q.pose, q.r, q.prueba);
+    pintaPreguntas();
+  }
+  /* la respuesta sale letra a letra, con la boca moviéndose; al acabar, la postura */
+  function contesta(pose, html, prueba){
+    const tok = ++ev.tok;
+    const cara = $('.ev-cara'), dibu = DIBUJA[ev.quien], txt = $('.ev-respuesta'), bp = $('.ev-prueba');
+    bp.hidden = true;
+    const trozos = html.split(/(<[^>]+>)/).filter(Boolean);
+    const total = trozos.reduce((n, t) => n + (t[0] === '<' ? 0 : t.length), 0);
+    const cierre = () => {
+      if(ev.tok !== tok) return;
+      txt.innerHTML = html;
+      cara.innerHTML = dibu(pose);
+      if(prueba && o && o.alPrueba){
+        bp.hidden = false;
+        bp.onclick = () => o.alPrueba(prueba.map(t => Object.assign({}, t, t.t === 'p' ? {pre: true} : {})));
+      }
+    };
+    if(REDUCIDO){ cierre(); return; }
+    let n = 0;
+    const paso = () => {
+      if(ev.tok !== tok) return;
+      n = Math.min(total, n + 2);
+      let quedan = n, h = '';
+      for(const t of trozos){
+        if(t[0] === '<'){ h += t; continue; }
+        if(quedan <= 0) break;
+        h += t.slice(0, quedan); quedan -= t.length;
+      }
+      txt.innerHTML = h;
+      cara.innerHTML = dibu(Math.floor(n / 6) % 2 ? 'calla' : (pose === 'calla' ? 'calla' : HABLAN[ev.quien]));
+      if(n < total) setTimeout(paso, 28); else cierre();
+    };
+    paso();
+  }
+  return {elige, abre: () => elige(ev.quien), calla: () => { ev.tok++; }};
+}
+raiz.Entrevistas = {ENTREVISTAS, monta};
+})(window);
+</script>
 <script>
   const P = window.Palestra, C = window.Campo, TL = window.Tablilla, PJ = window.Personajes, E = window.Ejercicios;
   const $ = id => document.getElementById(id);

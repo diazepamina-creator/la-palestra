@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-const M = createRequire(import.meta.url)('../motor.js');
+const M = createRequire(import.meta.url)('../src/motor.js');
 
 /* una cuenta escrita en corto: n(−2) p(3) pre(3) e(2) + - ( ) */
 const T = {

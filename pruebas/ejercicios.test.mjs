@@ -3,8 +3,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-globalThis.Palestra = require('../motor.js');
-const E = require('../ejercicios.js');
+globalThis.Palestra = require('../src/motor.js');
+const E = require('../src/ejercicios.js');
 const M = globalThis.Palestra;
 
 /* un azar de mentira, que recorre la unidad a saltos: así se prueban muchas variantes sin repetir */

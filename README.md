@@ -13,18 +13,20 @@ El tira y afloja de los números enteros, rehecho desde cero a partir de lo apre
 
 ## Ficheros
 
-- `motor.js` — el estado del campo (`Campo`), el analizador de la cuenta (`analiza`), el intérprete (`juega`) y el grabador de fotogramas (`graba`). No dibuja nada; vale en el navegador y en Node.
-- `pruebas/motor.test.mjs` — las pruebas del motor: `node --test pruebas/motor.test.mjs pruebas/ejercicios.test.mjs`.
-- `tirador.js` — el dibujo del tirador en SVG (viene tal cual de El pulso de los dioses).
-- `campo.js` y `src/campo.css` — el campo: pinta una foto del motor (cuerda, regla, bandera). Sin animación.
-- `tablilla.js` y `src/tablilla.css` — la tablilla: las teclas de barro, qué pieza puede ir tras cuál (`pulsa`, función pura) y la cuenta escrita con colores (`htmlCuenta`).
-- `reproductor.js` y `src/banquillo.css` — el reproductor: enseña la foto k al instante y, al avanzar, anima solo el paso que toca (llegar, beber en el banquillo, juntarse, salir a tirar, retirarse). ▶▶ repasa de un tirón.
-- `personajes.js` y `src/personajes.css` — Jeferión, Listillón y Zeus dibujados por código (de El pulso de los dioses), las caras que hablan según el aviso y el rayo.
-- `zeus.js` — los efectos del rayo cuando alguien se retira: Zeus se asoma, lanza, trueno, chamusca y humo. Solo efectos: el estado ya lo decide el motor.
-- `ejercicios.js` y `pruebas/ejercicios.test.mjs` — los ejercicios y la ruta: seis misiones por niveles, el generador de cuentas comprobado con el motor, el acta de la jornada y el turno guardado 90 minutos.
-- `entrevistas.js` y `src/entrevistas.css` — las entrevistas a Zeus, Jeferión y Listillón, con sus preguntas y repreguntas; alguna respuesta se ve en la tablilla.
-- `src/cartela.css` — la cartela: la cuenta encima del campo con el trozo que se juega iluminado, la pregunta y el veredicto.
-- `index.html` — la página: arranca en la ruta (la cuenta escrita, «¿dónde acaba la bandera?», ▶ Verlo en el campo); en modo libre la tablilla escribe la cuenta, `=` la graba con el motor y el reproductor la pasa con ◀ ▶ ⟲ ▶▶. Antes de un paso clave pregunta dónde acabará la bandera.
+La app es **un solo `index.html`**, como las demás: se genera con `node construye.mjs` a partir de `src/`. Se edita `src/`, no `index.html`.
+
+- `src/pagina.html` — la página: la ruta, la tablilla, el campo, el acta y las entrevistas, con los enlaces a los módulos.
+- `src/motor.js` — el estado del campo (`Campo`), el analizador de la cuenta (`analiza`), el intérprete (`juega`) y el grabador de fotogramas (`graba`). No dibuja nada; vale en el navegador y en Node.
+- `src/tirador.js` — el dibujo del tirador en SVG (de El pulso de los dioses).
+- `src/campo.js` y `src/campo.css` — el campo: pinta una foto del motor (cuerda, regla, bandera).
+- `src/tablilla.js` y `src/tablilla.css` — la tablilla: las teclas de barro, qué pieza puede ir tras cuál (`pulsa`) y la cuenta escrita (`htmlCuenta`).
+- `src/reproductor.js` y `src/banquillo.css` — el reproductor: la foto k al instante y el paso k+1 animado; la predicción antes de los pasos clave; ▶▶.
+- `src/cartela.css` — la cartela: la cuenta iluminada encima del campo.
+- `src/personajes.js`, `src/zeus.js` y `src/personajes.css` — Jeferión, Listillón y Zeus, las caras que hablan y el rayo.
+- `src/ejercicios.js` — las seis misiones, el generador de cuentas comprobado con el motor, el acta y el turno guardado.
+- `src/entrevistas.js` y `src/entrevistas.css` — las entrevistas.
+- `pruebas/` — `node --test pruebas/motor.test.mjs pruebas/ejercicios.test.mjs pruebas/construccion.test.mjs`. La última comprueba que `index.html` está al día.
+- `construye.mjs` — funde `src/` en `index.html`.
 
 ## Pasos
 
@@ -36,4 +38,4 @@ El tira y afloja de los números enteros, rehecho desde cero a partir de lo apre
 6. ✅ Personajes: Zeus y el rayo, Listillón en la tablilla, Jeferión en el campo.
 7. ✅ Ejercicios y ruta: seis misiones, el acta y el turno guardado.
 8. ✅ Entrevistas.
-9. Fundirlo todo en un solo HTML, como las demás apps.
+9. ✅ Fundirlo todo en un solo HTML, como las demás apps.
