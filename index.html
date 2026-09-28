@@ -21,6 +21,7 @@
     --lento:1;
   }
   *{box-sizing:border-box}
+  [hidden]{display:none !important}
   body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,'Segoe UI',sans-serif;padding:16px 16px 40px}
   main{max-width:620px;margin:0 auto}
   h1{font-family:'Oswald',sans-serif;font-weight:500;font-size:22px;letter-spacing:1px;margin:0 0 2px}
@@ -35,21 +36,79 @@
   .bq-lista{margin:6px 0 0;font-size:14px;color:var(--muted)}
   .bq-lista b.izq{color:var(--izq)} .bq-lista b.der{color:var(--der)}
   .panel[hidden]{display:none}
+  /* ── la ruta ── */
+  .ruta{border-color:rgba(233,184,78,.35)}
+  .rt-cab{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .rt-cab h2{margin:0}
+  .rt-titulo{font-family:'Oswald',sans-serif;font-size:20px;font-weight:500;letter-spacing:.5px;margin:0}
+  .rt-d{margin:4px 0 8px;color:var(--muted);font-size:14px}
+  .rt-d b{color:var(--ink)}
+  .rt-puntos{display:flex;align-items:center;gap:6px}
+  .rt-p{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--oro);background:transparent}
+  .rt-p.hecho{background:var(--oro)}
+  .rt-hito{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);margin-left:4px}
+  .rt-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .rt-btns button, .ac button{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
+    color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-height:44px;cursor:pointer}
+  .rt-btns button.scan{background:var(--oro);color:#1A1206;border-color:var(--oro)}
+  .rt-btns button[hidden]{display:none}
+  /* ── el ejercicio, dentro de la tablilla ── */
+  .tl-ej[hidden]{display:none}
+  .tl-marca{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 8px}
+  .tl-marca .fi{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);
+    border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+  .tl-marca .fi b{color:var(--ink)}
+  .tl-resp{display:flex;gap:8px;align-items:stretch;margin:0 0 8px}
+  .tl-resp input{flex:1;min-width:0;font:inherit;font-family:'Space Mono',monospace;font-size:17px;padding:10px 12px;border-radius:8px;
+    border:1px solid var(--line);background:var(--panel-2);color:var(--ink);min-height:44px}
+  .tl-resp button, .tl-ver{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
+    color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 14px;min-height:44px;cursor:pointer}
+  .tl-resp button.scan{background:#d7a646;border-color:#a67a1f;color:#241b36}
+  .tl-ver{width:100%}
+  .tablilla:has(.tl-ej:not([hidden])) .tl-cursor{display:none}
+  /* ── el acta ── */
+  .ac summary{cursor:pointer;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted)}
+  .ac-resumen{margin:8px 0;font-size:14px;color:var(--muted)}
+  .ac-resumen b{color:var(--ink)}
+  .ac-f{display:flex;gap:8px;font-size:14px;padding:4px 0;border-top:1px solid var(--line)}
+  .ac-f .ac-n{flex:1} .ac-f.floja .ac-n::after{content:" · floja";color:var(--ambar)}
+  .ac-fila{display:flex;gap:8px;align-items:stretch;margin-top:8px}
+  .ac-fila input{flex:1;min-width:0;font:inherit;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink)}
 </style>
 </head>
 <body>
 <main>
   <h1>La palestra</h1>
-  <p class="sub">Prototipo 0.6 · Zeus fulmina a quien se retira; Listillón y Jeferión comentan.</p>
+  <p class="sub">Prototipo 0.7 · la ruta: seis misiones, de entrar gente a las potencias, y el acta para el profe.</p>
+
+  <section class="panel ruta" id="ruta" aria-label="La ruta">
+    <div class="rt-cab"><h2 id="rtCab">Misión 1 de 6</h2><p class="rt-titulo" id="rtTitulo"></p></div>
+    <p class="rt-d" id="rtTxt"></p>
+    <div class="rt-puntos" id="rtPuntos"></div>
+    <div class="rt-btns">
+      <button type="button" id="rtSigue" class="scan" hidden>Siguiente misión</button>
+      <button type="button" id="rtSalta">Saltar</button>
+      <button type="button" id="rtLibre">Modo libre</button>
+    </div>
+  </section>
 
   <section class="tablilla" aria-label="La tablilla">
     <h2>La tablilla</h2>
     <div class="tl-tabla" aria-live="polite"><span id="tlEscrito"></span><span class="tl-cursor" aria-hidden="true"></span></div>
+    <div class="tl-ej" id="tlEj" hidden>
+      <p class="tl-marca" id="tlMarca"></p>
+      <div class="tl-resp">
+        <input id="tlResp" type="text" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="¿Dónde acaba la bandera?" aria-label="Tu respuesta">
+        <button type="button" id="tlComprueba" class="scan">Comprobar</button>
+      </div>
+      <button type="button" id="tlVer" class="tl-ver">▶ Verlo en el campo</button>
+    </div>
     <div class="tl-teclas" id="tlTeclas"></div>
     <div class="habla"><span class="cara lis" aria-hidden="true"></span><p class="aviso tl-aviso" id="tlAviso" role="status"></p></div>
-    <div class="tl-pie">
+    <div class="tl-pie" id="tlPie">
       <button type="button" id="tlLimpia">Tablilla limpia</button>
       <button type="button" id="tlMuestra">Una de muestra</button>
+      <button type="button" id="tlRuta">Volver a la ruta</button>
     </div>
   </section>
 
@@ -67,6 +126,13 @@
     </div>
     <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><p class="aviso" id="jefAviso" role="status"></p></div>
   </section>
+
+  <details class="panel ac" id="acta">
+    <summary>Acta de la jornada</summary>
+    <p class="ac-resumen" id="acResumen"></p>
+    <div id="acFilas"></div>
+    <div class="ac-fila"><input id="acNombre" type="text" placeholder="Nombre" aria-label="Nombre"><button type="button" id="acCopia">Copiar acta</button></div>
+  </details>
 </main>
 <script src="motor.js"></script>
 <script src="tirador.js"></script>
@@ -75,8 +141,9 @@
 <script src="reproductor.js"></script>
 <script src="personajes.js"></script>
 <script src="zeus.js"></script>
+<script src="ejercicios.js"></script>
 <script>
-  const P = window.Palestra, C = window.Campo, TL = window.Tablilla, PJ = window.Personajes;
+  const P = window.Palestra, C = window.Campo, TL = window.Tablilla, PJ = window.Personajes, E = window.Ejercicios;
   const $ = id => document.getElementById(id);
   const n = f => ({t:'n', f}), mas = {t:'+'}, menos = {t:'-'}, ab = {t:'('}, ci = {t:')'};
   const po = k => ({t:'p', k, pre:false}), pre = k => ({t:'p', k, pre:true}), e = x => ({t:'e', n:x});
@@ -88,7 +155,10 @@
   let muestra = 0;
 
   /* ── el estado de la página: la cuenta escrita y, si se ha pulsado =, su película ── */
-  const S = {tok: [], pel: null, visto: false};
+  const S = {tok: [], pel: null, visto: false, ej: null};
+  /* la ruta y el acta; si hay un turno guardado de esta clase, se retoma */
+  let ruta = E.nuevaRuta(), sesion = E.nuevaSesion();
+  { const d = E.lee(); if(d){ ruta = d.ruta; sesion = d.sesion; } }
 
   const campo = C.monta($('campo'));
   const R = window.Reproductor.crea({campo, banquillo: $('banquillo'), alCambiar: pintaMandos});
@@ -96,6 +166,7 @@
   TL.monta($('tlTeclas'), tecla);
 
   function tecla(tk){
+    if(S.ej) return;                         // en los ejercicios no se escribe
     if(tk.t === '='){ igual(); return; }
     const r = TL.pulsa(S.tok, tk);
     S.tok = r.tok; S.pel = null; S.visto = false; R.para();
@@ -108,6 +179,7 @@
     try{ S.pel = P.graba(S.tok); }
     catch(err){ $('tlAviso').innerHTML = err.message; return; }
     S.visto = false;
+    if(S.ej && S.ej.fase !== 'bien') S.ej.visto = true;
     if(S.pel.sinTeatro){
       $('tlAviso').innerHTML = S.pel.sinTeatro + ' Así que esta va <b>sin teatro</b>: te la calculo igual.';
       $('panelCampo').hidden = true;
@@ -119,6 +191,93 @@
     pintaTablilla();
     if(!S.pel.sinTeatro) R.carga(S.pel);
   }
+
+  /* ── LA RUTA Y LOS EJERCICIOS ── */
+  function pintaRuta(){
+    const m = E.MISIONES[ruta.i];
+    $('rtCab').textContent = 'Misión ' + (ruta.i + 1) + ' de ' + E.MISIONES.length;
+    $('rtTitulo').textContent = m.t;
+    $('rtTxt').innerHTML = (ruta.hecho ? '<b>Misión cumplida.</b> ' : '') + m.d;
+    let p = '';
+    for(let k = 0; k < m.meta; k++) p += '<span class="rt-p' + (k < ruta.hechas ? ' hecho' : '') + '"></span>';
+    $('rtPuntos').innerHTML = p + '<span class="rt-hito">' + ruta.hechas + ' de ' + m.meta + '</span>';
+    $('rtSigue').hidden = !(ruta.hecho && ruta.i < E.MISIONES.length - 1);
+    $('rtSalta').hidden = ruta.hecho || ruta.i >= E.MISIONES.length - 1;
+  }
+  function ronda(){
+    const m = E.MISIONES[ruta.i];
+    const ej = E.genera(m.nivel);
+    S.ej = {valor: ej.valor, visto: false, fase: 'pensando'};
+    S.tok = ej.tok; S.pel = null; S.visto = false; R.para();
+    $('tlResp').value = '';
+    $('tlAviso').innerHTML = '';
+    $('panelCampo').hidden = true;
+    pintaTablilla(); pintaMarca();
+  }
+  function pintaMarca(){
+    const m = sesion.mision[ruta.i] || {bien: 0, mal: 0};
+    $('tlMarca').innerHTML = '<span class="fi">resueltas <b>' + m.bien + '</b></span>' +
+      '<span class="fi">sin mirar <b>' + (sesion.solas && sesion.solas[ruta.i] || 0) + '</b></span>';
+  }
+  const esEntero = t => /^[-+]?\d+$/.test(String(t).replace(/[−–]/g, '-').replace(/\s+/g, ''));
+  function comprueba(){
+    if(!S.ej || S.ej.fase === 'bien') return;
+    const resp = String($('tlResp').value).trim();
+    if(!resp) return;
+    if(!esEntero(resp)){ $('tlAviso').innerHTML = 'Escribe un número: con cifras, y el signo delante si lo lleva.'; return; }
+    const dicho = parseInt(resp.replace(/[−–]/g, '-'), 10);
+    if(dicho === S.ej.valor){
+      S.ej.fase = 'bien';
+      E.anota(sesion, ruta, true);
+      if(!S.ej.visto){ sesion.solas = sesion.solas || {}; sesion.solas[ruta.i] = (sesion.solas[ruta.i] || 0) + 1; }
+      const cumplida = E.acierta(ruta);
+      $('tlAviso').innerHTML = '<b>¡Correcto!</b>' + (S.ej.visto ? '' : ' Y sin mirar.') + (cumplida ? ' <b>Misión cumplida.</b>' : '');
+      E.guarda(ruta, sesion);
+      pintaRuta(); pintaMarca(); pintaActa();
+      const yo = S.ej;
+      setTimeout(() => { if(S.ej === yo) ronda(); }, 2000);
+    }else{
+      E.anota(sesion, ruta, false);
+      E.guarda(ruta, sesion);
+      $('tlAviso').innerHTML = 'No es <b>' + resp.replace('-', '−') + '</b>. Pulsa <b>▶ Verlo en el campo</b> y mira dónde acaba.';
+      $('tlResp').value = '';
+      pintaMarca(); pintaActa();
+    }
+  }
+  function modoRuta(si){
+    $('ruta').hidden = !si;
+    $('tlEj').hidden = !si;
+    $('tlTeclas').hidden = si;
+    $('tlPie').hidden = si;
+    $('tlRuta').hidden = false;
+    if(si){ pintaRuta(); ronda(); }
+    else{ S.ej = null; S.tok = []; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
+  }
+  function pintaActa(){
+    const total = sesion.bien + sesion.mal;
+    $('acResumen').innerHTML = '<b>' + sesion.bien + '</b> resueltas · <b>' + sesion.mal + '</b> falladas · ' +
+      (total ? Math.round(100 * sesion.bien / total) : 0) + '% de acierto · tiempo: <b>' + E.reloj(Date.now() - sesion.t0) + '</b>';
+    $('acFilas').innerHTML = Object.keys(sesion.mision).sort((a, b) => a - b).map(i => {
+      const m = sesion.mision[i], t = m.bien + m.mal;
+      return '<div class="ac-f' + (m.mal > m.bien ? ' floja' : '') + '"><span class="ac-n">' + (Number(i) + 1) + '. ' + E.MISIONES[i].t + '</span><span>' + m.bien + ' de ' + t + '</span></div>';
+    }).join('') || '<div class="ac-f"><span class="ac-n">Aún no hay nada anotado.</span></div>';
+    $('acNombre').value = sesion.nombre || '';
+  }
+  $('tlComprueba').addEventListener('click', comprueba);
+  $('tlResp').addEventListener('keydown', ev => { if(ev.key === 'Enter'){ ev.preventDefault(); comprueba(); } });
+  $('tlVer').addEventListener('click', () => { if(S.ej) igual(); });
+  $('rtSigue').addEventListener('click', () => { if(E.siguiente(ruta)){ E.guarda(ruta, sesion); pintaRuta(); ronda(); } });
+  $('rtSalta').addEventListener('click', () => { if(E.siguiente(ruta)){ E.guarda(ruta, sesion); pintaRuta(); ronda(); } });
+  $('rtLibre').addEventListener('click', () => modoRuta(false));
+  $('tlRuta').addEventListener('click', () => modoRuta(true));
+  $('acNombre').addEventListener('input', () => { sesion.nombre = $('acNombre').value; E.guarda(ruta, sesion); });
+  $('acCopia').addEventListener('click', () => {
+    const t = E.actaEnTexto(sesion);
+    const listo = () => { $('acCopia').textContent = 'Copiada'; setTimeout(() => { $('acCopia').textContent = 'Copiar acta'; }, 1500); };
+    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(listo, () => alert(t));
+    else alert(t);
+  });
+  $('acta').addEventListener('toggle', pintaActa);
   function pintaTablilla(){
     let h = TL.htmlCuenta(S.tok);
     if(S.pel){
@@ -206,6 +365,8 @@
       .observe(av, {childList: true, subtree: true, characterData: true});
   });
   pintaTablilla();
+  modoRuta(true);
+  pintaActa();
 </script>
 </body>
 </html>
