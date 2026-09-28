@@ -25,8 +25,8 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 - `src/personajes.js`, `src/zeus.js` y `src/personajes.css` — Jeferión, Listillón y Zeus, las caras que hablan y el rayo.
 - `src/ejercicios.js` — las seis misiones, el generador de cuentas comprobado con el motor, el acta y el turno guardado.
 - `src/entrevistas.js` y `src/entrevistas.css` — las entrevistas.
-- `src/mesa.css` — la piel, la misma que Las piezas de Miut: la mesa de madera (haya, nogal) o el papel del proyector, las hojas, la cabecera con pestañas, los botones, las cajas de lo que dicen Listillón y Jeferión, el acta y el pie. La letra: Cinzel en los rótulos y Alegreya Sans para leer; las cuentas, en Space Mono.
-- `src/ajustes.css` — el campo a la luz del día (haya y proyector) y el modo aula para la pizarra digital (la lógica de los ajustes va en `src/pagina.html`).
+- `src/piel.css` — la piel: la disposición de Las piezas de Miut (la cabecera con pestañas, las hojas, los botones, las cajas de lo que dicen Listillón y Jeferión, el acta y el pie) sobre la arena rastrillada de la palestra, de día o de noche, o el papel del proyector. La letra: Cinzel en los rótulos y Alegreya Sans para leer; las cuentas, en Space Mono.
+- `src/ajustes.css` — el campo a la luz del día (arena de día y proyector) y el modo aula para la pizarra digital (la lógica de los ajustes va en `src/pagina.html`).
 - `src/arranque.js` y `src/arranque.css` — la escena de inicio, como en Las piezas de Miut: −3 + 5 = +2 jugado en el campo de verdad y el nombre. Solo al abrir la app; se salta tocando y se quita en Ajustes.
 - `VERSION` — el número de versión; `construye.mjs` lo pone en la página.
 - `pruebas/` — `node --test pruebas/motor.test.mjs pruebas/ejercicios.test.mjs pruebas/construccion.test.mjs`. La última comprueba que `index.html` está al día.
@@ -45,4 +45,4 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 9. ✅ Fundirlo todo en un solo HTML, como las demás apps.
 10. ✅ Ajustes (colores, modo aula, velocidad, preguntas), empezar de cero y el acta ejercicio a ejercicio.
 11. ✅ La escena de inicio.
-12. ✅ La piel de Las piezas de Miut: mesa, hojas, pestañas y botones.
+12. ✅ La disposición de Las piezas de Miut (pestañas, hojas y botones) sobre la arena de la palestra.

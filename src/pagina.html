@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Space+Mono:wght@400;700&display=swap">
-<link rel="stylesheet" href="src/mesa.css">
+<link rel="stylesheet" href="src/piel.css">
 <link rel="stylesheet" href="src/campo.css">
 <link rel="stylesheet" href="src/tablilla.css">
 <link rel="stylesheet" href="src/banquillo.css">
@@ -17,12 +17,11 @@
 <link rel="stylesheet" href="src/ajustes.css">
 <link rel="stylesheet" href="src/arranque.css">
 <script>
-  /* los ajustes se ponen antes de pintar nada, para que no haya un fogonazo de la otra madera.
-     La haya es la de siempre; los nombres de antes (noche, día) pasan a nogal y haya */
-  document.documentElement.dataset.tema = 'haya';
+  /* los ajustes se ponen antes de pintar nada, para que no haya un fogonazo del otro fondo.
+     La arena de día es la de siempre */
+  document.documentElement.dataset.tema = 'dia';
   try{ const a = JSON.parse(localStorage.getItem('palestra.ajustes.v1') || '{}');
-    const t = {noche: 'nogal', dia: 'haya'}[a.tema] || a.tema;
-    if(t === 'nogal' || t === 'proyector') document.documentElement.dataset.tema = t;
+    if(a.tema === 'noche' || a.tema === 'proyector') document.documentElement.dataset.tema = a.tema;
     if(a.aula) document.documentElement.dataset.aula = 'si';
   }catch(err){}
   /* la escena de inicio: solo al abrir la app (no al recargar en la misma sesión), si no se ha
@@ -33,7 +32,7 @@
     if(a.inicio !== false && !vista && !quieto) document.documentElement.dataset.inicio = 'si'; }catch(err){}
 </script>
 <style>
-  /* la página no lleva estilos propios: la mesa, las hojas y los botones van en src/mesa.css */
+  /* la página no lleva estilos propios: la arena, las hojas y los botones van en src/piel.css */
 </style>
 </head>
 <body>
@@ -65,9 +64,9 @@
   </header>
 
   <section class="panel ajustes" id="ajustes" hidden aria-label="Ajustes">
-    <div class="aj"><span class="etq">La mesa</span>
-      <span class="ops" data-aj="tema" role="group" aria-label="La mesa"><button type="button" data-v="haya">Haya</button><button type="button" data-v="nogal">Nogal</button><button type="button" data-v="proyector">Proyector</button></span>
-      <small>Haya, la madera clara de siempre. Nogal, oscura, para un aula con poca luz. Proyector: papel blanco y tinta negra, para que se lea con la luz encendida.</small></div>
+    <div class="aj"><span class="etq">El fondo</span>
+      <span class="ops" data-aj="tema" role="group" aria-label="El fondo"><button type="button" data-v="dia">Arena de día</button><button type="button" data-v="noche">Arena de noche</button><button type="button" data-v="proyector">Proyector</button></span>
+      <small>La arena de la palestra, rastrillada. De noche, para un aula con poca luz. Proyector: papel blanco y tinta negra, para que se lea con la luz encendida.</small></div>
     <div class="aj"><span class="etq">El ritmo</span>
       <span class="ops" data-aj="lento" role="group" aria-label="El ritmo del campo"><button type="button" data-v="no">Normal</button><button type="button" data-v="si">Pausado</button></span>
       <small>«Pausado»: cada paso del campo tarda más, para comentarlo mientras pasa.</small></div>
@@ -285,7 +284,7 @@
     else{ S.ej = null; S.tok = []; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
     pintaPestanas();
   }
-  /* ── EL ACTA, en su hoja por encima de la mesa ── */
+  /* ── EL ACTA, en su propia hoja ── */
   function pintaActa(){
     const total = sesion.bien + sesion.mal, dato = (n, v) => '<div><span class="etq">' + n + '</span><b>' + v + '</b></div>';
     $('acDatos').innerHTML = dato('Resueltas', sesion.bien) + dato('Falladas', sesion.mal) +
@@ -450,10 +449,9 @@
 
   /* ── LOS AJUSTES: se guardan en este navegador y no caducan ── */
   const AJUSTES = 'palestra.ajustes.v1';
-  const aj = {tema: 'haya', aula: false, lento: false, preguntas: true, inicio: true};
+  const aj = {tema: 'dia', aula: false, lento: false, preguntas: true, inicio: true};
   try{ Object.assign(aj, JSON.parse(localStorage.getItem(AJUSTES) || '{}')); }catch(err){}
-  aj.tema = {noche: 'nogal', dia: 'haya'}[aj.tema] || aj.tema;          // los nombres de antes
-  if(['haya', 'nogal', 'proyector'].indexOf(aj.tema) < 0) aj.tema = 'haya';
+  if(['dia', 'noche', 'proyector'].indexOf(aj.tema) < 0) aj.tema = 'dia';
   function aplica(){
     const h = document.documentElement;
     h.dataset.tema = aj.tema;

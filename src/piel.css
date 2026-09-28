@@ -1,19 +1,22 @@
 /* ══════════════════════════════════════════════════════════════════════
-   LA PALESTRA · la mesa
-   La misma piel que Las piezas de Miut: una mesa de madera vista desde
-   arriba y, encima, hojas de papel —la cabecera, la ruta, el campo— y la
-   tablilla de barro. Dos maderas: la clara, de haya, que es la de siempre
-   y la que mejor se ve en el proyector; y la oscura, de nogal, para un aula
-   con poca luz. Y Proyector: papel blanco y tinta negra, sin madera.
+   LA PALESTRA · la piel
+   La disposición de Las piezas de Miut —la cabecera en una hoja con sus
+   pestañas, las hojas de papel, los botones, el acta en su hoja— sobre el
+   suelo de la palestra: la arena rastrillada donde se entrenaba (el
+   skamma), con su grano y las marcas del rastrillo. Arena de día, la de
+   siempre; arena de noche, para un aula con poca luz; y Proyector, papel
+   blanco y tinta negra, sin arena.
    Los nombres de Miut (--tinta, --linea…) mandan; los de antes (--ink,
    --line…) son alias, para que los módulos del campo sigan igual.
    ══════════════════════════════════════════════════════════════════════ */
 :root{
-  --mesa1:#D6AE78; --mesa2:#C49560; --veta:rgba(92,52,18,.20);
+  --arena1:#E8D6AF; --arena2:#D6BC8C; --luz:rgba(255,248,228,.55);
+  --grano:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .32  0 0 0 0 .16  0 0 0 1.6 -.72'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+  --surcos:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='26'><path d='M0 13 C45 8 85 18 130 13 S215 8 260 13' fill='none' stroke='rgba(120,82,34,.13)' stroke-width='2.2'/><path d='M0 15.4 C45 10.4 85 20.4 130 15.4 S215 10.4 260 15.4' fill='none' stroke='rgba(255,250,236,.32)' stroke-width='1.2'/></svg>");
   --noche:#F4EBD9; --panel:#FFFBF2; --panel2:#FBF3E3; --linea:#D8C3A0;
   --tinta:#2E2218; --tenue:#7D6650;
   --morado:#8A6A9E; --oro:#A8661B; --rojo:#B0442C; --verde:#4F7A2E;
-  --sombra:rgba(60,35,10,.28); --brillo:rgba(214,150,50,.18);
+  --sombra:rgba(90,60,20,.24); --brillo:rgba(214,150,50,.18);
   --izq:#B0442C; --der:#1F6A88;
   --sello:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><rect x='2.2' y='.8' width='1.7' height='12.6' rx='.85'/><path d='M3.9 1.4 L12.8 4.3 L3.9 7.4 Z'/></svg>");
   --lento:1;
@@ -22,13 +25,16 @@
      cuentas van en Space Mono, que distingue bien los signos */
   --rotulo:'Cinzel',Georgia,serif; --letra:'Alegreya Sans',system-ui,sans-serif;
   /* los alias */
-  --bg:var(--mesa2); --panel-2:var(--panel2); --line:var(--linea); --ink:var(--tinta); --muted:var(--tenue);
+  --bg:var(--arena2); --panel-2:var(--panel2); --line:var(--linea); --ink:var(--tinta); --muted:var(--tenue);
   --ambar:var(--oro); --green:var(--verde);
 }
-html[data-tema="nogal"]{
-  --mesa1:#5A3A24; --mesa2:#472A19; --veta:rgba(0,0,0,.28);
-  --noche:#1F1610; --panel:#2E2119; --panel2:#37281E; --linea:#5E4632;
-  --tinta:#F6EBDC; --tenue:#C8B094;
+/* la arena al anochecer: más fría, y la luz de una antorcha arriba */
+html[data-tema="noche"]{
+  --arena1:#3B3129; --arena2:#29221D; --luz:rgba(240,170,90,.13);
+  --grano:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .75  0 0 0 0 .62  0 0 0 0 .45  0 0 0 1.4 -.78'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+  --surcos:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='26'><path d='M0 13 C45 8 85 18 130 13 S215 8 260 13' fill='none' stroke='rgba(0,0,0,.30)' stroke-width='2.2'/><path d='M0 15.4 C45 10.4 85 20.4 130 15.4 S215 10.4 260 15.4' fill='none' stroke='rgba(255,225,180,.06)' stroke-width='1.2'/></svg>");
+  --noche:#1F1A16; --panel:#2B241F; --panel2:#342C26; --linea:#57493D;
+  --tinta:#F4EADB; --tenue:#C4B29A;
   --morado:#B79CCB; --oro:#E6A84A; --rojo:#D2644B; --verde:#8DB36A;
   --sombra:rgba(0,0,0,.45); --brillo:rgba(230,168,74,.16);
   --izq:#E2725B; --der:#57B8D6;
@@ -40,15 +46,15 @@ html[data-tema="proyector"]{
   --sombra:rgba(0,0,0,.12); --brillo:rgba(138,90,0,.10)}
 *{box-sizing:border-box}
 [hidden]{display:none !important}
-html{background:var(--mesa2)}
-/* la madera: tablas a lo largo, con su veta, y la luz de una lámpara desde arriba */
+html{background:var(--arena2)}
+/* la arena: el grano fino, los surcos del rastrillo a lo ancho y la luz desde arriba */
 body{margin:0;color:var(--tinta);font-family:var(--letra);font-size:15px;line-height:1.5;
   background:
-    radial-gradient(ellipse 90% 55% at 50% 0%, rgba(255,244,220,.28), transparent 70%),
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='v'><feTurbulence type='fractalNoise' baseFrequency='0.012 0.34' numOctaves='3' seed='7'/><feColorMatrix values='0 0 0 0 0.36  0 0 0 0 0.2  0 0 0 0 0.07  0 0 0 1.35 -0.5'/></filter><rect width='600' height='600' filter='url(%23v)'/></svg>"),
-    repeating-linear-gradient(90deg, transparent 0 178px, var(--veta) 178px 180px),
-    linear-gradient(90deg, var(--mesa1), var(--mesa2) 45%, var(--mesa1) 70%, var(--mesa2));
-  background-size:auto, 600px 600px, auto, auto;
+    radial-gradient(ellipse 90% 55% at 50% 0%, var(--luz), transparent 70%),
+    var(--grano),
+    var(--surcos),
+    linear-gradient(180deg, var(--arena1), var(--arena2));
+  background-size:auto, 220px 220px, 260px 26px, auto;
   background-attachment:fixed;-webkit-text-size-adjust:100%;min-height:100vh}
 html[data-tema="proyector"], html[data-tema="proyector"] body{background:#FFFFFF}
 .lienzo{max-width:760px;margin:0 auto;padding:12px 12px 36px}
@@ -155,7 +161,7 @@ button.b:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
 .tablilla:has(.tl-ej:not([hidden])) .tl-cursor{display:none}
 .tl-pie{margin-top:10px}
 
-/* ── EL ACTA, en su hoja por encima de la mesa ── */
+/* ── EL ACTA, en su propia hoja, por encima de todo ── */
 .modal{position:fixed;inset:0;background:rgba(12,8,20,.82);display:grid;place-items:center;padding:16px;z-index:60;overflow:auto}
 .modal .caja2{width:min(600px,100%);max-height:92vh;overflow:auto;border:1px solid var(--linea);border-radius:16px;padding:18px 20px;
   background:linear-gradient(180deg,var(--panel2),var(--panel));box-shadow:0 24px 60px rgba(0,0,0,.55)}
@@ -187,4 +193,4 @@ button.b:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
 /* ── EL PIE ── */
 footer{margin-top:26px;padding-top:12px;border-top:1px solid var(--linea);text-align:center;
   font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tenue)}
-html:not([data-tema="nogal"]):not([data-tema="proyector"]) footer{color:#4a3520;border-top-color:rgba(74,53,32,.35)}
+html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;border-top-color:rgba(90,66,38,.3)}

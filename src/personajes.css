@@ -74,5 +74,5 @@
     animation:humea calc(.65s * var(--lento,1)) ease-out forwards}
   @keyframes humea{0%{transform:translate(-50%,-50%) scale(.4);opacity:.8}
     100%{transform:translate(calc(-50% + var(--hx,10px)), calc(-50% + var(--hy,-10px))) scale(1.8);opacity:0}}
-/* las caras que hablan: la caja con el nombre va en mesa.css */
+/* las caras que hablan: la caja con el nombre va en piel.css */
 :root{--habla-l:var(--noche); --habla-l-b:var(--linea)}
