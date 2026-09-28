@@ -386,5 +386,22 @@ function dibujaTirador(p, U){
       '" y="12">' + fz + '</text>' +
     '</svg>';
 }
-raiz.Tirador = {dibujaTirador, medidasDe, frascoEnMano, conSigno, SUELO_CSS, CUERDA_CSS, CUERDA_Y};
+/* el ángulo con el que el frasco encaja en la boca al volcarlo: se mide sobre el dibujo ya puesto */
+function vuelcoQueEncaja(nodo, porDefecto){
+  try{
+    const g = nodo.querySelector('.frascoMano');
+    const boca = nodo.querySelector('rect.boca');
+    const svg = nodo.querySelector('svg');
+    if(!g || !boca || !svg || !g.parentNode.getScreenCTM) return porDefecto;
+    const gr = el => { const m = el.getScreenCTM(); return Math.atan2(m.b, m.a) * 180 / Math.PI; };
+        const cs = getComputedStyle(svg);
+    const n = v => parseFloat(cs.getPropertyValue(v)) || 0;
+    const brazo = n('--gHum') + n('--ajHum') + n('--gAnt') + n('--ajCod');
+    const marco = gr(g.parentNode) + brazo, labios = gr(boca);
+    let a = ((labios - marco - 90) % 180 + 180) % 180;
+        if(Math.sin((marco + a + 90) * Math.PI / 180) >= 0) a -= 180;
+    return a;
+  }catch(e){ return porDefecto; }
+}
+raiz.Tirador = {dibujaTirador, medidasDe, frascoEnMano, vuelcoQueEncaja, conSigno, SUELO_CSS, CUERDA_CSS, CUERDA_Y};
 })(window);

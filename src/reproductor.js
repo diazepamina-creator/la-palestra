@@ -23,10 +23,8 @@ function pintaBanquillo(el, foto, k, pel, anim){
     if(anim.trago === q.id) c += ' trago';
     if(anim.se && anim.se.indexOf(q.id) >= 0) c += ' se-va';
     if(anim.junta && anim.junta.indexOf(q.id) >= 0) c += ' junta';
-    const po = anim.bebe === q.id ? P.pocionDe(anim.k) : null;
     return '<span class="' + c + '" data-bq="' + q.id + '">' + T.dibujaTirador(q, 13) +
-      '<b class="bq-f">' + P.conSigno(q.f) + '</b>' +
-      (po ? '<span class="bq-frasco pocion ' + TL.clasePoc(po).replace('pocion ', '') + '">' + TL.frascoHtml(po) + '</span>' : '') + '</span>';
+      '<b class="bq-f">' + P.conSigno(q.f) + '</b></span>';
   }).join('');
   /* los frascos de delante esperan aquí hasta que hay a quién dárselos */
   const usados = new Set();
@@ -93,17 +91,48 @@ function crea(o){
       if(paso.tipo === 'bebe'){
         /* bebe el del banquillo cuya fuerza cambia entre una foto y la otra */
         const cambia = antes.banquillo.find(q => { const n = paso.banquillo.find(x => x.id === q.id); return n && n.f !== q.f; });
-        const id = (cambia || antes.banquillo[0] || {}).id;
+        const q0 = cambia || antes.banquillo[0] || {}, id = q0.id;
+        const q1 = paso.banquillo.find(x => x.id === id) || q0;
         /* el frasco que baja del banco, si venía de delante */
         const ti = paso.m.find(i => R.pel.tok[i] && R.pel.tok[i].t === 'p' && R.pel.tok[i].pre);
         const k0 = kDe(paso);
         pintaBanquillo(banquillo, antes, k, R.pel, {baja: ti});
         await espera(ti !== undefined ? 500 : 0); if(!vivo()) return;
-        pintaBanquillo(banquillo, antes, k, R.pel, {bebe: id, k: k0});
-        await espera(1000); if(!vivo()) return;
+        /* EL TRAGO, como en el campo de siempre: saca el frasco, lo lleva a la
+           boca, echa la cabeza atrás, el frasco se vacía y lo tira */
+        const cambiaBando = (q0.f < 0) !== (q1.f < 0) && q1.f !== 0;
+        const tono = cambiaBando ? 'bando' : (Math.abs(q1.f) > Math.abs(q0.f) ? 'mas' : 'menos');
+        const color = tono === 'mas' ? 'var(--green)' : (tono === 'menos' ? '#86A7E8' : '#E14FC6');
+        const nodo = banquillo.querySelector('.bq[data-bq="' + id + '"]');
+        if(nodo && !REDUCIDO){
+          nodo.style.setProperty('--pocion', color);
+          nodo.classList.toggle('vial', Math.abs(k0) < 1);
+          nodo.style.setProperty('--subeF', '0deg');
+          nodo.style.setProperty('--vuelcaF', T.vuelcoQueEncaja(nodo, q0.f < 0 ? -70 : 70).toFixed(1) + 'deg');
+          nodo.style.setProperty('--giraF', (q0.f < 0 ? -190 : 190) + 'deg');
+          nodo.classList.add('trago');
+        }
+        await espera(2150); if(!vivo()) return;
+        /* ya bebido: la fuerza nueva, la cara que le queda y el destello */
         C.pinta(campo, paso, {alcance: R.alcance});
-        pintaBanquillo(banquillo, paso, k + 1, R.pel, {trago: id});
-        await espera(700);
+        pintaBanquillo(banquillo, paso, k + 1, R.pel, {});
+        const n2 = banquillo.querySelector('.bq[data-bq="' + id + '"]');
+        if(n2 && !REDUCIDO){
+          n2.classList.add('cara-' + tono);
+          const gana = Math.abs(q1.f) >= Math.abs(q0.f);
+          n2.classList.add(gana ? 'infla' : 'desinfla');
+          if(Math.abs(q1.f) > Math.abs(q0.f)) n2.classList.add('posa');
+          if(cambiaBando) n2.classList.add('traidor');
+          const ch = document.createElement('span'); ch.className = 'chispa ' + tono; n2.appendChild(ch);
+          for(let i = 0; i < 4; i++){
+            const bu = document.createElement('span'); bu.className = 'burbuja';
+            const d = 5 + Math.random() * 4;
+            bu.style.cssText = 'width:' + d + 'px;height:' + d + 'px;left:' + (30 + Math.random() * 40) + '%;top:' + (25 + Math.random() * 25) + '%;color:' + color +
+              ';animation-delay:' + (i * 90) + 'ms;--dx:' + (Math.random() * 22 - 11) + 'px';
+            n2.appendChild(bu);
+          }
+        }
+        await espera(cambiaBando ? 1400 : 900);
       }else if(paso.tipo === 'junta'){
         pintaBanquillo(banquillo, antes, k, R.pel, {junta: idsBqIdos});
         await espera(900); if(!vivo()) return;
