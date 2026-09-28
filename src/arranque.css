@@ -1,0 +1,29 @@
+/* ── LA ESCENA DE INICIO, como en Las piezas de Miut: la app en pequeño
+   sobre su propio fondo, con un resplandor, y la página escondida mientras
+   dura. Lleva las variables del tema: en Día y en Proyector sale en claro.
+   html[data-inicio] la pone desde el primer pintado (lo decide la cabecera),
+   para que no asome la página mientras cargan los módulos. ── */
+.inicio{position:fixed;inset:0;z-index:36;display:none;place-items:center;cursor:pointer;padding:20px 16px;
+  background:radial-gradient(ellipse 70% 55% at 50% 42%, rgba(233,184,78,.12), transparent 70%);transition:opacity .5s ease;
+  -webkit-user-select:none;user-select:none}
+html[data-inicio="si"] .inicio{display:grid}
+html[data-inicio="si"] main{visibility:hidden}
+.inicio[hidden]{display:none !important}
+.inicio.fuera{opacity:0}
+.inEscena{display:flex;flex-direction:column;align-items:center;gap:12px;width:min(560px,100%);text-align:center}
+.inGriego{margin:0;font-size:18px;letter-spacing:4px;color:var(--muted);animation:inEntra .6s ease both}
+.inCampo{width:100%;animation:inEntra .5s .2s ease both}
+.inCuenta{margin:0;min-height:1.5em;font-family:'Space Mono',monospace;font-size:24px;line-height:1.5;color:var(--ink)}
+.inCuenta .op{color:var(--muted)}
+.inCuenta .izq{color:var(--izq)} .inCuenta .der{color:var(--der)}
+.inCuenta .ct-on{background:#E9B84E;border-radius:4px;padding:1px 4px}
+.inCuenta .ct-on, .inCuenta .ct-on *{color:#1A1206}
+.inRes{color:var(--green);font-size:27px;display:inline-block;animation:inRes .45s cubic-bezier(.3,1.5,.5,1) both}
+.inTitulo{font-family:'Oswald',sans-serif;font-weight:500;font-size:clamp(30px,8vw,52px);letter-spacing:5px;text-transform:uppercase;
+  color:var(--oro);margin:4px 0 0;line-height:1.05;opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.inTitulo.ve{opacity:1;transform:none}
+.inSalta{position:absolute;bottom:26px;left:0;right:0;margin:0;text-align:center;font-family:'Oswald',sans-serif;font-size:13px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:.8}
+@keyframes inEntra{from{opacity:0;transform:translateY(8px)}}
+@keyframes inRes{from{opacity:0;transform:scale(1.5)}}
+@media (prefers-reduced-motion: reduce){ .inicio{display:none !important} html[data-inicio="si"] main{visibility:visible} }

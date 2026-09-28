@@ -756,11 +756,49 @@ html[data-aula="si"] .ct-x{font-size:14px}
     position:sticky;top:8px}
 }
 </style>
+<style>
+/* ── LA ESCENA DE INICIO, como en Las piezas de Miut: la app en pequeño
+   sobre su propio fondo, con un resplandor, y la página escondida mientras
+   dura. Lleva las variables del tema: en Día y en Proyector sale en claro.
+   html[data-inicio] la pone desde el primer pintado (lo decide la cabecera),
+   para que no asome la página mientras cargan los módulos. ── */
+.inicio{position:fixed;inset:0;z-index:36;display:none;place-items:center;cursor:pointer;padding:20px 16px;
+  background:radial-gradient(ellipse 70% 55% at 50% 42%, rgba(233,184,78,.12), transparent 70%);transition:opacity .5s ease;
+  -webkit-user-select:none;user-select:none}
+html[data-inicio="si"] .inicio{display:grid}
+html[data-inicio="si"] main{visibility:hidden}
+.inicio[hidden]{display:none !important}
+.inicio.fuera{opacity:0}
+.inEscena{display:flex;flex-direction:column;align-items:center;gap:12px;width:min(560px,100%);text-align:center}
+.inGriego{margin:0;font-size:18px;letter-spacing:4px;color:var(--muted);animation:inEntra .6s ease both}
+.inCampo{width:100%;animation:inEntra .5s .2s ease both}
+.inCuenta{margin:0;min-height:1.5em;font-family:'Space Mono',monospace;font-size:24px;line-height:1.5;color:var(--ink)}
+.inCuenta .op{color:var(--muted)}
+.inCuenta .izq{color:var(--izq)} .inCuenta .der{color:var(--der)}
+.inCuenta .ct-on{background:#E9B84E;border-radius:4px;padding:1px 4px}
+.inCuenta .ct-on, .inCuenta .ct-on *{color:#1A1206}
+.inRes{color:var(--green);font-size:27px;display:inline-block;animation:inRes .45s cubic-bezier(.3,1.5,.5,1) both}
+.inTitulo{font-family:'Oswald',sans-serif;font-weight:500;font-size:clamp(30px,8vw,52px);letter-spacing:5px;text-transform:uppercase;
+  color:var(--oro);margin:4px 0 0;line-height:1.05;opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.inTitulo.ve{opacity:1;transform:none}
+.inSalta{position:absolute;bottom:26px;left:0;right:0;margin:0;text-align:center;font-family:'Oswald',sans-serif;font-size:13px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:.8}
+@keyframes inEntra{from{opacity:0;transform:translateY(8px)}}
+@keyframes inRes{from{opacity:0;transform:scale(1.5)}}
+@media (prefers-reduced-motion: reduce){ .inicio{display:none !important} html[data-inicio="si"] main{visibility:visible} }
+</style>
 <script>
   /* los ajustes se ponen antes de pintar nada, para que no haya un fogonazo del tema oscuro */
   try{ const a = JSON.parse(localStorage.getItem('palestra.ajustes.v1') || '{}');
     if(a.tema === 'dia' || a.tema === 'proyector') document.documentElement.dataset.tema = a.tema;
-    if(a.aula) document.documentElement.dataset.aula = 'si'; }catch(err){}
+    if(a.aula) document.documentElement.dataset.aula = 'si';
+  }catch(err){}
+  /* la escena de inicio: solo al abrir la app (no al recargar en la misma sesión), si no se ha
+     quitado en Ajustes y sin «menos movimiento». Se decide aquí para que se vea desde el primer pintado */
+  try{ const a = JSON.parse(localStorage.getItem('palestra.ajustes.v1') || '{}');
+    const vista = sessionStorage.getItem('palestra.inicio') === 'visto';
+    const quieto = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(a.inicio !== false && !vista && !quieto) document.documentElement.dataset.inicio = 'si'; }catch(err){}
 </script>
 <style>
   :root{
@@ -833,6 +871,15 @@ html[data-aula="si"] .ct-x{font-size:14px}
 </style>
 </head>
 <body>
+<div class="inicio" id="escenaInicio" hidden>
+  <div class="inEscena">
+    <p class="inGriego" lang="grc">ἑλκυστίνδα</p>
+    <div class="inCampo" aria-hidden="true"></div>
+    <p class="inCuenta" aria-hidden="true">&nbsp;</p>
+    <p class="inTitulo">La palestra</p>
+  </div>
+  <p class="inSalta">toca para empezar</p>
+</div>
 <main>
   <header class="cab">
     <h1>La palestra</h1>
@@ -874,11 +921,17 @@ html[data-aula="si"] .ct-x{font-size:14px}
       <p class="aj-d">Antes de cada paso que mueve la bandera, ▶ pide tocar en la regla dónde acabará.</p>
     </div>
     <div class="aj-f">
+      <span class="aj-n">Al abrir</span>
+      <div class="aj-op" data-aj="inicio" role="group" aria-label="La animación de inicio">
+        <button type="button" data-v="si">Con animación</button><button type="button" data-v="no">Sin animación</button>
+      </div>
+    </div>
+    <div class="aj-f">
       <span class="aj-n">Empezar de cero</span>
       <button type="button" class="aj-cero" id="ajCero">Borrar y empezar</button>
       <p class="aj-d" id="ajCeroTxt">Borra el acta y la ruta de este turno: para el siguiente alumno o la siguiente clase. Los ajustes se quedan.</p>
     </div>
-    <div class="aj-pie"><span>versión 0.14</span><button type="button" id="ajCierra">Cerrar</button></div>
+    <div class="aj-pie"><span>versión 0.15</span><button type="button" id="ajCierra">Cerrar</button></div>
   </section>
 
   <section class="panel ruta" id="ruta" aria-label="La ruta">
@@ -950,7 +1003,7 @@ html[data-aula="si"] .ct-x{font-size:14px}
     <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><p class="aviso" id="jefAviso" role="status"></p></div>
   </section>
 
-  <p class="pie">versión 0.14 · <a href="https://github.com/diazepamina-creator/la-palestra">la-palestra</a></p>
+  <p class="pie">versión 0.15 · <a href="https://github.com/diazepamina-creator/la-palestra">la-palestra</a></p>
   <details class="panel ac" id="acta">
     <summary>Acta de la jornada</summary>
     <p class="ac-resumen" id="acResumen"></p>
@@ -3117,6 +3170,76 @@ raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
 })(window);
 </script>
 <script>
+/* ══════════════════════════════════════════════════════════════════════
+   LA PALESTRA · la escena de inicio
+   La app en pequeño, como en Las piezas de Miut: entra un −3 y tira a la
+   izquierda; entra un +5, tira más fuerte a la derecha, y la bandera acaba
+   en +2. Debajo se va escribiendo la cuenta, −3 + 5 = +2, y sale el
+   nombre. Unos cuatro segundos; se salta tocando, o con Intro, espacio o
+   Esc. Solo al abrir la app, no al recargar en la misma sesión (eso, y
+   «Sin animación» y «menos movimiento», lo decide la cabecera).
+   No hay dibujo propio: el campo es el de verdad y las fotos, del motor.
+   ══════════════════════════════════════════════════════════════════════ */
+(function (raiz) {
+'use strict';
+const P = raiz.Palestra, C = raiz.Campo, TL = raiz.Tablilla;
+const CUENTA = [{t: 'n', f: -3}, {t: '+'}, {t: 'n', f: 5}];
+const VISTA = 'palestra.inicio';
+
+function escena(el, alAcabar){
+  try{ raiz.sessionStorage.setItem(VISTA, 'visto'); }catch(err){}
+  const h = document.documentElement;
+  h.dataset.inicio = 'si';
+  el.hidden = false;
+  const campo = el.querySelector('.inCampo'), cuenta = el.querySelector('.inCuenta'), titulo = el.querySelector('.inTitulo');
+  C.monta(campo);
+  const pel = P.graba(CUENTA), alcance = 6;
+  C.pinta(campo, {cuerda: [], banquillo: [], bandera: 0}, {alcance});
+
+  const ts = [];
+  let hecho = false;
+  const luego = (ms, fn) => ts.push(setTimeout(fn, ms));
+  function fin(){
+    if(hecho) return;
+    hecho = true;
+    ts.forEach(clearTimeout);
+    removeEventListener('keydown', tecla, true);
+    /* primero se va la escena; luego aparece la página */
+    el.classList.add('fuera');
+    setTimeout(() => {
+      el.hidden = true; delete h.dataset.inicio;
+      const m = document.querySelector('main');
+      if(m && m.animate) m.animate([{opacity: 0}, {opacity: 1}], {duration: 350, easing: 'ease-out'});
+      if(alAcabar) alAcabar();
+    }, 480);
+  }
+  /* mientras dura, las teclas no llegan a la tablilla */
+  function tecla(ev){
+    ev.stopPropagation();
+    if(['Enter', ' ', 'Escape'].includes(ev.key)){ ev.preventDefault(); fin(); }
+  }
+  el.addEventListener('click', fin);
+  addEventListener('keydown', tecla, true);
+
+  /* la cuenta de abajo, con el trozo que se juega iluminado */
+  const escribe = (hasta, on, igual) => {
+    cuenta.innerHTML = TL.htmlCuenta(CUENTA.slice(0, hasta), i => i === on ? 'ct-on' : '') +
+      (igual ? ' <span class="op">=</span> <b class="inRes">' + P.conSigno(pel.valor) + '</b>' : '');
+  };
+  const tiron = () => { campo.classList.remove('tiron'); void campo.offsetWidth; campo.classList.add('tiron'); };
+  const entra = k => { const p = pel.pasos[k]; C.pinta(campo, p, {alcance, nuevos: [p.cuerda[p.cuerda.length - 1].id]}); };
+
+  luego(650, () => { entra(0); escribe(1, 0); });
+  luego(1750, () => { entra(1); escribe(3, 2); tiron(); });
+  luego(2750, () => escribe(3, -1, true));
+  luego(3150, () => titulo.classList.add('ve'));
+  luego(4650, fin);
+}
+
+raiz.Arranque = {escena};
+})(window);
+</script>
+<script>
   const P = window.Palestra, C = window.Campo, TL = window.Tablilla, PJ = window.Personajes, E = window.Ejercicios;
   const $ = id => document.getElementById(id);
   const n = f => ({t:'n', f}), mas = {t:'+'}, menos = {t:'-'}, ab = {t:'('}, ci = {t:')'};
@@ -3377,7 +3500,7 @@ raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
 
   /* ── LOS AJUSTES: se guardan en este navegador y no caducan ── */
   const AJUSTES = 'palestra.ajustes.v1';
-  const aj = {tema: 'noche', aula: false, lento: false, preguntas: true};
+  const aj = {tema: 'noche', aula: false, lento: false, preguntas: true, inicio: true};
   try{ Object.assign(aj, JSON.parse(localStorage.getItem(AJUSTES) || '{}')); }catch(err){}
   function aplica(){
     const h = document.documentElement;
@@ -3386,7 +3509,7 @@ raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
     h.style.setProperty('--lento', aj.lento ? 1.6 : 1);
     window.Reproductor.ponRitmo(aj.lento ? 1.6 : 1);
     R.preguntas = aj.preguntas;
-    const valor = {tema: aj.tema, aula: aj.aula ? 'si' : 'no', lento: aj.lento ? 'si' : 'no', preguntas: aj.preguntas ? 'si' : 'no'};
+    const valor = {tema: aj.tema, aula: aj.aula ? 'si' : 'no', lento: aj.lento ? 'si' : 'no', preguntas: aj.preguntas ? 'si' : 'no', inicio: aj.inicio ? 'si' : 'no'};
     document.querySelectorAll('[data-aj]').forEach(g => g.querySelectorAll('button').forEach(b =>
       b.setAttribute('aria-pressed', String(b.dataset.v === valor[g.dataset.aj])) ));
     $('bAula').setAttribute('aria-pressed', String(aj.aula));
@@ -3434,10 +3557,13 @@ raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
     window.scrollTo({top: 0, behavior: 'smooth'});
   });
 
+
   aplica();
   pintaTablilla();
   modoRuta(true);
   pintaActa();
+  /* la escena de inicio, si la cabecera ha dicho que toca */
+  if(document.documentElement.dataset.inicio === 'si') window.Arranque.escena($('escenaInicio'));
 </script>
 </body>
 </html>
