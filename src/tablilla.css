@@ -1,0 +1,94 @@
+/* ── LA TABLILLA: es de barro, con su propia paleta ── */
+.tablilla{--panel:#efe4ca; --panel-2:#f7f0de; --line:#c4b08a; --ink:#241b36; --muted:#5f5040;
+  --oro:#7f5a0e; --green:#2f6b28; --izq:#a8432d; --der:#1f6a88;
+  background:var(--panel);color:var(--ink);border:3px solid #8a6a3b;border-radius:14px;padding:12px;
+  box-shadow:inset 0 0 0 2px var(--panel), inset 0 0 0 3px #b8a589, 0 2px 0 rgba(90,64,30,.25)}
+.tablilla h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;
+  color:var(--muted);margin:0 0 10px;font-weight:500}
+.tl-tabla{position:relative;min-height:66px;margin:0 0 10px;padding:12px 14px;border-radius:10px;
+  font-family:'Space Mono',monospace;font-size:20px;line-height:1.5;word-break:break-word;color:var(--ink);
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .3  0 0 0 0 .14  0 0 0 .55 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"), linear-gradient(180deg,#e2d0a8,#eee0c0);
+  background-size:140px 140px, 100% 100%;
+  border:2px solid #9a7a45;box-shadow:inset 0 3px 8px rgba(90,64,30,.35), inset 0 -1px 0 rgba(255,250,235,.6)}
+.tl-tabla .op{color:var(--muted)}
+.tl-tabla .izq{color:var(--izq)} .tl-tabla .der{color:var(--der)}
+.tl-tabla .poc{color:#8a2f7a;font-weight:700}
+.tl-tabla .tl-res{color:var(--ink);font-size:23px;font-weight:700}
+.tl-tabla .tl-res.frac{font-size:20px}
+.tl-vacia{color:rgba(95,80,64,.55);font-style:italic;font-family:system-ui,sans-serif;font-size:15px}
+.tl-cursor{display:inline-block;width:2px;height:1.1em;margin-left:2px;vertical-align:-3px;
+  background:var(--ink);animation:parpadea 1s steps(1) infinite}
+@keyframes parpadea{50%{opacity:0}}
+.tl-exp{font-size:.62em;vertical-align:.9em;margin-left:1px}
+.tl-teclas{display:flex;flex-direction:column;gap:6px}
+.tl-fila{display:grid;gap:6px}
+.tl-tir{grid-template-columns:repeat(5,1fr)}
+.tl-poc{grid-template-columns:repeat(4,1fr)}
+.tl-ops{grid-template-columns:repeat(4,1fr)}
+
+/* las teclas, de barro cocido: grano, cantos algo irregulares, relieve y el
+   texto grabado. Al pulsar, se hunden */
+.tl-teclas button{position:relative;cursor:pointer;color:var(--ink);font:inherit;min-height:44px;padding:4px 2px;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .3  0 0 0 0 .14  0 0 0 .55 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"), radial-gradient(ellipse at 30% 20%, #fbf3dc 0, #efdfbb 45%, #dcc493 100%);
+  background-size:140px 140px, 100% 100%;
+  border:2px solid #7a5a2e;border-radius:11px 13px 10px 12px / 12px 10px 13px 11px;
+  box-shadow:0 4px 0 #7a5a2e, 0 6px 7px rgba(40,25,5,.35),
+    inset 0 2px 0 rgba(255,250,235,.75), inset 0 -4px 6px rgba(110,78,30,.3), inset 2px 0 3px rgba(255,250,235,.3);
+  text-shadow:0 1px 0 rgba(255,250,235,.8), 0 -1px 0 rgba(90,60,20,.25);
+  transition:transform .07s ease, box-shadow .07s ease;margin-bottom:3px}
+.tl-teclas button:nth-child(3n+1){border-radius:13px 10px 12px 11px / 10px 13px 11px 12px}
+.tl-teclas button:nth-child(3n+2){border-radius:10px 12px 13px 10px / 13px 11px 10px 12px}
+.tl-teclas button:hover{filter:brightness(1.04)}
+.tl-teclas button:focus-visible{outline:3px solid #7f5a0e;outline-offset:2px}
+.tl-teclas button:active{transform:translateY(3px);
+  box-shadow:0 1px 0 #7a5a2e, 0 2px 3px rgba(40,25,5,.3),
+    inset 0 2px 5px rgba(110,78,30,.35), inset 0 -1px 0 rgba(255,250,235,.4)}
+.tl-teclas button:disabled{opacity:.6;transform:none;cursor:default}
+.tl-t{display:flex;align-items:center;justify-content:center;gap:2px;font-family:'Oswald',sans-serif;font-size:15px}
+.tl-t svg{width:24px;height:24px;flex:0 0 auto}
+.tl-teclas .tl-t.izq{color:var(--izq);border-color:#8c3a28;box-shadow:0 4px 0 #8c3a28, 0 6px 7px rgba(40,25,5,.35),
+    inset 0 2px 0 rgba(255,250,235,.75), inset 0 -4px 6px rgba(140,58,40,.25)}
+.tl-teclas .tl-t.der{color:var(--der);flex-direction:row-reverse;border-color:#2c6c82;box-shadow:0 4px 0 #2c6c82, 0 6px 7px rgba(40,25,5,.35),
+    inset 0 2px 0 rgba(255,250,235,.75), inset 0 -4px 6px rgba(44,108,130,.25)}
+.tl-teclas .tl-t.izq:active,.tl-teclas .tl-t.der:active{box-shadow:0 1px 0 #5a4020, inset 0 2px 5px rgba(110,78,30,.35)}
+.tl-teclas .tl-o{font-weight:700;font-size:24px;font-family:'Space Mono',monospace;color:#3a2a14;min-height:46px}
+.tl-teclas .tl-igual{background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .3  0 0 0 0 .14  0 0 0 .55 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"), radial-gradient(ellipse at 30% 20%, #f7d98a 0, #dcaa45 55%, #b8862a 100%);
+  background-size:140px 140px, 100% 100%;border-color:#6e4e14;color:#2a1a04;
+  box-shadow:0 4px 0 #6e4e14, 0 6px 7px rgba(40,25,5,.35), inset 0 2px 0 rgba(255,245,210,.7), inset 0 -4px 6px rgba(110,70,10,.35)}
+
+/* los frascos, dibujados en CSS; valen en una tecla y en el banquillo */
+.tl-teclas .tl-p{min-width:0;padding:5px 2px 4px;min-height:52px}
+.pocion{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px}
+.pocion .etq{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0;opacity:.8}
+.pocion .frasco{position:relative;width:24px;height:34px}
+.pocion .frasco::after{content:'';position:absolute;left:8px;right:8px;bottom:0;height:4px;border-radius:1px 1px 3px 3px;
+  background:rgba(60,40,10,.08);border:1px solid rgba(60,40,10,.3);border-top:0}
+.pocion.mengua .frasco::after{left:9px;right:9px}
+.pocion .vidrio{position:absolute;left:2px;right:2px;bottom:4px;height:22px;
+  border-radius:10px 10px 8px 8px / 8px 8px 15px 15px;background:rgba(255,255,255,.18);
+  border:1px solid rgba(60,40,10,.35);overflow:hidden}
+.pocion .asa{position:absolute;top:8px;width:7px;height:11px;border:1.5px solid rgba(60,40,10,.35);background:none}
+.pocion .asa.i{left:-1px;border-right:0;border-radius:7px 0 0 7px}
+.pocion .asa.d{right:-1px;border-left:0;border-radius:0 7px 7px 0}
+.pocion.mengua .asa{display:none}
+.pocion .liquido{position:absolute;left:0;right:0;bottom:0;height:64%;background:currentColor;opacity:.85}
+.pocion.mengua .liquido{height:34%}
+.pocion.mengua .vidrio{left:6px;right:6px;border-radius:4px 4px 6px 6px / 4px 4px 9px 9px}
+.pocion.mengua .cuello{left:9px;right:9px}
+.pocion.mengua .corcho{left:7px;right:7px}
+.pocion .liquido::after{content:'';position:absolute;left:0;right:0;top:-3px;height:6px;border-radius:50%;background:currentColor;opacity:.55}
+.pocion .cuello{position:absolute;left:8px;right:8px;top:4px;height:7px;background:rgba(255,255,255,.12);
+  border-left:1px solid rgba(60,40,10,.3);border-right:1px solid rgba(60,40,10,.3)}
+.pocion .corcho{position:absolute;left:6px;right:6px;top:0;height:5px;border-radius:2px;background:#8a6f45;box-shadow:inset 0 -2px 0 rgba(0,0,0,.25)}
+.pocion.crece{color:var(--green)} .pocion.mengua{color:#3d63b0}
+.pocion.bando{color:#a5308f}
+.pocion.bando .vidrio{border-color:rgba(165,48,143,.55);box-shadow:0 0 8px rgba(225,79,198,.25)}
+.pocion .calavera{position:absolute;top:-8px;right:-9px;width:21px;height:21px;border-radius:50%;background:#fff;
+  border:1.5px solid #E14FC6;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(225,79,198,.55)}
+.pocion .calavera svg{width:14px;height:14px;display:block}
+
+.tl-aviso{font-size:14px;line-height:1.5;color:var(--muted);margin:10px 0 0;min-height:22px}
+.tl-aviso b{color:var(--ink)}
+.tl-pie{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tl-pie button{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
+  color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-height:44px;cursor:pointer}

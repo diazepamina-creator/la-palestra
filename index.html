@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap">
 <link rel="stylesheet" href="src/campo.css">
+<link rel="stylesheet" href="src/tablilla.css">
 <style>
   :root{
     --bg:#0F0C18; --panel:#171226; --panel-2:#1F1930; --line:#372E4E;
@@ -22,84 +23,127 @@
   h1{font-family:'Oswald',sans-serif;font-weight:500;font-size:22px;letter-spacing:1px;margin:0 0 2px}
   .sub{margin:0 0 14px;color:var(--muted);font-size:14px}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px}
-  .cuenta{font-family:'Space Mono',monospace;font-size:18px;text-align:center;margin:0 0 10px;line-height:1.5}
-  .cuenta b{color:var(--oro)}
+  .panel h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted);margin:0 0 10px;font-weight:500}
   .fila{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
-  select,button{font:inherit;color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-height:44px}
-  select{flex:1;min-width:0}
-  button{cursor:pointer;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:14px}
-  button:disabled{opacity:.4;cursor:default}
+  .fila button{font:inherit;color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 14px;min-height:44px;cursor:pointer;font-size:18px}
+  .fila button:disabled{opacity:.4;cursor:default}
   .paso-t{font-family:'Space Mono',monospace;font-size:13px;color:var(--muted);flex:1;text-align:right}
   .que{margin:8px 0 0;color:var(--muted);font-size:14px;font-family:'Space Mono',monospace;min-height:22px}
   .que b{color:var(--ink)}
-  .banquillo-lista{margin:8px 0 0;font-size:14px;color:var(--muted)}
-  .banquillo-lista b.izq{color:var(--izq)} .banquillo-lista b.der{color:var(--der)}
+  .bq-lista{margin:6px 0 0;font-size:14px;color:var(--muted)}
+  .bq-lista b.izq{color:var(--izq)} .bq-lista b.der{color:var(--der)}
+  .panel[hidden]{display:none}
 </style>
 </head>
 <body>
 <main>
   <h1>La palestra</h1>
-  <p class="sub">Prototipo 0.2 · el campo quieto: cada fotograma, dibujado desde la foto del motor.</p>
-  <div class="panel">
-    <p class="cuenta" id="cuenta"></p>
+  <p class="sub">Prototipo 0.3 · la tablilla escribe la cuenta; el campo la enseña fotograma a fotograma.</p>
+
+  <section class="tablilla" aria-label="La tablilla">
+    <h2>La tablilla</h2>
+    <div class="tl-tabla" aria-live="polite"><span id="tlEscrito"></span><span class="tl-cursor" aria-hidden="true"></span></div>
+    <div class="tl-teclas" id="tlTeclas"></div>
+    <p class="tl-aviso" id="tlAviso" role="status"></p>
+    <div class="tl-pie">
+      <button type="button" id="tlLimpia">Tablilla limpia</button>
+      <button type="button" id="tlMuestra">Una de muestra</button>
+    </div>
+  </section>
+
+  <section class="panel" id="panelCampo" hidden aria-label="El campo">
+    <h2>Tira y afloja</h2>
     <div id="campo"></div>
     <p class="que" id="que"></p>
-    <p class="banquillo-lista" id="bq"></p>
+    <p class="bq-lista" id="bq"></p>
     <div class="fila">
-      <button id="atras" aria-label="Atrás">◀</button>
-      <button id="sig" aria-label="Adelante">▶</button>
+      <button type="button" id="atras" aria-label="Atrás">◀</button>
+      <button type="button" id="sig" aria-label="Adelante">▶</button>
       <span class="paso-t" id="pasoT"></span>
     </div>
-    <div class="fila">
-      <select id="muestra" aria-label="Cuenta de muestra"></select>
-    </div>
-  </div>
+  </section>
 </main>
 <script src="motor.js"></script>
 <script src="tirador.js"></script>
 <script src="campo.js"></script>
+<script src="tablilla.js"></script>
 <script>
-  const P = window.Palestra, C = window.Campo;
+  const P = window.Palestra, C = window.Campo, TL = window.Tablilla;
+  const $ = id => document.getElementById(id);
   const n = f => ({t:'n', f}), mas = {t:'+'}, menos = {t:'-'}, ab = {t:'('}, ci = {t:')'};
   const po = k => ({t:'p', k, pre:false}), pre = k => ({t:'p', k, pre:true}), e = x => ({t:'e', n:x});
   const MUESTRAS = [
-    [n(-2), mas, n(5)],
-    [n(2), menos, n(5)],
-    [n(2), mas, n(4), po(-2)],
-    [n(3), menos, n(-4), po(-2)],
-    [n(-2), mas, pre(3), ab, n(-2), mas, n(1), ci],
-    [pre(-1), ab, n(-2), mas, n(-3), mas, n(-1), ci],
-    [n(4), menos, ab, n(3), menos, n(5), ci],
-    [n(-3), e(2)],
-    [n(5), mas, n(4), menos, n(3), menos, n(-1), menos, n(-2)],
-    [n(1), mas, n(2), mas, n(3), mas, n(4), mas, n(-5)]
+    [n(-2), mas, n(5)], [n(2), menos, n(5)], [n(2), mas, n(4), po(-2)], [n(3), menos, n(-4), po(-2)],
+    [n(-2), mas, pre(3), ab, n(-2), mas, n(1), ci], [pre(-1), ab, n(-2), mas, n(-3), mas, n(-1), ci],
+    [n(4), menos, ab, n(3), menos, n(5), ci], [n(-3), e(2)], [n(5), mas, n(4), menos, n(3), menos, n(-1), menos, n(-2)]
   ];
-  const campo = C.monta(document.getElementById('campo'));
-  let pel = null, k = 0;
-  const sel = document.getElementById('muestra');
-  MUESTRAS.forEach((t, i) => { const o = document.createElement('option'); o.value = i; o.textContent = P.escribe(P.analiza(t)); sel.appendChild(o); });
-  function carga(i){
-    pel = P.graba(MUESTRAS[i]); k = 0;
-    pel.alcance = Math.max(8, ...pel.pasos.map(p => Math.abs(p.bandera)));
-    pinta();
+  let muestra = 0;
+
+  /* ── el estado de la página: la cuenta escrita y, si se ha pulsado =, su película ── */
+  const S = {tok: [], pel: null, k: 0};
+
+  const campo = C.monta($('campo'));
+  TL.monta($('tlTeclas'), tecla);
+
+  function tecla(tk){
+    if(tk.t === '='){ igual(); return; }
+    const r = TL.pulsa(S.tok, tk);
+    S.tok = r.tok; S.pel = null; S.k = 0;
+    $('tlAviso').innerHTML = r.aviso;
+    pintaTablilla();
+    $('panelCampo').hidden = true;
   }
-  function pinta(){
-    const foto = k ? pel.pasos[k - 1] : {cuerda:[], banquillo:[], bandera:0};
-    C.pinta(campo, foto, {alcance: pel.alcance});
-    document.getElementById('cuenta').innerHTML = P.escribe(pel.arbol) +
-      (k === pel.pasos.length && pel.valor !== null ? ' = <b>' + P.conSigno(pel.valor) + '</b>' : '');
-    document.getElementById('que').innerHTML = k ? (foto.tipo + (foto.x ? ': <b>' + foto.x + '</b>' : '')) : (pel.sinTeatro || 'pulsa ▶');
-    document.getElementById('bq').innerHTML = foto.banquillo.length ? 'banquillo: ' +
+  function igual(){
+    if(!S.tok.length){ $('tlAviso').innerHTML = 'Todavía no has escrito nada.'; return; }
+    try{ S.pel = P.graba(S.tok); }
+    catch(err){ $('tlAviso').innerHTML = err.message; return; }
+    S.pel.alcance = Math.max(8, ...S.pel.pasos.map(p => Math.abs(p.bandera)));
+    S.k = 0;
+    if(S.pel.sinTeatro){
+      $('tlAviso').innerHTML = S.pel.sinTeatro + ' Así que esta va <b>sin teatro</b>: te la calculo igual.';
+      $('panelCampo').hidden = true;
+    }else{
+      $('tlAviso').innerHTML = 'Pulsa <b>▶</b> para verla en el campo, paso a paso.';
+      $('panelCampo').hidden = false;
+      $('panelCampo').scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+    pintaTablilla();
+    pintaCampo();
+  }
+  function pintaTablilla(){
+    let h = TL.htmlCuenta(S.tok);
+    if(S.pel){
+      const fin = S.pel.sinTeatro || S.k === S.pel.pasos.length;
+      if(fin) h += '<span class="op"> = </span><b class="tl-res' + (S.pel.exacto[1] !== 1 ? ' frac' : '') + '">' + P.fracTxt(S.pel.exacto) + '</b>';
+    }
+    $('tlEscrito').innerHTML = h || '<span class="tl-vacia">escribe aquí…</span>';
+  }
+  function pintaCampo(){
+    if(!S.pel || S.pel.sinTeatro) return;
+    const foto = S.k ? S.pel.pasos[S.k - 1] : {cuerda: [], banquillo: [], bandera: 0};
+    C.pinta(campo, foto, {alcance: S.pel.alcance});
+    $('que').innerHTML = S.k ? (foto.tipo + (foto.x ? ': <b>' + foto.x + '</b>' : '')) : 'pulsa ▶';
+    $('bq').innerHTML = foto.banquillo.length ? 'banquillo: ' +
       foto.banquillo.map(p => '<b class="' + (p.f < 0 ? 'izq' : 'der') + '">' + P.conSigno(p.f) + '</b>').join(' ') : '';
-    document.getElementById('pasoT').textContent = 'fotograma ' + k + ' de ' + pel.pasos.length;
-    document.getElementById('atras').disabled = k === 0;
-    document.getElementById('sig').disabled = k >= pel.pasos.length;
+    $('pasoT').textContent = 'fotograma ' + S.k + ' de ' + S.pel.pasos.length;
+    $('atras').disabled = S.k === 0;
+    $('sig').disabled = S.k >= S.pel.pasos.length;
+    pintaTablilla();
   }
-  document.getElementById('sig').addEventListener('click', () => { if(k < pel.pasos.length){ k++; pinta(); } });
-  document.getElementById('atras').addEventListener('click', () => { if(k > 0){ k--; pinta(); } });
-  sel.addEventListener('change', () => carga(+sel.value));
-  window.addEventListener('resize', pinta);
-  carga(0);
+  $('sig').addEventListener('click', () => { if(S.pel && S.k < S.pel.pasos.length){ S.k++; pintaCampo(); } });
+  $('atras').addEventListener('click', () => { if(S.pel && S.k > 0){ S.k--; pintaCampo(); } });
+  $('tlLimpia').addEventListener('click', () => { S.tok = []; S.pel = null; S.k = 0; $('tlAviso').innerHTML = 'Tablilla limpia.'; pintaTablilla(); $('panelCampo').hidden = true; });
+  $('tlMuestra').addEventListener('click', () => { S.tok = MUESTRAS[muestra++ % MUESTRAS.length].slice(); S.pel = null; $('tlAviso').innerHTML = ''; pintaTablilla(); $('panelCampo').hidden = true; });
+  document.addEventListener('keydown', ev => {
+    if(ev.target && /INPUT|TEXTAREA|SELECT/.test(ev.target.tagName)) return;
+    if(S.pel && !S.pel.sinTeatro && (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft')){
+      ev.preventDefault(); $(ev.key === 'ArrowRight' ? 'sig' : 'atras').click(); return;
+    }
+    const tk = TL.teclaDeTeclado(ev);
+    if(tk){ ev.preventDefault(); tecla(tk); }
+  });
+  window.addEventListener('resize', pintaCampo);
+  pintaTablilla();
 </script>
 </body>
 </html>
