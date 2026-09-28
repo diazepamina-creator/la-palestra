@@ -58,8 +58,8 @@
   .escena{position:absolute;left:50%;top:0;bottom:0;width:100%;
     transform:translateX(-50%);transform-origin:50% 100%;
     transition:transform .5s ease, width .5s ease}
-          .equipo{transition:transform 1s cubic-bezier(.22,1.18,.36,1)}
-  .nudo{transition:transform 1s cubic-bezier(.22,1.18,.36,1)}
+          .equipo{transition:transform calc(1s * var(--lento,1)) cubic-bezier(.22,1.18,.36,1)}
+  .nudo{transition:transform calc(1s * var(--lento,1)) cubic-bezier(.22,1.18,.36,1)}
   .marca-n{transition:color .35s ease}
   .marca-n i{transition:background .35s ease}
   .nudo{position:absolute;bottom:84px;left:50%;width:2px;height:28px;margin-left:-1px;

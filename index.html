@@ -69,8 +69,8 @@
   .escena{position:absolute;left:50%;top:0;bottom:0;width:100%;
     transform:translateX(-50%);transform-origin:50% 100%;
     transition:transform .5s ease, width .5s ease}
-          .equipo{transition:transform 1s cubic-bezier(.22,1.18,.36,1)}
-  .nudo{transition:transform 1s cubic-bezier(.22,1.18,.36,1)}
+          .equipo{transition:transform calc(1s * var(--lento,1)) cubic-bezier(.22,1.18,.36,1)}
+  .nudo{transition:transform calc(1s * var(--lento,1)) cubic-bezier(.22,1.18,.36,1)}
   .marca-n{transition:color .35s ease}
   .marca-n i{transition:background .35s ease}
   .nudo{position:absolute;bottom:84px;left:50%;width:2px;height:28px;margin-left:-1px;
@@ -420,7 +420,7 @@
   background:linear-gradient(180deg,#8a6a3b,#5c4424);box-shadow:0 3px 0 #3a2a14}
 .bq-t{position:absolute;left:8px;top:5px;font:600 10px/1 'Oswald',sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
 .bq-sitio{position:absolute;left:0;right:0;bottom:17px;display:flex;justify-content:center;align-items:flex-end;gap:6px;z-index:1}
-.bq{position:relative;line-height:0;transition:transform .3s ease, opacity .3s ease}
+.bq{position:relative;line-height:0;transition:transform calc(.3s * var(--lento,1)) ease, opacity calc(.3s * var(--lento,1)) ease}
 .bq.trago .bq-f{opacity:0}
 .bq svg{overflow:visible}
 .bq svg{height:96px;width:auto}
@@ -430,23 +430,23 @@
 .bq{transform-origin:50% 100%}
 .bq.trago, .bq.cara-mas, .bq.cara-menos, .bq.cara-bando{transform:scale(1.18)}
 .bq .bq-f{position:absolute;left:50%;top:-18px;transform:translateX(-50%);font:700 13px/1 'Oswald',sans-serif;color:var(--ink);white-space:nowrap}
-.bq.llega{animation:bqLlega .45s cubic-bezier(.34,1.56,.64,1) backwards}
+.bq.llega{animation:bqLlega calc(.45s * var(--lento,1)) cubic-bezier(.34,1.56,.64,1) backwards}
 @keyframes bqLlega{from{transform:translateY(-24px);opacity:0}}
-.bq.trago{animation:bqTrago .5s ease}
+.bq.trago{animation:bqTrago calc(.5s * var(--lento,1)) ease}
 @keyframes bqTrago{40%{transform:scale(1.18) rotate(-6deg)}}
 .bq.se-va{transform:translateY(60px);opacity:0}
-.bq.junta{animation:bqJunta .9s ease forwards}
+.bq.junta{animation:bqJunta calc(.9s * var(--lento,1)) ease forwards}
 @keyframes bqJunta{60%{transform:scale(.8);opacity:.9}100%{transform:scale(.3);opacity:0}}
 /* el frasco que se bebe: aparece, se vuelca y se vacía */
 .bq-frasco{position:absolute;left:78%;top:-4px;width:30px;transform:translateX(-50%);z-index:2;line-height:0;
-  filter:drop-shadow(0 0 4px rgba(249,217,138,.7));animation:bqFrasco 1s ease forwards}
+  filter:drop-shadow(0 0 4px rgba(249,217,138,.7));animation:bqFrasco calc(1s * var(--lento,1)) ease forwards}
 .bq-frasco .frasco{width:30px;height:42px}
 @keyframes bqFrasco{0%{transform:translate(-50%,-26px) scale(.6);opacity:0}25%{transform:translate(-50%,-18px) scale(1);opacity:1}
   70%{transform:translate(-50%,2px) rotate(-60deg);opacity:1}100%{transform:translate(-50%,6px) rotate(-80deg);opacity:0}}
 /* los frascos de delante esperan de pie a la derecha y bajan hacia el jugador cuando le toca */
 .bq-banco{position:absolute;right:10px;bottom:24px;display:flex;gap:8px;z-index:2}
 .bq-espera{display:flex;flex-direction:column;align-items:center;gap:1px;animation:frascoEspera 2.4s ease-in-out infinite alternate;
-  transition:transform .6s ease, opacity .6s ease}
+  transition:transform calc(.6s * var(--lento,1)) ease, opacity calc(.6s * var(--lento,1)) ease}
 .bq-espera i{font-style:normal;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--ink)}
 @keyframes frascoEspera{to{transform:translateY(-3px)}}
 .bq-espera.baja{animation:none;transform:translateX(-80px) translateY(10px) scale(.5);opacity:0}
@@ -622,6 +622,147 @@
 @media (max-width:420px){ .ev-cara{width:104px;height:104px} .ev-respuesta{font-size:14.5px} }
 </style>
 <style>
+/* ── LOS AJUSTES: colores, modo aula, velocidad y preguntas ──
+   Los temas solo cambian la piel: el juego es el mismo. La tablilla es de
+   barro en los tres; la cartela del campo es un marcador oscuro en los tres. */
+
+/* el panel */
+.cab-btns{margin-left:auto;display:flex;gap:6px}
+.cab-btns button{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:12px;
+  color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-height:40px;cursor:pointer}
+.cab-btns button[aria-pressed="true"], .cab-btns button[aria-expanded="true"]{color:var(--oro);border-color:var(--oro)}
+.aj-f{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.aj-f:first-of-type{border-top:0;padding-top:0}
+.aj-n{font-size:15px}
+.aj-d{grid-column:1 / -1;margin:0;font-size:12.5px;color:var(--muted)}
+.aj-op{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.aj-op button{font:inherit;font-size:14px;color:var(--ink);background:var(--panel-2);border:0;border-left:1px solid var(--line);
+  padding:6px 12px;min-height:40px;cursor:pointer}
+.aj-op button:first-child{border-left:0}
+.aj-op button[aria-pressed="true"]{background:var(--oro);color:var(--sobre-oro,#1A1206);font-weight:600}
+.aj-cero{font:inherit;font-size:14px;color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;
+  padding:6px 12px;min-height:40px;cursor:pointer}
+.aj-cero.seguro{background:#b3261e;border-color:#b3261e;color:#fff}
+.aj-pie{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:var(--muted)}
+.aj-pie button{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
+  color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 14px;min-height:44px;cursor:pointer}
+@media (max-width:480px){ .aj-f{grid-template-columns:1fr} .aj-op, .aj-cero{justify-self:start} }
+
+/* el acta, ejercicio a ejercicio */
+.ac-f .ac-s{color:var(--muted);font-size:13px}
+.ac-det summary{margin-top:10px;font-size:11px}
+.ac-ej{list-style:none;margin:6px 0 0;padding:0;font-size:13.5px}
+.ac-ej li{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:2px 10px;padding:5px 0;border-top:1px solid var(--line)}
+.ac-ej .ac-h{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted)}
+.ac-ej .ac-m{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:1px;color:var(--muted)}
+.ac-ej .ac-c{font-family:'Space Mono',monospace}
+.ac-ej .ac-como{grid-column:3;color:var(--muted);font-size:12.5px}
+.ac-ej li.ok .ac-como::before{content:"✓ ";color:var(--green);font-weight:700}
+.ac-ej li.no .ac-como::before{content:"✗ ";color:var(--izq);font-weight:700}
+.ac-fila button + button{margin-left:0}
+
+/* ── TEMA DÍA: la palestra de barro, como las fichas en papel ── */
+html[data-tema="dia"]{
+  --bg:#d9c7a1; --panel:#efe4ca; --panel-2:#f7f0de; --line:#c4b08a;
+  --ink:#241b36; --muted:#5f5040;
+  --oro:#7f5a0e; --ambar:#7f5a0e; --green:#2f6b28; --izq:#a8432d; --der:#1f6a88;
+  --sobre-oro:#fff8e6;
+  --habla-j:rgba(168,67,45,.08); --habla-j-b:rgba(168,67,45,.45);
+  --habla-l:rgba(31,106,136,.07); --habla-l-b:rgba(31,106,136,.4);
+  color-scheme:light}
+html[data-tema="dia"] body{background:
+  radial-gradient(ellipse at 20% 0%, rgba(255,250,235,.55), transparent 55%),
+  radial-gradient(ellipse at 90% 100%, rgba(120,90,50,.18), transparent 60%), var(--bg);
+  background-attachment:fixed}
+html[data-tema="dia"] .panel{border:3px solid #8a6a3b;border-radius:14px;
+  box-shadow:inset 0 0 0 2px var(--panel), inset 0 0 0 3px #b8a589, 0 2px 0 rgba(90,64,30,.25)}
+
+/* ── TEMA PROYECTOR: fondo blanco, tinta negra y trazos gruesos, para que se lea
+   con un proyector flojo y la luz de la clase encendida ── */
+html[data-tema="proyector"]{
+  --bg:#ffffff; --panel:#ffffff; --panel-2:#f1f1f1; --line:#1a1a1a;
+  --ink:#000000; --muted:#2b2b2b;
+  --oro:#8a5a00; --ambar:#8a5a00; --green:#1d6b12; --izq:#b3261e; --der:#0b5f86;
+  --sobre-oro:#ffffff;
+  --habla-j:rgba(179,38,30,.07); --habla-j-b:#b3261e;
+  --habla-l:rgba(11,95,134,.07); --habla-l-b:#0b5f86;
+  color-scheme:light}
+html[data-tema="proyector"] body{font-weight:500}
+html[data-tema="proyector"] .panel{border-width:2px}
+html[data-tema="proyector"] .habla:has(> .aviso:not(:empty):not([hidden])){border-width:2px}
+html[data-tema="proyector"] .tablilla{--muted:#3a2e20}
+html[data-tema="proyector"] h1{color:#000}
+
+/* los botones dorados: en los temas claros el oro es tinta oscura, así que el
+   relleno pasa al dorado de las teclas */
+html[data-tema="dia"] :is(.fila, .rt-btns) button.scan, html[data-tema="proyector"] :is(.fila, .rt-btns) button.scan,
+html[data-tema="dia"] .ev-prueba, html[data-tema="proyector"] .ev-prueba{background:#d7a646;border-color:#a67a1f;color:#241b36}
+
+/* el campo, a pleno día (en los dos temas claros) */
+html:is([data-tema="dia"],[data-tema="proyector"]) .campo{border:1px solid #b8a589;
+  background:linear-gradient(180deg,#fbf8f0 0%,#f5f0e4 60%,#ece3cf 100%)}
+html[data-tema="proyector"] .campo{border:2px solid #1a1a1a;background:linear-gradient(180deg,#ffffff 0%,#fbf8f0 70%,#f3ecdc 100%)}
+html:is([data-tema="dia"],[data-tema="proyector"]) .campo::after{background:radial-gradient(ellipse 115% 95% at 50% 46%,
+  transparent 62%, rgba(138,106,59,.14) 100%)}
+html:is([data-tema="dia"],[data-tema="proyector"]) .friso{background:
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='18'><g fill='none' stroke='rgba(138,106,59,.3)' stroke-width='1'><path d='M0 3.5 H26'/><path d='M0 14.5 H26'/></g><path d='M13 14 V5 H5 V10 H9' fill='none' stroke='rgba(138,106,59,.55)' stroke-width='1.8'/></svg>") repeat-x center / 26px 18px,
+  linear-gradient(180deg,#efe6d2,#f6f1e5);border-bottom-color:rgba(138,106,59,.25)}
+html:is([data-tema="dia"],[data-tema="proyector"]) .columnata{
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='92' height='158'><g fill='rgba(255,255,255,.75)'><rect x='29' y='4' width='34' height='6' rx='1'/><path d='M32 10 L60 10 L57 17 L35 17 Z'/><rect x='36' y='17' width='20' height='131'/><rect x='32' y='148' width='28' height='5' rx='1'/><rect x='29' y='153' width='34' height='5' rx='1'/></g><g fill='rgba(160,140,110,.16)'><rect x='40' y='18' width='1.6' height='129'/><rect x='45.5' y='18' width='1.6' height='129'/><rect x='51' y='18' width='1.6' height='129'/></g></svg>")}
+html[data-tema="proyector"] .columnata{opacity:.6}
+html:is([data-tema="dia"],[data-tema="proyector"]) .marca{background:repeating-linear-gradient(180deg,
+  rgba(80,70,90,.45) 0 7px, transparent 7px 13px);box-shadow:none}
+html:is([data-tema="dia"],[data-tema="proyector"]) .regla{background:linear-gradient(180deg,#efe4ca 0,#e9dcbf 100%);
+  border-top:1.5px solid #c9a24f;box-shadow:none}
+html:is([data-tema="dia"],[data-tema="proyector"]) .regla::before{background:none}
+html:is([data-tema="dia"],[data-tema="proyector"]) .marca-n{color:#3a3040}
+html:is([data-tema="dia"],[data-tema="proyector"]) .marca-n i{background:rgba(120,100,80,.45)}
+html:is([data-tema="dia"],[data-tema="proyector"]) .marca-n.cero{color:var(--ink)}
+html:is([data-tema="dia"],[data-tema="proyector"]) .marca-n.cero i{background:#6b5f72}
+html:is([data-tema="dia"],[data-tema="proyector"]) .marca-n.aqui{color:var(--green)}
+html:is([data-tema="dia"],[data-tema="proyector"]) .marca-n.aqui i{background:var(--green)}
+html:is([data-tema="dia"],[data-tema="proyector"]) .nudo .cifra{color:var(--ink);text-shadow:0 0 4px rgba(255,250,238,.95)}
+html:is([data-tema="dia"],[data-tema="proyector"]) .nudo.sin .cifra{color:#5f5040}
+html:is([data-tema="dia"],[data-tema="proyector"]) .regla.viva .marca-n.impar{color:#5f5040}
+html[data-tema="proyector"] .regla{border-top:2px solid #1a1a1a;background:#fff}
+html[data-tema="proyector"] .marca-n{color:#000;font-weight:700}
+html[data-tema="proyector"] .marca-n i{background:#555}
+html[data-tema="proyector"] .marca{background:repeating-linear-gradient(180deg, rgba(0,0,0,.55) 0 7px, transparent 7px 13px)}
+html:is([data-tema="dia"],[data-tema="proyector"]) .banquillo{border-color:rgba(138,106,59,.55);background:rgba(138,106,59,.07)}
+html[data-tema="proyector"] .banquillo{border:2px dashed #555}
+
+/* ── EL MODO AULA: para la pizarra digital. Todo un tercio más grande, que es
+   lo que se nota desde el fondo de la clase; y, con la pantalla ancha y una
+   cuenta en juego, la tablilla a la izquierda y el campo a la derecha, siempre
+   a la vista. Zeus deshace el zoom al medir (zeus.js) ── */
+@media (min-width:900px){
+  html[data-aula="si"] body{zoom:1.32;padding-left:22px;padding-right:22px}
+}
+/* pizarras y proyectores de 1366×768: con 1,32 el campo no cabía de alto */
+@media (min-width:900px) and (max-height:820px){
+  html[data-aula="si"] body{zoom:1.12}
+}
+html[data-aula="si"] main{max-width:760px}
+html[data-aula="si"] .habla > .aviso{font-size:16px}
+html[data-aula="si"] .rt-d{font-size:16px}
+html[data-aula="si"] .cartela, html[data-aula="si"] .ct-cuenta{font-size:19px}
+html[data-aula="si"] .ct-x{font-size:14px}
+@media (min-width:1100px){
+  html[data-aula="si"] main:has(#panelCampo:not([hidden])){max-width:1500px;display:grid;
+    grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:0 18px;align-items:start}
+  html[data-aula="si"] main:has(#panelCampo:not([hidden])) > *{grid-column:1}
+  html[data-aula="si"] main:has(#panelCampo:not([hidden])) > .cab{grid-column:1 / -1}
+  html[data-aula="si"] main:has(#panelCampo:not([hidden])) > #panelCampo{grid-column:2;grid-row:2 / span 12;
+    position:sticky;top:8px}
+}
+</style>
+<script>
+  /* los ajustes se ponen antes de pintar nada, para que no haya un fogonazo del tema oscuro */
+  try{ const a = JSON.parse(localStorage.getItem('palestra.ajustes.v1') || '{}');
+    if(a.tema === 'dia' || a.tema === 'proyector') document.documentElement.dataset.tema = a.tema;
+    if(a.aula) document.documentElement.dataset.aula = 'si'; }catch(err){}
+</script>
+<style>
   :root{
     --bg:#0F0C18; --panel:#171226; --panel-2:#1F1930; --line:#372E4E;
     --ink:#F2EDE2; --muted:#A79DB5;
@@ -696,7 +837,49 @@
   <header class="cab">
     <h1>La palestra</h1>
     <p class="sub"><b>ἑλκυστίνδα</b> · el tira y afloja de los números enteros</p>
+    <div class="cab-btns">
+      <button type="button" id="bAula" aria-pressed="false" title="Modo aula: para la pizarra digital">Aula</button>
+      <button type="button" id="bAjustes" aria-expanded="false" aria-controls="ajustes">⚙ Ajustes</button>
+    </div>
   </header>
+
+  <section class="panel aj" id="ajustes" hidden aria-label="Ajustes">
+    <h2>Ajustes</h2>
+    <div class="aj-f">
+      <span class="aj-n">Colores</span>
+      <div class="aj-op" data-aj="tema" role="group" aria-label="Colores">
+        <button type="button" data-v="noche">Noche</button><button type="button" data-v="dia">Día</button><button type="button" data-v="proyector">Proyector</button>
+      </div>
+      <p class="aj-d">Noche, la de siempre. Día, de barro claro. Proyector: fondo blanco y tinta negra, para que se lea con la luz encendida.</p>
+    </div>
+    <div class="aj-f">
+      <span class="aj-n">Modo aula</span>
+      <div class="aj-op" data-aj="aula" role="group" aria-label="Modo aula">
+        <button type="button" data-v="no">No</button><button type="button" data-v="si">Sí</button>
+      </div>
+      <p class="aj-d">Para la pizarra digital: todo más grande y, en pantalla ancha, el campo al lado de la tablilla.</p>
+    </div>
+    <div class="aj-f">
+      <span class="aj-n">Velocidad del campo</span>
+      <div class="aj-op" data-aj="lento" role="group" aria-label="Velocidad del campo">
+        <button type="button" data-v="no">Normal</button><button type="button" data-v="si">Lenta</button>
+      </div>
+      <p class="aj-d">Lenta: cada paso tarda más, para comentarlo mientras pasa.</p>
+    </div>
+    <div class="aj-f">
+      <span class="aj-n">Preguntar antes de mover la bandera</span>
+      <div class="aj-op" data-aj="preguntas" role="group" aria-label="Preguntar antes de mover la bandera">
+        <button type="button" data-v="si">Sí</button><button type="button" data-v="no">No</button>
+      </div>
+      <p class="aj-d">Antes de cada paso que mueve la bandera, ▶ pide tocar en la regla dónde acabará.</p>
+    </div>
+    <div class="aj-f">
+      <span class="aj-n">Empezar de cero</span>
+      <button type="button" class="aj-cero" id="ajCero">Borrar y empezar</button>
+      <p class="aj-d" id="ajCeroTxt">Borra el acta y la ruta de este turno: para el siguiente alumno o la siguiente clase. Los ajustes se quedan.</p>
+    </div>
+    <div class="aj-pie"><span>versión 0.14</span><button type="button" id="ajCierra">Cerrar</button></div>
+  </section>
 
   <section class="panel ruta" id="ruta" aria-label="La ruta">
     <div class="rt-cab"><h2 id="rtCab">Misión 1 de 6</h2><p class="rt-titulo" id="rtTitulo"></p></div>
@@ -767,12 +950,13 @@
     <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><p class="aviso" id="jefAviso" role="status"></p></div>
   </section>
 
-  <p class="pie">prototipo 0.10 · <a href="https://github.com/diazepamina-creator/la-palestra">la-palestra</a></p>
+  <p class="pie">versión 0.14 · <a href="https://github.com/diazepamina-creator/la-palestra">la-palestra</a></p>
   <details class="panel ac" id="acta">
     <summary>Acta de la jornada</summary>
     <p class="ac-resumen" id="acResumen"></p>
     <div id="acFilas"></div>
-    <div class="ac-fila"><input id="acNombre" type="text" placeholder="Nombre" aria-label="Nombre"><button type="button" id="acCopia">Copiar acta</button></div>
+    <details class="ac-det" id="acDet"><summary>Ejercicio a ejercicio</summary><ol class="ac-ej" id="acEj"></ol></details>
+    <div class="ac-fila"><input id="acNombre" type="text" placeholder="Nombre" aria-label="Nombre"><button type="button" id="acCopia">Copiar acta</button><button type="button" id="acBaja">Descargar</button></div>
   </details>
 </main>
 <script>
@@ -1821,7 +2005,10 @@ raiz.Tablilla = {htmlCuenta, pulsa, monta, teclaDeTeclado, frascoHtml, clasePoc,
 const P = raiz.Palestra, C = raiz.Campo, T = raiz.Tirador, TL = raiz.Tablilla;
 
 const REDUCIDO = raiz.matchMedia && raiz.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const espera = ms => new Promise(ok => setTimeout(ok, REDUCIDO ? 0 : ms));
+/* el ritmo: 1 normal, más para ir despacio (Ajustes · velocidad). Las
+   animaciones de CSS se alargan igual con --lento */
+let ritmo = 1;
+const espera = ms => new Promise(ok => setTimeout(ok, REDUCIDO ? 0 : ms * ritmo));
 
 /* ── el banquillo: los que se preparan y los frascos que esperan ── */
 function pintaBanquillo(el, foto, k, pel, anim){
@@ -1851,7 +2038,7 @@ function pintaBanquillo(el, foto, k, pel, anim){
 /* ── el reproductor ── */
 function crea(o){
   const R = {pel: null, k: 0, jugando: false, tok: 0, repaso: 0, alcance: 8,
-             pregunta: 0, dichos: {}, pin: null, pinPara: 0, veredicto: null};
+             pregunta: 0, dichos: {}, pin: null, pinPara: 0, veredicto: null, preguntas: true};
   const campo = o.campo, banquillo = o.banquillo;
   const fotoDe = k => k ? R.pel.pasos[k - 1] : {cuerda: [], banquillo: [], bandera: 0, tipo: '', x: ''};
   const avisa = () => { if(o.alCambiar) o.alCambiar(R); };
@@ -1879,7 +2066,7 @@ function crea(o){
   R.avanza = async function(){
     if(!R.pel || R.jugando || R.k >= R.pel.pasos.length) return;
     const k = R.k, paso = R.pel.pasos[k];
-    if(paso.clave && !(k in R.dichos) && !R.pregunta && !o.sinPreguntas){
+    if(paso.clave && R.preguntas && !(k in R.dichos) && !R.pregunta && !o.sinPreguntas){
       R.pregunta = k + 1;
       R.muestra(k);
       return;
@@ -2025,7 +2212,7 @@ function tiron(campo){
   setTimeout(() => campo.classList.remove('tiron'), 620);
 }
 
-raiz.Reproductor = {crea, pintaBanquillo};
+raiz.Reproductor = {crea, pintaBanquillo, ponRitmo: r => { ritmo = r > 0 ? r : 1; }};
 })(window);
 </script>
 <script>
@@ -2421,7 +2608,13 @@ raiz.Personajes = {jeferion, listillon, zeus, DIBUJA, ponCara, poseDeTexto, ZEUS
 (function (raiz) {
 'use strict';
 const REDUCIDO = raiz.matchMedia && raiz.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const rect = el => el.getBoundingClientRect();
+/* las medidas, en píxeles del campo: el modo aula agranda la página con zoom
+   y getBoundingClientRect las da ya agrandadas */
+const rect = el => {
+  const r = el.getBoundingClientRect(), k = parseFloat(getComputedStyle(document.body).zoom) || 1;
+  if(k === 1) return r;
+  return {left: r.left / k, right: r.right / k, top: r.top / k, bottom: r.bottom / k, width: r.width / k, height: r.height / k};
+};
 const varaDe = f => Math.max(0, Math.min(1, Math.log(Math.max(1, Math.abs(f))) / Math.log(12)));
 
 /* Zeus se asoma encima del tirador (a un lado, para no taparlo) */
@@ -2639,32 +2832,67 @@ function siguiente(ruta){
   return true;
 }
 
-/* ── el acta de la jornada ── */
-function nuevaSesion(){ return {t0: Date.now(), bien: 0, mal: 0, mision: {}}; }
-function anota(sesion, ruta, ok){
+/* ── el acta de la jornada ──
+   Por misión, cuántas se resuelven, cuántas respuestas fallan y cuántas salen
+   sin mirar el campo. Y ejercicio a ejercicio: la cuenta, lo que se contestó
+   (con los fallos por delante) y si se miró antes de acertar. */
+function nuevaSesion(){ return {t0: Date.now(), bien: 0, mal: 0, mision: {}, ejercicios: []}; }
+/* det = {id, cuenta, dicho, valor, visto}: el ejercicio que se está contestando */
+function anota(sesion, ruta, ok, det, ahora){
   sesion[ok ? 'bien' : 'mal']++;
-  const m = sesion.mision[ruta.i] || (sesion.mision[ruta.i] = {bien: 0, mal: 0});
+  const m = sesion.mision[ruta.i] || (sesion.mision[ruta.i] = {bien: 0, mal: 0, solas: 0});
   m[ok ? 'bien' : 'mal']++;
+  if(!det) return;
+  if(ok && !det.visto) m.solas = (m.solas || 0) + 1;
+  const lista = sesion.ejercicios || (sesion.ejercicios = []);
+  let e = lista[lista.length - 1];
+  if(!e || e.id !== det.id){
+    e = {id: det.id, m: ruta.i, c: det.cuenta, v: det.valor, d: [], ok: false, visto: false, t: ahora || Date.now()};
+    lista.push(e);
+    if(lista.length > 400) lista.shift();
+  }
+  e.d.push(det.dicho); e.ok = ok; e.visto = !!det.visto;
 }
 function reloj(ms){
   const s = Math.max(0, Math.round(ms / 1000));
   return Math.floor(s / 60) + ' min ' + String(s % 60).padStart(2, '0') + ' s';
 }
-function actaEnTexto(sesion, ahora){
+const firma = v => v > 0 ? '+' + v : v < 0 ? '−' + (-v) : '0';
+const dos = x => String(x).padStart(2, '0');
+const hora = ms => { const f = new Date(ms); return dos(f.getHours()) + ':' + dos(f.getMinutes()); };
+/* un ejercicio del acta en palabras: «a la primera, sin mirar», «tras 2 fallos (+3, −1), mirando»… */
+function comoFue(e){
+  const fallos = e.ok ? e.d.slice(0, -1) : e.d;
+  let t = e.ok ? (fallos.length ? 'bien tras ' + fallos.length + (fallos.length === 1 ? ' fallo' : ' fallos') : 'bien a la primera')
+    : 'sin resolver';
+  if(fallos.length) t += ' (' + fallos.map(firma).join(', ') + ')';
+  if(e.ok) t += e.visto ? ', mirando el campo' : ', sin mirar';
+  return t;
+}
+function actaEnTexto(sesion, ahora, ruta){
   ahora = ahora || Date.now();
-  const total = sesion.bien + sesion.mal, f = new Date(ahora), dos = x => String(x).padStart(2, '0');
+  const total = sesion.bien + sesion.mal, f = new Date(ahora);
   let t = 'LA PALESTRA · acta de la jornada\n';
   t += 'Nombre: ' + (sesion.nombre || '(sin nombre)') + '\n';
   t += 'Fecha: ' + dos(f.getDate()) + '/' + dos(f.getMonth() + 1) + '/' + f.getFullYear() + '  ' + dos(f.getHours()) + ':' + dos(f.getMinutes()) + '\n';
   t += 'Tiempo: ' + reloj(ahora - sesion.t0) + '\n';
+  if(ruta) t += 'Ruta: misión ' + (ruta.i + 1) + ' de ' + MISIONES.length + ' (' + MISIONES[ruta.i].t + ')' + (ruta.hecho ? ', cumplida' : '') + '\n';
   t += 'Resueltas: ' + sesion.bien + '   Falladas: ' + sesion.mal + '   Acierto: ' + (total ? Math.round(100 * sesion.bien / total) : 0) + '%\n';
   t += 'Por misión:\n';
   const claves = Object.keys(sesion.mision).sort((a, b) => a - b);
   if(!claves.length) t += '  (ninguna anotada)\n';
   claves.forEach(i => {
     const m = sesion.mision[i];
-    t += '  ' + (Number(i) + 1) + '. ' + MISIONES[i].t + ' — ' + m.bien + ' de ' + (m.bien + m.mal) + (m.mal > m.bien ? '  (floja)' : '') + '\n';
+    t += '  ' + (Number(i) + 1) + '. ' + MISIONES[i].t + ' — ' + m.bien + ' de ' + (m.bien + m.mal) +
+      (m.solas ? ', ' + m.solas + ' sin mirar' : '') + (m.mal > m.bien ? '  (floja)' : '') + '\n';
   });
+  const ejs = sesion.ejercicios || [];
+  if(ejs.length){
+    t += 'Ejercicio a ejercicio:\n';
+    ejs.forEach(e => {
+      t += '  ' + hora(e.t) + '  M' + (e.m + 1) + '  ' + e.c + ' = ' + firma(e.v) + ' · ' + comoFue(e) + '\n';
+    });
+  }
   return t;
 }
 
@@ -2684,7 +2912,7 @@ function lee(alm, ahora){
 }
 function borra(alm){ try{ (alm || raiz.localStorage).removeItem(GUARDADO); }catch(err){} }
 
-const E = {MISIONES, genera, plantilla, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto,
+const E = {MISIONES, genera, plantilla, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto, comoFue, hora,
   guarda, lee, borra, conAzar: f => { azar = f; }};
 if(typeof module !== 'undefined' && module.exports) module.exports = E;
 else raiz.Ejercicios = E;
@@ -2932,7 +3160,9 @@ raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
     }else{
       $('tlAviso').innerHTML = 'Pulsa <b>▶</b> para verla en el campo, paso a paso.';
       $('panelCampo').hidden = false;
-      $('panelCampo').scrollIntoView({behavior: 'smooth', block: 'start'});
+      /* solo se baja hasta el campo si no está ya a la vista (en el aula va al lado) */
+      const rc = $('panelCampo').getBoundingClientRect();
+      if(rc.top < 0 || rc.top > innerHeight * .5) $('panelCampo').scrollIntoView({behavior: 'smooth', block: 'start'});
     }
     pintaTablilla();
     if(!S.pel.sinTeatro) R.carga(S.pel);
@@ -2953,7 +3183,7 @@ raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
   function ronda(){
     const m = E.MISIONES[ruta.i];
     const ej = E.genera(m.nivel);
-    S.ej = {valor: ej.valor, visto: false, fase: 'pensando'};
+    S.ej = {valor: ej.valor, visto: false, fase: 'pensando', id: Date.now(), cuenta: P.escribe(ej.pel.arbol)};
     S.tok = ej.tok; S.pel = null; S.visto = false; R.para();
     $('tlResp').value = '';
     $('tlAviso').innerHTML = '';
@@ -2963,7 +3193,7 @@ raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
   function pintaMarca(){
     const m = sesion.mision[ruta.i] || {bien: 0, mal: 0};
     $('tlMarca').innerHTML = '<span class="fi">resueltas <b>' + m.bien + '</b></span>' +
-      '<span class="fi">sin mirar <b>' + (sesion.solas && sesion.solas[ruta.i] || 0) + '</b></span>';
+      '<span class="fi">sin mirar <b>' + (m.solas || 0) + '</b></span>';
   }
   const esEntero = t => /^[-+]?\d+$/.test(String(t).replace(/[−–]/g, '-').replace(/\s+/g, ''));
   function comprueba(){
@@ -2974,8 +3204,7 @@ raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
     const dicho = parseInt(resp.replace(/[−–]/g, '-'), 10);
     if(dicho === S.ej.valor){
       S.ej.fase = 'bien';
-      E.anota(sesion, ruta, true);
-      if(!S.ej.visto){ sesion.solas = sesion.solas || {}; sesion.solas[ruta.i] = (sesion.solas[ruta.i] || 0) + 1; }
+      E.anota(sesion, ruta, true, detalle(dicho));
       const cumplida = E.acierta(ruta);
       $('tlAviso').innerHTML = '<b>¡Correcto!</b>' + (S.ej.visto ? '' : ' Y sin mirar.') + (cumplida ? ' <b>Misión cumplida.</b>' : '');
       E.guarda(ruta, sesion);
@@ -2983,13 +3212,15 @@ raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
       const yo = S.ej;
       setTimeout(() => { if(S.ej === yo) ronda(); }, 2000);
     }else{
-      E.anota(sesion, ruta, false);
+      E.anota(sesion, ruta, false, detalle(dicho));
       E.guarda(ruta, sesion);
       $('tlAviso').innerHTML = 'No es <b>' + resp.replace('-', '−') + '</b>. Pulsa <b>▶ Verlo en el campo</b> y mira dónde acaba.';
       $('tlResp').value = '';
       pintaMarca(); pintaActa();
     }
   }
+  /* lo que el acta apunta de cada respuesta */
+  const detalle = dicho => ({id: S.ej.id, cuenta: S.ej.cuenta, dicho, valor: S.ej.valor, visto: S.ej.visto});
   function modoRuta(si){
     $('ruta').hidden = !si;
     $('tlEj').hidden = !si;
@@ -3005,8 +3236,15 @@ raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
       (total ? Math.round(100 * sesion.bien / total) : 0) + '% de acierto · tiempo: <b>' + E.reloj(Date.now() - sesion.t0) + '</b>';
     $('acFilas').innerHTML = Object.keys(sesion.mision).sort((a, b) => a - b).map(i => {
       const m = sesion.mision[i], t = m.bien + m.mal;
-      return '<div class="ac-f' + (m.mal > m.bien ? ' floja' : '') + '"><span class="ac-n">' + (Number(i) + 1) + '. ' + E.MISIONES[i].t + '</span><span>' + m.bien + ' de ' + t + '</span></div>';
+      return '<div class="ac-f' + (m.mal > m.bien ? ' floja' : '') + '"><span class="ac-n">' + (Number(i) + 1) + '. ' + E.MISIONES[i].t + '</span>' +
+        (m.solas ? '<span class="ac-s">' + m.solas + ' sin mirar</span>' : '') + '<span>' + m.bien + ' de ' + t + '</span></div>';
     }).join('') || '<div class="ac-f"><span class="ac-n">Aún no hay nada anotado.</span></div>';
+    const ejs = sesion.ejercicios || [];
+    $('acDet').hidden = !ejs.length;
+    $('acDet').querySelector('summary').textContent = 'Ejercicio a ejercicio (' + ejs.length + ')';
+    $('acEj').innerHTML = ejs.map(e => '<li class="' + (e.ok ? 'ok' : 'no') + '"><span class="ac-h">' + E.hora(e.t) + '</span>' +
+      '<span class="ac-m">M' + (e.m + 1) + '</span><span class="ac-c">' + e.c + ' = ' + P.conSigno(e.v) + '</span>' +
+      '<span class="ac-como">' + E.comoFue(e) + '</span></li>').join('');
     $('acNombre').value = sesion.nombre || '';
   }
   $('tlComprueba').addEventListener('click', comprueba);
@@ -3018,10 +3256,20 @@ raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
   $('tlRuta').addEventListener('click', () => modoRuta(true));
   $('acNombre').addEventListener('input', () => { sesion.nombre = $('acNombre').value; E.guarda(ruta, sesion); });
   $('acCopia').addEventListener('click', () => {
-    const t = E.actaEnTexto(sesion);
+    const t = E.actaEnTexto(sesion, Date.now(), ruta);
     const listo = () => { $('acCopia').textContent = 'Copiada'; setTimeout(() => { $('acCopia').textContent = 'Copiar acta'; }, 1500); };
     if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(listo, () => alert(t));
     else alert(t);
+  });
+  /* el acta, en un .txt: para guardarla con las de la clase */
+  $('acBaja').addEventListener('click', () => {
+    const f = new Date(), dos = x => String(x).padStart(2, '0');
+    const nombre = (sesion.nombre || 'sin-nombre').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'sin-nombre';
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([E.actaEnTexto(sesion, Date.now(), ruta)], {type: 'text/plain;charset=utf-8'}));
+    a.download = 'acta-palestra-' + nombre + '-' + f.getFullYear() + dos(f.getMonth() + 1) + dos(f.getDate()) + '-' + dos(f.getHours()) + dos(f.getMinutes()) + '.txt';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
   $('acta').addEventListener('toggle', pintaActa);
   function pintaTablilla(){
@@ -3127,6 +3375,66 @@ raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
   $('tlEntrevista').addEventListener('click', () => entrevista(true));
   $('evSalir').addEventListener('click', () => entrevista(false));
 
+  /* ── LOS AJUSTES: se guardan en este navegador y no caducan ── */
+  const AJUSTES = 'palestra.ajustes.v1';
+  const aj = {tema: 'noche', aula: false, lento: false, preguntas: true};
+  try{ Object.assign(aj, JSON.parse(localStorage.getItem(AJUSTES) || '{}')); }catch(err){}
+  function aplica(){
+    const h = document.documentElement;
+    if(aj.tema === 'dia' || aj.tema === 'proyector') h.dataset.tema = aj.tema; else delete h.dataset.tema;
+    if(aj.aula) h.dataset.aula = 'si'; else delete h.dataset.aula;
+    h.style.setProperty('--lento', aj.lento ? 1.6 : 1);
+    window.Reproductor.ponRitmo(aj.lento ? 1.6 : 1);
+    R.preguntas = aj.preguntas;
+    const valor = {tema: aj.tema, aula: aj.aula ? 'si' : 'no', lento: aj.lento ? 'si' : 'no', preguntas: aj.preguntas ? 'si' : 'no'};
+    document.querySelectorAll('[data-aj]').forEach(g => g.querySelectorAll('button').forEach(b =>
+      b.setAttribute('aria-pressed', String(b.dataset.v === valor[g.dataset.aj])) ));
+    $('bAula').setAttribute('aria-pressed', String(aj.aula));
+    if(R.pel && !R.jugando) R.muestra(R.k);            // el campo cambia de ancho con el aula
+  }
+  function guardaAjustes(){ try{ localStorage.setItem(AJUSTES, JSON.stringify(aj)); }catch(err){} }
+  document.querySelectorAll('[data-aj]').forEach(g => g.addEventListener('click', ev => {
+    const b = ev.target.closest('button'); if(!b) return;
+    const k = g.dataset.aj;
+    aj[k] = k === 'tema' ? b.dataset.v : b.dataset.v === 'si';
+    guardaAjustes(); aplica();
+  }));
+  $('bAula').addEventListener('click', () => { aj.aula = !aj.aula; guardaAjustes(); aplica(); });
+  function ajustes(si){
+    $('ajustes').hidden = !si;
+    $('bAjustes').setAttribute('aria-expanded', String(si));
+    if(!si) noCero();
+  }
+  $('bAjustes').addEventListener('click', () => ajustes($('ajustes').hidden));
+  $('ajCierra').addEventListener('click', () => ajustes(false));
+  /* empezar de cero: dos toques, sin ventanas del navegador */
+  let ceroListo = null;
+  const CERO_TXT = $('ajCeroTxt').textContent;
+  function noCero(){
+    clearTimeout(ceroListo); ceroListo = null;
+    $('ajCero').classList.remove('seguro'); $('ajCero').textContent = 'Borrar y empezar';
+    $('ajCeroTxt').textContent = CERO_TXT;
+  }
+  $('ajCero').addEventListener('click', () => {
+    if(!ceroListo){
+      $('ajCero').classList.add('seguro'); $('ajCero').textContent = 'Sí, borrar';
+      $('ajCeroTxt').textContent = '¿Seguro? Se pierden ' + (sesion.bien + sesion.mal) + ' respuestas anotadas. Toca otra vez para borrar.';
+      ceroListo = setTimeout(noCero, 5000);
+      return;
+    }
+    noCero();
+    E.borra();
+    ruta = E.nuevaRuta(); sesion = E.nuevaSesion();
+    if(!$('entrevista').hidden) entrevista(false);
+    enRuta = true;
+    modoRuta(true);
+    pintaActa();
+    ajustes(false);
+    $('tlAviso').innerHTML = 'Empezamos de cero: misión 1.';
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+
+  aplica();
   pintaTablilla();
   modoRuta(true);
   pintaActa();
