@@ -16,7 +16,7 @@ const rect = el => {
 };
 const varaDe = f => Math.max(0, Math.min(1, Math.log(Math.max(1, Math.abs(f))) / Math.log(12)));
 
-/* Zeus se asoma encima del tirador (a un lado, para no taparlo) */
+/* Zeus se asoma en el Olimpo, encima del tirador y un poco a un lado */
 function asoma(campo, elT){
   const rc = rect(campo), rn = rect(elT);
   const cxV = rn.left + rn.width / 2 - rc.left;
@@ -27,7 +27,7 @@ function asoma(campo, elT){
     z = document.createElement('div');
     z.className = 'zeus';
     z.innerHTML = raiz.Personajes.ZEUS_SVG;
-    campo.appendChild(z);
+    (campo.querySelector('.olimpo') || campo).appendChild(z);   // vive en el Olimpo, sobre el friso
   }
   z.classList.remove('disipa', 'sinCetro', 'resplandece', 'lanza');
   z.classList.toggle('zurdo', zurdo);

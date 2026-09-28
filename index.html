@@ -212,11 +212,11 @@ footer{margin-top:26px;padding-top:12px;border-top:1px solid var(--linea);text-a
 html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;border-top-color:rgba(90,66,38,.3)}
 </style>
 <style>
-.campo{position:relative;height:252px;border-radius:10px;overflow:hidden;
+.campo{position:relative;height:308px;--cielo:56px;border-radius:10px;overflow:hidden;
     -webkit-user-select:none;user-select:none;
     border:1px solid rgba(233,184,78,.18);
     background:
-      radial-gradient(circle at 82% 15%, rgba(240,230,200,.20) 0 8px,
+      radial-gradient(circle at 82% 11%, rgba(240,230,200,.20) 0 8px,
         rgba(240,230,200,.07) 8px 15px, rgba(240,230,200,0) 16px),
       radial-gradient(ellipse 120% 55% at 50% 100%, rgba(233,184,78,.09),
         rgba(233,184,78,0) 62%),
@@ -259,17 +259,17 @@ html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;
   .marca-n.cero{color:var(--ink);font-weight:700}
   .marca-n.cero i{width:2px;height:36px;margin-top:-10px;background:linear-gradient(180deg,
     rgba(242,237,226,.06),rgba(242,237,226,.75))}
-      .friso{position:absolute;left:0;right:0;top:0;height:18px;z-index:1;
+      .friso{position:absolute;left:0;right:0;top:var(--cielo);height:18px;z-index:2;
     pointer-events:none;
     background:
       url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='18'><g fill='none' stroke='rgba(233,184,78,.2)' stroke-width='1'><path d='M0 3.5 H26'/><path d='M0 14.5 H26'/></g><path d='M13 14 V5 H5 V10 H9' fill='none' stroke='rgba(233,184,78,.42)' stroke-width='1.8'/></svg>") repeat-x center / 26px 18px,
       linear-gradient(180deg, rgba(43,32,62,.9), rgba(26,19,40,.55));
     border-bottom:1px solid rgba(233,184,78,.16)}
-      .columnata{position:absolute;left:0;right:0;top:17px;bottom:50px;z-index:0;
+      .columnata{position:absolute;left:0;right:0;top:calc(var(--cielo) + 17px);bottom:50px;z-index:0;
     pointer-events:none;
     background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='92' height='158'><g fill='rgba(226,210,188,.16)'><rect x='29' y='4' width='34' height='6' rx='1'/><path d='M32 10 L60 10 L57 17 L35 17 Z'/><rect x='36' y='17' width='20' height='131'/><rect x='32' y='148' width='28' height='5' rx='1'/><rect x='29' y='153' width='34' height='5' rx='1'/></g><g fill='rgba(10,6,18,.2)'><rect x='40' y='18' width='1.6' height='129'/><rect x='45.5' y='18' width='1.6' height='129'/><rect x='51' y='18' width='1.6' height='129'/></g><g fill='rgba(244,240,230,.13)'><rect x='36.5' y='17' width='2' height='131'/></g></svg>") repeat-x;
     background-size:92px 100%}
-  .escena{position:absolute;left:50%;top:0;bottom:0;width:100%;
+  .escena{position:absolute;left:50%;top:var(--cielo);bottom:0;width:100%;z-index:1;
     transform:translateX(-50%);transform-origin:50% 100%;
     transition:transform .5s ease, width .5s ease}
           .equipo{transition:transform calc(1s * var(--lento,1)) cubic-bezier(.22,1.18,.36,1)}
@@ -503,6 +503,17 @@ html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;
     background:currentColor;animation:sopla calc(.9s * var(--lento,1)) ease-out forwards}
   @keyframes sopla{0%{transform:translate(0,0) scale(.4);opacity:0}
     25%{opacity:.9}100%{transform:translate(var(--dx,0), -30px) scale(1);opacity:0}}
+
+/* ── EL OLIMPO: la franja de cielo de arriba. Zeus sube desde detrás del
+   friso, se apoya en él, lanza y vuelve a bajar; lo que asoma por debajo del
+   friso queda recortado, así que nunca tapa el campo ── */
+.olimpo{position:absolute;left:0;right:0;top:0;height:calc(var(--cielo) + 12px);overflow:hidden;z-index:1;pointer-events:none}
+.olimpo .zeus{top:auto;bottom:-12px;width:104px;height:78px;margin-left:-52px;z-index:0;transform:translateY(105%)}
+.olimpo .zeus.fuera{transform:translateY(0)}
+/* el suelo del templo, quieto bajo la regla: cuando la cámara se aleja y la
+   regla se estrecha, no queda hueco a los lados */
+.suelo{position:absolute;left:0;right:0;bottom:0;height:52px;z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(48,35,44,.65) 0,#2B1F2C 30%,#1A1322 100%);border-top:1px solid rgba(233,184,78,.5)}
 </style>
 <style>
 /* ── LA TABLI·CAS·IO: la tablilla de arcilla de Listillón, y de broma con
@@ -871,7 +882,7 @@ html:not([data-tema="noche"]) .columnata{
 html[data-tema="proyector"] .columnata{opacity:.6}
 html:not([data-tema="noche"]) .marca{background:repeating-linear-gradient(180deg,
   rgba(80,70,90,.45) 0 7px, transparent 7px 13px);box-shadow:none}
-html:not([data-tema="noche"]) .regla{background:linear-gradient(180deg,#efe4ca 0,#e9dcbf 100%);
+html:not([data-tema="noche"]) :is(.regla,.suelo){background:linear-gradient(180deg,#efe4ca 0,#e9dcbf 100%);
   border-top:1.5px solid #c9a24f;box-shadow:none}
 html:not([data-tema="noche"]) .regla::before{background:none}
 html:not([data-tema="noche"]) .marca-n{color:#3a3040}
@@ -883,7 +894,7 @@ html:not([data-tema="noche"]) .marca-n.aqui i{background:var(--green)}
 html:not([data-tema="noche"]) .nudo .cifra{color:var(--ink);text-shadow:0 0 4px rgba(255,250,238,.95)}
 html:not([data-tema="noche"]) .nudo.sin .cifra{color:#5f5040}
 html:not([data-tema="noche"]) .regla.viva .marca-n.impar{color:#5f5040}
-html[data-tema="proyector"] .regla{border-top:2px solid #1a1a1a;background:#fff}
+html[data-tema="proyector"] :is(.regla,.suelo){border-top:2px solid #1a1a1a;background:#fff}
 html[data-tema="proyector"] .marca-n{color:#000;font-weight:700}
 html[data-tema="proyector"] .marca-n i{background:#555}
 html[data-tema="proyector"] .marca{background:repeating-linear-gradient(180deg, rgba(0,0,0,.55) 0 7px, transparent 7px 13px)}
@@ -1088,7 +1099,7 @@ html[data-inicio="si"] main{visibility:hidden}
     <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><div><div class="quien">Jeferión</div><p class="aviso" id="jefAviso" role="status"></p></div></div>
   </section>
 
-  <footer>versión 0.18</footer>
+  <footer>versión 0.19</footer>
 </main>
 
 <div class="modal" id="mActa" hidden>
@@ -1872,10 +1883,15 @@ raiz.Tirador = {dibujaTirador, medidasDe, frascoEnMano, vuelcoQueEncaja, conSign
 'use strict';
 const T = raiz.Tirador;
 
+/* arriba, el Olimpo: una franja de cielo donde se asoma Zeus, apoyado en el
+   friso, sin tapar nunca el campo. El friso y las columnas son del templo y
+   se quedan quietos; lo que se aleja con la cámara es la escena */
 const PLANTILLA =
+  '<div class="olimpo" aria-hidden="true"></div>' +
+  '<div class="columnata" aria-hidden="true"></div>' +
+  '<div class="friso" aria-hidden="true"></div>' +
+  '<div class="suelo" aria-hidden="true"></div>' +
   '<div class="escena">' +
-    '<div class="friso" aria-hidden="true"></div>' +
-    '<div class="columnata" aria-hidden="true"></div>' +
     '<div class="equipo izq"></div>' +
     '<div class="equipo der"></div>' +
     '<div class="marca"></div>' +
@@ -2773,7 +2789,7 @@ const rect = el => {
 };
 const varaDe = f => Math.max(0, Math.min(1, Math.log(Math.max(1, Math.abs(f))) / Math.log(12)));
 
-/* Zeus se asoma encima del tirador (a un lado, para no taparlo) */
+/* Zeus se asoma en el Olimpo, encima del tirador y un poco a un lado */
 function asoma(campo, elT){
   const rc = rect(campo), rn = rect(elT);
   const cxV = rn.left + rn.width / 2 - rc.left;
@@ -2784,7 +2800,7 @@ function asoma(campo, elT){
     z = document.createElement('div');
     z.className = 'zeus';
     z.innerHTML = raiz.Personajes.ZEUS_SVG;
-    campo.appendChild(z);
+    (campo.querySelector('.olimpo') || campo).appendChild(z);   // vive en el Olimpo, sobre el friso
   }
   z.classList.remove('disipa', 'sinCetro', 'resplandece', 'lanza');
   z.classList.toggle('zurdo', zurdo);

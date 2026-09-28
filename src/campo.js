@@ -9,10 +9,15 @@
 'use strict';
 const T = raiz.Tirador;
 
+/* arriba, el Olimpo: una franja de cielo donde se asoma Zeus, apoyado en el
+   friso, sin tapar nunca el campo. El friso y las columnas son del templo y
+   se quedan quietos; lo que se aleja con la cámara es la escena */
 const PLANTILLA =
+  '<div class="olimpo" aria-hidden="true"></div>' +
+  '<div class="columnata" aria-hidden="true"></div>' +
+  '<div class="friso" aria-hidden="true"></div>' +
+  '<div class="suelo" aria-hidden="true"></div>' +
   '<div class="escena">' +
-    '<div class="friso" aria-hidden="true"></div>' +
-    '<div class="columnata" aria-hidden="true"></div>' +
     '<div class="equipo izq"></div>' +
     '<div class="equipo der"></div>' +
     '<div class="marca"></div>' +

@@ -18,7 +18,7 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 - `src/pagina.html` — la página: la ruta, la tablilla, el campo, el acta y las entrevistas, con los enlaces a los módulos.
 - `src/motor.js` — el estado del campo (`Campo`), el analizador de la cuenta (`analiza`), el intérprete (`juega`) y el grabador de fotogramas (`graba`). No dibuja nada; vale en el navegador y en Node.
 - `src/tirador.js` — el dibujo del tirador en SVG (de El pulso de los dioses).
-- `src/campo.js` y `src/campo.css` — el campo: pinta una foto del motor (cuerda, regla, bandera).
+- `src/campo.js` y `src/campo.css` — el campo: pinta una foto del motor (cuerda, regla, bandera). Arriba, el Olimpo: una franja de cielo donde Zeus se asoma apoyado en el friso sin tapar el campo; el friso, las columnas y el suelo se quedan quietos y solo la escena se aleja con la cámara.
 - `src/tablilla.js` y `src/tablilla.css` — la tablilla: la TABLI·CAS·IO de Listillón, de arcilla y de broma con hechura de calculadora científica (pantalla de barro alisado, teclas de función de barro claro, las de número con barniz negro, DEL y AC en ocre); qué pieza puede ir tras cuál (`pulsa`) y la cuenta escrita (`htmlCuenta`).
 - `src/reproductor.js` y `src/banquillo.css` — el reproductor: la foto k al instante y el paso k+1 animado; la predicción antes de los pasos clave; ▶▶.
 - `src/cartela.css` — la cartela: la cuenta iluminada encima del campo.
