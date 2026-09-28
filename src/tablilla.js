@@ -112,10 +112,6 @@ function pulsa(tok, tk){
   return {tok: T, aviso: ''};
 }
 
-/* las pociones con tecla: seis, una fila de la calculadora. El motor conoce
-   más (:3, ·(−3)) y las misiones las usan; para escribir a mano bastan estas */
-const TECLAS_POC = [2, 3, 1/2, -1, -2, -1/2];
-
 /* ── montar las teclas dentro de un elemento. «al» recibe cada tecla pulsada.
    «sobre» es el rótulo amarillo de encima, como las segundas funciones de
    una calculadora; aquí dice qué hace la tecla ── */
@@ -130,11 +126,14 @@ function monta(el, al){
     fil.appendChild(b);
     return b;
   };
-  /* las grises de función: las pociones, los paréntesis y las potencias */
+  /* las de función, dos filas de seis: arriba las pociones que no cambian
+     de bando y los paréntesis; abajo las de traición y las potencias */
   const ff = fila('tl-fun');
-  TECLAS_POC.map(P.pocionDe).forEach(po => tecla(ff, frascoHtml(po) + '<span class="etq">' + po.e + '</span>', clasePoc(po) + ' tl-p', po.n + ', ' + po.e + ': ' + po.d, {t: 'p', k: po.k}));
+  const pocion = k => { const po = P.pocionDe(k); tecla(ff, frascoHtml(po) + '<span class="etq">' + po.e + '</span>', clasePoc(po) + ' tl-p', po.n + ', ' + po.e + ': ' + po.d, {t: 'p', k: po.k}); };
+  [2, 3, 1/2, 1/3].forEach(pocion);
   tecla(ff, '(', 'tl-o', 'Abre paréntesis', {t: '('}, 'abre');
   tecla(ff, ')', 'tl-o', 'Cierra paréntesis', {t: ')'}, 'cierra');
+  [-1, -2, -3, -1/2].forEach(pocion);
   tecla(ff, 'x²', 'tl-o tl-pot', 'Al cuadrado', {t: 'e', n: 2}, 'cuadrado');
   tecla(ff, 'x³', 'tl-o tl-pot', 'Al cubo', {t: 'e', n: 3}, 'cubo');
   /* las negras grandes: los tiradores, y + − DEL AC = */

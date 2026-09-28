@@ -48,11 +48,9 @@
 
 /* ── LAS TECLAS: arriba las grises de función, abajo las negras grandes.
    El rótulo de encima, en almagre, dice qué hace cada una. Al pulsar, se hunden */
-.tl-teclas{display:flex;flex-direction:column;gap:14px;padding-top:4px}
+.tl-teclas{display:flex;flex-direction:column;gap:16px;padding-top:12px}
 .tl-fila{display:grid;gap:15px 7px}
 .tl-fun{grid-template-columns:repeat(6,1fr)}
-/* la segunda fila gris, ( ) x² x³, centrada bajo las seis pociones */
-.tl-fun button:nth-child(7){grid-column-start:2}
 .tl-num{grid-template-columns:repeat(5,1fr);gap:17px 8px}
 .tl-teclas button{position:relative;cursor:pointer;font:inherit;min-width:0;padding:3px 2px;color:var(--ink);
   transition:transform .07s ease, box-shadow .07s ease}
