@@ -15,12 +15,14 @@ El tira y afloja de los números enteros, rehecho desde cero a partir de lo apre
 
 - `motor.js` — el estado del campo (`Campo`), el analizador de la cuenta (`analiza`), el intérprete (`juega`) y el grabador de fotogramas (`graba`). No dibuja nada; vale en el navegador y en Node.
 - `pruebas/motor.test.mjs` — las pruebas del motor: `node --test pruebas/motor.test.mjs`.
-- `index.html` — la página. Por ahora solo enseña una película de muestra del motor.
+- `tirador.js` — el dibujo del tirador en SVG (viene tal cual de El pulso de los dioses).
+- `campo.js` y `src/campo.css` — el campo: pinta una foto del motor (cuerda, regla, bandera). Sin animación.
+- `index.html` — la página. Por ahora, un visor de fotogramas quietos sobre cuentas de muestra.
 
 ## Pasos
 
 1. ✅ El estado y el intérprete.
-2. El campo quieto: tiradores, regla y bandera dibujados desde el estado.
+2. ✅ El campo quieto: tiradores, regla y bandera dibujados desde el estado.
 3. La tablilla: teclas de barro, escribir la cuenta y el cálculo exacto.
 4. El reproductor de fotogramas, con el banquillo.
 5. Predicción y cartela.

@@ -4,39 +4,102 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>La palestra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="src/campo.css">
 <style>
-  /* Solo para comprobar que el motor arranca: la app de verdad llega en los
-     pasos siguientes (campo, tablilla, fotogramas). */
-  :root{--bg:#0F0C18;--panel:#171226;--line:#372E4E;--ink:#F2EDE2;--muted:#A79DB5;--oro:#E9B84E;--izq:#E2725B;--der:#57B8D6}
+  :root{
+    --bg:#0F0C18; --panel:#171226; --panel-2:#1F1930; --line:#372E4E;
+    --ink:#F2EDE2; --muted:#A79DB5;
+    --oro:#E9B84E; --ambar:#E9B84E; --green:#9BD164;
+    --izq:#E2725B; --der:#57B8D6;
+    --lento:1;
+  }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,sans-serif;padding:24px 16px}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,'Segoe UI',sans-serif;padding:16px 16px 40px}
   main{max-width:620px;margin:0 auto}
-  h1{font-size:22px;margin:0 0 4px}
-  p{margin:0 0 12px;color:var(--muted)}
-  pre{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto;font-size:13px;line-height:1.45}
-  b.izq{color:var(--izq)} b.der{color:var(--der)} b.oro{color:var(--oro)}
+  h1{font-family:'Oswald',sans-serif;font-weight:500;font-size:22px;letter-spacing:1px;margin:0 0 2px}
+  .sub{margin:0 0 14px;color:var(--muted);font-size:14px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px}
+  .cuenta{font-family:'Space Mono',monospace;font-size:18px;text-align:center;margin:0 0 10px;line-height:1.5}
+  .cuenta b{color:var(--oro)}
+  .fila{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+  select,button{font:inherit;color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-height:44px}
+  select{flex:1;min-width:0}
+  button{cursor:pointer;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:14px}
+  button:disabled{opacity:.4;cursor:default}
+  .paso-t{font-family:'Space Mono',monospace;font-size:13px;color:var(--muted);flex:1;text-align:right}
+  .que{margin:8px 0 0;color:var(--muted);font-size:14px;font-family:'Space Mono',monospace;min-height:22px}
+  .que b{color:var(--ink)}
+  .banquillo-lista{margin:8px 0 0;font-size:14px;color:var(--muted)}
+  .banquillo-lista b.izq{color:var(--izq)} .banquillo-lista b.der{color:var(--der)}
 </style>
 </head>
 <body>
 <main>
   <h1>La palestra</h1>
-  <p>Prototipo 0.1 · el motor, sin campo todavía.</p>
-  <pre id="salida"></pre>
+  <p class="sub">Prototipo 0.2 · el campo quieto: cada fotograma, dibujado desde la foto del motor.</p>
+  <div class="panel">
+    <p class="cuenta" id="cuenta"></p>
+    <div id="campo"></div>
+    <p class="que" id="que"></p>
+    <p class="banquillo-lista" id="bq"></p>
+    <div class="fila">
+      <button id="atras" aria-label="Atrás">◀</button>
+      <button id="sig" aria-label="Adelante">▶</button>
+      <span class="paso-t" id="pasoT"></span>
+    </div>
+    <div class="fila">
+      <select id="muestra" aria-label="Cuenta de muestra"></select>
+    </div>
+  </div>
 </main>
 <script src="motor.js"></script>
+<script src="tirador.js"></script>
+<script src="campo.js"></script>
 <script>
-  /* una película de muestra, paso a paso, para ver que el motor responde */
-  const P = window.Palestra;
-  const tok = [{t:'n',f:3},{t:'-'},{t:'n',f:-4},{t:'p',k:-2,pre:false}];
-  const pel = P.graba(tok);
-  const lista = l => l.map(p => '<b class="' + (p.f < 0 ? 'izq' : 'der') + '">' + P.conSigno(p.f) + '</b>').join(' ') || '—';
-  let h = '<b class="oro">' + P.escribe(pel.arbol) + ' = ' + P.fracTxt(pel.exacto) + '</b>   (nivel ' + pel.nivel + ')\n\n';
-  pel.pasos.forEach((p, i) => {
-    h += (i + 1) + '. ' + p.tipo.padEnd(7) + ' bandera ' + String(p.bandera).padStart(3) +
-      '   cuerda: ' + lista(p.cuerda) + '   banquillo: ' + lista(p.banquillo) +
-      (p.x ? '\n   ' + p.x : '') + (p.clave ? '   ← ¿dónde acabará?' : '') + '\n';
-  });
-  document.getElementById('salida').innerHTML = h;
+  const P = window.Palestra, C = window.Campo;
+  const n = f => ({t:'n', f}), mas = {t:'+'}, menos = {t:'-'}, ab = {t:'('}, ci = {t:')'};
+  const po = k => ({t:'p', k, pre:false}), pre = k => ({t:'p', k, pre:true}), e = x => ({t:'e', n:x});
+  const MUESTRAS = [
+    [n(-2), mas, n(5)],
+    [n(2), menos, n(5)],
+    [n(2), mas, n(4), po(-2)],
+    [n(3), menos, n(-4), po(-2)],
+    [n(-2), mas, pre(3), ab, n(-2), mas, n(1), ci],
+    [pre(-1), ab, n(-2), mas, n(-3), mas, n(-1), ci],
+    [n(4), menos, ab, n(3), menos, n(5), ci],
+    [n(-3), e(2)],
+    [n(5), mas, n(4), menos, n(3), menos, n(-1), menos, n(-2)],
+    [n(1), mas, n(2), mas, n(3), mas, n(4), mas, n(-5)]
+  ];
+  const campo = C.monta(document.getElementById('campo'));
+  let pel = null, k = 0;
+  const sel = document.getElementById('muestra');
+  MUESTRAS.forEach((t, i) => { const o = document.createElement('option'); o.value = i; o.textContent = P.escribe(P.analiza(t)); sel.appendChild(o); });
+  function carga(i){
+    pel = P.graba(MUESTRAS[i]); k = 0;
+    pel.alcance = Math.max(8, ...pel.pasos.map(p => Math.abs(p.bandera)));
+    pinta();
+  }
+  function pinta(){
+    const foto = k ? pel.pasos[k - 1] : {cuerda:[], banquillo:[], bandera:0};
+    C.pinta(campo, foto, {alcance: pel.alcance});
+    document.getElementById('cuenta').innerHTML = P.escribe(pel.arbol) +
+      (k === pel.pasos.length && pel.valor !== null ? ' = <b>' + P.conSigno(pel.valor) + '</b>' : '');
+    document.getElementById('que').innerHTML = k ? (foto.tipo + (foto.x ? ': <b>' + foto.x + '</b>' : '')) : (pel.sinTeatro || 'pulsa ▶');
+    document.getElementById('bq').innerHTML = foto.banquillo.length ? 'banquillo: ' +
+      foto.banquillo.map(p => '<b class="' + (p.f < 0 ? 'izq' : 'der') + '">' + P.conSigno(p.f) + '</b>').join(' ') : '';
+    document.getElementById('pasoT').textContent = 'fotograma ' + k + ' de ' + pel.pasos.length;
+    document.getElementById('atras').disabled = k === 0;
+    document.getElementById('sig').disabled = k >= pel.pasos.length;
+  }
+  document.getElementById('sig').addEventListener('click', () => { if(k < pel.pasos.length){ k++; pinta(); } });
+  document.getElementById('atras').addEventListener('click', () => { if(k > 0){ k--; pinta(); } });
+  sel.addEventListener('change', () => carga(+sel.value));
+  window.addEventListener('resize', pinta);
+  carga(0);
 </script>
 </body>
 </html>
