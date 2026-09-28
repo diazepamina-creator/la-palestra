@@ -41,21 +41,24 @@ function pasoQueCabe(ancho, alcance){
   return Math.max(15, Math.min(24, p));
 }
 
-function pintaRegla(regla, alcance, paso, bandera, hayGente){
+function pintaRegla(regla, alcance, paso, bandera, hayGente, opciones){
   let h = '';
   for(let v = -alcance; v <= alcance; v++){
     const clase = (v === 0 ? ' cero' : '') + (hayGente && v === bandera ? ' aqui' : '') +
-      (v % 2 === 0 ? ' par' : ' impar');
+      (opciones.pin === v ? ' pronostico' : '') + (v % 2 === 0 ? ' par' : ' impar');
     h += '<span class="marca-n' + clase + '" data-v="' + v + '" style="left:calc(50% + ' + (v * paso) + 'px)"><i></i>' + v + '</span>';
   }
   regla.innerHTML = h;
   regla.style.setProperty('--paso', paso + 'px');
   regla.classList.toggle('ancha', paso >= 19);
   regla.classList.toggle('estrecha', paso < 18 || alcance > 8);
+  /* «viva»: se puede tocar para decir dónde acabará la bandera */
+  regla.classList.toggle('viva', !!opciones.viva);
 }
 
 /* pinta la foto. opciones: {alcance} para que la regla no cambie de tamaño
-   a mitad de una película; {nuevos: [ids]} los que acaban de llegar */
+   a mitad de una película; {nuevos: [ids]} los que acaban de llegar;
+   {viva} la regla se puede tocar; {pin} el número que dijo el alumno */
 function pinta(el, foto, opciones){
   opciones = opciones || {};
   const cuerda = foto.cuerda || [], bandera = foto.bandera || 0;
@@ -106,9 +109,16 @@ function pinta(el, foto, opciones){
   nudo.classList.toggle('haciaIzq', hayGente && bandera < 0);
   nudo.querySelector('.cifra').textContent = bandera === 0 ? '0' : T.conSigno(bandera);
   el.classList.toggle('tensa', hayGente);
-  pintaRegla(el.querySelector('.regla'), alcance, paso, bandera, hayGente);
+  pintaRegla(el.querySelector('.regla'), alcance, paso, bandera, hayGente, opciones);
   return {paso, zoom, alcance};
 }
+/* quién se entera de que se toca la regla (recibe el número tocado) */
+function alTocarRegla(el, fn){
+  el.querySelector('.regla').addEventListener('click', ev => {
+    const m = ev.target.closest('.marca-n');
+    if(m && el.querySelector('.regla').classList.contains('viva')) fn(parseInt(m.dataset.v, 10));
+  });
+}
 
-raiz.Campo = {monta, pinta, pasoQueCabe};
+raiz.Campo = {monta, pinta, pasoQueCabe, alTocarRegla};
 })(window);

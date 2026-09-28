@@ -259,3 +259,19 @@
 @keyframes llega{0%{opacity:0;transform:translateY(-10px) scale(.5)}
   60%{opacity:1;transform:translateY(2px) scale(1.06)}
   100%{opacity:1;transform:none}}
+
+/* dónde está la bandera, en verde */
+.marca-n.aqui{color:var(--green);font-weight:700}
+.marca-n.aqui i{height:36px;margin-top:-10px;background:linear-gradient(180deg,rgba(155,209,100,.08),var(--green))}
+/* la regla viva: antes de un paso clave, se toca para decir dónde acabará */
+.regla.viva{pointer-events:auto;animation:reglaLlama 1.2s ease-in-out infinite alternate}
+.regla.viva .marca-n{pointer-events:auto;cursor:pointer}
+.regla.viva .marca-n::after{content:'';position:absolute;left:0;right:0;top:-30px;bottom:-6px}
+.regla.viva .marca-n:hover{background:rgba(233,184,78,.14)}
+.regla.viva .marca-n.impar{color:var(--muted)}
+@keyframes reglaLlama{to{border-top-color:#F9D98A;box-shadow:inset 0 1px 0 rgba(255,236,196,.3), 0 -8px 18px rgba(233,184,78,.25)}}
+/* el pronóstico del alumno, marcado mientras se juega el paso */
+.marca-n.pronostico{color:var(--ambar);font-weight:700;background:rgba(233,184,78,.18)}
+.marca-n.pronostico::before{content:"tú";position:absolute;left:50%;top:-15px;transform:translateX(-50%);
+  font-size:9px;line-height:1.3;padding:0 3px;border-radius:3px;background:#E9B84E;color:#1A1206;font-weight:700}
+@media (prefers-reduced-motion: reduce){ .regla.viva{animation:none} }
