@@ -109,11 +109,16 @@
   </section>
 
   <section class="tablilla" aria-label="La tablilla">
-    <div class="tl-cab">
-      <h2>La tablilla</h2>
-      <span class="tl-placa" aria-label="Tabli-Cas-IO fi-ji 320 antes de Cristo, con teatro incorporado"><b>TABLI·CAS·IO <span class="tl-modelo">φχ-320 a. C.</span></b><i>con teatro incorporado · escriba: Listillón</i></span>
+    <h2 class="tl-oculto">La tablilla</h2>
+    <div class="tl-cab" aria-label="Tabli-Cas-IO fi-ji 320 antes de Cristo, Palestra, Clásica, con teatro incorporado">
+      <span class="tl-logo" aria-hidden="true">TABLI·CAS·IO</span>
+      <span class="tl-modelo" aria-hidden="true"><b>φχ-320 a. C.</b><i>Palestra</i></span>
+      <span class="tl-serie" aria-hidden="true">ΚΛΑΣΣΙΚΗ</span>
+      <span class="tl-lema" aria-hidden="true">con teatro incorporado · escriba: Listillón</span>
     </div>
-    <div class="tl-tabla" aria-live="polite"><span id="tlEscrito"></span><span class="tl-cursor" aria-hidden="true"></span></div>
+    <div class="tl-marco">
+      <div class="tl-tabla" aria-live="polite"><span class="tl-ind" aria-hidden="true">TEATRO</span><span id="tlEscrito"></span><span class="tl-cursor" aria-hidden="true"></span></div>
+    </div>
     <div class="tl-ej" id="tlEj" hidden>
       <p class="tl-marca" id="tlMarca"></p>
       <div class="tl-resp">
@@ -125,7 +130,6 @@
     <div class="tl-teclas" id="tlTeclas"></div>
     <div class="habla lis"><span class="cara lis" aria-hidden="true"></span><div><div class="quien">Listillón</div><p class="aviso tl-aviso" id="tlAviso" role="status"></p></div></div>
     <div class="botones tl-pie" id="tlPie">
-      <button type="button" class="b" id="tlLimpia">Tablilla limpia</button>
       <button type="button" class="b" id="tlMuestra">Una de muestra</button>
     </div>
   </section>
@@ -396,7 +400,6 @@
   $('atras').addEventListener('click', () => R.retrocede());
   $('inicio').addEventListener('click', () => R.principio());
   $('todo').addEventListener('click', () => R.repasa());
-  $('tlLimpia').addEventListener('click', () => { S.tok = []; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Tablilla limpia.'; pintaTablilla(); $('panelCampo').hidden = true; });
   $('tlMuestra').addEventListener('click', () => { S.tok = MUESTRAS[muestra++ % MUESTRAS.length].slice(); S.pel = null; R.para(); $('tlAviso').innerHTML = ''; pintaTablilla(); $('panelCampo').hidden = true; });
   document.addEventListener('keydown', ev => {
     if(ev.target && /INPUT|TEXTAREA|SELECT/.test(ev.target.tagName)) return;

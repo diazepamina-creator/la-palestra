@@ -37,7 +37,6 @@ html[data-tema="proyector"] .banquillo{border:2px dashed #555}
 
 html[data-tema="proyector"] .panel, html[data-tema="proyector"] .cab{border-width:2px;box-shadow:none}
 html[data-tema="proyector"] .habla{border-width:2px}
-html[data-tema="proyector"] .tablilla{--muted:#3a2e20}
 html[data-tema="proyector"] body{font-weight:500}
 
 /* ── EL MODO AULA: para la pizarra digital. Todo un tercio más grande, que es

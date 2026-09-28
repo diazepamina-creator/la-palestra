@@ -19,7 +19,7 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 - `src/motor.js` — el estado del campo (`Campo`), el analizador de la cuenta (`analiza`), el intérprete (`juega`) y el grabador de fotogramas (`graba`). No dibuja nada; vale en el navegador y en Node.
 - `src/tirador.js` — el dibujo del tirador en SVG (de El pulso de los dioses).
 - `src/campo.js` y `src/campo.css` — el campo: pinta una foto del motor (cuerda, regla, bandera).
-- `src/tablilla.js` y `src/tablilla.css` — la tablilla: las teclas de barro, qué pieza puede ir tras cuál (`pulsa`) y la cuenta escrita (`htmlCuenta`).
+- `src/tablilla.js` y `src/tablilla.css` — la tablilla: la TABLI·CAS·IO de Listillón, de arcilla y de broma con hechura de calculadora científica (pantalla de barro alisado, teclas de función de barro claro, las de número con barniz negro, DEL y AC en ocre); qué pieza puede ir tras cuál (`pulsa`) y la cuenta escrita (`htmlCuenta`).
 - `src/reproductor.js` y `src/banquillo.css` — el reproductor: la foto k al instante y el paso k+1 animado; la predicción antes de los pasos clave; ▶▶.
 - `src/cartela.css` — la cartela: la cuenta iluminada encima del campo.
 - `src/personajes.js`, `src/zeus.js` y `src/personajes.css` — Jeferión, Listillón y Zeus, las caras que hablan y el rayo.
@@ -46,3 +46,4 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 10. ✅ Ajustes (colores, modo aula, velocidad, preguntas), empezar de cero y el acta ejercicio a ejercicio.
 11. ✅ La escena de inicio.
 12. ✅ La disposición de Las piezas de Miut (pestañas, hojas y botones) sobre la arena de la palestra.
+13. ✅ La TABLI·CAS·IO: la tablilla de arcilla con hechura de calculadora.
