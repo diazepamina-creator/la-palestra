@@ -4,7 +4,19 @@
   background:var(--panel);color:var(--ink);border:3px solid #8a6a3b;border-radius:14px;padding:12px;
   box-shadow:inset 0 0 0 2px var(--panel), inset 0 0 0 3px #b8a589, 0 2px 0 rgba(90,64,30,.25)}
 .tablilla h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;
-  color:var(--muted);margin:0 0 10px;font-weight:500}
+  color:var(--muted);margin:0;font-weight:500}
+/* la cabecera: el rótulo y la placa de marca, grabada en el barro */
+.tl-cab{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}
+.tl-placa{display:inline-flex;flex-direction:column;align-items:flex-end;line-height:1.1;padding:4px 9px 5px;border-radius:6px;
+  background:linear-gradient(180deg,#d9c59a,#c4ac7b);border:1px solid #8a6a3b;
+  box-shadow:inset 0 1px 0 rgba(255,250,235,.7), inset 0 -1px 0 rgba(90,64,30,.35), 0 1px 0 rgba(90,64,30,.25)}
+.tl-placa b{font-family:'Oswald',sans-serif;font-weight:700;font-size:12px;letter-spacing:2.2px;color:#3a2a14;
+  text-shadow:0 1px 0 rgba(255,250,235,.7)}
+.tl-placa i{font-style:normal;font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.3px;color:#5f5040;margin-top:1px}
+/* la greca por arriba, como el friso del campo */
+.tablilla{position:relative}
+.tablilla::before{content:"";position:absolute;left:10px;right:10px;top:-3px;height:7px;border-radius:0 0 4px 4px;
+  background:repeating-linear-gradient(90deg,#8a6a3b 0 6px,transparent 6px 9px,#8a6a3b 9px 12px,transparent 12px 18px);opacity:.55}
 .tl-tabla{position:relative;min-height:66px;margin:0 0 10px;padding:12px 14px;border-radius:10px;
   font-family:'Space Mono',monospace;font-size:20px;line-height:1.5;word-break:break-word;color:var(--ink);
   background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .3  0 0 0 0 .14  0 0 0 .55 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"), linear-gradient(180deg,#e2d0a8,#eee0c0);
