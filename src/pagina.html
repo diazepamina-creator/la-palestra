@@ -36,6 +36,11 @@
 </style>
 </head>
 <body>
+<!-- los filtros del barro: el canto torcido de la tablilla y el pulso de la ramita -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <filter id="barroCanto" x="-4%" y="-4%" width="108%" height="108%"><feTurbulence type="fractalNoise" baseFrequency=".022" numOctaves="2" seed="7" result="r"/><feDisplacementMap in="SourceGraphic" in2="r" scale="12" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <filter id="ramita" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".35" numOctaves="1" seed="3" result="r"/><feDisplacementMap in="SourceGraphic" in2="r" scale="2.2" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs></svg>
 <div class="inicio" id="escenaInicio" hidden>
   <div class="inEscena">
     <p class="inGriego" lang="grc">ἑλκυστίνδα</p>

@@ -8,27 +8,35 @@
   --panel2:#f7f0de; --linea:#c4b08a; --tinta:#241b36; --tenue:#5f5040; --noche:#fbf6ea;
   --oro:#7f5a0e; --green:#2f6b28; --izq:#a8432d; --der:#1f6a88;
   --grano:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .3  0 0 0 0 .14  0 0 0 .55 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
-  position:relative;color:var(--ink);padding:14px 14px 16px;border-radius:26px 26px 34px 34px;
-  border:4px solid #8a6a3b;
+  position:relative;isolation:isolate;color:var(--ink);padding:16px 16px 18px;
+  background:none;border:0;box-shadow:none;transform:rotate(-.6deg)}
+/* el barro, en su capa de debajo: con el canto torcido por un filtro, para
+   que parezca modelado a mano. Solo se deforma el barro, no lo de encima */
+.tablilla::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  border:5px solid #8a6a3b;border-radius:34px 22px 40px 26px / 26px 38px 30px 44px;
   background:var(--grano), radial-gradient(ellipse at 30% 10%, #f3e7cb 0, #e8d6ae 50%, #dcc596 100%);
   background-size:140px 140px, 100% 100%;
-  box-shadow:inset 0 0 0 2px #efe0bd, inset 0 0 0 3px #b8a589, inset 0 -6px 14px rgba(110,78,30,.25), 0 8px 18px var(--sombra, rgba(0,0,0,.3))}
+  box-shadow:inset 0 0 0 3px #efe0bd, inset 5px 0 0 -1px #c9ad7c, inset 0 -8px 16px rgba(110,78,30,.3), 0 8px 18px var(--sombra, rgba(0,0,0,.3));
+  filter:url(#barroCanto)}
+/* un pellizco de barro que sobra en una esquina, y una huella de dedo */
+.tablilla::after{content:"";position:absolute;right:26px;bottom:-6px;width:34px;height:14px;z-index:-1;pointer-events:none;
+  border-radius:50% 60% 40% 70% / 70% 50% 60% 40%;background:#c9ab76;box-shadow:inset 0 -2px 3px rgba(90,64,30,.4);filter:url(#barroCanto)}
 .tl-oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 /* el rótulo de arriba, grabado en el barro; la serie, pintada en almagre */
 .tl-cab{display:grid;grid-template-columns:1fr auto;align-items:end;gap:0 10px;margin:2px 4px 10px}
 .tl-logo{font-family:'Arial Black','Helvetica Neue',Arial,sans-serif;font-weight:900;font-size:21px;letter-spacing:1px;color:#5a4122;
-  line-height:1;transform:scaleY(.92);transform-origin:left bottom;
+  line-height:1;transform:scaleY(.92) rotate(-1.5deg);transform-origin:left bottom;filter:url(#ramita);
   text-shadow:0 1px 0 rgba(255,250,235,.8), 0 -1px 0 rgba(60,40,10,.35)}
 .tl-modelo{display:flex;flex-direction:column;align-items:flex-end;line-height:1.05;color:#5a4122;text-shadow:0 1px 0 rgba(255,250,235,.7)}
 .tl-modelo b{font-family:'Space Mono',monospace;font-size:12.5px;font-weight:700}
 .tl-modelo i{font-style:normal;font-family:'Space Mono',monospace;font-size:11px}
-.tl-serie{grid-column:1;margin-top:6px;font-family:var(--rotulo);font-weight:700;font-size:14px;letter-spacing:4px;color:#A8432D}
+.tl-serie{grid-column:1;margin-top:6px;transform:rotate(1deg);transform-origin:left;font-family:var(--rotulo);font-weight:700;font-size:14px;letter-spacing:4px;color:#A8432D}
 .tl-lema{grid-column:2;align-self:end;font-family:'Space Mono',monospace;font-size:8.5px;color:#6f5c44;text-align:right;line-height:1.2;max-width:170px}
 /* la «pantalla»: un hueco de barro alisado, con su reborde */
-.tl-marco{margin:0 0 12px;padding:7px;border-radius:12px 12px 16px 16px;
+.tl-marco{margin:0 0 12px;padding:7px;border-radius:18px 10px 20px 12px / 12px 20px 10px 18px;transform:rotate(.7deg);
   background:var(--grano), linear-gradient(180deg,#b8955e,#a07e4a);background-size:140px 140px, 100% 100%;
   box-shadow:inset 0 2px 4px rgba(60,40,10,.45), 0 1px 0 rgba(255,250,235,.6)}
-.tl-tabla{position:relative;min-height:86px;padding:16px 12px 8px;border-radius:7px;
+.tl-tabla{position:relative;min-height:86px;padding:16px 12px 8px;border-radius:12px 6px 14px 8px / 8px 14px 6px 12px;transform:rotate(-.5deg);
   font-family:'Space Mono',monospace;font-size:20px;line-height:1.45;word-break:break-word;color:#2e2114;
   background:var(--grano), linear-gradient(180deg,#e2d0a8,#eee0c0);background-size:140px 140px, 100% 100%;
   box-shadow:inset 0 3px 8px rgba(90,64,30,.4), inset 0 -1px 0 rgba(255,250,235,.6)}
@@ -58,9 +66,18 @@
   font-family:var(--letra);font-weight:700;font-size:10.5px;line-height:1;color:#A8432D;white-space:nowrap;pointer-events:none;
   text-shadow:0 1px 0 rgba(255,250,235,.6)}
 .tl-teclas button:focus-visible{outline:3px solid #7f5a0e;outline-offset:2px}
-.tl-teclas button:active{transform:translateY(3px)}
+/* teclas hechas a mano: cada una con sus cantos, un poco torcida y alguna
+   más alta o más baja. Al pulsar se hunden sin enderezarse */
+.tl-teclas button{transform:rotate(var(--gira,0deg)) translateY(var(--baja,0px)) scale(var(--talla,1))}
+.tl-teclas button:nth-child(4n+1){--gira:-1.4deg;--baja:1px}
+.tl-teclas button:nth-child(4n+2){--gira:.9deg;--baja:-1px;--talla:.97}
+.tl-teclas button:nth-child(4n+3){--gira:-.5deg;--baja:2px;--talla:1.02}
+.tl-teclas button:nth-child(4n){--gira:1.6deg}
+.tl-teclas button:nth-child(7n+2){--talla:.95;--baja:0px}
+.tl-teclas button:nth-child(5n+4){--gira:-2deg}
+.tl-teclas button:active{transform:rotate(var(--gira,0deg)) translateY(calc(var(--baja,0px) + 3px)) scale(var(--talla,1))}
 /* las de función: óvalos de barro claro, con los cantos a mano */
-.tl-fun button{min-height:44px;color:var(--ink);border:2px solid #7a5a2e;border-radius:15px 17px 14px 16px / 17px 14px 16px 15px;
+.tl-fun button{min-height:44px;color:var(--ink);border:2px solid #7a5a2e;border-radius:17px 11px 19px 13px / 13px 19px 12px 17px;
   background:var(--grano), radial-gradient(ellipse at 30% 20%, #fbf3dc 0, #efdfbb 45%, #dcc493 100%);background-size:140px 140px, 100% 100%;
   box-shadow:0 3px 0 #7a5a2e, 0 5px 6px rgba(40,25,5,.3), inset 0 2px 0 rgba(255,250,235,.75), inset 0 -3px 5px rgba(110,78,30,.3);
   text-shadow:0 1px 0 rgba(255,250,235,.8)}
@@ -68,7 +85,7 @@
 .tl-teclas .tl-o{font-family:var(--letra);font-weight:700;font-size:19px}
 .tl-teclas .tl-pot{font-family:'Space Mono',monospace;font-size:16px;font-style:italic}
 /* las de número: barro con barniz negro, como un vaso de figuras negras */
-.tl-num button{min-height:50px;color:#F3E6CC;border:2px solid #1a110b;border-radius:10px 12px 9px 11px / 11px 9px 12px 10px;
+.tl-num button{min-height:50px;color:#F3E6CC;border:2px solid #1a110b;border-radius:14px 7px 12px 5px / 6px 13px 8px 15px;
   background:radial-gradient(ellipse at 30% 15%, #4a3528 0, #2a1c14 55%, #1a110b 100%);
   box-shadow:0 3px 0 #0f0906, 0 5px 6px rgba(40,25,5,.35), inset 0 1px 0 rgba(255,235,200,.22)}
 .tl-num button:active{box-shadow:0 0 0 #0f0906, inset 0 1px 0 rgba(255,235,200,.12)}
@@ -119,3 +136,24 @@
 .pocion .calavera svg{width:14px;height:14px;display:block}
 
 .tl-aviso b{color:var(--ink)}
+
+/* los cantos, desiguales de tecla a tecla */
+.tl-teclas button:nth-child(3n+1){border-radius:9px 16px 11px 18px / 16px 8px 17px 10px}
+.tl-teclas button:nth-child(5n+2){border-radius:19px 12px 8px 15px / 11px 17px 14px 9px}
+.tl-fun button:nth-child(4n+3){border-radius:12px 20px 14px 18px / 19px 12px 18px 13px}
+
+/* ── LISTILLÓN, TRAZADO CON UNA RAMITA EN EL BARRO: sin caja; su silueta,
+   solo el contorno, rayada en marrón y con el pulso tembloroso de la ramita,
+   y lo que dice, rayado también ── */
+.tablilla .habla{background:none;border:0;padding:6px 4px 2px;margin-top:12px;grid-template-columns:58px 1fr;align-items:center}
+.tablilla .habla .cara{width:58px;filter:url(#ramita)}
+.tablilla .habla .cara svg *{fill:none !important;stroke:#5a4122 !important;stroke-width:1.5px !important;stroke-linecap:round;stroke-linejoin:round}
+.tablilla .habla .quien{color:#8a3a1f;font-family:var(--letra);font-style:italic;font-weight:700;letter-spacing:1px;text-transform:none;font-size:13px;
+  text-shadow:0 1px 0 rgba(255,250,235,.7)}
+.tablilla .habla .aviso{color:#4a3418;font-style:italic;font-size:16px;text-shadow:0 1px 0 rgba(255,250,235,.75), 0 -1px 0 rgba(60,40,10,.25)}
+.tablilla .habla .aviso b{color:#2e2114}
+/* una raya de ramita debajo, como quien subraya en el barro */
+.tablilla .habla > div{position:relative;padding-bottom:6px}
+.tablilla .habla > div::after{content:"";position:absolute;left:0;right:12%;bottom:0;height:6px;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='6' preserveAspectRatio='none'><path d='M1 3 C40 1 70 5 110 3 S170 1 199 4' fill='none' stroke='%235a4122' stroke-width='1.4' stroke-linecap='round' opacity='.7'/></svg>") no-repeat;background-size:100% 100%}
+@media (prefers-reduced-motion: reduce){ .tablilla, .tl-marco, .tl-tabla{transform:none} }
