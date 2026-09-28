@@ -74,29 +74,5 @@
     animation:humea calc(.65s * var(--lento,1)) ease-out forwards}
   @keyframes humea{0%{transform:translate(-50%,-50%) scale(.4);opacity:.8}
     100%{transform:translate(calc(-50% + var(--hx,10px)), calc(-50% + var(--hy,-10px))) scale(1.8);opacity:0}}
-:root{--habla-j:rgba(226,114,91,.10); --habla-j-b:rgba(226,114,91,.5);
-  --habla-l:rgba(87,184,214,.09); --habla-l-b:rgba(87,184,214,.45)}
-.cara{display:block;flex:0 0 auto}
-.cara svg{display:block;width:100%;height:auto}
-.cara.jef{width:64px}
-.habla{display:contents}
-.habla:has(> .aviso:not(:empty):not([hidden])){display:flex;gap:10px;align-items:center;
-  background:var(--habla-l);border:1.5px solid var(--habla-l-b);border-radius:10px;
-  padding:6px 8px 6px 12px;margin:8px 0 0}
-.habla > .aviso{flex:1;margin:0;color:var(--ink);font-style:italic;min-height:0}
-.habla:has(> .aviso:empty) .cara,
-.habla:has(> .aviso[hidden]) .cara{display:none}
-.habla .cara.lis{width:48px;order:2}
-/* los dibujos miran a la derecha (Listillón) o a la izquierda (Jeferión): en
-   el bocadillo se voltean para mirar hacia lo que dicen */
-.habla .cara.lis svg, .ruta .rt-habla .cara.jef svg{transform:scaleX(-1)}
-.habla .aviso b{color:var(--ink)}
-@media (max-width:420px){ .cara.jef{width:52px} .habla .cara.lis{width:40px} }
-
-/* Jeferión habla a la izquierda, con su color; Listillón a la derecha */
-.habla.jef:has(> .aviso:not(:empty):not([hidden])){background:var(--habla-j);border-color:var(--habla-j-b);padding:6px 12px 6px 8px}
-.habla .cara.jef{width:56px;order:0}
-.habla.jef .cara.jef svg{transform:none}
-.habla > .aviso{font-size:14px;line-height:1.5}
-.habla > .aviso b{color:var(--ink)}
-@media (max-width:420px){ .habla .cara.jef{width:48px} }
+/* las caras que hablan: la caja con el nombre va en mesa.css */
+:root{--habla-l:var(--noche); --habla-l-b:var(--linea)}

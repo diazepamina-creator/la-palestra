@@ -1,0 +1,190 @@
+/* ══════════════════════════════════════════════════════════════════════
+   LA PALESTRA · la mesa
+   La misma piel que Las piezas de Miut: una mesa de madera vista desde
+   arriba y, encima, hojas de papel —la cabecera, la ruta, el campo— y la
+   tablilla de barro. Dos maderas: la clara, de haya, que es la de siempre
+   y la que mejor se ve en el proyector; y la oscura, de nogal, para un aula
+   con poca luz. Y Proyector: papel blanco y tinta negra, sin madera.
+   Los nombres de Miut (--tinta, --linea…) mandan; los de antes (--ink,
+   --line…) son alias, para que los módulos del campo sigan igual.
+   ══════════════════════════════════════════════════════════════════════ */
+:root{
+  --mesa1:#D6AE78; --mesa2:#C49560; --veta:rgba(92,52,18,.20);
+  --noche:#F4EBD9; --panel:#FFFBF2; --panel2:#FBF3E3; --linea:#D8C3A0;
+  --tinta:#2E2218; --tenue:#7D6650;
+  --morado:#8A6A9E; --oro:#A8661B; --rojo:#B0442C; --verde:#4F7A2E;
+  --sombra:rgba(60,35,10,.28); --brillo:rgba(214,150,50,.18);
+  --izq:#B0442C; --der:#1F6A88;
+  --sello:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><rect x='2.2' y='.8' width='1.7' height='12.6' rx='.85'/><path d='M3.9 1.4 L12.8 4.3 L3.9 7.4 Z'/></svg>");
+  --lento:1;
+  /* la letra: Cinzel, mayúsculas de inscripción, para los rótulos, los
+     títulos y los botones; Alegreya Sans, cálida y clara, para leer. Las
+     cuentas van en Space Mono, que distingue bien los signos */
+  --rotulo:'Cinzel',Georgia,serif; --letra:'Alegreya Sans',system-ui,sans-serif;
+  /* los alias */
+  --bg:var(--mesa2); --panel-2:var(--panel2); --line:var(--linea); --ink:var(--tinta); --muted:var(--tenue);
+  --ambar:var(--oro); --green:var(--verde);
+}
+html[data-tema="nogal"]{
+  --mesa1:#5A3A24; --mesa2:#472A19; --veta:rgba(0,0,0,.28);
+  --noche:#1F1610; --panel:#2E2119; --panel2:#37281E; --linea:#5E4632;
+  --tinta:#F6EBDC; --tenue:#C8B094;
+  --morado:#B79CCB; --oro:#E6A84A; --rojo:#D2644B; --verde:#8DB36A;
+  --sombra:rgba(0,0,0,.45); --brillo:rgba(230,168,74,.16);
+  --izq:#E2725B; --der:#57B8D6;
+  color-scheme:dark}
+html[data-tema="proyector"]{
+  --noche:#F4F4F4; --panel:#FFFFFF; --panel2:#FFFFFF; --linea:#1A1A1A;
+  --tinta:#000000; --tenue:#2B2B2B;
+  --oro:#8A5A00; --rojo:#B3261E; --verde:#1D6B12; --izq:#B3261E; --der:#0B5F86;
+  --sombra:rgba(0,0,0,.12); --brillo:rgba(138,90,0,.10)}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{background:var(--mesa2)}
+/* la madera: tablas a lo largo, con su veta, y la luz de una lámpara desde arriba */
+body{margin:0;color:var(--tinta);font-family:var(--letra);font-size:15px;line-height:1.5;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% 0%, rgba(255,244,220,.28), transparent 70%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='v'><feTurbulence type='fractalNoise' baseFrequency='0.012 0.34' numOctaves='3' seed='7'/><feColorMatrix values='0 0 0 0 0.36  0 0 0 0 0.2  0 0 0 0 0.07  0 0 0 1.35 -0.5'/></filter><rect width='600' height='600' filter='url(%23v)'/></svg>"),
+    repeating-linear-gradient(90deg, transparent 0 178px, var(--veta) 178px 180px),
+    linear-gradient(90deg, var(--mesa1), var(--mesa2) 45%, var(--mesa1) 70%, var(--mesa2));
+  background-size:auto, 600px 600px, auto, auto;
+  background-attachment:fixed;-webkit-text-size-adjust:100%;min-height:100vh}
+html[data-tema="proyector"], html[data-tema="proyector"] body{background:#FFFFFF}
+.lienzo{max-width:760px;margin:0 auto;padding:12px 12px 36px}
+
+/* ── LA CABECERA: una sola hoja con el nombre y, en letra pequeña y sin
+   cajas, las acciones; debajo, lo que se puede hacer, como pestañas ── */
+.cab{padding:9px 14px 0;border:1px solid var(--linea);border-radius:13px;overflow:hidden;
+  background:linear-gradient(180deg,var(--panel2),var(--panel));box-shadow:0 6px 18px var(--sombra)}
+.rotulo{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rotulo > div{flex:1 1 0;min-width:0}
+.cab .sello{width:24px;height:24px;flex:0 0 24px;background:var(--oro);
+  -webkit-mask:var(--sello) center/contain no-repeat;mask:var(--sello) center/contain no-repeat}
+.cab h1{font-family:var(--rotulo);font-weight:700;font-size:19px;letter-spacing:1.8px;text-transform:uppercase;margin:0;color:var(--oro);line-height:1.1}
+.cab .sub{font-family:var(--rotulo);font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--tenue);margin:0}
+.cab .sub [lang="grc"]{text-transform:none;letter-spacing:1.5px}
+.cab .acc{margin-left:auto;display:flex;gap:18px}
+.cab .acc button{font-family:var(--rotulo);font-size:12.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--tenue);
+  background:none;border:0;border-bottom:1px solid transparent;padding:4px 0;cursor:pointer}
+.cab .acc button:hover,.cab .acc button:focus-visible,.cab .acc button[aria-pressed="true"]{color:var(--oro);border-bottom-color:var(--oro);outline:none}
+/* en el móvil las acciones bajan a su propia regleta, de lado a lado */
+@media (max-width:620px){
+  .cab .acc{width:100%;margin:5px 0 0;padding-top:4px;border-top:1px solid var(--linea);justify-content:space-around;gap:6px}
+}
+.juegos{display:grid;grid-template-columns:repeat(3,1fr);margin:8px -14px 0;border-top:1px solid var(--linea)}
+.juegos button{font:inherit;cursor:pointer;text-align:center;color:var(--tinta);background:none;border:0;border-bottom:3px solid transparent;
+  border-radius:0;padding:6px 4px 4px;line-height:1.2}
+.juegos button + button{border-left:1px solid var(--linea)}
+.juegos button b{display:block;font-family:var(--rotulo);font-size:15px;letter-spacing:1.3px;text-transform:uppercase;color:var(--oro)}
+.juegos button span{display:block;font-size:11.5px;color:var(--tenue)}
+.juegos button:hover{background:var(--brillo)}
+.juegos button[aria-pressed="true"]{border-bottom-color:var(--oro);background:var(--brillo)}
+@media (max-width:480px){ .juegos button span{display:none} .juegos button b{font-size:13.5px;letter-spacing:.6px} .juegos button{padding:8px 2px 6px} }
+
+/* ── LAS HOJAS ── */
+.panel{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--linea);border-radius:13px;
+  padding:12px 13px;margin-top:9px;box-shadow:0 6px 18px var(--sombra)}
+.panel h2, .etq{font-family:var(--rotulo);font-weight:700;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--tenue);margin:0}
+.panel > h2{margin-bottom:8px}
+.tablilla{margin-top:9px;box-shadow:0 6px 18px var(--sombra)}
+.tl-cab h2{white-space:nowrap}
+
+/* ── LOS BOTONES ── */
+.botones{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px;align-items:center}
+button.b{font-family:var(--rotulo);font-weight:700;font-size:13.5px;letter-spacing:.7px;text-transform:uppercase;
+  padding:8px 14px;min-height:42px;border-radius:9px;border:1px solid var(--linea);cursor:pointer;
+  background:linear-gradient(180deg,var(--panel2),var(--panel));color:var(--tinta);box-shadow:0 2px 0 rgba(0,0,0,.28)}
+button.b:hover{border-color:var(--morado)}
+button.b:active{transform:translateY(2px);box-shadow:none}
+button.b.ok{background:linear-gradient(180deg,#F4CB72,#DDA23A);color:#2A1D06;border-color:#A8661B;box-shadow:0 2px 0 #7E4C12}
+button.b:disabled{opacity:.4;cursor:default;transform:none}
+button.b.borrar.seguro{background:var(--rojo);border-color:var(--rojo);color:#fff}
+button.b:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
+
+/* ── LOS AJUSTES, una hoja que se abre bajo la cabecera ── */
+.ajustes .aj{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 0;border-bottom:1px dashed var(--linea)}
+.ajustes .aj > .etq{min-width:130px}
+.ajustes .aj small{flex-basis:100%;color:var(--tenue);font-size:12.5px;margin-top:-2px}
+.ops{display:inline-flex;border:1px solid var(--linea);border-radius:20px;overflow:hidden;flex-wrap:wrap}
+.ops button{font-family:var(--rotulo);font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  background:none;border:0;color:var(--tenue);padding:6px 12px;min-height:34px}
+.ops button + button{border-left:1px solid var(--linea)}
+.ops button[aria-pressed="true"]{background:var(--oro);color:var(--panel)}
+
+/* ── LA RUTA: la misión, qué hay que hacer y por dónde se va ── */
+.rt-cab{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.rt-titulo{font-family:var(--rotulo);font-weight:700;font-size:20px;letter-spacing:.5px;margin:0;color:var(--tinta)}
+.rt-d{margin:4px 0 0;font-size:17px;line-height:1.4}
+.rt-d b{color:var(--oro)}
+.rt-puntos{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:9px}
+.rt-p{width:10px;height:10px;border-radius:50%;background:var(--linea);display:block}
+.rt-p.hecho{background:var(--oro)}
+.rt-hito{font-family:'Space Mono',monospace;font-size:11px;color:var(--tenue);margin-left:4px}
+
+/* ── LO QUE DICEN: Listillón en la tablilla y Jeferión en el campo, en una
+   caja como la de Miut, con la cara, el nombre y lo que dicen ── */
+.cara{display:block;flex:0 0 auto}
+.cara svg{display:block;width:100%;height:auto}
+.habla{display:grid;grid-template-columns:48px 1fr;gap:10px;align-items:start;margin-top:11px;padding:10px 12px;
+  border:1px solid var(--linea);border-radius:11px;background:var(--noche)}
+.habla:has(.aviso:empty), .habla:has(.aviso[hidden]){display:none}
+.habla .cara{width:48px}
+.habla .quien{font-family:var(--rotulo);font-weight:700;font-size:12.5px;letter-spacing:2px;text-transform:uppercase;color:var(--oro)}
+.habla .aviso{margin:2px 0 0;font-size:15.5px;line-height:1.45;color:var(--tinta)}
+.habla .aviso b{color:var(--oro)}
+.tablilla .habla{--noche:#fbf6ea;--linea:#c4b08a;--tinta:#241b36;--oro:#7f5a0e}
+
+/* ── EL CAMPO: sus mandos ── */
+.mandos{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.mandos button.b{font-family:'Space Mono',monospace;font-size:18px;min-width:52px;letter-spacing:0}
+.paso-t{font-family:'Space Mono',monospace;font-size:12px;color:var(--tenue);flex:1;text-align:right;white-space:nowrap}
+.bq-lista{margin:6px 0 0;font-size:14px;color:var(--tenue)}
+.bq-lista b.izq{color:var(--izq)} .bq-lista b.der{color:var(--der)}
+
+/* ── EL EJERCICIO, dentro de la tablilla ── */
+.tl-marca{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 8px}
+.tl-marca .fi{font-family:var(--rotulo);font-weight:700;font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.tl-marca .fi b{color:var(--ink)}
+.tl-resp{display:flex;gap:8px;align-items:stretch;margin:0 0 8px}
+.tl-resp input{flex:1;min-width:0;font:inherit;font-family:'Space Mono',monospace;font-size:17px;padding:10px 12px;border-radius:9px;
+  border:1px solid var(--line);background:#fffaf0;color:var(--ink);min-height:44px}
+.tablilla button.b{--panel:#fbf6ea;--panel2:#fffaf0;--linea:#b8a07a;--tinta:#241b36}
+.tl-ver{width:100%}
+.tablilla:has(.tl-ej:not([hidden])) .tl-cursor{display:none}
+.tl-pie{margin-top:10px}
+
+/* ── EL ACTA, en su hoja por encima de la mesa ── */
+.modal{position:fixed;inset:0;background:rgba(12,8,20,.82);display:grid;place-items:center;padding:16px;z-index:60;overflow:auto}
+.modal .caja2{width:min(600px,100%);max-height:92vh;overflow:auto;border:1px solid var(--linea);border-radius:16px;padding:18px 20px;
+  background:linear-gradient(180deg,var(--panel2),var(--panel));box-shadow:0 24px 60px rgba(0,0,0,.55)}
+.modal .caja2:focus{outline:none}
+.modal h2{font-family:var(--rotulo);color:var(--oro);letter-spacing:1.5px;text-transform:uppercase;font-size:18px;margin:0 0 8px}
+.acta .actaSub{margin:0 0 10px;color:var(--tenue)}
+.actaNombre{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.actaNombre input{flex:1;min-width:0;font:inherit;font-size:16px;padding:8px 10px;border-radius:9px;border:1px solid var(--linea);background:var(--noche);color:var(--tinta)}
+.actaDatos{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:6px;margin-bottom:10px}
+.actaDatos div{background:var(--noche);border:1px solid var(--linea);border-radius:9px;padding:6px 9px}
+.actaDatos b{display:block;font-family:'Space Mono',monospace;font-size:18px}
+.actaTabla{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:10px}
+.actaTabla th{font-family:var(--rotulo);font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tenue);text-align:left;padding:4px 6px;border-bottom:1px solid var(--linea)}
+.actaTabla td{padding:6px;border-bottom:1px dashed var(--linea);vertical-align:top}
+.actaTabla td b{color:var(--oro)}
+.actaTabla tr.floja td:first-child::after{content:" · floja";color:var(--rojo);font-size:12.5px}
+.actaMsg{min-height:20px;color:var(--verde);margin:6px 0 0}
+.ac-det summary{cursor:pointer;font-family:var(--rotulo);font-weight:700;font-size:12.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--tenue)}
+.ac-ej{list-style:none;margin:6px 0 0;padding:0;font-size:13.5px}
+.ac-ej li{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:2px 10px;padding:5px 0;border-top:1px dashed var(--linea)}
+.ac-ej .ac-h{font-family:'Space Mono',monospace;font-size:12px;color:var(--tenue)}
+.ac-ej .ac-m{font-family:var(--rotulo);font-weight:700;font-size:12.5px;letter-spacing:1px;color:var(--tenue)}
+.ac-ej .ac-c{font-family:'Space Mono',monospace}
+.ac-ej .ac-como{grid-column:3;color:var(--tenue);font-size:12.5px}
+.ac-ej li.ok .ac-como::before{content:"✓ ";color:var(--verde);font-weight:700}
+.ac-ej li.no .ac-como::before{content:"✗ ";color:var(--rojo);font-weight:700}
+@media (max-width:520px){ .actaTabla{font-size:12.5px} .actaTabla td,.actaTabla th{padding:4px 3px} }
+
+/* ── EL PIE ── */
+footer{margin-top:26px;padding-top:12px;border-top:1px solid var(--linea);text-align:center;
+  font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tenue)}
+html:not([data-tema="nogal"]):not([data-tema="proyector"]) footer{color:#4a3520;border-top-color:rgba(74,53,32,.35)}

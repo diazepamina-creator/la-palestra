@@ -5,7 +5,7 @@
 .banquillo[hidden]{display:none}
 .banquillo::after{content:"";position:absolute;left:14%;right:14%;bottom:12px;height:9px;border-radius:3px;
   background:linear-gradient(180deg,#8a6a3b,#5c4424);box-shadow:0 3px 0 #3a2a14}
-.bq-t{position:absolute;left:8px;top:5px;font:600 10px/1 'Oswald',sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.bq-t{position:absolute;left:8px;top:5px;font:600 10px/1 var(--rotulo);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
 .bq-sitio{position:absolute;left:0;right:0;bottom:17px;display:flex;justify-content:center;align-items:flex-end;gap:6px;z-index:1}
 .bq{position:relative;line-height:0;transition:transform calc(.3s * var(--lento,1)) ease, opacity calc(.3s * var(--lento,1)) ease}
 .bq.trago .bq-f{opacity:0}
@@ -16,7 +16,7 @@
 /* quien bebe se acerca un poco, que se le vea el trago */
 .bq{transform-origin:50% 100%}
 .bq.trago, .bq.cara-mas, .bq.cara-menos, .bq.cara-bando{transform:scale(1.18)}
-.bq .bq-f{position:absolute;left:50%;top:-18px;transform:translateX(-50%);font:700 13px/1 'Oswald',sans-serif;color:var(--ink);white-space:nowrap}
+.bq .bq-f{position:absolute;left:50%;top:-18px;transform:translateX(-50%);font:700 13px/1 var(--rotulo);color:var(--ink);white-space:nowrap}
 .bq.llega{animation:bqLlega calc(.45s * var(--lento,1)) cubic-bezier(.34,1.56,.64,1) backwards}
 @keyframes bqLlega{from{transform:translateY(-24px);opacity:0}}
 .bq.trago{animation:bqTrago calc(.5s * var(--lento,1)) ease}
