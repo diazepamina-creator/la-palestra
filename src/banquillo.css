@@ -1,6 +1,6 @@
 /* ── EL BANQUILLO: un término compuesto se prepara aquí, fuera de la cuerda,
    y sale a tirar ya hecho. Lo que tira en la cuerda es lo que suma ── */
-.banquillo{position:relative;height:112px;margin:0 0 8px;border-radius:10px;overflow:hidden;
+.banquillo{position:relative;height:150px;margin:0 0 8px;border-radius:10px;overflow:hidden;
   border:1px dashed rgba(233,184,78,.35);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(0,0,0,.18))}
 .banquillo[hidden]{display:none}
 .banquillo::after{content:"";position:absolute;left:14%;right:14%;bottom:12px;height:9px;border-radius:3px;
@@ -8,10 +8,15 @@
 .bq-t{position:absolute;left:8px;top:5px;font:600 10px/1 'Oswald',sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
 .bq-sitio{position:absolute;left:0;right:0;bottom:17px;display:flex;justify-content:center;align-items:flex-end;gap:6px;z-index:1}
 .bq{position:relative;line-height:0;transition:transform .3s ease, opacity .3s ease}
-.bq svg{height:72px;width:auto}
+.bq.trago .bq-f{opacity:0}
+.bq svg{overflow:visible}
+.bq svg{height:96px;width:auto}
 .bq .num{display:none}
-.bq-sitio:has(.bq:nth-child(4)) .bq svg{height:56px}
-.bq .bq-f{position:absolute;left:50%;top:-16px;transform:translateX(-50%);font:700 13px/1 'Oswald',sans-serif;color:var(--ink);white-space:nowrap}
+.bq-sitio:has(.bq:nth-child(4)) .bq svg{height:72px}
+/* quien bebe se acerca un poco, que se le vea el trago */
+.bq{transform-origin:50% 100%}
+.bq.trago, .bq.cara-mas, .bq.cara-menos, .bq.cara-bando{transform:scale(1.18)}
+.bq .bq-f{position:absolute;left:50%;top:-18px;transform:translateX(-50%);font:700 13px/1 'Oswald',sans-serif;color:var(--ink);white-space:nowrap}
 .bq.llega{animation:bqLlega .45s cubic-bezier(.34,1.56,.64,1) backwards}
 @keyframes bqLlega{from{transform:translateY(-24px);opacity:0}}
 .bq.trago{animation:bqTrago .5s ease}

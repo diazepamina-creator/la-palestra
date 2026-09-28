@@ -286,6 +286,20 @@
 .marca-n.pronostico::before{content:"tú";position:absolute;left:50%;top:-15px;transform:translateX(-50%);
   font-size:9px;line-height:1.3;padding:0 3px;border-radius:3px;background:#E9B84E;color:#1A1206;font-weight:700}
 @media (prefers-reduced-motion: reduce){ .regla.viva{animation:none} }
+
+/* al beber: el destello y las burbujas del color de la poción */
+  .chispa{position:absolute;left:50%;top:38%;width:16px;height:16px;margin:-8px 0 0 -8px;
+    border-radius:50%;pointer-events:none;z-index:5;
+    animation:destella calc(.8s * var(--lento,1)) ease-out forwards}
+  @keyframes destella{
+    0%{transform:scale(.3);opacity:.95;box-shadow:0 0 0 0 currentColor}
+    100%{transform:scale(3.4);opacity:0;box-shadow:0 0 26px 10px currentColor}}
+  .chispa.mas{color:var(--green)} .chispa.menos{color:#86A7E8}
+  .chispa.bando{color:#E14FC6}
+    .burbuja{position:absolute;border-radius:50%;pointer-events:none;z-index:6;
+    background:currentColor;animation:sopla calc(.9s * var(--lento,1)) ease-out forwards}
+  @keyframes sopla{0%{transform:translate(0,0) scale(.4);opacity:0}
+    25%{opacity:.9}100%{transform:translate(var(--dx,0), -30px) scale(1);opacity:0}}
 </style>
 <style>
 /* ── LA TABLILLA: es de barro, con su propia paleta ── */
@@ -399,7 +413,7 @@
 <style>
 /* ── EL BANQUILLO: un término compuesto se prepara aquí, fuera de la cuerda,
    y sale a tirar ya hecho. Lo que tira en la cuerda es lo que suma ── */
-.banquillo{position:relative;height:112px;margin:0 0 8px;border-radius:10px;overflow:hidden;
+.banquillo{position:relative;height:150px;margin:0 0 8px;border-radius:10px;overflow:hidden;
   border:1px dashed rgba(233,184,78,.35);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(0,0,0,.18))}
 .banquillo[hidden]{display:none}
 .banquillo::after{content:"";position:absolute;left:14%;right:14%;bottom:12px;height:9px;border-radius:3px;
@@ -407,10 +421,15 @@
 .bq-t{position:absolute;left:8px;top:5px;font:600 10px/1 'Oswald',sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
 .bq-sitio{position:absolute;left:0;right:0;bottom:17px;display:flex;justify-content:center;align-items:flex-end;gap:6px;z-index:1}
 .bq{position:relative;line-height:0;transition:transform .3s ease, opacity .3s ease}
-.bq svg{height:72px;width:auto}
+.bq.trago .bq-f{opacity:0}
+.bq svg{overflow:visible}
+.bq svg{height:96px;width:auto}
 .bq .num{display:none}
-.bq-sitio:has(.bq:nth-child(4)) .bq svg{height:56px}
-.bq .bq-f{position:absolute;left:50%;top:-16px;transform:translateX(-50%);font:700 13px/1 'Oswald',sans-serif;color:var(--ink);white-space:nowrap}
+.bq-sitio:has(.bq:nth-child(4)) .bq svg{height:72px}
+/* quien bebe se acerca un poco, que se le vea el trago */
+.bq{transform-origin:50% 100%}
+.bq.trago, .bq.cara-mas, .bq.cara-menos, .bq.cara-bando{transform:scale(1.18)}
+.bq .bq-f{position:absolute;left:50%;top:-18px;transform:translateX(-50%);font:700 13px/1 'Oswald',sans-serif;color:var(--ink);white-space:nowrap}
 .bq.llega{animation:bqLlega .45s cubic-bezier(.34,1.56,.64,1) backwards}
 @keyframes bqLlega{from{transform:translateY(-24px);opacity:0}}
 .bq.trago{animation:bqTrago .5s ease}
@@ -1493,7 +1512,24 @@ function dibujaTirador(p, U){
       '" y="12">' + fz + '</text>' +
     '</svg>';
 }
-raiz.Tirador = {dibujaTirador, medidasDe, frascoEnMano, conSigno, SUELO_CSS, CUERDA_CSS, CUERDA_Y};
+/* el ángulo con el que el frasco encaja en la boca al volcarlo: se mide sobre el dibujo ya puesto */
+function vuelcoQueEncaja(nodo, porDefecto){
+  try{
+    const g = nodo.querySelector('.frascoMano');
+    const boca = nodo.querySelector('rect.boca');
+    const svg = nodo.querySelector('svg');
+    if(!g || !boca || !svg || !g.parentNode.getScreenCTM) return porDefecto;
+    const gr = el => { const m = el.getScreenCTM(); return Math.atan2(m.b, m.a) * 180 / Math.PI; };
+        const cs = getComputedStyle(svg);
+    const n = v => parseFloat(cs.getPropertyValue(v)) || 0;
+    const brazo = n('--gHum') + n('--ajHum') + n('--gAnt') + n('--ajCod');
+    const marco = gr(g.parentNode) + brazo, labios = gr(boca);
+    let a = ((labios - marco - 90) % 180 + 180) % 180;
+        if(Math.sin((marco + a + 90) * Math.PI / 180) >= 0) a -= 180;
+    return a;
+  }catch(e){ return porDefecto; }
+}
+raiz.Tirador = {dibujaTirador, medidasDe, frascoEnMano, vuelcoQueEncaja, conSigno, SUELO_CSS, CUERDA_CSS, CUERDA_Y};
 })(window);
 </script>
 <script>
@@ -1797,10 +1833,8 @@ function pintaBanquillo(el, foto, k, pel, anim){
     if(anim.trago === q.id) c += ' trago';
     if(anim.se && anim.se.indexOf(q.id) >= 0) c += ' se-va';
     if(anim.junta && anim.junta.indexOf(q.id) >= 0) c += ' junta';
-    const po = anim.bebe === q.id ? P.pocionDe(anim.k) : null;
     return '<span class="' + c + '" data-bq="' + q.id + '">' + T.dibujaTirador(q, 13) +
-      '<b class="bq-f">' + P.conSigno(q.f) + '</b>' +
-      (po ? '<span class="bq-frasco pocion ' + TL.clasePoc(po).replace('pocion ', '') + '">' + TL.frascoHtml(po) + '</span>' : '') + '</span>';
+      '<b class="bq-f">' + P.conSigno(q.f) + '</b></span>';
   }).join('');
   /* los frascos de delante esperan aquí hasta que hay a quién dárselos */
   const usados = new Set();
@@ -1867,17 +1901,48 @@ function crea(o){
       if(paso.tipo === 'bebe'){
         /* bebe el del banquillo cuya fuerza cambia entre una foto y la otra */
         const cambia = antes.banquillo.find(q => { const n = paso.banquillo.find(x => x.id === q.id); return n && n.f !== q.f; });
-        const id = (cambia || antes.banquillo[0] || {}).id;
+        const q0 = cambia || antes.banquillo[0] || {}, id = q0.id;
+        const q1 = paso.banquillo.find(x => x.id === id) || q0;
         /* el frasco que baja del banco, si venía de delante */
         const ti = paso.m.find(i => R.pel.tok[i] && R.pel.tok[i].t === 'p' && R.pel.tok[i].pre);
         const k0 = kDe(paso);
         pintaBanquillo(banquillo, antes, k, R.pel, {baja: ti});
         await espera(ti !== undefined ? 500 : 0); if(!vivo()) return;
-        pintaBanquillo(banquillo, antes, k, R.pel, {bebe: id, k: k0});
-        await espera(1000); if(!vivo()) return;
+        /* EL TRAGO, como en el campo de siempre: saca el frasco, lo lleva a la
+           boca, echa la cabeza atrás, el frasco se vacía y lo tira */
+        const cambiaBando = (q0.f < 0) !== (q1.f < 0) && q1.f !== 0;
+        const tono = cambiaBando ? 'bando' : (Math.abs(q1.f) > Math.abs(q0.f) ? 'mas' : 'menos');
+        const color = tono === 'mas' ? 'var(--green)' : (tono === 'menos' ? '#86A7E8' : '#E14FC6');
+        const nodo = banquillo.querySelector('.bq[data-bq="' + id + '"]');
+        if(nodo && !REDUCIDO){
+          nodo.style.setProperty('--pocion', color);
+          nodo.classList.toggle('vial', Math.abs(k0) < 1);
+          nodo.style.setProperty('--subeF', '0deg');
+          nodo.style.setProperty('--vuelcaF', T.vuelcoQueEncaja(nodo, q0.f < 0 ? -70 : 70).toFixed(1) + 'deg');
+          nodo.style.setProperty('--giraF', (q0.f < 0 ? -190 : 190) + 'deg');
+          nodo.classList.add('trago');
+        }
+        await espera(2150); if(!vivo()) return;
+        /* ya bebido: la fuerza nueva, la cara que le queda y el destello */
         C.pinta(campo, paso, {alcance: R.alcance});
-        pintaBanquillo(banquillo, paso, k + 1, R.pel, {trago: id});
-        await espera(700);
+        pintaBanquillo(banquillo, paso, k + 1, R.pel, {});
+        const n2 = banquillo.querySelector('.bq[data-bq="' + id + '"]');
+        if(n2 && !REDUCIDO){
+          n2.classList.add('cara-' + tono);
+          const gana = Math.abs(q1.f) >= Math.abs(q0.f);
+          n2.classList.add(gana ? 'infla' : 'desinfla');
+          if(Math.abs(q1.f) > Math.abs(q0.f)) n2.classList.add('posa');
+          if(cambiaBando) n2.classList.add('traidor');
+          const ch = document.createElement('span'); ch.className = 'chispa ' + tono; n2.appendChild(ch);
+          for(let i = 0; i < 4; i++){
+            const bu = document.createElement('span'); bu.className = 'burbuja';
+            const d = 5 + Math.random() * 4;
+            bu.style.cssText = 'width:' + d + 'px;height:' + d + 'px;left:' + (30 + Math.random() * 40) + '%;top:' + (25 + Math.random() * 25) + '%;color:' + color +
+              ';animation-delay:' + (i * 90) + 'ms;--dx:' + (Math.random() * 22 - 11) + 'px';
+            n2.appendChild(bu);
+          }
+        }
+        await espera(cambiaBando ? 1400 : 900);
       }else if(paso.tipo === 'junta'){
         pintaBanquillo(banquillo, antes, k, R.pel, {junta: idsBqIdos});
         await espera(900); if(!vivo()) return;
