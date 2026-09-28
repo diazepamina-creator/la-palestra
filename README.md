@@ -19,6 +19,8 @@ El tira y afloja de los números enteros, rehecho desde cero a partir de lo apre
 - `campo.js` y `src/campo.css` — el campo: pinta una foto del motor (cuerda, regla, bandera). Sin animación.
 - `tablilla.js` y `src/tablilla.css` — la tablilla: las teclas de barro, qué pieza puede ir tras cuál (`pulsa`, función pura) y la cuenta escrita con colores (`htmlCuenta`).
 - `reproductor.js` y `src/banquillo.css` — el reproductor: enseña la foto k al instante y, al avanzar, anima solo el paso que toca (llegar, beber en el banquillo, juntarse, salir a tirar, retirarse). ▶▶ repasa de un tirón.
+- `personajes.js` y `src/personajes.css` — Jeferión, Listillón y Zeus dibujados por código (de El pulso de los dioses), las caras que hablan según el aviso y el rayo.
+- `zeus.js` — los efectos del rayo cuando alguien se retira: Zeus se asoma, lanza, trueno, chamusca y humo. Solo efectos: el estado ya lo decide el motor.
 - `src/cartela.css` — la cartela: la cuenta encima del campo con el trozo que se juega iluminado, la pregunta y el veredicto.
 - `index.html` — la página: la tablilla escribe la cuenta, `=` la graba con el motor y el reproductor la pasa con ◀ ▶ ⟲ ▶▶. Antes de un paso clave pregunta dónde acabará la bandera.
 
@@ -29,6 +31,6 @@ El tira y afloja de los números enteros, rehecho desde cero a partir de lo apre
 3. ✅ La tablilla: teclas de barro, escribir la cuenta y el cálculo exacto.
 4. ✅ El reproductor de fotogramas, con el banquillo.
 5. ✅ Predicción y cartela.
-6. Personajes y pociones.
+6. ✅ Personajes: Zeus y el rayo, Listillón en la tablilla, Jeferión en el campo.
 7. Ejercicios y ruta.
 8. Entrevistas.

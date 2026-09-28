@@ -1,0 +1,102 @@
+/* ── LOS PERSONAJES: Zeus y su rayo, y las caras que hablan ── */
+.campo .zeus{z-index:4}
+          .zeus{position:absolute;top:0;width:126px;height:94px;margin-left:-63px;
+    z-index:0;pointer-events:none;transform:translateY(-108%);
+    transition:transform calc(.3s * var(--lento,1)) cubic-bezier(.3,1.2,.5,1),
+      left calc(.24s * var(--lento,1)) ease,
+      opacity calc(.34s * var(--lento,1)) ease,
+      filter calc(.35s * var(--lento,1)) ease}
+  .zeus.fuera{transform:translateY(var(--asomo,-14%))}
+    .zeus.disipa{opacity:0;filter:none}
+  .zeus svg{display:block;width:100%;height:100%;overflow:visible}
+        .zeus{filter:drop-shadow(0 0 3px rgba(233,184,78,.45))
+    drop-shadow(0 0 10px rgba(233,184,78,.22))}
+  .zeus .siluZ{fill:url(#zLuna);stroke:none}
+  .zeus .siluTrazoZ{stroke:url(#zLuna)}
+  .zeus .rimTrazoZ{stroke:transparent}   .zeus .rimZ{stroke:rgba(233,184,78,.42);
+    transition:stroke calc(.35s * var(--lento,1)) ease}
+  .zeus .laurelZ ellipse, .zeus .laurelZ circle{fill:#E9B84E;opacity:.5;
+    transition:opacity calc(.35s * var(--lento,1)) ease}
+  .zeus .cenoZ{fill:#2B2240}
+  .zeus .ojoZ{fill:#F0C55E;
+    transition:fill calc(.3s * var(--lento,1)) ease}
+  .zeus .haloZ{fill:rgba(255,214,120,.28);
+    transition:fill calc(.3s * var(--lento,1)) ease}
+    .zeus.resplandece{filter:drop-shadow(0 0 5px rgba(240,197,94,.85))
+    drop-shadow(0 0 16px rgba(240,197,94,.45))
+    drop-shadow(0 0 36px rgba(233,184,78,.22))}
+  .zeus.resplandece .rimZ{stroke:rgba(240,197,94,.95)}
+  .zeus.resplandece .laurelZ ellipse, .zeus.resplandece .laurelZ circle{opacity:1}
+  .zeus.resplandece .ojoZ{fill:#FFF}
+  .zeus.resplandece .haloZ{fill:rgba(255,236,196,.5)}
+      .zeus .brazoZ{transform-box:view-box;transform-origin:82px 62px;     transition:transform calc(.1s * var(--lento,1)) ease}
+  .zeus.lanza .brazoZ{transform:rotate(-20deg)}
+    .zeus.zurdo svg{transform:scaleX(-1)}
+    .zeus .boltZ{transition:opacity calc(.08s * var(--lento,1)) ease}
+    .zeus.sinCetro .boltZ{opacity:0}
+    .campo.trueno{animation:trueno calc(.34s * var(--lento,1)) ease}
+    @keyframes trueno{20%{transform:translate(calc(1.6px * var(--sac,1)),calc(-1px * var(--sac,1)))}
+    45%{transform:translate(calc(-2px * var(--sac,1)),calc(1.2px * var(--sac,1)))}
+    70%{transform:translate(calc(1.2px * var(--sac,1)),calc(.6px * var(--sac,1)))}
+    100%{transform:translate(0,0)}}
+      .chamusca{position:absolute;bottom:46px;width:calc(42px * var(--mn,1));
+    height:calc(11px * var(--mn,1));margin-left:calc(-21px * var(--mn,1));
+    border-radius:50%;z-index:2;pointer-events:none;
+    background:radial-gradient(ellipse at center,rgba(16,10,8,.85),rgba(16,10,8,0) 72%);
+    animation:chamusca calc(4s * var(--lento,1)) ease-out forwards}
+  .chamusca::after{content:"";position:absolute;inset:22% 30%;border-radius:50%;
+    background:radial-gradient(ellipse at center,rgba(233,150,60,.7),rgba(233,150,60,0) 70%);
+    animation:rescoldo calc(1.4s * var(--lento,1)) ease-out forwards}
+  @keyframes rescoldo{0%{opacity:1}100%{opacity:0}}
+  @keyframes chamusca{0%{opacity:0}6%{opacity:1}55%{opacity:.75}100%{opacity:0}}
+  .rayo{position:absolute;left:0;top:0;z-index:11;pointer-events:none;
+    animation:relampago calc(.55s * var(--lento,1)) ease-out forwards}
+    .rayo .r-halo{fill:none;stroke:rgba(255,214,120,var(--ah,.55));
+    stroke-width:var(--gh,7);
+    stroke-linecap:round;stroke-linejoin:round;filter:blur(var(--bh,2px))}
+  .rayo .r-nucleo{fill:none;stroke:#fff;stroke-width:var(--gn,2.2);
+    stroke-linecap:round;stroke-linejoin:round}
+  @keyframes relampago{
+    0%{opacity:0}   8%{opacity:1}   22%{opacity:.25}
+    34%{opacity:1}  62%{opacity:.9} 100%{opacity:0}}
+  .fogonazo{position:absolute;inset:0;z-index:10;pointer-events:none;
+    background:radial-gradient(ellipse at center,
+      rgba(255,246,214,var(--af,.5)),transparent 68%);
+    animation:fogona calc(.4s * var(--lento,1)) ease-out forwards}
+  @keyframes fogona{0%{opacity:0} 12%{opacity:1} 100%{opacity:0}}
+    .tirador.fulminado svg{animation:achicharra calc(.5s * var(--lento,1)) ease-out}
+  @keyframes achicharra{
+    0%,100%{filter:none}
+    14%{filter:brightness(3.2) saturate(.2)}
+    40%{filter:brightness(1.6)}}
+    .humo{position:absolute;width:10px;height:10px;border-radius:50%;
+    background:rgba(200,193,175,.45);pointer-events:none;z-index:8;
+    animation:humea calc(.65s * var(--lento,1)) ease-out forwards}
+  @keyframes humea{0%{transform:translate(-50%,-50%) scale(.4);opacity:.8}
+    100%{transform:translate(calc(-50% + var(--hx,10px)), calc(-50% + var(--hy,-10px))) scale(1.8);opacity:0}}
+:root{--habla-j:rgba(226,114,91,.10); --habla-j-b:rgba(226,114,91,.5);
+  --habla-l:rgba(87,184,214,.09); --habla-l-b:rgba(87,184,214,.45)}
+.cara{display:block;flex:0 0 auto}
+.cara svg{display:block;width:100%;height:auto}
+.cara.jef{width:64px}
+.habla{display:contents}
+.habla:has(> .aviso:not(:empty):not([hidden])){display:flex;gap:10px;align-items:center;
+  background:var(--habla-l);border:1.5px solid var(--habla-l-b);border-radius:10px;
+  padding:6px 8px 6px 12px;margin:8px 0 0}
+.habla > .aviso{flex:1;margin:0;color:var(--ink);font-style:italic;min-height:0}
+.habla:has(> .aviso:empty) .cara,
+.habla:has(> .aviso[hidden]) .cara{display:none}
+.habla .cara.lis{width:48px;order:2}
+/* los dibujos miran a la derecha (Listillón) o a la izquierda (Jeferión): en
+   el bocadillo se voltean para mirar hacia lo que dicen */
+.habla .cara.lis svg, .ruta .rt-habla .cara.jef svg{transform:scaleX(-1)}
+.habla .aviso b{color:var(--ink)}
+@media (max-width:420px){ .cara.jef{width:52px} .habla .cara.lis{width:40px} }
+
+/* Jeferión habla a la izquierda, con su color; Listillón a la derecha */
+.habla.jef:has(> .aviso:not(:empty):not([hidden])){background:var(--habla-j);border-color:var(--habla-j-b);padding:6px 12px 6px 8px}
+.habla .cara.jef{width:56px;order:0}
+.habla.jef .cara.jef svg{transform:none}
+.habla > .aviso{font-size:14px;line-height:1.5}
+.habla > .aviso b{color:var(--ink)}
+@media (max-width:420px){ .habla .cara.jef{width:48px} }
