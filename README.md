@@ -26,6 +26,7 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 - `src/ejercicios.js` — las seis misiones, el generador de cuentas comprobado con el motor, el acta y el turno guardado.
 - `src/entrevistas.js` y `src/entrevistas.css` — las entrevistas.
 - `src/ajustes.css` — los ajustes: los temas Noche, Día y Proyector, y el modo aula para la pizarra digital (la lógica va en `src/pagina.html`).
+- `src/arranque.js` y `src/arranque.css` — la escena de inicio, como en Las piezas de Miut: −3 + 5 = +2 jugado en el campo de verdad y el nombre. Solo al abrir la app; se salta tocando y se quita en Ajustes.
 - `VERSION` — el número de versión; `construye.mjs` lo pone en la página.
 - `pruebas/` — `node --test pruebas/motor.test.mjs pruebas/ejercicios.test.mjs pruebas/construccion.test.mjs`. La última comprueba que `index.html` está al día.
 - `construye.mjs` — funde `src/` en `index.html`.
@@ -42,3 +43,4 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 8. ✅ Entrevistas.
 9. ✅ Fundirlo todo en un solo HTML, como las demás apps.
 10. ✅ Ajustes (colores, modo aula, velocidad, preguntas), empezar de cero y el acta ejercicio a ejercicio.
+11. ✅ La escena de inicio.

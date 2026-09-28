@@ -14,11 +14,19 @@
 <link rel="stylesheet" href="src/personajes.css">
 <link rel="stylesheet" href="src/entrevistas.css">
 <link rel="stylesheet" href="src/ajustes.css">
+<link rel="stylesheet" href="src/arranque.css">
 <script>
   /* los ajustes se ponen antes de pintar nada, para que no haya un fogonazo del tema oscuro */
   try{ const a = JSON.parse(localStorage.getItem('palestra.ajustes.v1') || '{}');
     if(a.tema === 'dia' || a.tema === 'proyector') document.documentElement.dataset.tema = a.tema;
-    if(a.aula) document.documentElement.dataset.aula = 'si'; }catch(err){}
+    if(a.aula) document.documentElement.dataset.aula = 'si';
+  }catch(err){}
+  /* la escena de inicio: solo al abrir la app (no al recargar en la misma sesión), si no se ha
+     quitado en Ajustes y sin «menos movimiento». Se decide aquí para que se vea desde el primer pintado */
+  try{ const a = JSON.parse(localStorage.getItem('palestra.ajustes.v1') || '{}');
+    const vista = sessionStorage.getItem('palestra.inicio') === 'visto';
+    const quieto = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(a.inicio !== false && !vista && !quieto) document.documentElement.dataset.inicio = 'si'; }catch(err){}
 </script>
 <style>
   :root{
@@ -91,6 +99,15 @@
 </style>
 </head>
 <body>
+<div class="inicio" id="escenaInicio" hidden>
+  <div class="inEscena">
+    <p class="inGriego" lang="grc">ἑλκυστίνδα</p>
+    <div class="inCampo" aria-hidden="true"></div>
+    <p class="inCuenta" aria-hidden="true">&nbsp;</p>
+    <p class="inTitulo">La palestra</p>
+  </div>
+  <p class="inSalta">toca para empezar</p>
+</div>
 <main>
   <header class="cab">
     <h1>La palestra</h1>
@@ -130,6 +147,12 @@
         <button type="button" data-v="si">Sí</button><button type="button" data-v="no">No</button>
       </div>
       <p class="aj-d">Antes de cada paso que mueve la bandera, ▶ pide tocar en la regla dónde acabará.</p>
+    </div>
+    <div class="aj-f">
+      <span class="aj-n">Al abrir</span>
+      <div class="aj-op" data-aj="inicio" role="group" aria-label="La animación de inicio">
+        <button type="button" data-v="si">Con animación</button><button type="button" data-v="no">Sin animación</button>
+      </div>
     </div>
     <div class="aj-f">
       <span class="aj-n">Empezar de cero</span>
@@ -226,6 +249,7 @@
 <script src="src/zeus.js"></script>
 <script src="src/ejercicios.js"></script>
 <script src="src/entrevistas.js"></script>
+<script src="src/arranque.js"></script>
 <script>
   const P = window.Palestra, C = window.Campo, TL = window.Tablilla, PJ = window.Personajes, E = window.Ejercicios;
   const $ = id => document.getElementById(id);
@@ -487,7 +511,7 @@
 
   /* ── LOS AJUSTES: se guardan en este navegador y no caducan ── */
   const AJUSTES = 'palestra.ajustes.v1';
-  const aj = {tema: 'noche', aula: false, lento: false, preguntas: true};
+  const aj = {tema: 'noche', aula: false, lento: false, preguntas: true, inicio: true};
   try{ Object.assign(aj, JSON.parse(localStorage.getItem(AJUSTES) || '{}')); }catch(err){}
   function aplica(){
     const h = document.documentElement;
@@ -496,7 +520,7 @@
     h.style.setProperty('--lento', aj.lento ? 1.6 : 1);
     window.Reproductor.ponRitmo(aj.lento ? 1.6 : 1);
     R.preguntas = aj.preguntas;
-    const valor = {tema: aj.tema, aula: aj.aula ? 'si' : 'no', lento: aj.lento ? 'si' : 'no', preguntas: aj.preguntas ? 'si' : 'no'};
+    const valor = {tema: aj.tema, aula: aj.aula ? 'si' : 'no', lento: aj.lento ? 'si' : 'no', preguntas: aj.preguntas ? 'si' : 'no', inicio: aj.inicio ? 'si' : 'no'};
     document.querySelectorAll('[data-aj]').forEach(g => g.querySelectorAll('button').forEach(b =>
       b.setAttribute('aria-pressed', String(b.dataset.v === valor[g.dataset.aj])) ));
     $('bAula').setAttribute('aria-pressed', String(aj.aula));
@@ -544,10 +568,13 @@
     window.scrollTo({top: 0, behavior: 'smooth'});
   });
 
+
   aplica();
   pintaTablilla();
   modoRuta(true);
   pintaActa();
+  /* la escena de inicio, si la cabecera ha dicho que toca */
+  if(document.documentElement.dataset.inicio === 'si') window.Arranque.escena($('escenaInicio'));
 </script>
 </body>
 </html>
