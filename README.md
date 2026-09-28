@@ -46,4 +46,4 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 10. ✅ Ajustes (colores, modo aula, velocidad, preguntas), empezar de cero y el acta ejercicio a ejercicio.
 11. ✅ La escena de inicio.
 12. ✅ La disposición de Las piezas de Miut (pestañas, hojas y botones) sobre la arena de la palestra.
-13. ✅ La TABLI·CAS·IO: la tablilla de arcilla con hechura de calculadora.
+13. ✅ La TABLI·CAS·IO: la tablilla de arcilla con hechura de calculadora, modelada a mano, con Listillón trazado con una ramita.
