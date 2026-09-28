@@ -57,7 +57,7 @@ const ENTREVISTAS = {
        r:'Todo lo que pasa en el campo, <b>con signos</b>. Si entra un −3, escribo <b>+ (−3)</b>. Si se retira, <b>− (−3)</b>. Así el jefe no puede decir que no pasó.'},
       {id:'l2', p:'¿Por qué dice que el signo y la fuerza son dos preguntas?', pose:'senala',
        r:'Porque lo son. La <b>fuerza</b> es cuánto tira: el número sin signo. El <b>signo</b> es hacia dónde. El jefe mezcla las dos cosas y luego se enfada con la regla.'},
-      {id:'l3', p:'¿Por qué en su tablilla el frasco espera en el banco?', pose:'senala',
+      {id:'l3', p:'¿Por qué el frasco espera en el banquillo?', pose:'senala',
        r:'Porque en <b>3·(−2 + 1)</b> el 3 está escrito antes de que haya nadie a quien dárselo. Se escribe en un orden y se juega en otro: eso es la <b>jerarquía</b>. ¿Quiere verlo?',
        prueba:[{t:'p',k:3},{t:'('},{t:'n',f:-2},{t:'+'},{t:'n',f:1},{t:')'}]},
       {id:'l4', p:'¿Qué es lo más difícil de ser escriba de Jeferión?', pose:'piensa',
