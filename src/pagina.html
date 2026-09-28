@@ -25,13 +25,19 @@
   [hidden]{display:none !important}
   body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,'Segoe UI',sans-serif;padding:16px 16px 40px}
   main{max-width:620px;margin:0 auto}
-  h1{font-family:'Oswald',sans-serif;font-weight:500;font-size:22px;letter-spacing:1px;margin:0 0 2px}
-  .sub{margin:0 0 14px;color:var(--muted);font-size:14px}
+  .cab{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 14px;padding-bottom:10px;
+    border-bottom:1px solid var(--line)}
+  h1{font-family:'Oswald',sans-serif;font-weight:500;font-size:26px;letter-spacing:2px;text-transform:uppercase;margin:0;color:var(--oro)}
+  .sub{margin:0;color:var(--muted);font-size:13px}
+  .sub b{color:var(--ink);font-weight:400;letter-spacing:1px}
+  .pie{margin:4px 0 12px;color:var(--muted);font-size:12px;text-align:right}
+  .pie a{color:var(--muted)}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px}
   .panel h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted);margin:0 0 10px;font-weight:500}
   .fila{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
   .fila button{font:inherit;color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 14px;min-height:44px;cursor:pointer;font-size:18px}
   .fila button:disabled{opacity:.4;cursor:default}
+  .fila button.scan{background:var(--oro);color:#1A1206;border-color:var(--oro)}
   .paso-t{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);flex:1;text-align:right;white-space:nowrap}
   .que b{color:var(--ink)}
   .bq-lista{margin:6px 0 0;font-size:14px;color:var(--muted)}
@@ -79,8 +85,10 @@
 </head>
 <body>
 <main>
-  <h1>La palestra</h1>
-  <p class="sub">Prototipo 0.9 · en un solo fichero, como las demás apps.</p>
+  <header class="cab">
+    <h1>La palestra</h1>
+    <p class="sub"><b>ἑλκυστίνδα</b> · el tira y afloja de los números enteros</p>
+  </header>
 
   <section class="panel ruta" id="ruta" aria-label="La ruta">
     <div class="rt-cab"><h2 id="rtCab">Misión 1 de 6</h2><p class="rt-titulo" id="rtTitulo"></p></div>
@@ -112,7 +120,10 @@
   </section>
 
   <section class="tablilla" aria-label="La tablilla">
-    <h2>La tablilla</h2>
+    <div class="tl-cab">
+      <h2>La tablilla</h2>
+      <span class="tl-placa" aria-label="Tabli-Cas-IO 320 antes de Cristo, de Listillón"><b>TABLI·CAS·IO</b><i>320 a. C. · de Listillón</i></span>
+    </div>
     <div class="tl-tabla" aria-live="polite"><span id="tlEscrito"></span><span class="tl-cursor" aria-hidden="true"></span></div>
     <div class="tl-ej" id="tlEj" hidden>
       <p class="tl-marca" id="tlMarca"></p>
@@ -139,7 +150,7 @@
     <div id="campo"></div>
     <div class="fila">
       <button type="button" id="atras" aria-label="Atrás">◀</button>
-      <button type="button" id="sig" aria-label="Adelante">▶</button>
+      <button type="button" id="sig" class="scan" aria-label="Adelante">▶</button>
       <button type="button" id="inicio" aria-label="Volver al principio">⟲</button>
       <button type="button" id="todo" aria-label="Repasar de un tirón" hidden>▶▶</button>
       <span class="paso-t" id="pasoT"></span>
@@ -147,6 +158,7 @@
     <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><p class="aviso" id="jefAviso" role="status"></p></div>
   </section>
 
+  <p class="pie">prototipo 0.10 · <a href="https://github.com/diazepamina-creator/la-palestra">la-palestra</a></p>
   <details class="panel ac" id="acta">
     <summary>Acta de la jornada</summary>
     <p class="ac-resumen" id="acResumen"></p>

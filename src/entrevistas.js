@@ -88,6 +88,7 @@ function monta(el, o){
   });
   function elige(q){
     ev.quien = q; ev.hechas = new Set();
+    $('.ev-cara').dataset.q = q;          // para que mire hacia el bocadillo
     quien.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.q === q)));
     const E = ENTREVISTAS[q];
     $('.ev-cartel').innerHTML = 'Hoy entrevistamos a <b>' + E.nombre + '</b>, ' + E.cargo + '.';

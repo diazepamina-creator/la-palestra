@@ -11,6 +11,8 @@
 .ev-escena{display:flex;gap:10px;align-items:flex-end;margin:0 0 10px}
 .ev-cara{flex:0 0 auto;width:132px;height:132px}
 .ev-cara svg{width:100%;height:100%;display:block}
+/* Jeferión mira a la izquierda de natural: en la entrevista se vuelve hacia el bocadillo */
+.ev-cara[data-q="jef"] svg{transform:scaleX(-1)}
 .ev-globo{flex:1;min-width:0;position:relative;min-height:112px;padding:10px 13px;border-radius:12px;
   background:var(--habla-l);border:1.5px solid var(--habla-l-b);margin-bottom:18px}
 .ev-globo::before{content:'';position:absolute;left:-9px;bottom:16px;width:14px;height:14px;

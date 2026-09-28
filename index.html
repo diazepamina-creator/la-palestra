@@ -294,7 +294,19 @@
   background:var(--panel);color:var(--ink);border:3px solid #8a6a3b;border-radius:14px;padding:12px;
   box-shadow:inset 0 0 0 2px var(--panel), inset 0 0 0 3px #b8a589, 0 2px 0 rgba(90,64,30,.25)}
 .tablilla h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;
-  color:var(--muted);margin:0 0 10px;font-weight:500}
+  color:var(--muted);margin:0;font-weight:500}
+/* la cabecera: el rótulo y la placa de marca, grabada en el barro */
+.tl-cab{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}
+.tl-placa{display:inline-flex;flex-direction:column;align-items:flex-end;line-height:1.1;padding:4px 9px 5px;border-radius:6px;
+  background:linear-gradient(180deg,#d9c59a,#c4ac7b);border:1px solid #8a6a3b;
+  box-shadow:inset 0 1px 0 rgba(255,250,235,.7), inset 0 -1px 0 rgba(90,64,30,.35), 0 1px 0 rgba(90,64,30,.25)}
+.tl-placa b{font-family:'Oswald',sans-serif;font-weight:700;font-size:12px;letter-spacing:2.2px;color:#3a2a14;
+  text-shadow:0 1px 0 rgba(255,250,235,.7)}
+.tl-placa i{font-style:normal;font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.3px;color:#5f5040;margin-top:1px}
+/* la greca por arriba, como el friso del campo */
+.tablilla{position:relative}
+.tablilla::before{content:"";position:absolute;left:10px;right:10px;top:-3px;height:7px;border-radius:0 0 4px 4px;
+  background:repeating-linear-gradient(90deg,#8a6a3b 0 6px,transparent 6px 9px,#8a6a3b 9px 12px,transparent 12px 18px);opacity:.55}
 .tl-tabla{position:relative;min-height:66px;margin:0 0 10px;padding:12px 14px;border-radius:10px;
   font-family:'Space Mono',monospace;font-size:20px;line-height:1.5;word-break:break-word;color:var(--ink);
   background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .42  0 0 0 0 .3  0 0 0 0 .14  0 0 0 .55 -.12'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"), linear-gradient(180deg,#e2d0a8,#eee0c0);
@@ -562,6 +574,8 @@
 .ev-escena{display:flex;gap:10px;align-items:flex-end;margin:0 0 10px}
 .ev-cara{flex:0 0 auto;width:132px;height:132px}
 .ev-cara svg{width:100%;height:100%;display:block}
+/* Jeferión mira a la izquierda de natural: en la entrevista se vuelve hacia el bocadillo */
+.ev-cara[data-q="jef"] svg{transform:scaleX(-1)}
 .ev-globo{flex:1;min-width:0;position:relative;min-height:112px;padding:10px 13px;border-radius:12px;
   background:var(--habla-l);border:1.5px solid var(--habla-l-b);margin-bottom:18px}
 .ev-globo::before{content:'';position:absolute;left:-9px;bottom:16px;width:14px;height:14px;
@@ -592,13 +606,19 @@
   [hidden]{display:none !important}
   body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,'Segoe UI',sans-serif;padding:16px 16px 40px}
   main{max-width:620px;margin:0 auto}
-  h1{font-family:'Oswald',sans-serif;font-weight:500;font-size:22px;letter-spacing:1px;margin:0 0 2px}
-  .sub{margin:0 0 14px;color:var(--muted);font-size:14px}
+  .cab{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 14px;padding-bottom:10px;
+    border-bottom:1px solid var(--line)}
+  h1{font-family:'Oswald',sans-serif;font-weight:500;font-size:26px;letter-spacing:2px;text-transform:uppercase;margin:0;color:var(--oro)}
+  .sub{margin:0;color:var(--muted);font-size:13px}
+  .sub b{color:var(--ink);font-weight:400;letter-spacing:1px}
+  .pie{margin:4px 0 12px;color:var(--muted);font-size:12px;text-align:right}
+  .pie a{color:var(--muted)}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px}
   .panel h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted);margin:0 0 10px;font-weight:500}
   .fila{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
   .fila button{font:inherit;color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 14px;min-height:44px;cursor:pointer;font-size:18px}
   .fila button:disabled{opacity:.4;cursor:default}
+  .fila button.scan{background:var(--oro);color:#1A1206;border-color:var(--oro)}
   .paso-t{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);flex:1;text-align:right;white-space:nowrap}
   .que b{color:var(--ink)}
   .bq-lista{margin:6px 0 0;font-size:14px;color:var(--muted)}
@@ -646,8 +666,10 @@
 </head>
 <body>
 <main>
-  <h1>La palestra</h1>
-  <p class="sub">Prototipo 0.9 · en un solo fichero, como las demás apps.</p>
+  <header class="cab">
+    <h1>La palestra</h1>
+    <p class="sub"><b>ἑλκυστίνδα</b> · el tira y afloja de los números enteros</p>
+  </header>
 
   <section class="panel ruta" id="ruta" aria-label="La ruta">
     <div class="rt-cab"><h2 id="rtCab">Misión 1 de 6</h2><p class="rt-titulo" id="rtTitulo"></p></div>
@@ -679,7 +701,10 @@
   </section>
 
   <section class="tablilla" aria-label="La tablilla">
-    <h2>La tablilla</h2>
+    <div class="tl-cab">
+      <h2>La tablilla</h2>
+      <span class="tl-placa" aria-label="Tabli-Cas-IO 320 antes de Cristo, de Listillón"><b>TABLI·CAS·IO</b><i>320 a. C. · de Listillón</i></span>
+    </div>
     <div class="tl-tabla" aria-live="polite"><span id="tlEscrito"></span><span class="tl-cursor" aria-hidden="true"></span></div>
     <div class="tl-ej" id="tlEj" hidden>
       <p class="tl-marca" id="tlMarca"></p>
@@ -706,7 +731,7 @@
     <div id="campo"></div>
     <div class="fila">
       <button type="button" id="atras" aria-label="Atrás">◀</button>
-      <button type="button" id="sig" aria-label="Adelante">▶</button>
+      <button type="button" id="sig" class="scan" aria-label="Adelante">▶</button>
       <button type="button" id="inicio" aria-label="Volver al principio">⟲</button>
       <button type="button" id="todo" aria-label="Repasar de un tirón" hidden>▶▶</button>
       <span class="paso-t" id="pasoT"></span>
@@ -714,6 +739,7 @@
     <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><p class="aviso" id="jefAviso" role="status"></p></div>
   </section>
 
+  <p class="pie">prototipo 0.10 · <a href="https://github.com/diazepamina-creator/la-palestra">la-palestra</a></p>
   <details class="panel ac" id="acta">
     <summary>Acta de la jornada</summary>
     <p class="ac-resumen" id="acResumen"></p>
@@ -2679,6 +2705,7 @@ function monta(el, o){
   });
   function elige(q){
     ev.quien = q; ev.hechas = new Set();
+    $('.ev-cara').dataset.q = q;          // para que mire hacia el bocadillo
     quien.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.q === q)));
     const E = ENTREVISTAS[q];
     $('.ev-cartel').innerHTML = 'Hoy entrevistamos a <b>' + E.nombre + '</b>, ' + E.cargo + '.';
