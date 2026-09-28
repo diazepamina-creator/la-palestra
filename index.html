@@ -302,6 +302,7 @@
   box-shadow:inset 0 1px 0 rgba(255,250,235,.7), inset 0 -1px 0 rgba(90,64,30,.35), 0 1px 0 rgba(90,64,30,.25)}
 .tl-placa b{font-family:'Oswald',sans-serif;font-weight:700;font-size:12px;letter-spacing:2.2px;color:#3a2a14;
   text-shadow:0 1px 0 rgba(255,250,235,.7)}
+.tl-placa .tl-modelo{font-weight:400;letter-spacing:.6px;font-family:'Space Mono',monospace;font-size:11px}
 .tl-placa i{font-style:normal;font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.3px;color:#5f5040;margin-top:1px}
 /* la greca por arriba, como el friso del campo */
 .tablilla{position:relative}
@@ -703,7 +704,7 @@
   <section class="tablilla" aria-label="La tablilla">
     <div class="tl-cab">
       <h2>La tablilla</h2>
-      <span class="tl-placa" aria-label="Tabli-Cas-IO 320 antes de Cristo, de Listillón"><b>TABLI·CAS·IO</b><i>320 a. C. · de Listillón</i></span>
+      <span class="tl-placa" aria-label="Tabli-Cas-IO fi-ji 320 antes de Cristo, con teatro incorporado"><b>TABLI·CAS·IO <span class="tl-modelo">φχ-320 a. C.</span></b><i>con teatro incorporado · escriba: Listillón</i></span>
     </div>
     <div class="tl-tabla" aria-live="polite"><span id="tlEscrito"></span><span class="tl-cursor" aria-hidden="true"></span></div>
     <div class="tl-ej" id="tlEj" hidden>
@@ -1647,8 +1648,10 @@ function frascoHtml(po){
 }
 const clasePoc = po => 'pocion ' + (po.k < 0 ? 'bando' : (Math.abs(po.k) > 1 ? 'crece' : 'mengua')) +
   (Math.abs(po.k) < 1 ? ' mengua' : '');
+/* el tirador pequeño de la tecla: se echa hacia atrás, hacia donde tira
+   (los rojos hacia la izquierda, los azules hacia la derecha) */
 function miniTirador(f){
-  const c = f < 0 ? 'var(--izq)' : 'var(--der)', s = f < 0 ? 1 : -1;
+  const c = f < 0 ? 'var(--izq)' : 'var(--der)', s = f < 0 ? -1 : 1;
   return '<svg viewBox="0 0 26 26" aria-hidden="true">' +
     '<path d="M' + (13 + 11 * s) + ' 15 H' + (13 - 12 * s) + '" stroke="#8a7442" stroke-width="2.2" stroke-linecap="round"/>' +
     '<circle cx="' + (13 + 3 * s) + '" cy="6" r="4.4" fill="' + c + '" stroke="#241C36" stroke-width="1"/>' +
