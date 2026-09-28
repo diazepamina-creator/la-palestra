@@ -6,7 +6,8 @@
 <title>La palestra</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="src/piel.css">
 <link rel="stylesheet" href="src/campo.css">
 <link rel="stylesheet" href="src/tablilla.css">
 <link rel="stylesheet" href="src/banquillo.css">
@@ -16,9 +17,11 @@
 <link rel="stylesheet" href="src/ajustes.css">
 <link rel="stylesheet" href="src/arranque.css">
 <script>
-  /* los ajustes se ponen antes de pintar nada, para que no haya un fogonazo del tema oscuro */
+  /* los ajustes se ponen antes de pintar nada, para que no haya un fogonazo del otro fondo.
+     La arena de día es la de siempre */
+  document.documentElement.dataset.tema = 'dia';
   try{ const a = JSON.parse(localStorage.getItem('palestra.ajustes.v1') || '{}');
-    if(a.tema === 'dia' || a.tema === 'proyector') document.documentElement.dataset.tema = a.tema;
+    if(a.tema === 'noche' || a.tema === 'proyector') document.documentElement.dataset.tema = a.tema;
     if(a.aula) document.documentElement.dataset.aula = 'si';
   }catch(err){}
   /* la escena de inicio: solo al abrir la app (no al recargar en la misma sesión), si no se ha
@@ -29,73 +32,7 @@
     if(a.inicio !== false && !vista && !quieto) document.documentElement.dataset.inicio = 'si'; }catch(err){}
 </script>
 <style>
-  :root{
-    --bg:#0F0C18; --panel:#171226; --panel-2:#1F1930; --line:#372E4E;
-    --ink:#F2EDE2; --muted:#A79DB5;
-    --oro:#E9B84E; --ambar:#E9B84E; --green:#9BD164;
-    --izq:#E2725B; --der:#57B8D6;
-    --lento:1;
-  }
-  *{box-sizing:border-box}
-  [hidden]{display:none !important}
-  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,'Segoe UI',sans-serif;padding:16px 16px 40px}
-  main{max-width:620px;margin:0 auto}
-  .cab{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 14px;padding-bottom:10px;
-    border-bottom:1px solid var(--line)}
-  h1{font-family:'Oswald',sans-serif;font-weight:500;font-size:26px;letter-spacing:2px;text-transform:uppercase;margin:0;color:var(--oro)}
-  .sub{margin:0;color:var(--muted);font-size:13px}
-  .sub b{color:var(--ink);font-weight:400;letter-spacing:1px}
-  .pie{margin:4px 0 12px;color:var(--muted);font-size:12px;text-align:right}
-  .pie a{color:var(--muted)}
-  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px}
-  .panel h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted);margin:0 0 10px;font-weight:500}
-  .fila{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
-  .fila button{font:inherit;color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 14px;min-height:44px;cursor:pointer;font-size:18px}
-  .fila button:disabled{opacity:.4;cursor:default}
-  .fila button.scan{background:var(--oro);color:#1A1206;border-color:var(--oro)}
-  .paso-t{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);flex:1;text-align:right;white-space:nowrap}
-  .que b{color:var(--ink)}
-  .bq-lista{margin:6px 0 0;font-size:14px;color:var(--muted)}
-  .bq-lista b.izq{color:var(--izq)} .bq-lista b.der{color:var(--der)}
-  .panel[hidden]{display:none}
-  /* ── la ruta ── */
-  .ruta{border-color:rgba(233,184,78,.35)}
-  .rt-cab{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-  .rt-cab h2{margin:0}
-  .rt-titulo{font-family:'Oswald',sans-serif;font-size:20px;font-weight:500;letter-spacing:.5px;margin:0}
-  .rt-d{margin:4px 0 8px;color:var(--muted);font-size:14px}
-  .rt-d b{color:var(--ink)}
-  .rt-puntos{display:flex;align-items:center;gap:6px}
-  .rt-p{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--oro);background:transparent}
-  .rt-p.hecho{background:var(--oro)}
-  .rt-hito{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);margin-left:4px}
-  .rt-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-  .rt-btns button, .ac button{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
-    color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-height:44px;cursor:pointer}
-  .rt-btns button.scan{background:var(--oro);color:#1A1206;border-color:var(--oro)}
-  .rt-btns button[hidden]{display:none}
-  /* ── el ejercicio, dentro de la tablilla ── */
-  .tl-ej[hidden]{display:none}
-  .tl-marca{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 8px}
-  .tl-marca .fi{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);
-    border:1px solid var(--line);border-radius:999px;padding:3px 10px}
-  .tl-marca .fi b{color:var(--ink)}
-  .tl-resp{display:flex;gap:8px;align-items:stretch;margin:0 0 8px}
-  .tl-resp input{flex:1;min-width:0;font:inherit;font-family:'Space Mono',monospace;font-size:17px;padding:10px 12px;border-radius:8px;
-    border:1px solid var(--line);background:var(--panel-2);color:var(--ink);min-height:44px}
-  .tl-resp button, .tl-ver{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
-    color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 14px;min-height:44px;cursor:pointer}
-  .tl-resp button.scan{background:#d7a646;border-color:#a67a1f;color:#241b36}
-  .tl-ver{width:100%}
-  .tablilla:has(.tl-ej:not([hidden])) .tl-cursor{display:none}
-  /* ── el acta ── */
-  .ac summary{cursor:pointer;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted)}
-  .ac-resumen{margin:8px 0;font-size:14px;color:var(--muted)}
-  .ac-resumen b{color:var(--ink)}
-  .ac-f{display:flex;gap:8px;font-size:14px;padding:4px 0;border-top:1px solid var(--line)}
-  .ac-f .ac-n{flex:1} .ac-f.floja .ac-n::after{content:" · floja";color:var(--ambar)}
-  .ac-fila{display:flex;gap:8px;align-items:stretch;margin-top:8px}
-  .ac-fila input{flex:1;min-width:0;font:inherit;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink)}
+  /* la página no lleva estilos propios: la arena, las hojas y los botones van en src/piel.css */
 </style>
 </head>
 <body>
@@ -108,69 +45,49 @@
   </div>
   <p class="inSalta">toca para empezar</p>
 </div>
-<main>
+<main class="lienzo">
   <header class="cab">
-    <h1>La palestra</h1>
-    <p class="sub"><b>ἑλκυστίνδα</b> · el tira y afloja de los números enteros</p>
-    <div class="cab-btns">
-      <button type="button" id="bAula" aria-pressed="false" title="Modo aula: para la pizarra digital">Aula</button>
-      <button type="button" id="bAjustes" aria-expanded="false" aria-controls="ajustes">⚙ Ajustes</button>
+    <div class="rotulo">
+      <span class="sello" aria-hidden="true"></span>
+      <div><h1>La palestra</h1><p class="sub"><span lang="grc">ἑλκυστίνδα</span> · el tira y afloja de los enteros</p></div>
+      <nav class="acc" aria-label="Acciones">
+        <button type="button" id="bAjustes" aria-pressed="false" aria-controls="ajustes">Ajustes</button>
+        <button type="button" id="bAula" aria-pressed="false">Aula</button>
+        <button type="button" id="bActa">Acta</button>
+      </nav>
+    </div>
+    <div class="juegos" role="group" aria-label="Qué hacer">
+      <button type="button" data-modo="ruta" aria-pressed="true"><b>La ruta</b><span>seis misiones</span></button>
+      <button type="button" data-modo="libre" aria-pressed="false"><b>La tablilla</b><span>escribe tu cuenta</span></button>
+      <button type="button" data-modo="entrevistas" aria-pressed="false"><b>Entrevistas</b><span>Zeus, Jeferión, Listillón</span></button>
     </div>
   </header>
 
-  <section class="panel aj" id="ajustes" hidden aria-label="Ajustes">
-    <h2>Ajustes</h2>
-    <div class="aj-f">
-      <span class="aj-n">Colores</span>
-      <div class="aj-op" data-aj="tema" role="group" aria-label="Colores">
-        <button type="button" data-v="noche">Noche</button><button type="button" data-v="dia">Día</button><button type="button" data-v="proyector">Proyector</button>
-      </div>
-      <p class="aj-d">Noche, la de siempre. Día, de barro claro. Proyector: fondo blanco y tinta negra, para que se lea con la luz encendida.</p>
-    </div>
-    <div class="aj-f">
-      <span class="aj-n">Modo aula</span>
-      <div class="aj-op" data-aj="aula" role="group" aria-label="Modo aula">
-        <button type="button" data-v="no">No</button><button type="button" data-v="si">Sí</button>
-      </div>
-      <p class="aj-d">Para la pizarra digital: todo más grande y, en pantalla ancha, el campo al lado de la tablilla.</p>
-    </div>
-    <div class="aj-f">
-      <span class="aj-n">Velocidad del campo</span>
-      <div class="aj-op" data-aj="lento" role="group" aria-label="Velocidad del campo">
-        <button type="button" data-v="no">Normal</button><button type="button" data-v="si">Lenta</button>
-      </div>
-      <p class="aj-d">Lenta: cada paso tarda más, para comentarlo mientras pasa.</p>
-    </div>
-    <div class="aj-f">
-      <span class="aj-n">Preguntar antes de mover la bandera</span>
-      <div class="aj-op" data-aj="preguntas" role="group" aria-label="Preguntar antes de mover la bandera">
-        <button type="button" data-v="si">Sí</button><button type="button" data-v="no">No</button>
-      </div>
-      <p class="aj-d">Antes de cada paso que mueve la bandera, ▶ pide tocar en la regla dónde acabará.</p>
-    </div>
-    <div class="aj-f">
-      <span class="aj-n">Al abrir</span>
-      <div class="aj-op" data-aj="inicio" role="group" aria-label="La animación de inicio">
-        <button type="button" data-v="si">Con animación</button><button type="button" data-v="no">Sin animación</button>
-      </div>
-    </div>
-    <div class="aj-f">
-      <span class="aj-n">Empezar de cero</span>
-      <button type="button" class="aj-cero" id="ajCero">Borrar y empezar</button>
-      <p class="aj-d" id="ajCeroTxt">Borra el acta y la ruta de este turno: para el siguiente alumno o la siguiente clase. Los ajustes se quedan.</p>
-    </div>
-    <div class="aj-pie"><span>versión {{versión}}</span><button type="button" id="ajCierra">Cerrar</button></div>
+  <section class="panel ajustes" id="ajustes" hidden aria-label="Ajustes">
+    <div class="aj"><span class="etq">El fondo</span>
+      <span class="ops" data-aj="tema" role="group" aria-label="El fondo"><button type="button" data-v="dia">Arena de día</button><button type="button" data-v="noche">Arena de noche</button><button type="button" data-v="proyector">Proyector</button></span>
+      <small>La arena de la palestra, rastrillada. De noche, para un aula con poca luz. Proyector: papel blanco y tinta negra, para que se lea con la luz encendida.</small></div>
+    <div class="aj"><span class="etq">El ritmo</span>
+      <span class="ops" data-aj="lento" role="group" aria-label="El ritmo del campo"><button type="button" data-v="no">Normal</button><button type="button" data-v="si">Pausado</button></span>
+      <small>«Pausado»: cada paso del campo tarda más, para comentarlo mientras pasa.</small></div>
+    <div class="aj"><span class="etq">Antes de mover la bandera</span>
+      <span class="ops" data-aj="preguntas" role="group" aria-label="Antes de mover la bandera"><button type="button" data-v="si">Decir dónde acaba</button><button type="button" data-v="no">Jugar sin más</button></span>
+      <small>Con «decir dónde acaba», ▶ pide tocar en la regla dónde quedará la bandera antes de cada paso que la mueve.</small></div>
+    <div class="aj"><span class="etq">Al abrir</span>
+      <span class="ops" data-aj="inicio" role="group" aria-label="La animación de inicio"><button type="button" data-v="si">Con animación</button><button type="button" data-v="no">Sin animación</button></span></div>
+    <div class="aj"><span class="etq">Empezar de cero</span>
+      <small id="ajCeroTxt">Borra de este aparato la ruta y el acta de este turno, para el siguiente alumno o la siguiente clase. Hay que pulsar dos veces. Los ajustes se quedan.</small>
+      <button type="button" class="b borrar" id="ajCero">Borrar todo</button></div>
+    <div class="botones"><button type="button" class="b ok" id="ajCierra">Cerrar</button></div>
   </section>
 
   <section class="panel ruta" id="ruta" aria-label="La ruta">
     <div class="rt-cab"><h2 id="rtCab">Misión 1 de 6</h2><p class="rt-titulo" id="rtTitulo"></p></div>
     <p class="rt-d" id="rtTxt"></p>
     <div class="rt-puntos" id="rtPuntos"></div>
-    <div class="rt-btns">
-      <button type="button" id="rtSigue" class="scan" hidden>Siguiente misión</button>
-      <button type="button" id="rtSalta">Saltar</button>
-      <button type="button" id="rtLibre">Modo libre</button>
-      <button type="button" id="rtEntrevista">Entrevistas</button>
+    <div class="botones">
+      <button type="button" class="b ok" id="rtSigue" hidden>Siguiente misión</button>
+      <button type="button" class="b" id="rtSalta">Saltar</button>
     </div>
   </section>
 
@@ -183,13 +100,12 @@
       <div class="ev-globo">
         <p class="ev-pregunta"></p>
         <p class="ev-respuesta" aria-live="polite"></p>
-        <button type="button" class="ev-prueba" hidden>Verlo en la tablilla</button>
+        <button type="button" class="ev-prueba b ok" hidden>Verlo en la tablilla</button>
       </div>
     </div>
     <div class="ev-zoom" hidden></div>
     <p class="ev-rotulo">Pregúntale:</p>
     <div class="ev-lista"></div>
-    <div class="rt-btns"><button type="button" id="evSalir">Volver a la palestra</button></div>
   </section>
 
   <section class="tablilla" aria-label="La tablilla">
@@ -201,18 +117,16 @@
     <div class="tl-ej" id="tlEj" hidden>
       <p class="tl-marca" id="tlMarca"></p>
       <div class="tl-resp">
-        <input id="tlResp" type="text" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="¿Dónde acaba la bandera?" aria-label="Tu respuesta">
-        <button type="button" id="tlComprueba" class="scan">Comprobar</button>
+        <input id="tlResp" type="text" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="¿Dónde acaba?" aria-label="Tu respuesta">
+        <button type="button" id="tlComprueba" class="b ok">Comprobar</button>
       </div>
-      <button type="button" id="tlVer" class="tl-ver">▶ Verlo en el campo</button>
+      <button type="button" id="tlVer" class="b tl-ver">▶ Verlo en el campo</button>
     </div>
     <div class="tl-teclas" id="tlTeclas"></div>
-    <div class="habla"><span class="cara lis" aria-hidden="true"></span><p class="aviso tl-aviso" id="tlAviso" role="status"></p></div>
-    <div class="tl-pie" id="tlPie">
-      <button type="button" id="tlLimpia">Tablilla limpia</button>
-      <button type="button" id="tlMuestra">Una de muestra</button>
-      <button type="button" id="tlRuta">Volver a la ruta</button>
-      <button type="button" id="tlEntrevista">Entrevistas</button>
+    <div class="habla lis"><span class="cara lis" aria-hidden="true"></span><div><div class="quien">Listillón</div><p class="aviso tl-aviso" id="tlAviso" role="status"></p></div></div>
+    <div class="botones tl-pie" id="tlPie">
+      <button type="button" class="b" id="tlLimpia">Tablilla limpia</button>
+      <button type="button" class="b" id="tlMuestra">Una de muestra</button>
     </div>
   </section>
 
@@ -221,25 +135,31 @@
     <div class="cartela" id="cartela" role="status" hidden></div>
     <div class="banquillo" id="banquillo" hidden><span class="bq-t">banquillo</span><div class="bq-sitio"></div><div class="bq-banco"></div></div>
     <div id="campo"></div>
-    <div class="fila">
-      <button type="button" id="atras" aria-label="Atrás">◀</button>
-      <button type="button" id="sig" class="scan" aria-label="Adelante">▶</button>
-      <button type="button" id="inicio" aria-label="Volver al principio">⟲</button>
-      <button type="button" id="todo" aria-label="Repasar de un tirón" hidden>▶▶</button>
+    <div class="mandos">
+      <button type="button" class="b" id="atras" aria-label="Atrás">◀</button>
+      <button type="button" class="b ok" id="sig" aria-label="Adelante">▶</button>
+      <button type="button" class="b" id="inicio" aria-label="Volver al principio">⟲</button>
+      <button type="button" class="b" id="todo" aria-label="Repasar de un tirón" hidden>▶▶</button>
       <span class="paso-t" id="pasoT"></span>
     </div>
-    <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><p class="aviso" id="jefAviso" role="status"></p></div>
+    <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><div><div class="quien">Jeferión</div><p class="aviso" id="jefAviso" role="status"></p></div></div>
   </section>
 
-  <p class="pie">versión {{versión}} · <a href="https://github.com/diazepamina-creator/la-palestra">la-palestra</a></p>
-  <details class="panel ac" id="acta">
-    <summary>Acta de la jornada</summary>
-    <p class="ac-resumen" id="acResumen"></p>
-    <div id="acFilas"></div>
-    <details class="ac-det" id="acDet"><summary>Ejercicio a ejercicio</summary><ol class="ac-ej" id="acEj"></ol></details>
-    <div class="ac-fila"><input id="acNombre" type="text" placeholder="Nombre" aria-label="Nombre"><button type="button" id="acCopia">Copiar acta</button><button type="button" id="acBaja">Descargar</button></div>
-  </details>
+  <footer>versión {{versión}}</footer>
 </main>
+
+<div class="modal" id="mActa" hidden>
+  <div class="caja2 acta" role="dialog" aria-modal="true" aria-labelledby="actaTit" tabindex="-1">
+    <h2 id="actaTit">El acta de la palestra</h2>
+    <p class="actaSub">Lo que has hecho en este turno. Cópiala o descárgala para dársela a tu profesor.</p>
+    <label class="actaNombre"><span class="etq">Tu nombre</span><input id="acNombre" autocomplete="name" placeholder="Escribe tu nombre"></label>
+    <div class="actaDatos" id="acDatos"></div>
+    <table class="actaTabla"><thead><tr><th>Misión</th><th>Resueltas</th><th>Sin mirar</th></tr></thead><tbody id="acFilas"></tbody></table>
+    <details class="ac-det" id="acDet"><summary>Ejercicio a ejercicio</summary><ol class="ac-ej" id="acEj"></ol></details>
+    <div class="botones"><button type="button" class="b ok" id="acCopia">Copiar el acta</button><button type="button" class="b" id="acBaja">Descargar .txt</button><button type="button" class="b" id="acCierra">Volver a la palestra</button></div>
+    <p class="actaMsg" id="acMsg" role="status"></p>
+  </div>
+</div>
 <script src="src/motor.js"></script>
 <script src="src/tirador.js"></script>
 <script src="src/campo.js"></script>
@@ -360,19 +280,20 @@
     $('tlEj').hidden = !si;
     $('tlTeclas').hidden = si;
     $('tlPie').hidden = si;
-    $('tlRuta').hidden = false;
     if(si){ pintaRuta(); ronda(); }
     else{ S.ej = null; S.tok = []; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
+    pintaPestanas();
   }
+  /* ── EL ACTA, en su propia hoja ── */
   function pintaActa(){
-    const total = sesion.bien + sesion.mal;
-    $('acResumen').innerHTML = '<b>' + sesion.bien + '</b> resueltas · <b>' + sesion.mal + '</b> falladas · ' +
-      (total ? Math.round(100 * sesion.bien / total) : 0) + '% de acierto · tiempo: <b>' + E.reloj(Date.now() - sesion.t0) + '</b>';
+    const total = sesion.bien + sesion.mal, dato = (n, v) => '<div><span class="etq">' + n + '</span><b>' + v + '</b></div>';
+    $('acDatos').innerHTML = dato('Resueltas', sesion.bien) + dato('Falladas', sesion.mal) +
+      dato('Acierto', (total ? Math.round(100 * sesion.bien / total) : 0) + '%') + dato('Tiempo', E.reloj(Date.now() - sesion.t0).replace(' min ', ':').replace(' s', '')) +
+      dato('Misión', (ruta.i + 1) + ' de ' + E.MISIONES.length);
     $('acFilas').innerHTML = Object.keys(sesion.mision).sort((a, b) => a - b).map(i => {
-      const m = sesion.mision[i], t = m.bien + m.mal;
-      return '<div class="ac-f' + (m.mal > m.bien ? ' floja' : '') + '"><span class="ac-n">' + (Number(i) + 1) + '. ' + E.MISIONES[i].t + '</span>' +
-        (m.solas ? '<span class="ac-s">' + m.solas + ' sin mirar</span>' : '') + '<span>' + m.bien + ' de ' + t + '</span></div>';
-    }).join('') || '<div class="ac-f"><span class="ac-n">Aún no hay nada anotado.</span></div>';
+      const m = sesion.mision[i];
+      return '<tr' + (m.mal > m.bien ? ' class="floja"' : '') + '><td><b>' + (Number(i) + 1) + '.</b> ' + E.MISIONES[i].t + '</td><td>' + m.bien + ' de ' + (m.bien + m.mal) + '</td><td>' + (m.solas || 0) + '</td></tr>';
+    }).join('') || '<tr><td colspan="3">Aún no hay nada anotado.</td></tr>';
     const ejs = sesion.ejercicios || [];
     $('acDet').hidden = !ejs.length;
     $('acDet').querySelector('summary').textContent = 'Ejercicio a ejercicio (' + ejs.length + ')';
@@ -381,31 +302,34 @@
       '<span class="ac-como">' + E.comoFue(e) + '</span></li>').join('');
     $('acNombre').value = sesion.nombre || '';
   }
+  const actaTxt = () => E.actaEnTexto(sesion, Date.now(), ruta);
+  function abreActa(){ ajustes(false); $('acMsg').textContent = ''; pintaActa(); $('mActa').hidden = false; $('mActa').querySelector('.caja2').focus(); }
+  const cierraActa = () => { $('mActa').hidden = true; $('bActa').focus(); };
+  $('bActa').addEventListener('click', abreActa);
+  $('acCierra').addEventListener('click', cierraActa);
+  $('mActa').addEventListener('click', ev => { if(ev.target.id === 'mActa') cierraActa(); });
+  addEventListener('keydown', ev => { if(ev.key === 'Escape' && !$('mActa').hidden) cierraActa(); });
   $('tlComprueba').addEventListener('click', comprueba);
   $('tlResp').addEventListener('keydown', ev => { if(ev.key === 'Enter'){ ev.preventDefault(); comprueba(); } });
   $('tlVer').addEventListener('click', () => { if(S.ej) igual(); });
   $('rtSigue').addEventListener('click', () => { if(E.siguiente(ruta)){ E.guarda(ruta, sesion); pintaRuta(); ronda(); } });
   $('rtSalta').addEventListener('click', () => { if(E.siguiente(ruta)){ E.guarda(ruta, sesion); pintaRuta(); ronda(); } });
-  $('rtLibre').addEventListener('click', () => modoRuta(false));
-  $('tlRuta').addEventListener('click', () => modoRuta(true));
   $('acNombre').addEventListener('input', () => { sesion.nombre = $('acNombre').value; E.guarda(ruta, sesion); });
   $('acCopia').addEventListener('click', () => {
-    const t = E.actaEnTexto(sesion, Date.now(), ruta);
-    const listo = () => { $('acCopia').textContent = 'Copiada'; setTimeout(() => { $('acCopia').textContent = 'Copiar acta'; }, 1500); };
-    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(listo, () => alert(t));
-    else alert(t);
+    const t = actaTxt(), no = () => { $('acMsg').textContent = 'No se ha podido copiar: usa «Descargar .txt».'; };
+    try{ navigator.clipboard.writeText(t).then(() => { $('acMsg').textContent = '✓ Acta copiada: pégala donde te diga tu profesor.'; }, no); }catch(err){ no(); }
   });
   /* el acta, en un .txt: para guardarla con las de la clase */
   $('acBaja').addEventListener('click', () => {
     const f = new Date(), dos = x => String(x).padStart(2, '0');
     const nombre = (sesion.nombre || 'sin-nombre').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'sin-nombre';
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([E.actaEnTexto(sesion, Date.now(), ruta)], {type: 'text/plain;charset=utf-8'}));
+    a.href = URL.createObjectURL(new Blob([actaTxt()], {type: 'text/plain;charset=utf-8'}));
     a.download = 'acta-palestra-' + nombre + '-' + f.getFullYear() + dos(f.getMonth() + 1) + dos(f.getDate()) + '-' + dos(f.getHours()) + dos(f.getMinutes()) + '.txt';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    $('acMsg').textContent = '✓ Acta descargada.';
   });
-  $('acta').addEventListener('toggle', pintaActa);
   function pintaTablilla(){
     let h = TL.htmlCuenta(S.tok);
     if(S.pel){
@@ -502,20 +426,35 @@
   function entrevista(si){
     $('entrevista').hidden = !si;
     document.querySelector('.tablilla').hidden = si;
-    if(si){ enRuta = !$('ruta').hidden; $('ruta').hidden = true; $('panelCampo').hidden = true; $('acta').hidden = true; EV.abre(); window.scrollTo({top: 0, behavior: 'smooth'}); }
-    else{ EV.calla(); $('acta').hidden = false; $('ruta').hidden = !enRuta; }
+    if(si){ enRuta = !$('ruta').hidden; $('ruta').hidden = true; $('panelCampo').hidden = true; EV.abre(); window.scrollTo({top: 0, behavior: 'smooth'}); }
+    else{ EV.calla(); $('ruta').hidden = !enRuta; }
+    pintaPestanas();
   }
-  $('rtEntrevista').addEventListener('click', () => entrevista(true));
-  $('tlEntrevista').addEventListener('click', () => entrevista(true));
-  $('evSalir').addEventListener('click', () => entrevista(false));
+  /* ── LAS PESTAÑAS de la cabecera: la ruta, la tablilla libre y las entrevistas ── */
+  const modoActual = () => !$('entrevista').hidden ? 'entrevistas' : !$('ruta').hidden ? 'ruta' : 'libre';
+  function pintaPestanas(){
+    const m = modoActual();
+    document.querySelectorAll('.juegos button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.modo === m)));
+  }
+  document.querySelector('.juegos').addEventListener('click', ev => {
+    const b = ev.target.closest('button'); if(!b) return;
+    const quiere = b.dataset.modo;
+    if(quiere === modoActual()) return;
+    if(quiere === 'entrevistas'){ entrevista(true); return; }
+    if(!$('entrevista').hidden) entrevista(false);
+    if(quiere === 'ruta' && $('ruta').hidden) modoRuta(true);
+    if(quiere === 'libre' && !$('ruta').hidden) modoRuta(false);
+    pintaPestanas();
+  });
 
   /* ── LOS AJUSTES: se guardan en este navegador y no caducan ── */
   const AJUSTES = 'palestra.ajustes.v1';
-  const aj = {tema: 'noche', aula: false, lento: false, preguntas: true, inicio: true};
+  const aj = {tema: 'dia', aula: false, lento: false, preguntas: true, inicio: true};
   try{ Object.assign(aj, JSON.parse(localStorage.getItem(AJUSTES) || '{}')); }catch(err){}
+  if(['dia', 'noche', 'proyector'].indexOf(aj.tema) < 0) aj.tema = 'dia';
   function aplica(){
     const h = document.documentElement;
-    if(aj.tema === 'dia' || aj.tema === 'proyector') h.dataset.tema = aj.tema; else delete h.dataset.tema;
+    h.dataset.tema = aj.tema;
     if(aj.aula) h.dataset.aula = 'si'; else delete h.dataset.aula;
     h.style.setProperty('--lento', aj.lento ? 1.6 : 1);
     window.Reproductor.ponRitmo(aj.lento ? 1.6 : 1);
@@ -536,7 +475,7 @@
   $('bAula').addEventListener('click', () => { aj.aula = !aj.aula; guardaAjustes(); aplica(); });
   function ajustes(si){
     $('ajustes').hidden = !si;
-    $('bAjustes').setAttribute('aria-expanded', String(si));
+    $('bAjustes').setAttribute('aria-pressed', String(si));
     if(!si) noCero();
   }
   $('bAjustes').addEventListener('click', () => ajustes($('ajustes').hidden));
@@ -546,7 +485,7 @@
   const CERO_TXT = $('ajCeroTxt').textContent;
   function noCero(){
     clearTimeout(ceroListo); ceroListo = null;
-    $('ajCero').classList.remove('seguro'); $('ajCero').textContent = 'Borrar y empezar';
+    $('ajCero').classList.remove('seguro'); $('ajCero').textContent = 'Borrar todo';
     $('ajCeroTxt').textContent = CERO_TXT;
   }
   $('ajCero').addEventListener('click', () => {

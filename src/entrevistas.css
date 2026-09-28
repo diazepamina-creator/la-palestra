@@ -1,7 +1,7 @@
 /* ── LAS ENTREVISTAS: Zeus, Jeferión y Listillón contestan a lo que se les pregunte ── */
 .ev-quien{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 8px}
 .ev-quien button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px 5px;min-height:0;
-  font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:12px;
+  font:inherit;font-family:var(--rotulo);letter-spacing:1px;text-transform:uppercase;font-size:12px;
   color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;cursor:pointer}
 .ev-quien button[aria-pressed="true"]{border-color:var(--ambar);color:var(--ambar);box-shadow:inset 0 0 0 1px var(--ambar)}
 .ev-mini{width:46px;height:46px;display:block}
@@ -17,10 +17,10 @@
   background:var(--habla-l);border:1.5px solid var(--habla-l-b);margin-bottom:18px}
 .ev-globo::before{content:'';position:absolute;left:-9px;bottom:16px;width:14px;height:14px;
   background:inherit;border-left:1.5px solid var(--habla-l-b);border-bottom:1.5px solid var(--habla-l-b);transform:rotate(45deg)}
-.ev-pregunta{margin:0 0 5px;font-size:12.5px;color:var(--muted);font-family:'Oswald',sans-serif;letter-spacing:.4px}
+.ev-pregunta{margin:0 0 5px;font-size:12.5px;color:var(--muted);font-family:var(--rotulo);letter-spacing:.4px}
 .ev-respuesta{margin:0;font-size:15.5px;line-height:1.5;font-style:italic;color:var(--ink);min-height:1.5em}
 .ev-respuesta b{color:var(--ink)}
-.ev-prueba{margin-top:8px;font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
+.ev-prueba{margin-top:8px;font:inherit;font-family:var(--rotulo);letter-spacing:1px;text-transform:uppercase;font-size:13px;
   color:#1A1206;background:var(--oro);border:1px solid var(--oro);border-radius:8px;padding:8px 12px;min-height:44px;cursor:pointer}
 /* la tablilla de Listillón, de cerca: se acerca como con una lupa */
 .ev-zoom{margin:-6px 0 14px;padding:0 6px}
@@ -29,11 +29,11 @@
   animation:evZoom .55s cubic-bezier(.2,1.2,.4,1) backwards}
 @keyframes evZoom{from{transform:scale(.55) translateY(-30px);opacity:0}}
 @media (prefers-reduced-motion: reduce){ .ev-zoom svg{animation:none} }
-.ev-rotulo{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.ev-rotulo{font-family:var(--rotulo);font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
 .ev-lista{display:flex;flex-direction:column;gap:6px}
 .ev-p{text-align:left;font:inherit;font-size:14px;padding:9px 12px;min-height:44px;color:var(--ink);background:var(--panel-2);
   border:1px solid var(--line);border-radius:8px;cursor:pointer}
 .ev-p.hecha{opacity:.55}
 .ev-p.repregunta{border-style:dashed;border-color:var(--ambar)}
-.ev-re{font-family:'Oswald',sans-serif;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ambar)}
+.ev-re{font-family:var(--rotulo);font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ambar)}
 @media (max-width:420px){ .ev-cara{width:104px;height:104px} .ev-respuesta{font-size:14.5px} }

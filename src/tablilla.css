@@ -1,16 +1,17 @@
 /* ── LA TABLILLA: es de barro, con su propia paleta ── */
 .tablilla{--panel:#efe4ca; --panel-2:#f7f0de; --line:#c4b08a; --ink:#241b36; --muted:#5f5040;
+  --panel2:#f7f0de; --linea:#c4b08a; --tinta:#241b36; --tenue:#5f5040; --noche:#fbf6ea;
   --oro:#7f5a0e; --green:#2f6b28; --izq:#a8432d; --der:#1f6a88;
   background:var(--panel);color:var(--ink);border:3px solid #8a6a3b;border-radius:14px;padding:12px;
   box-shadow:inset 0 0 0 2px var(--panel), inset 0 0 0 3px #b8a589, 0 2px 0 rgba(90,64,30,.25)}
-.tablilla h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;
+.tablilla h2{font-family:var(--rotulo);text-transform:uppercase;letter-spacing:1.5px;font-size:11px;
   color:var(--muted);margin:0;font-weight:500}
 /* la cabecera: el rótulo y la placa de marca, grabada en el barro */
 .tl-cab{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}
 .tl-placa{display:inline-flex;flex-direction:column;align-items:flex-end;line-height:1.1;padding:4px 9px 5px;border-radius:6px;
   background:linear-gradient(180deg,#d9c59a,#c4ac7b);border:1px solid #8a6a3b;
   box-shadow:inset 0 1px 0 rgba(255,250,235,.7), inset 0 -1px 0 rgba(90,64,30,.35), 0 1px 0 rgba(90,64,30,.25)}
-.tl-placa b{font-family:'Oswald',sans-serif;font-weight:700;font-size:12px;letter-spacing:2.2px;color:#3a2a14;
+.tl-placa b{font-family:var(--rotulo);font-weight:700;font-size:12px;letter-spacing:2.2px;color:#3a2a14;
   text-shadow:0 1px 0 rgba(255,250,235,.7)}
 .tl-placa .tl-modelo{font-weight:400;letter-spacing:.6px;font-family:'Space Mono',monospace;font-size:11px}
 .tl-placa i{font-style:normal;font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.3px;color:#5f5040;margin-top:1px}
@@ -57,7 +58,7 @@
   box-shadow:0 1px 0 #7a5a2e, 0 2px 3px rgba(40,25,5,.3),
     inset 0 2px 5px rgba(110,78,30,.35), inset 0 -1px 0 rgba(255,250,235,.4)}
 .tl-teclas button:disabled{opacity:.6;transform:none;cursor:default}
-.tl-t{display:flex;align-items:center;justify-content:center;gap:2px;font-family:'Oswald',sans-serif;font-size:15px}
+.tl-t{display:flex;align-items:center;justify-content:center;gap:2px;font-family:var(--rotulo);font-size:15px}
 .tl-t svg{width:24px;height:24px;flex:0 0 auto}
 .tl-teclas .tl-t.izq{color:var(--izq);border-color:#8c3a28;box-shadow:0 4px 0 #8c3a28, 0 6px 7px rgba(40,25,5,.35),
     inset 0 2px 0 rgba(255,250,235,.75), inset 0 -4px 6px rgba(140,58,40,.25)}
@@ -100,8 +101,4 @@
   border:1.5px solid #E14FC6;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(225,79,198,.55)}
 .pocion .calavera svg{width:14px;height:14px;display:block}
 
-.tablilla .habla{margin-top:10px}
 .tl-aviso b{color:var(--ink)}
-.tl-pie{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.tl-pie button{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
-  color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-height:44px;cursor:pointer}

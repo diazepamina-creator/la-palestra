@@ -73,7 +73,7 @@
     transform-origin:left center;transition:transform .5s ease}
     .nudo .cifra{position:absolute;top:-19px;left:50%;
     transform:translateX(calc(-50% + 12px));transition:transform .5s ease;
-    font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;color:#F2EDE2;
+    font-family:var(--rotulo);font-weight:700;font-size:15px;color:#F2EDE2;
     text-shadow:0 0 5px rgba(16,11,26,.95);white-space:nowrap}
     .nudo.haciaIzq .tela{left:auto;right:2px;transform-origin:right center;
     clip-path:polygon(100% 0, 0 22%, 38% 50%, 0 78%, 100% 100%)}
@@ -133,7 +133,7 @@
   .tirador.venia-izq .suela, .tirador.venia-der .suela{stroke:var(--vieja-linea)}
     .tirador.trago .trasCuerda{clip-path:none}
     .tirador .banda{fill:#f2f6fb;opacity:.9}
-  .tirador .num{fill:var(--ink);font-family:'Oswald',sans-serif;font-weight:700;
+  .tirador .num{fill:var(--ink);font-family:var(--rotulo);font-weight:700;
     font-size:13px;text-anchor:middle}
   .tirador .blanco{fill:#f2f6fb} .tirador .pupila{fill:#140F1F}
   .tirador .rasgo{fill:rgba(16,11,26,.72)}

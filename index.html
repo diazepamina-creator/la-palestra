@@ -7,7 +7,205 @@
 <title>La palestra</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Space+Mono:wght@400;700&display=swap">
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   LA PALESTRA · la piel
+   La disposición de Las piezas de Miut —la cabecera en una hoja con sus
+   pestañas, las hojas de papel, los botones, el acta en su hoja— sobre el
+   suelo de la palestra: la arena rastrillada donde se entrenaba (el
+   skamma), con su grano y las marcas del rastrillo. Arena de día, la de
+   siempre; arena de noche, para un aula con poca luz; y Proyector, papel
+   blanco y tinta negra, sin arena.
+   Los nombres de Miut (--tinta, --linea…) mandan; los de antes (--ink,
+   --line…) son alias, para que los módulos del campo sigan igual.
+   ══════════════════════════════════════════════════════════════════════ */
+:root{
+  --arena1:#E8D6AF; --arena2:#D6BC8C; --luz:rgba(255,248,228,.55);
+  --grano:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .32  0 0 0 0 .16  0 0 0 1.6 -.72'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+  --surcos:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='26'><path d='M0 13 C45 8 85 18 130 13 S215 8 260 13' fill='none' stroke='rgba(120,82,34,.13)' stroke-width='2.2'/><path d='M0 15.4 C45 10.4 85 20.4 130 15.4 S215 10.4 260 15.4' fill='none' stroke='rgba(255,250,236,.32)' stroke-width='1.2'/></svg>");
+  --noche:#F4EBD9; --panel:#FFFBF2; --panel2:#FBF3E3; --linea:#D8C3A0;
+  --tinta:#2E2218; --tenue:#7D6650;
+  --morado:#8A6A9E; --oro:#A8661B; --rojo:#B0442C; --verde:#4F7A2E;
+  --sombra:rgba(90,60,20,.24); --brillo:rgba(214,150,50,.18);
+  --izq:#B0442C; --der:#1F6A88;
+  --sello:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'><rect x='2.2' y='.8' width='1.7' height='12.6' rx='.85'/><path d='M3.9 1.4 L12.8 4.3 L3.9 7.4 Z'/></svg>");
+  --lento:1;
+  /* la letra: Cinzel, mayúsculas de inscripción, para los rótulos, los
+     títulos y los botones; Alegreya Sans, cálida y clara, para leer. Las
+     cuentas van en Space Mono, que distingue bien los signos */
+  --rotulo:'Cinzel',Georgia,serif; --letra:'Alegreya Sans',system-ui,sans-serif;
+  /* los alias */
+  --bg:var(--arena2); --panel-2:var(--panel2); --line:var(--linea); --ink:var(--tinta); --muted:var(--tenue);
+  --ambar:var(--oro); --green:var(--verde);
+}
+/* la arena al anochecer: más fría, y la luz de una antorcha arriba */
+html[data-tema="noche"]{
+  --arena1:#3B3129; --arena2:#29221D; --luz:rgba(240,170,90,.13);
+  --grano:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .75  0 0 0 0 .62  0 0 0 0 .45  0 0 0 1.4 -.78'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+  --surcos:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='26'><path d='M0 13 C45 8 85 18 130 13 S215 8 260 13' fill='none' stroke='rgba(0,0,0,.30)' stroke-width='2.2'/><path d='M0 15.4 C45 10.4 85 20.4 130 15.4 S215 10.4 260 15.4' fill='none' stroke='rgba(255,225,180,.06)' stroke-width='1.2'/></svg>");
+  --noche:#1F1A16; --panel:#2B241F; --panel2:#342C26; --linea:#57493D;
+  --tinta:#F4EADB; --tenue:#C4B29A;
+  --morado:#B79CCB; --oro:#E6A84A; --rojo:#D2644B; --verde:#8DB36A;
+  --sombra:rgba(0,0,0,.45); --brillo:rgba(230,168,74,.16);
+  --izq:#E2725B; --der:#57B8D6;
+  color-scheme:dark}
+html[data-tema="proyector"]{
+  --noche:#F4F4F4; --panel:#FFFFFF; --panel2:#FFFFFF; --linea:#1A1A1A;
+  --tinta:#000000; --tenue:#2B2B2B;
+  --oro:#8A5A00; --rojo:#B3261E; --verde:#1D6B12; --izq:#B3261E; --der:#0B5F86;
+  --sombra:rgba(0,0,0,.12); --brillo:rgba(138,90,0,.10)}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{background:var(--arena2)}
+/* la arena: el grano fino, los surcos del rastrillo a lo ancho y la luz desde arriba */
+body{margin:0;color:var(--tinta);font-family:var(--letra);font-size:15px;line-height:1.5;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% 0%, var(--luz), transparent 70%),
+    var(--grano),
+    var(--surcos),
+    linear-gradient(180deg, var(--arena1), var(--arena2));
+  background-size:auto, 220px 220px, 260px 26px, auto;
+  background-attachment:fixed;-webkit-text-size-adjust:100%;min-height:100vh}
+html[data-tema="proyector"], html[data-tema="proyector"] body{background:#FFFFFF}
+.lienzo{max-width:760px;margin:0 auto;padding:12px 12px 36px}
+
+/* ── LA CABECERA: una sola hoja con el nombre y, en letra pequeña y sin
+   cajas, las acciones; debajo, lo que se puede hacer, como pestañas ── */
+.cab{padding:9px 14px 0;border:1px solid var(--linea);border-radius:13px;overflow:hidden;
+  background:linear-gradient(180deg,var(--panel2),var(--panel));box-shadow:0 6px 18px var(--sombra)}
+.rotulo{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rotulo > div{flex:1 1 0;min-width:0}
+.cab .sello{width:24px;height:24px;flex:0 0 24px;background:var(--oro);
+  -webkit-mask:var(--sello) center/contain no-repeat;mask:var(--sello) center/contain no-repeat}
+.cab h1{font-family:var(--rotulo);font-weight:700;font-size:19px;letter-spacing:1.8px;text-transform:uppercase;margin:0;color:var(--oro);line-height:1.1}
+.cab .sub{font-family:var(--rotulo);font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--tenue);margin:0}
+.cab .sub [lang="grc"]{text-transform:none;letter-spacing:1.5px}
+.cab .acc{margin-left:auto;display:flex;gap:18px}
+.cab .acc button{font-family:var(--rotulo);font-size:12.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--tenue);
+  background:none;border:0;border-bottom:1px solid transparent;padding:4px 0;cursor:pointer}
+.cab .acc button:hover,.cab .acc button:focus-visible,.cab .acc button[aria-pressed="true"]{color:var(--oro);border-bottom-color:var(--oro);outline:none}
+/* en el móvil las acciones bajan a su propia regleta, de lado a lado */
+@media (max-width:620px){
+  .cab .acc{width:100%;margin:5px 0 0;padding-top:4px;border-top:1px solid var(--linea);justify-content:space-around;gap:6px}
+}
+.juegos{display:grid;grid-template-columns:repeat(3,1fr);margin:8px -14px 0;border-top:1px solid var(--linea)}
+.juegos button{font:inherit;cursor:pointer;text-align:center;color:var(--tinta);background:none;border:0;border-bottom:3px solid transparent;
+  border-radius:0;padding:6px 4px 4px;line-height:1.2}
+.juegos button + button{border-left:1px solid var(--linea)}
+.juegos button b{display:block;font-family:var(--rotulo);font-size:15px;letter-spacing:1.3px;text-transform:uppercase;color:var(--oro)}
+.juegos button span{display:block;font-size:11.5px;color:var(--tenue)}
+.juegos button:hover{background:var(--brillo)}
+.juegos button[aria-pressed="true"]{border-bottom-color:var(--oro);background:var(--brillo)}
+@media (max-width:480px){ .juegos button span{display:none} .juegos button b{font-size:13.5px;letter-spacing:.6px} .juegos button{padding:8px 2px 6px} }
+
+/* ── LAS HOJAS ── */
+.panel{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--linea);border-radius:13px;
+  padding:12px 13px;margin-top:9px;box-shadow:0 6px 18px var(--sombra)}
+.panel h2, .etq{font-family:var(--rotulo);font-weight:700;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--tenue);margin:0}
+.panel > h2{margin-bottom:8px}
+.tablilla{margin-top:9px;box-shadow:0 6px 18px var(--sombra)}
+.tl-cab h2{white-space:nowrap}
+
+/* ── LOS BOTONES ── */
+.botones{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px;align-items:center}
+button.b{font-family:var(--rotulo);font-weight:700;font-size:13.5px;letter-spacing:.7px;text-transform:uppercase;
+  padding:8px 14px;min-height:42px;border-radius:9px;border:1px solid var(--linea);cursor:pointer;
+  background:linear-gradient(180deg,var(--panel2),var(--panel));color:var(--tinta);box-shadow:0 2px 0 rgba(0,0,0,.28)}
+button.b:hover{border-color:var(--morado)}
+button.b:active{transform:translateY(2px);box-shadow:none}
+button.b.ok{background:linear-gradient(180deg,#F4CB72,#DDA23A);color:#2A1D06;border-color:#A8661B;box-shadow:0 2px 0 #7E4C12}
+button.b:disabled{opacity:.4;cursor:default;transform:none}
+button.b.borrar.seguro{background:var(--rojo);border-color:var(--rojo);color:#fff}
+button.b:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
+
+/* ── LOS AJUSTES, una hoja que se abre bajo la cabecera ── */
+.ajustes .aj{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 0;border-bottom:1px dashed var(--linea)}
+.ajustes .aj > .etq{min-width:130px}
+.ajustes .aj small{flex-basis:100%;color:var(--tenue);font-size:12.5px;margin-top:-2px}
+.ops{display:inline-flex;border:1px solid var(--linea);border-radius:20px;overflow:hidden;flex-wrap:wrap}
+.ops button{font-family:var(--rotulo);font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  background:none;border:0;color:var(--tenue);padding:6px 12px;min-height:34px}
+.ops button + button{border-left:1px solid var(--linea)}
+.ops button[aria-pressed="true"]{background:var(--oro);color:var(--panel)}
+
+/* ── LA RUTA: la misión, qué hay que hacer y por dónde se va ── */
+.rt-cab{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.rt-titulo{font-family:var(--rotulo);font-weight:700;font-size:20px;letter-spacing:.5px;margin:0;color:var(--tinta)}
+.rt-d{margin:4px 0 0;font-size:17px;line-height:1.4}
+.rt-d b{color:var(--oro)}
+.rt-puntos{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:9px}
+.rt-p{width:10px;height:10px;border-radius:50%;background:var(--linea);display:block}
+.rt-p.hecho{background:var(--oro)}
+.rt-hito{font-family:'Space Mono',monospace;font-size:11px;color:var(--tenue);margin-left:4px}
+
+/* ── LO QUE DICEN: Listillón en la tablilla y Jeferión en el campo, en una
+   caja como la de Miut, con la cara, el nombre y lo que dicen ── */
+.cara{display:block;flex:0 0 auto}
+.cara svg{display:block;width:100%;height:auto}
+.habla{display:grid;grid-template-columns:48px 1fr;gap:10px;align-items:start;margin-top:11px;padding:10px 12px;
+  border:1px solid var(--linea);border-radius:11px;background:var(--noche)}
+.habla:has(.aviso:empty), .habla:has(.aviso[hidden]){display:none}
+.habla .cara{width:48px}
+.habla .quien{font-family:var(--rotulo);font-weight:700;font-size:12.5px;letter-spacing:2px;text-transform:uppercase;color:var(--oro)}
+.habla .aviso{margin:2px 0 0;font-size:15.5px;line-height:1.45;color:var(--tinta)}
+.habla .aviso b{color:var(--oro)}
+.tablilla .habla{--noche:#fbf6ea;--linea:#c4b08a;--tinta:#241b36;--oro:#7f5a0e}
+
+/* ── EL CAMPO: sus mandos ── */
+.mandos{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.mandos button.b{font-family:'Space Mono',monospace;font-size:18px;min-width:52px;letter-spacing:0}
+.paso-t{font-family:'Space Mono',monospace;font-size:12px;color:var(--tenue);flex:1;text-align:right;white-space:nowrap}
+.bq-lista{margin:6px 0 0;font-size:14px;color:var(--tenue)}
+.bq-lista b.izq{color:var(--izq)} .bq-lista b.der{color:var(--der)}
+
+/* ── EL EJERCICIO, dentro de la tablilla ── */
+.tl-marca{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 8px}
+.tl-marca .fi{font-family:var(--rotulo);font-weight:700;font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.tl-marca .fi b{color:var(--ink)}
+.tl-resp{display:flex;gap:8px;align-items:stretch;margin:0 0 8px}
+.tl-resp input{flex:1;min-width:0;font:inherit;font-family:'Space Mono',monospace;font-size:17px;padding:10px 12px;border-radius:9px;
+  border:1px solid var(--line);background:#fffaf0;color:var(--ink);min-height:44px}
+.tablilla button.b{--panel:#fbf6ea;--panel2:#fffaf0;--linea:#b8a07a;--tinta:#241b36}
+.tl-ver{width:100%}
+.tablilla:has(.tl-ej:not([hidden])) .tl-cursor{display:none}
+.tl-pie{margin-top:10px}
+
+/* ── EL ACTA, en su propia hoja, por encima de todo ── */
+.modal{position:fixed;inset:0;background:rgba(12,8,20,.82);display:grid;place-items:center;padding:16px;z-index:60;overflow:auto}
+.modal .caja2{width:min(600px,100%);max-height:92vh;overflow:auto;border:1px solid var(--linea);border-radius:16px;padding:18px 20px;
+  background:linear-gradient(180deg,var(--panel2),var(--panel));box-shadow:0 24px 60px rgba(0,0,0,.55)}
+.modal .caja2:focus{outline:none}
+.modal h2{font-family:var(--rotulo);color:var(--oro);letter-spacing:1.5px;text-transform:uppercase;font-size:18px;margin:0 0 8px}
+.acta .actaSub{margin:0 0 10px;color:var(--tenue)}
+.actaNombre{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.actaNombre input{flex:1;min-width:0;font:inherit;font-size:16px;padding:8px 10px;border-radius:9px;border:1px solid var(--linea);background:var(--noche);color:var(--tinta)}
+.actaDatos{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:6px;margin-bottom:10px}
+.actaDatos div{background:var(--noche);border:1px solid var(--linea);border-radius:9px;padding:6px 9px}
+.actaDatos b{display:block;font-family:'Space Mono',monospace;font-size:18px}
+.actaTabla{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:10px}
+.actaTabla th{font-family:var(--rotulo);font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tenue);text-align:left;padding:4px 6px;border-bottom:1px solid var(--linea)}
+.actaTabla td{padding:6px;border-bottom:1px dashed var(--linea);vertical-align:top}
+.actaTabla td b{color:var(--oro)}
+.actaTabla tr.floja td:first-child::after{content:" · floja";color:var(--rojo);font-size:12.5px}
+.actaMsg{min-height:20px;color:var(--verde);margin:6px 0 0}
+.ac-det summary{cursor:pointer;font-family:var(--rotulo);font-weight:700;font-size:12.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--tenue)}
+.ac-ej{list-style:none;margin:6px 0 0;padding:0;font-size:13.5px}
+.ac-ej li{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:2px 10px;padding:5px 0;border-top:1px dashed var(--linea)}
+.ac-ej .ac-h{font-family:'Space Mono',monospace;font-size:12px;color:var(--tenue)}
+.ac-ej .ac-m{font-family:var(--rotulo);font-weight:700;font-size:12.5px;letter-spacing:1px;color:var(--tenue)}
+.ac-ej .ac-c{font-family:'Space Mono',monospace}
+.ac-ej .ac-como{grid-column:3;color:var(--tenue);font-size:12.5px}
+.ac-ej li.ok .ac-como::before{content:"✓ ";color:var(--verde);font-weight:700}
+.ac-ej li.no .ac-como::before{content:"✗ ";color:var(--rojo);font-weight:700}
+@media (max-width:520px){ .actaTabla{font-size:12.5px} .actaTabla td,.actaTabla th{padding:4px 3px} }
+
+/* ── EL PIE ── */
+footer{margin-top:26px;padding-top:12px;border-top:1px solid var(--linea);text-align:center;
+  font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tenue)}
+html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;border-top-color:rgba(90,66,38,.3)}
+</style>
 <style>
 .campo{position:relative;height:252px;border-radius:10px;overflow:hidden;
     -webkit-user-select:none;user-select:none;
@@ -84,7 +282,7 @@
     transform-origin:left center;transition:transform .5s ease}
     .nudo .cifra{position:absolute;top:-19px;left:50%;
     transform:translateX(calc(-50% + 12px));transition:transform .5s ease;
-    font-family:'Oswald',sans-serif;font-weight:700;font-size:15px;color:#F2EDE2;
+    font-family:var(--rotulo);font-weight:700;font-size:15px;color:#F2EDE2;
     text-shadow:0 0 5px rgba(16,11,26,.95);white-space:nowrap}
     .nudo.haciaIzq .tela{left:auto;right:2px;transform-origin:right center;
     clip-path:polygon(100% 0, 0 22%, 38% 50%, 0 78%, 100% 100%)}
@@ -144,7 +342,7 @@
   .tirador.venia-izq .suela, .tirador.venia-der .suela{stroke:var(--vieja-linea)}
     .tirador.trago .trasCuerda{clip-path:none}
     .tirador .banda{fill:#f2f6fb;opacity:.9}
-  .tirador .num{fill:var(--ink);font-family:'Oswald',sans-serif;font-weight:700;
+  .tirador .num{fill:var(--ink);font-family:var(--rotulo);font-weight:700;
     font-size:13px;text-anchor:middle}
   .tirador .blanco{fill:#f2f6fb} .tirador .pupila{fill:#140F1F}
   .tirador .rasgo{fill:rgba(16,11,26,.72)}
@@ -304,17 +502,18 @@
 <style>
 /* ── LA TABLILLA: es de barro, con su propia paleta ── */
 .tablilla{--panel:#efe4ca; --panel-2:#f7f0de; --line:#c4b08a; --ink:#241b36; --muted:#5f5040;
+  --panel2:#f7f0de; --linea:#c4b08a; --tinta:#241b36; --tenue:#5f5040; --noche:#fbf6ea;
   --oro:#7f5a0e; --green:#2f6b28; --izq:#a8432d; --der:#1f6a88;
   background:var(--panel);color:var(--ink);border:3px solid #8a6a3b;border-radius:14px;padding:12px;
   box-shadow:inset 0 0 0 2px var(--panel), inset 0 0 0 3px #b8a589, 0 2px 0 rgba(90,64,30,.25)}
-.tablilla h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;
+.tablilla h2{font-family:var(--rotulo);text-transform:uppercase;letter-spacing:1.5px;font-size:11px;
   color:var(--muted);margin:0;font-weight:500}
 /* la cabecera: el rótulo y la placa de marca, grabada en el barro */
 .tl-cab{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}
 .tl-placa{display:inline-flex;flex-direction:column;align-items:flex-end;line-height:1.1;padding:4px 9px 5px;border-radius:6px;
   background:linear-gradient(180deg,#d9c59a,#c4ac7b);border:1px solid #8a6a3b;
   box-shadow:inset 0 1px 0 rgba(255,250,235,.7), inset 0 -1px 0 rgba(90,64,30,.35), 0 1px 0 rgba(90,64,30,.25)}
-.tl-placa b{font-family:'Oswald',sans-serif;font-weight:700;font-size:12px;letter-spacing:2.2px;color:#3a2a14;
+.tl-placa b{font-family:var(--rotulo);font-weight:700;font-size:12px;letter-spacing:2.2px;color:#3a2a14;
   text-shadow:0 1px 0 rgba(255,250,235,.7)}
 .tl-placa .tl-modelo{font-weight:400;letter-spacing:.6px;font-family:'Space Mono',monospace;font-size:11px}
 .tl-placa i{font-style:normal;font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.3px;color:#5f5040;margin-top:1px}
@@ -361,7 +560,7 @@
   box-shadow:0 1px 0 #7a5a2e, 0 2px 3px rgba(40,25,5,.3),
     inset 0 2px 5px rgba(110,78,30,.35), inset 0 -1px 0 rgba(255,250,235,.4)}
 .tl-teclas button:disabled{opacity:.6;transform:none;cursor:default}
-.tl-t{display:flex;align-items:center;justify-content:center;gap:2px;font-family:'Oswald',sans-serif;font-size:15px}
+.tl-t{display:flex;align-items:center;justify-content:center;gap:2px;font-family:var(--rotulo);font-size:15px}
 .tl-t svg{width:24px;height:24px;flex:0 0 auto}
 .tl-teclas .tl-t.izq{color:var(--izq);border-color:#8c3a28;box-shadow:0 4px 0 #8c3a28, 0 6px 7px rgba(40,25,5,.35),
     inset 0 2px 0 rgba(255,250,235,.75), inset 0 -4px 6px rgba(140,58,40,.25)}
@@ -404,11 +603,7 @@
   border:1.5px solid #E14FC6;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(225,79,198,.55)}
 .pocion .calavera svg{width:14px;height:14px;display:block}
 
-.tablilla .habla{margin-top:10px}
 .tl-aviso b{color:var(--ink)}
-.tl-pie{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.tl-pie button{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
-  color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-height:44px;cursor:pointer}
 </style>
 <style>
 /* ── EL BANQUILLO: un término compuesto se prepara aquí, fuera de la cuerda,
@@ -418,7 +613,7 @@
 .banquillo[hidden]{display:none}
 .banquillo::after{content:"";position:absolute;left:14%;right:14%;bottom:12px;height:9px;border-radius:3px;
   background:linear-gradient(180deg,#8a6a3b,#5c4424);box-shadow:0 3px 0 #3a2a14}
-.bq-t{position:absolute;left:8px;top:5px;font:600 10px/1 'Oswald',sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.bq-t{position:absolute;left:8px;top:5px;font:600 10px/1 var(--rotulo);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
 .bq-sitio{position:absolute;left:0;right:0;bottom:17px;display:flex;justify-content:center;align-items:flex-end;gap:6px;z-index:1}
 .bq{position:relative;line-height:0;transition:transform calc(.3s * var(--lento,1)) ease, opacity calc(.3s * var(--lento,1)) ease}
 .bq.trago .bq-f{opacity:0}
@@ -429,7 +624,7 @@
 /* quien bebe se acerca un poco, que se le vea el trago */
 .bq{transform-origin:50% 100%}
 .bq.trago, .bq.cara-mas, .bq.cara-menos, .bq.cara-bando{transform:scale(1.18)}
-.bq .bq-f{position:absolute;left:50%;top:-18px;transform:translateX(-50%);font:700 13px/1 'Oswald',sans-serif;color:var(--ink);white-space:nowrap}
+.bq .bq-f{position:absolute;left:50%;top:-18px;transform:translateX(-50%);font:700 13px/1 var(--rotulo);color:var(--ink);white-space:nowrap}
 .bq.llega{animation:bqLlega calc(.45s * var(--lento,1)) cubic-bezier(.34,1.56,.64,1) backwards}
 @keyframes bqLlega{from{transform:translateY(-24px);opacity:0}}
 .bq.trago{animation:bqTrago calc(.5s * var(--lento,1)) ease}
@@ -553,38 +748,14 @@
     animation:humea calc(.65s * var(--lento,1)) ease-out forwards}
   @keyframes humea{0%{transform:translate(-50%,-50%) scale(.4);opacity:.8}
     100%{transform:translate(calc(-50% + var(--hx,10px)), calc(-50% + var(--hy,-10px))) scale(1.8);opacity:0}}
-:root{--habla-j:rgba(226,114,91,.10); --habla-j-b:rgba(226,114,91,.5);
-  --habla-l:rgba(87,184,214,.09); --habla-l-b:rgba(87,184,214,.45)}
-.cara{display:block;flex:0 0 auto}
-.cara svg{display:block;width:100%;height:auto}
-.cara.jef{width:64px}
-.habla{display:contents}
-.habla:has(> .aviso:not(:empty):not([hidden])){display:flex;gap:10px;align-items:center;
-  background:var(--habla-l);border:1.5px solid var(--habla-l-b);border-radius:10px;
-  padding:6px 8px 6px 12px;margin:8px 0 0}
-.habla > .aviso{flex:1;margin:0;color:var(--ink);font-style:italic;min-height:0}
-.habla:has(> .aviso:empty) .cara,
-.habla:has(> .aviso[hidden]) .cara{display:none}
-.habla .cara.lis{width:48px;order:2}
-/* los dibujos miran a la derecha (Listillón) o a la izquierda (Jeferión): en
-   el bocadillo se voltean para mirar hacia lo que dicen */
-.habla .cara.lis svg, .ruta .rt-habla .cara.jef svg{transform:scaleX(-1)}
-.habla .aviso b{color:var(--ink)}
-@media (max-width:420px){ .cara.jef{width:52px} .habla .cara.lis{width:40px} }
-
-/* Jeferión habla a la izquierda, con su color; Listillón a la derecha */
-.habla.jef:has(> .aviso:not(:empty):not([hidden])){background:var(--habla-j);border-color:var(--habla-j-b);padding:6px 12px 6px 8px}
-.habla .cara.jef{width:56px;order:0}
-.habla.jef .cara.jef svg{transform:none}
-.habla > .aviso{font-size:14px;line-height:1.5}
-.habla > .aviso b{color:var(--ink)}
-@media (max-width:420px){ .habla .cara.jef{width:48px} }
+/* las caras que hablan: la caja con el nombre va en piel.css */
+:root{--habla-l:var(--noche); --habla-l-b:var(--linea)}
 </style>
 <style>
 /* ── LAS ENTREVISTAS: Zeus, Jeferión y Listillón contestan a lo que se les pregunte ── */
 .ev-quien{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 8px}
 .ev-quien button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px 5px;min-height:0;
-  font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:12px;
+  font:inherit;font-family:var(--rotulo);letter-spacing:1px;text-transform:uppercase;font-size:12px;
   color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;cursor:pointer}
 .ev-quien button[aria-pressed="true"]{border-color:var(--ambar);color:var(--ambar);box-shadow:inset 0 0 0 1px var(--ambar)}
 .ev-mini{width:46px;height:46px;display:block}
@@ -600,10 +771,10 @@
   background:var(--habla-l);border:1.5px solid var(--habla-l-b);margin-bottom:18px}
 .ev-globo::before{content:'';position:absolute;left:-9px;bottom:16px;width:14px;height:14px;
   background:inherit;border-left:1.5px solid var(--habla-l-b);border-bottom:1.5px solid var(--habla-l-b);transform:rotate(45deg)}
-.ev-pregunta{margin:0 0 5px;font-size:12.5px;color:var(--muted);font-family:'Oswald',sans-serif;letter-spacing:.4px}
+.ev-pregunta{margin:0 0 5px;font-size:12.5px;color:var(--muted);font-family:var(--rotulo);letter-spacing:.4px}
 .ev-respuesta{margin:0;font-size:15.5px;line-height:1.5;font-style:italic;color:var(--ink);min-height:1.5em}
 .ev-respuesta b{color:var(--ink)}
-.ev-prueba{margin-top:8px;font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
+.ev-prueba{margin-top:8px;font:inherit;font-family:var(--rotulo);letter-spacing:1px;text-transform:uppercase;font-size:13px;
   color:#1A1206;background:var(--oro);border:1px solid var(--oro);border-radius:8px;padding:8px 12px;min-height:44px;cursor:pointer}
 /* la tablilla de Listillón, de cerca: se acerca como con una lupa */
 .ev-zoom{margin:-6px 0 14px;padding:0 6px}
@@ -612,124 +783,57 @@
   animation:evZoom .55s cubic-bezier(.2,1.2,.4,1) backwards}
 @keyframes evZoom{from{transform:scale(.55) translateY(-30px);opacity:0}}
 @media (prefers-reduced-motion: reduce){ .ev-zoom svg{animation:none} }
-.ev-rotulo{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.ev-rotulo{font-family:var(--rotulo);font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
 .ev-lista{display:flex;flex-direction:column;gap:6px}
 .ev-p{text-align:left;font:inherit;font-size:14px;padding:9px 12px;min-height:44px;color:var(--ink);background:var(--panel-2);
   border:1px solid var(--line);border-radius:8px;cursor:pointer}
 .ev-p.hecha{opacity:.55}
 .ev-p.repregunta{border-style:dashed;border-color:var(--ambar)}
-.ev-re{font-family:'Oswald',sans-serif;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ambar)}
+.ev-re{font-family:var(--rotulo);font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ambar)}
 @media (max-width:420px){ .ev-cara{width:104px;height:104px} .ev-respuesta{font-size:14.5px} }
 </style>
 <style>
-/* ── LOS AJUSTES: colores, modo aula, velocidad y preguntas ──
-   Los temas solo cambian la piel: el juego es el mismo. La tablilla es de
-   barro en los tres; la cartela del campo es un marcador oscuro en los tres. */
+/* ── LOS TEMAS EN EL CAMPO Y EL MODO AULA ──
+   Los colores de la arena, las hojas y los botones van en piel.css. Aquí,
+   lo que cambia el campo con la luz, y el modo aula para la pizarra. */
 
-/* el panel */
-.cab-btns{margin-left:auto;display:flex;gap:6px}
-.cab-btns button{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:12px;
-  color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-height:40px;cursor:pointer}
-.cab-btns button[aria-pressed="true"], .cab-btns button[aria-expanded="true"]{color:var(--oro);border-color:var(--oro)}
-.aj-f{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
-.aj-f:first-of-type{border-top:0;padding-top:0}
-.aj-n{font-size:15px}
-.aj-d{grid-column:1 / -1;margin:0;font-size:12.5px;color:var(--muted)}
-.aj-op{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.aj-op button{font:inherit;font-size:14px;color:var(--ink);background:var(--panel-2);border:0;border-left:1px solid var(--line);
-  padding:6px 12px;min-height:40px;cursor:pointer}
-.aj-op button:first-child{border-left:0}
-.aj-op button[aria-pressed="true"]{background:var(--oro);color:var(--sobre-oro,#1A1206);font-weight:600}
-.aj-cero{font:inherit;font-size:14px;color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;
-  padding:6px 12px;min-height:40px;cursor:pointer}
-.aj-cero.seguro{background:#b3261e;border-color:#b3261e;color:#fff}
-.aj-pie{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:var(--muted)}
-.aj-pie button{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
-  color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 14px;min-height:44px;cursor:pointer}
-@media (max-width:480px){ .aj-f{grid-template-columns:1fr} .aj-op, .aj-cero{justify-self:start} }
-
-/* el acta, ejercicio a ejercicio */
-.ac-f .ac-s{color:var(--muted);font-size:13px}
-.ac-det summary{margin-top:10px;font-size:11px}
-.ac-ej{list-style:none;margin:6px 0 0;padding:0;font-size:13.5px}
-.ac-ej li{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:2px 10px;padding:5px 0;border-top:1px solid var(--line)}
-.ac-ej .ac-h{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted)}
-.ac-ej .ac-m{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:1px;color:var(--muted)}
-.ac-ej .ac-c{font-family:'Space Mono',monospace}
-.ac-ej .ac-como{grid-column:3;color:var(--muted);font-size:12.5px}
-.ac-ej li.ok .ac-como::before{content:"✓ ";color:var(--green);font-weight:700}
-.ac-ej li.no .ac-como::before{content:"✗ ";color:var(--izq);font-weight:700}
-.ac-fila button + button{margin-left:0}
-
-/* ── TEMA DÍA: la palestra de barro, como las fichas en papel ── */
-html[data-tema="dia"]{
-  --bg:#d9c7a1; --panel:#efe4ca; --panel-2:#f7f0de; --line:#c4b08a;
-  --ink:#241b36; --muted:#5f5040;
-  --oro:#7f5a0e; --ambar:#7f5a0e; --green:#2f6b28; --izq:#a8432d; --der:#1f6a88;
-  --sobre-oro:#fff8e6;
-  --habla-j:rgba(168,67,45,.08); --habla-j-b:rgba(168,67,45,.45);
-  --habla-l:rgba(31,106,136,.07); --habla-l-b:rgba(31,106,136,.4);
-  color-scheme:light}
-html[data-tema="dia"] body{background:
-  radial-gradient(ellipse at 20% 0%, rgba(255,250,235,.55), transparent 55%),
-  radial-gradient(ellipse at 90% 100%, rgba(120,90,50,.18), transparent 60%), var(--bg);
-  background-attachment:fixed}
-html[data-tema="dia"] .panel{border:3px solid #8a6a3b;border-radius:14px;
-  box-shadow:inset 0 0 0 2px var(--panel), inset 0 0 0 3px #b8a589, 0 2px 0 rgba(90,64,30,.25)}
-
-/* ── TEMA PROYECTOR: fondo blanco, tinta negra y trazos gruesos, para que se lea
-   con un proyector flojo y la luz de la clase encendida ── */
-html[data-tema="proyector"]{
-  --bg:#ffffff; --panel:#ffffff; --panel-2:#f1f1f1; --line:#1a1a1a;
-  --ink:#000000; --muted:#2b2b2b;
-  --oro:#8a5a00; --ambar:#8a5a00; --green:#1d6b12; --izq:#b3261e; --der:#0b5f86;
-  --sobre-oro:#ffffff;
-  --habla-j:rgba(179,38,30,.07); --habla-j-b:#b3261e;
-  --habla-l:rgba(11,95,134,.07); --habla-l-b:#0b5f86;
-  color-scheme:light}
-html[data-tema="proyector"] body{font-weight:500}
-html[data-tema="proyector"] .panel{border-width:2px}
-html[data-tema="proyector"] .habla:has(> .aviso:not(:empty):not([hidden])){border-width:2px}
-html[data-tema="proyector"] .tablilla{--muted:#3a2e20}
-html[data-tema="proyector"] h1{color:#000}
-
-/* los botones dorados: en los temas claros el oro es tinta oscura, así que el
-   relleno pasa al dorado de las teclas */
-html[data-tema="dia"] :is(.fila, .rt-btns) button.scan, html[data-tema="proyector"] :is(.fila, .rt-btns) button.scan,
-html[data-tema="dia"] .ev-prueba, html[data-tema="proyector"] .ev-prueba{background:#d7a646;border-color:#a67a1f;color:#241b36}
-
-/* el campo, a pleno día (en los dos temas claros) */
-html:is([data-tema="dia"],[data-tema="proyector"]) .campo{border:1px solid #b8a589;
+/* el campo, a pleno día: con la arena de día y en el proyector. De noche, como estaba */
+html:not([data-tema="noche"]) .campo{border:1px solid #b8a589;
   background:linear-gradient(180deg,#fbf8f0 0%,#f5f0e4 60%,#ece3cf 100%)}
 html[data-tema="proyector"] .campo{border:2px solid #1a1a1a;background:linear-gradient(180deg,#ffffff 0%,#fbf8f0 70%,#f3ecdc 100%)}
-html:is([data-tema="dia"],[data-tema="proyector"]) .campo::after{background:radial-gradient(ellipse 115% 95% at 50% 46%,
+html:not([data-tema="noche"]) .campo::after{background:radial-gradient(ellipse 115% 95% at 50% 46%,
   transparent 62%, rgba(138,106,59,.14) 100%)}
-html:is([data-tema="dia"],[data-tema="proyector"]) .friso{background:
+html:not([data-tema="noche"]) .friso{background:
   url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='18'><g fill='none' stroke='rgba(138,106,59,.3)' stroke-width='1'><path d='M0 3.5 H26'/><path d='M0 14.5 H26'/></g><path d='M13 14 V5 H5 V10 H9' fill='none' stroke='rgba(138,106,59,.55)' stroke-width='1.8'/></svg>") repeat-x center / 26px 18px,
   linear-gradient(180deg,#efe6d2,#f6f1e5);border-bottom-color:rgba(138,106,59,.25)}
-html:is([data-tema="dia"],[data-tema="proyector"]) .columnata{
+html:not([data-tema="noche"]) .columnata{
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='92' height='158'><g fill='rgba(255,255,255,.75)'><rect x='29' y='4' width='34' height='6' rx='1'/><path d='M32 10 L60 10 L57 17 L35 17 Z'/><rect x='36' y='17' width='20' height='131'/><rect x='32' y='148' width='28' height='5' rx='1'/><rect x='29' y='153' width='34' height='5' rx='1'/></g><g fill='rgba(160,140,110,.16)'><rect x='40' y='18' width='1.6' height='129'/><rect x='45.5' y='18' width='1.6' height='129'/><rect x='51' y='18' width='1.6' height='129'/></g></svg>")}
 html[data-tema="proyector"] .columnata{opacity:.6}
-html:is([data-tema="dia"],[data-tema="proyector"]) .marca{background:repeating-linear-gradient(180deg,
+html:not([data-tema="noche"]) .marca{background:repeating-linear-gradient(180deg,
   rgba(80,70,90,.45) 0 7px, transparent 7px 13px);box-shadow:none}
-html:is([data-tema="dia"],[data-tema="proyector"]) .regla{background:linear-gradient(180deg,#efe4ca 0,#e9dcbf 100%);
+html:not([data-tema="noche"]) .regla{background:linear-gradient(180deg,#efe4ca 0,#e9dcbf 100%);
   border-top:1.5px solid #c9a24f;box-shadow:none}
-html:is([data-tema="dia"],[data-tema="proyector"]) .regla::before{background:none}
-html:is([data-tema="dia"],[data-tema="proyector"]) .marca-n{color:#3a3040}
-html:is([data-tema="dia"],[data-tema="proyector"]) .marca-n i{background:rgba(120,100,80,.45)}
-html:is([data-tema="dia"],[data-tema="proyector"]) .marca-n.cero{color:var(--ink)}
-html:is([data-tema="dia"],[data-tema="proyector"]) .marca-n.cero i{background:#6b5f72}
-html:is([data-tema="dia"],[data-tema="proyector"]) .marca-n.aqui{color:var(--green)}
-html:is([data-tema="dia"],[data-tema="proyector"]) .marca-n.aqui i{background:var(--green)}
-html:is([data-tema="dia"],[data-tema="proyector"]) .nudo .cifra{color:var(--ink);text-shadow:0 0 4px rgba(255,250,238,.95)}
-html:is([data-tema="dia"],[data-tema="proyector"]) .nudo.sin .cifra{color:#5f5040}
-html:is([data-tema="dia"],[data-tema="proyector"]) .regla.viva .marca-n.impar{color:#5f5040}
+html:not([data-tema="noche"]) .regla::before{background:none}
+html:not([data-tema="noche"]) .marca-n{color:#3a3040}
+html:not([data-tema="noche"]) .marca-n i{background:rgba(120,100,80,.45)}
+html:not([data-tema="noche"]) .marca-n.cero{color:var(--ink)}
+html:not([data-tema="noche"]) .marca-n.cero i{background:#6b5f72}
+html:not([data-tema="noche"]) .marca-n.aqui{color:var(--green)}
+html:not([data-tema="noche"]) .marca-n.aqui i{background:var(--green)}
+html:not([data-tema="noche"]) .nudo .cifra{color:var(--ink);text-shadow:0 0 4px rgba(255,250,238,.95)}
+html:not([data-tema="noche"]) .nudo.sin .cifra{color:#5f5040}
+html:not([data-tema="noche"]) .regla.viva .marca-n.impar{color:#5f5040}
 html[data-tema="proyector"] .regla{border-top:2px solid #1a1a1a;background:#fff}
 html[data-tema="proyector"] .marca-n{color:#000;font-weight:700}
 html[data-tema="proyector"] .marca-n i{background:#555}
 html[data-tema="proyector"] .marca{background:repeating-linear-gradient(180deg, rgba(0,0,0,.55) 0 7px, transparent 7px 13px)}
-html:is([data-tema="dia"],[data-tema="proyector"]) .banquillo{border-color:rgba(138,106,59,.55);background:rgba(138,106,59,.07)}
+html:not([data-tema="noche"]) .banquillo{border-color:rgba(138,106,59,.55);background:rgba(138,106,59,.07)}
 html[data-tema="proyector"] .banquillo{border:2px dashed #555}
+
+html[data-tema="proyector"] .panel, html[data-tema="proyector"] .cab{border-width:2px;box-shadow:none}
+html[data-tema="proyector"] .habla{border-width:2px}
+html[data-tema="proyector"] .tablilla{--muted:#3a2e20}
+html[data-tema="proyector"] body{font-weight:500}
 
 /* ── EL MODO AULA: para la pizarra digital. Todo un tercio más grande, que es
    lo que se nota desde el fondo de la clase; y, con la pantalla ancha y una
@@ -742,17 +846,17 @@ html[data-tema="proyector"] .banquillo{border:2px dashed #555}
 @media (min-width:900px) and (max-height:820px){
   html[data-aula="si"] body{zoom:1.12}
 }
-html[data-aula="si"] main{max-width:760px}
-html[data-aula="si"] .habla > .aviso{font-size:16px}
+html[data-aula="si"] .lienzo{max-width:860px}
+html[data-aula="si"] .habla .aviso{font-size:17px}
 html[data-aula="si"] .rt-d{font-size:16px}
 html[data-aula="si"] .cartela, html[data-aula="si"] .ct-cuenta{font-size:19px}
 html[data-aula="si"] .ct-x{font-size:14px}
 @media (min-width:1100px){
-  html[data-aula="si"] main:has(#panelCampo:not([hidden])){max-width:1500px;display:grid;
+  html[data-aula="si"] .lienzo:has(#panelCampo:not([hidden])){max-width:1500px;display:grid;
     grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:0 18px;align-items:start}
-  html[data-aula="si"] main:has(#panelCampo:not([hidden])) > *{grid-column:1}
-  html[data-aula="si"] main:has(#panelCampo:not([hidden])) > .cab{grid-column:1 / -1}
-  html[data-aula="si"] main:has(#panelCampo:not([hidden])) > #panelCampo{grid-column:2;grid-row:2 / span 12;
+  html[data-aula="si"] .lienzo:has(#panelCampo:not([hidden])) > *{grid-column:1}
+  html[data-aula="si"] .lienzo:has(#panelCampo:not([hidden])) > .cab{grid-column:1 / -1}
+  html[data-aula="si"] .lienzo:has(#panelCampo:not([hidden])) > #panelCampo{grid-column:2;grid-row:2 / span 12;
     position:sticky;top:8px}
 }
 </style>
@@ -778,19 +882,21 @@ html[data-inicio="si"] main{visibility:hidden}
 .inCuenta .ct-on{background:#E9B84E;border-radius:4px;padding:1px 4px}
 .inCuenta .ct-on, .inCuenta .ct-on *{color:#1A1206}
 .inRes{color:var(--green);font-size:27px;display:inline-block;animation:inRes .45s cubic-bezier(.3,1.5,.5,1) both}
-.inTitulo{font-family:'Oswald',sans-serif;font-weight:500;font-size:clamp(30px,8vw,52px);letter-spacing:5px;text-transform:uppercase;
+.inTitulo{font-family:var(--rotulo);font-weight:500;font-size:clamp(30px,8vw,52px);letter-spacing:5px;text-transform:uppercase;
   color:var(--oro);margin:4px 0 0;line-height:1.05;opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
 .inTitulo.ve{opacity:1;transform:none}
-.inSalta{position:absolute;bottom:26px;left:0;right:0;margin:0;text-align:center;font-family:'Oswald',sans-serif;font-size:13px;
+.inSalta{position:absolute;bottom:26px;left:0;right:0;margin:0;text-align:center;font-family:var(--rotulo);font-size:13px;
   letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:.8}
 @keyframes inEntra{from{opacity:0;transform:translateY(8px)}}
 @keyframes inRes{from{opacity:0;transform:scale(1.5)}}
 @media (prefers-reduced-motion: reduce){ .inicio{display:none !important} html[data-inicio="si"] main{visibility:visible} }
 </style>
 <script>
-  /* los ajustes se ponen antes de pintar nada, para que no haya un fogonazo del tema oscuro */
+  /* los ajustes se ponen antes de pintar nada, para que no haya un fogonazo del otro fondo.
+     La arena de día es la de siempre */
+  document.documentElement.dataset.tema = 'dia';
   try{ const a = JSON.parse(localStorage.getItem('palestra.ajustes.v1') || '{}');
-    if(a.tema === 'dia' || a.tema === 'proyector') document.documentElement.dataset.tema = a.tema;
+    if(a.tema === 'noche' || a.tema === 'proyector') document.documentElement.dataset.tema = a.tema;
     if(a.aula) document.documentElement.dataset.aula = 'si';
   }catch(err){}
   /* la escena de inicio: solo al abrir la app (no al recargar en la misma sesión), si no se ha
@@ -801,73 +907,7 @@ html[data-inicio="si"] main{visibility:hidden}
     if(a.inicio !== false && !vista && !quieto) document.documentElement.dataset.inicio = 'si'; }catch(err){}
 </script>
 <style>
-  :root{
-    --bg:#0F0C18; --panel:#171226; --panel-2:#1F1930; --line:#372E4E;
-    --ink:#F2EDE2; --muted:#A79DB5;
-    --oro:#E9B84E; --ambar:#E9B84E; --green:#9BD164;
-    --izq:#E2725B; --der:#57B8D6;
-    --lento:1;
-  }
-  *{box-sizing:border-box}
-  [hidden]{display:none !important}
-  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,'Segoe UI',sans-serif;padding:16px 16px 40px}
-  main{max-width:620px;margin:0 auto}
-  .cab{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 14px;padding-bottom:10px;
-    border-bottom:1px solid var(--line)}
-  h1{font-family:'Oswald',sans-serif;font-weight:500;font-size:26px;letter-spacing:2px;text-transform:uppercase;margin:0;color:var(--oro)}
-  .sub{margin:0;color:var(--muted);font-size:13px}
-  .sub b{color:var(--ink);font-weight:400;letter-spacing:1px}
-  .pie{margin:4px 0 12px;color:var(--muted);font-size:12px;text-align:right}
-  .pie a{color:var(--muted)}
-  .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px}
-  .panel h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted);margin:0 0 10px;font-weight:500}
-  .fila{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
-  .fila button{font:inherit;color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 14px;min-height:44px;cursor:pointer;font-size:18px}
-  .fila button:disabled{opacity:.4;cursor:default}
-  .fila button.scan{background:var(--oro);color:#1A1206;border-color:var(--oro)}
-  .paso-t{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);flex:1;text-align:right;white-space:nowrap}
-  .que b{color:var(--ink)}
-  .bq-lista{margin:6px 0 0;font-size:14px;color:var(--muted)}
-  .bq-lista b.izq{color:var(--izq)} .bq-lista b.der{color:var(--der)}
-  .panel[hidden]{display:none}
-  /* ── la ruta ── */
-  .ruta{border-color:rgba(233,184,78,.35)}
-  .rt-cab{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-  .rt-cab h2{margin:0}
-  .rt-titulo{font-family:'Oswald',sans-serif;font-size:20px;font-weight:500;letter-spacing:.5px;margin:0}
-  .rt-d{margin:4px 0 8px;color:var(--muted);font-size:14px}
-  .rt-d b{color:var(--ink)}
-  .rt-puntos{display:flex;align-items:center;gap:6px}
-  .rt-p{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--oro);background:transparent}
-  .rt-p.hecho{background:var(--oro)}
-  .rt-hito{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);margin-left:4px}
-  .rt-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-  .rt-btns button, .ac button{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
-    color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-height:44px;cursor:pointer}
-  .rt-btns button.scan{background:var(--oro);color:#1A1206;border-color:var(--oro)}
-  .rt-btns button[hidden]{display:none}
-  /* ── el ejercicio, dentro de la tablilla ── */
-  .tl-ej[hidden]{display:none}
-  .tl-marca{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 8px}
-  .tl-marca .fi{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);
-    border:1px solid var(--line);border-radius:999px;padding:3px 10px}
-  .tl-marca .fi b{color:var(--ink)}
-  .tl-resp{display:flex;gap:8px;align-items:stretch;margin:0 0 8px}
-  .tl-resp input{flex:1;min-width:0;font:inherit;font-family:'Space Mono',monospace;font-size:17px;padding:10px 12px;border-radius:8px;
-    border:1px solid var(--line);background:var(--panel-2);color:var(--ink);min-height:44px}
-  .tl-resp button, .tl-ver{font:inherit;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:13px;
-    color:var(--ink);background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:8px 14px;min-height:44px;cursor:pointer}
-  .tl-resp button.scan{background:#d7a646;border-color:#a67a1f;color:#241b36}
-  .tl-ver{width:100%}
-  .tablilla:has(.tl-ej:not([hidden])) .tl-cursor{display:none}
-  /* ── el acta ── */
-  .ac summary{cursor:pointer;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--muted)}
-  .ac-resumen{margin:8px 0;font-size:14px;color:var(--muted)}
-  .ac-resumen b{color:var(--ink)}
-  .ac-f{display:flex;gap:8px;font-size:14px;padding:4px 0;border-top:1px solid var(--line)}
-  .ac-f .ac-n{flex:1} .ac-f.floja .ac-n::after{content:" · floja";color:var(--ambar)}
-  .ac-fila{display:flex;gap:8px;align-items:stretch;margin-top:8px}
-  .ac-fila input{flex:1;min-width:0;font:inherit;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink)}
+  /* la página no lleva estilos propios: la arena, las hojas y los botones van en src/piel.css */
 </style>
 </head>
 <body>
@@ -880,69 +920,49 @@ html[data-inicio="si"] main{visibility:hidden}
   </div>
   <p class="inSalta">toca para empezar</p>
 </div>
-<main>
+<main class="lienzo">
   <header class="cab">
-    <h1>La palestra</h1>
-    <p class="sub"><b>ἑλκυστίνδα</b> · el tira y afloja de los números enteros</p>
-    <div class="cab-btns">
-      <button type="button" id="bAula" aria-pressed="false" title="Modo aula: para la pizarra digital">Aula</button>
-      <button type="button" id="bAjustes" aria-expanded="false" aria-controls="ajustes">⚙ Ajustes</button>
+    <div class="rotulo">
+      <span class="sello" aria-hidden="true"></span>
+      <div><h1>La palestra</h1><p class="sub"><span lang="grc">ἑλκυστίνδα</span> · el tira y afloja de los enteros</p></div>
+      <nav class="acc" aria-label="Acciones">
+        <button type="button" id="bAjustes" aria-pressed="false" aria-controls="ajustes">Ajustes</button>
+        <button type="button" id="bAula" aria-pressed="false">Aula</button>
+        <button type="button" id="bActa">Acta</button>
+      </nav>
+    </div>
+    <div class="juegos" role="group" aria-label="Qué hacer">
+      <button type="button" data-modo="ruta" aria-pressed="true"><b>La ruta</b><span>seis misiones</span></button>
+      <button type="button" data-modo="libre" aria-pressed="false"><b>La tablilla</b><span>escribe tu cuenta</span></button>
+      <button type="button" data-modo="entrevistas" aria-pressed="false"><b>Entrevistas</b><span>Zeus, Jeferión, Listillón</span></button>
     </div>
   </header>
 
-  <section class="panel aj" id="ajustes" hidden aria-label="Ajustes">
-    <h2>Ajustes</h2>
-    <div class="aj-f">
-      <span class="aj-n">Colores</span>
-      <div class="aj-op" data-aj="tema" role="group" aria-label="Colores">
-        <button type="button" data-v="noche">Noche</button><button type="button" data-v="dia">Día</button><button type="button" data-v="proyector">Proyector</button>
-      </div>
-      <p class="aj-d">Noche, la de siempre. Día, de barro claro. Proyector: fondo blanco y tinta negra, para que se lea con la luz encendida.</p>
-    </div>
-    <div class="aj-f">
-      <span class="aj-n">Modo aula</span>
-      <div class="aj-op" data-aj="aula" role="group" aria-label="Modo aula">
-        <button type="button" data-v="no">No</button><button type="button" data-v="si">Sí</button>
-      </div>
-      <p class="aj-d">Para la pizarra digital: todo más grande y, en pantalla ancha, el campo al lado de la tablilla.</p>
-    </div>
-    <div class="aj-f">
-      <span class="aj-n">Velocidad del campo</span>
-      <div class="aj-op" data-aj="lento" role="group" aria-label="Velocidad del campo">
-        <button type="button" data-v="no">Normal</button><button type="button" data-v="si">Lenta</button>
-      </div>
-      <p class="aj-d">Lenta: cada paso tarda más, para comentarlo mientras pasa.</p>
-    </div>
-    <div class="aj-f">
-      <span class="aj-n">Preguntar antes de mover la bandera</span>
-      <div class="aj-op" data-aj="preguntas" role="group" aria-label="Preguntar antes de mover la bandera">
-        <button type="button" data-v="si">Sí</button><button type="button" data-v="no">No</button>
-      </div>
-      <p class="aj-d">Antes de cada paso que mueve la bandera, ▶ pide tocar en la regla dónde acabará.</p>
-    </div>
-    <div class="aj-f">
-      <span class="aj-n">Al abrir</span>
-      <div class="aj-op" data-aj="inicio" role="group" aria-label="La animación de inicio">
-        <button type="button" data-v="si">Con animación</button><button type="button" data-v="no">Sin animación</button>
-      </div>
-    </div>
-    <div class="aj-f">
-      <span class="aj-n">Empezar de cero</span>
-      <button type="button" class="aj-cero" id="ajCero">Borrar y empezar</button>
-      <p class="aj-d" id="ajCeroTxt">Borra el acta y la ruta de este turno: para el siguiente alumno o la siguiente clase. Los ajustes se quedan.</p>
-    </div>
-    <div class="aj-pie"><span>versión 0.15</span><button type="button" id="ajCierra">Cerrar</button></div>
+  <section class="panel ajustes" id="ajustes" hidden aria-label="Ajustes">
+    <div class="aj"><span class="etq">El fondo</span>
+      <span class="ops" data-aj="tema" role="group" aria-label="El fondo"><button type="button" data-v="dia">Arena de día</button><button type="button" data-v="noche">Arena de noche</button><button type="button" data-v="proyector">Proyector</button></span>
+      <small>La arena de la palestra, rastrillada. De noche, para un aula con poca luz. Proyector: papel blanco y tinta negra, para que se lea con la luz encendida.</small></div>
+    <div class="aj"><span class="etq">El ritmo</span>
+      <span class="ops" data-aj="lento" role="group" aria-label="El ritmo del campo"><button type="button" data-v="no">Normal</button><button type="button" data-v="si">Pausado</button></span>
+      <small>«Pausado»: cada paso del campo tarda más, para comentarlo mientras pasa.</small></div>
+    <div class="aj"><span class="etq">Antes de mover la bandera</span>
+      <span class="ops" data-aj="preguntas" role="group" aria-label="Antes de mover la bandera"><button type="button" data-v="si">Decir dónde acaba</button><button type="button" data-v="no">Jugar sin más</button></span>
+      <small>Con «decir dónde acaba», ▶ pide tocar en la regla dónde quedará la bandera antes de cada paso que la mueve.</small></div>
+    <div class="aj"><span class="etq">Al abrir</span>
+      <span class="ops" data-aj="inicio" role="group" aria-label="La animación de inicio"><button type="button" data-v="si">Con animación</button><button type="button" data-v="no">Sin animación</button></span></div>
+    <div class="aj"><span class="etq">Empezar de cero</span>
+      <small id="ajCeroTxt">Borra de este aparato la ruta y el acta de este turno, para el siguiente alumno o la siguiente clase. Hay que pulsar dos veces. Los ajustes se quedan.</small>
+      <button type="button" class="b borrar" id="ajCero">Borrar todo</button></div>
+    <div class="botones"><button type="button" class="b ok" id="ajCierra">Cerrar</button></div>
   </section>
 
   <section class="panel ruta" id="ruta" aria-label="La ruta">
     <div class="rt-cab"><h2 id="rtCab">Misión 1 de 6</h2><p class="rt-titulo" id="rtTitulo"></p></div>
     <p class="rt-d" id="rtTxt"></p>
     <div class="rt-puntos" id="rtPuntos"></div>
-    <div class="rt-btns">
-      <button type="button" id="rtSigue" class="scan" hidden>Siguiente misión</button>
-      <button type="button" id="rtSalta">Saltar</button>
-      <button type="button" id="rtLibre">Modo libre</button>
-      <button type="button" id="rtEntrevista">Entrevistas</button>
+    <div class="botones">
+      <button type="button" class="b ok" id="rtSigue" hidden>Siguiente misión</button>
+      <button type="button" class="b" id="rtSalta">Saltar</button>
     </div>
   </section>
 
@@ -955,13 +975,12 @@ html[data-inicio="si"] main{visibility:hidden}
       <div class="ev-globo">
         <p class="ev-pregunta"></p>
         <p class="ev-respuesta" aria-live="polite"></p>
-        <button type="button" class="ev-prueba" hidden>Verlo en la tablilla</button>
+        <button type="button" class="ev-prueba b ok" hidden>Verlo en la tablilla</button>
       </div>
     </div>
     <div class="ev-zoom" hidden></div>
     <p class="ev-rotulo">Pregúntale:</p>
     <div class="ev-lista"></div>
-    <div class="rt-btns"><button type="button" id="evSalir">Volver a la palestra</button></div>
   </section>
 
   <section class="tablilla" aria-label="La tablilla">
@@ -973,18 +992,16 @@ html[data-inicio="si"] main{visibility:hidden}
     <div class="tl-ej" id="tlEj" hidden>
       <p class="tl-marca" id="tlMarca"></p>
       <div class="tl-resp">
-        <input id="tlResp" type="text" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="¿Dónde acaba la bandera?" aria-label="Tu respuesta">
-        <button type="button" id="tlComprueba" class="scan">Comprobar</button>
+        <input id="tlResp" type="text" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="¿Dónde acaba?" aria-label="Tu respuesta">
+        <button type="button" id="tlComprueba" class="b ok">Comprobar</button>
       </div>
-      <button type="button" id="tlVer" class="tl-ver">▶ Verlo en el campo</button>
+      <button type="button" id="tlVer" class="b tl-ver">▶ Verlo en el campo</button>
     </div>
     <div class="tl-teclas" id="tlTeclas"></div>
-    <div class="habla"><span class="cara lis" aria-hidden="true"></span><p class="aviso tl-aviso" id="tlAviso" role="status"></p></div>
-    <div class="tl-pie" id="tlPie">
-      <button type="button" id="tlLimpia">Tablilla limpia</button>
-      <button type="button" id="tlMuestra">Una de muestra</button>
-      <button type="button" id="tlRuta">Volver a la ruta</button>
-      <button type="button" id="tlEntrevista">Entrevistas</button>
+    <div class="habla lis"><span class="cara lis" aria-hidden="true"></span><div><div class="quien">Listillón</div><p class="aviso tl-aviso" id="tlAviso" role="status"></p></div></div>
+    <div class="botones tl-pie" id="tlPie">
+      <button type="button" class="b" id="tlLimpia">Tablilla limpia</button>
+      <button type="button" class="b" id="tlMuestra">Una de muestra</button>
     </div>
   </section>
 
@@ -993,25 +1010,31 @@ html[data-inicio="si"] main{visibility:hidden}
     <div class="cartela" id="cartela" role="status" hidden></div>
     <div class="banquillo" id="banquillo" hidden><span class="bq-t">banquillo</span><div class="bq-sitio"></div><div class="bq-banco"></div></div>
     <div id="campo"></div>
-    <div class="fila">
-      <button type="button" id="atras" aria-label="Atrás">◀</button>
-      <button type="button" id="sig" class="scan" aria-label="Adelante">▶</button>
-      <button type="button" id="inicio" aria-label="Volver al principio">⟲</button>
-      <button type="button" id="todo" aria-label="Repasar de un tirón" hidden>▶▶</button>
+    <div class="mandos">
+      <button type="button" class="b" id="atras" aria-label="Atrás">◀</button>
+      <button type="button" class="b ok" id="sig" aria-label="Adelante">▶</button>
+      <button type="button" class="b" id="inicio" aria-label="Volver al principio">⟲</button>
+      <button type="button" class="b" id="todo" aria-label="Repasar de un tirón" hidden>▶▶</button>
       <span class="paso-t" id="pasoT"></span>
     </div>
-    <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><p class="aviso" id="jefAviso" role="status"></p></div>
+    <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><div><div class="quien">Jeferión</div><p class="aviso" id="jefAviso" role="status"></p></div></div>
   </section>
 
-  <p class="pie">versión 0.15 · <a href="https://github.com/diazepamina-creator/la-palestra">la-palestra</a></p>
-  <details class="panel ac" id="acta">
-    <summary>Acta de la jornada</summary>
-    <p class="ac-resumen" id="acResumen"></p>
-    <div id="acFilas"></div>
-    <details class="ac-det" id="acDet"><summary>Ejercicio a ejercicio</summary><ol class="ac-ej" id="acEj"></ol></details>
-    <div class="ac-fila"><input id="acNombre" type="text" placeholder="Nombre" aria-label="Nombre"><button type="button" id="acCopia">Copiar acta</button><button type="button" id="acBaja">Descargar</button></div>
-  </details>
+  <footer>versión 0.16</footer>
 </main>
+
+<div class="modal" id="mActa" hidden>
+  <div class="caja2 acta" role="dialog" aria-modal="true" aria-labelledby="actaTit" tabindex="-1">
+    <h2 id="actaTit">El acta de la palestra</h2>
+    <p class="actaSub">Lo que has hecho en este turno. Cópiala o descárgala para dársela a tu profesor.</p>
+    <label class="actaNombre"><span class="etq">Tu nombre</span><input id="acNombre" autocomplete="name" placeholder="Escribe tu nombre"></label>
+    <div class="actaDatos" id="acDatos"></div>
+    <table class="actaTabla"><thead><tr><th>Misión</th><th>Resueltas</th><th>Sin mirar</th></tr></thead><tbody id="acFilas"></tbody></table>
+    <details class="ac-det" id="acDet"><summary>Ejercicio a ejercicio</summary><ol class="ac-ej" id="acEj"></ol></details>
+    <div class="botones"><button type="button" class="b ok" id="acCopia">Copiar el acta</button><button type="button" class="b" id="acBaja">Descargar .txt</button><button type="button" class="b" id="acCierra">Volver a la palestra</button></div>
+    <p class="actaMsg" id="acMsg" role="status"></p>
+  </div>
+</div>
 <script>
 /* ══════════════════════════════════════════════════════════════════════
    LA PALESTRA · el motor
@@ -3349,19 +3372,20 @@ raiz.Arranque = {escena};
     $('tlEj').hidden = !si;
     $('tlTeclas').hidden = si;
     $('tlPie').hidden = si;
-    $('tlRuta').hidden = false;
     if(si){ pintaRuta(); ronda(); }
     else{ S.ej = null; S.tok = []; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
+    pintaPestanas();
   }
+  /* ── EL ACTA, en su propia hoja ── */
   function pintaActa(){
-    const total = sesion.bien + sesion.mal;
-    $('acResumen').innerHTML = '<b>' + sesion.bien + '</b> resueltas · <b>' + sesion.mal + '</b> falladas · ' +
-      (total ? Math.round(100 * sesion.bien / total) : 0) + '% de acierto · tiempo: <b>' + E.reloj(Date.now() - sesion.t0) + '</b>';
+    const total = sesion.bien + sesion.mal, dato = (n, v) => '<div><span class="etq">' + n + '</span><b>' + v + '</b></div>';
+    $('acDatos').innerHTML = dato('Resueltas', sesion.bien) + dato('Falladas', sesion.mal) +
+      dato('Acierto', (total ? Math.round(100 * sesion.bien / total) : 0) + '%') + dato('Tiempo', E.reloj(Date.now() - sesion.t0).replace(' min ', ':').replace(' s', '')) +
+      dato('Misión', (ruta.i + 1) + ' de ' + E.MISIONES.length);
     $('acFilas').innerHTML = Object.keys(sesion.mision).sort((a, b) => a - b).map(i => {
-      const m = sesion.mision[i], t = m.bien + m.mal;
-      return '<div class="ac-f' + (m.mal > m.bien ? ' floja' : '') + '"><span class="ac-n">' + (Number(i) + 1) + '. ' + E.MISIONES[i].t + '</span>' +
-        (m.solas ? '<span class="ac-s">' + m.solas + ' sin mirar</span>' : '') + '<span>' + m.bien + ' de ' + t + '</span></div>';
-    }).join('') || '<div class="ac-f"><span class="ac-n">Aún no hay nada anotado.</span></div>';
+      const m = sesion.mision[i];
+      return '<tr' + (m.mal > m.bien ? ' class="floja"' : '') + '><td><b>' + (Number(i) + 1) + '.</b> ' + E.MISIONES[i].t + '</td><td>' + m.bien + ' de ' + (m.bien + m.mal) + '</td><td>' + (m.solas || 0) + '</td></tr>';
+    }).join('') || '<tr><td colspan="3">Aún no hay nada anotado.</td></tr>';
     const ejs = sesion.ejercicios || [];
     $('acDet').hidden = !ejs.length;
     $('acDet').querySelector('summary').textContent = 'Ejercicio a ejercicio (' + ejs.length + ')';
@@ -3370,31 +3394,34 @@ raiz.Arranque = {escena};
       '<span class="ac-como">' + E.comoFue(e) + '</span></li>').join('');
     $('acNombre').value = sesion.nombre || '';
   }
+  const actaTxt = () => E.actaEnTexto(sesion, Date.now(), ruta);
+  function abreActa(){ ajustes(false); $('acMsg').textContent = ''; pintaActa(); $('mActa').hidden = false; $('mActa').querySelector('.caja2').focus(); }
+  const cierraActa = () => { $('mActa').hidden = true; $('bActa').focus(); };
+  $('bActa').addEventListener('click', abreActa);
+  $('acCierra').addEventListener('click', cierraActa);
+  $('mActa').addEventListener('click', ev => { if(ev.target.id === 'mActa') cierraActa(); });
+  addEventListener('keydown', ev => { if(ev.key === 'Escape' && !$('mActa').hidden) cierraActa(); });
   $('tlComprueba').addEventListener('click', comprueba);
   $('tlResp').addEventListener('keydown', ev => { if(ev.key === 'Enter'){ ev.preventDefault(); comprueba(); } });
   $('tlVer').addEventListener('click', () => { if(S.ej) igual(); });
   $('rtSigue').addEventListener('click', () => { if(E.siguiente(ruta)){ E.guarda(ruta, sesion); pintaRuta(); ronda(); } });
   $('rtSalta').addEventListener('click', () => { if(E.siguiente(ruta)){ E.guarda(ruta, sesion); pintaRuta(); ronda(); } });
-  $('rtLibre').addEventListener('click', () => modoRuta(false));
-  $('tlRuta').addEventListener('click', () => modoRuta(true));
   $('acNombre').addEventListener('input', () => { sesion.nombre = $('acNombre').value; E.guarda(ruta, sesion); });
   $('acCopia').addEventListener('click', () => {
-    const t = E.actaEnTexto(sesion, Date.now(), ruta);
-    const listo = () => { $('acCopia').textContent = 'Copiada'; setTimeout(() => { $('acCopia').textContent = 'Copiar acta'; }, 1500); };
-    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(listo, () => alert(t));
-    else alert(t);
+    const t = actaTxt(), no = () => { $('acMsg').textContent = 'No se ha podido copiar: usa «Descargar .txt».'; };
+    try{ navigator.clipboard.writeText(t).then(() => { $('acMsg').textContent = '✓ Acta copiada: pégala donde te diga tu profesor.'; }, no); }catch(err){ no(); }
   });
   /* el acta, en un .txt: para guardarla con las de la clase */
   $('acBaja').addEventListener('click', () => {
     const f = new Date(), dos = x => String(x).padStart(2, '0');
     const nombre = (sesion.nombre || 'sin-nombre').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'sin-nombre';
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([E.actaEnTexto(sesion, Date.now(), ruta)], {type: 'text/plain;charset=utf-8'}));
+    a.href = URL.createObjectURL(new Blob([actaTxt()], {type: 'text/plain;charset=utf-8'}));
     a.download = 'acta-palestra-' + nombre + '-' + f.getFullYear() + dos(f.getMonth() + 1) + dos(f.getDate()) + '-' + dos(f.getHours()) + dos(f.getMinutes()) + '.txt';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    $('acMsg').textContent = '✓ Acta descargada.';
   });
-  $('acta').addEventListener('toggle', pintaActa);
   function pintaTablilla(){
     let h = TL.htmlCuenta(S.tok);
     if(S.pel){
@@ -3491,20 +3518,35 @@ raiz.Arranque = {escena};
   function entrevista(si){
     $('entrevista').hidden = !si;
     document.querySelector('.tablilla').hidden = si;
-    if(si){ enRuta = !$('ruta').hidden; $('ruta').hidden = true; $('panelCampo').hidden = true; $('acta').hidden = true; EV.abre(); window.scrollTo({top: 0, behavior: 'smooth'}); }
-    else{ EV.calla(); $('acta').hidden = false; $('ruta').hidden = !enRuta; }
+    if(si){ enRuta = !$('ruta').hidden; $('ruta').hidden = true; $('panelCampo').hidden = true; EV.abre(); window.scrollTo({top: 0, behavior: 'smooth'}); }
+    else{ EV.calla(); $('ruta').hidden = !enRuta; }
+    pintaPestanas();
   }
-  $('rtEntrevista').addEventListener('click', () => entrevista(true));
-  $('tlEntrevista').addEventListener('click', () => entrevista(true));
-  $('evSalir').addEventListener('click', () => entrevista(false));
+  /* ── LAS PESTAÑAS de la cabecera: la ruta, la tablilla libre y las entrevistas ── */
+  const modoActual = () => !$('entrevista').hidden ? 'entrevistas' : !$('ruta').hidden ? 'ruta' : 'libre';
+  function pintaPestanas(){
+    const m = modoActual();
+    document.querySelectorAll('.juegos button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.modo === m)));
+  }
+  document.querySelector('.juegos').addEventListener('click', ev => {
+    const b = ev.target.closest('button'); if(!b) return;
+    const quiere = b.dataset.modo;
+    if(quiere === modoActual()) return;
+    if(quiere === 'entrevistas'){ entrevista(true); return; }
+    if(!$('entrevista').hidden) entrevista(false);
+    if(quiere === 'ruta' && $('ruta').hidden) modoRuta(true);
+    if(quiere === 'libre' && !$('ruta').hidden) modoRuta(false);
+    pintaPestanas();
+  });
 
   /* ── LOS AJUSTES: se guardan en este navegador y no caducan ── */
   const AJUSTES = 'palestra.ajustes.v1';
-  const aj = {tema: 'noche', aula: false, lento: false, preguntas: true, inicio: true};
+  const aj = {tema: 'dia', aula: false, lento: false, preguntas: true, inicio: true};
   try{ Object.assign(aj, JSON.parse(localStorage.getItem(AJUSTES) || '{}')); }catch(err){}
+  if(['dia', 'noche', 'proyector'].indexOf(aj.tema) < 0) aj.tema = 'dia';
   function aplica(){
     const h = document.documentElement;
-    if(aj.tema === 'dia' || aj.tema === 'proyector') h.dataset.tema = aj.tema; else delete h.dataset.tema;
+    h.dataset.tema = aj.tema;
     if(aj.aula) h.dataset.aula = 'si'; else delete h.dataset.aula;
     h.style.setProperty('--lento', aj.lento ? 1.6 : 1);
     window.Reproductor.ponRitmo(aj.lento ? 1.6 : 1);
@@ -3525,7 +3567,7 @@ raiz.Arranque = {escena};
   $('bAula').addEventListener('click', () => { aj.aula = !aj.aula; guardaAjustes(); aplica(); });
   function ajustes(si){
     $('ajustes').hidden = !si;
-    $('bAjustes').setAttribute('aria-expanded', String(si));
+    $('bAjustes').setAttribute('aria-pressed', String(si));
     if(!si) noCero();
   }
   $('bAjustes').addEventListener('click', () => ajustes($('ajustes').hidden));
@@ -3535,7 +3577,7 @@ raiz.Arranque = {escena};
   const CERO_TXT = $('ajCeroTxt').textContent;
   function noCero(){
     clearTimeout(ceroListo); ceroListo = null;
-    $('ajCero').classList.remove('seguro'); $('ajCero').textContent = 'Borrar y empezar';
+    $('ajCero').classList.remove('seguro'); $('ajCero').textContent = 'Borrar todo';
     $('ajCeroTxt').textContent = CERO_TXT;
   }
   $('ajCero').addEventListener('click', () => {
