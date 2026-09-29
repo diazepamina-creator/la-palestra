@@ -77,7 +77,7 @@ test('el acta lleva el detalle, ejercicio a ejercicio', () => {
   assert.deepEqual(s.ejercicios[1].d, [3, 7, -3]);
   assert.equal(s.mision[0].solas, 1, 'solo el primero sale sin mirar');
   const txt = E.actaEnTexto(s, s.t0 + 300000, r);
-  assert.match(txt, /Ruta: misión 1 de 6 \(Entra gente\)/);
+  assert.match(txt, /Ruta: misión 1 de 7 \(Entra gente\)/);
   assert.match(txt, /1\. Entra gente — 2 de 5, 1 sin mirar  \(floja\)/);
   assert.match(txt, /09:41  M1  −2 \+ 5 = \+3 · bien a la primera, sin mirar/);
   assert.match(txt, /M1  2 − 5 = −3 · bien tras 2 fallos \(\+3, \+7\), mirando el campo/);
