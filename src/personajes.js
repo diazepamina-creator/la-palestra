@@ -99,9 +99,10 @@ function brazo2(x0, y0, a1, l1, a2, l2, g, color, mano){
     '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="' + g +
     '" stroke-linecap="round" stroke-linejoin="round"/>' + (mano ? mano(x1, y1, a2) : '');
 }
-/* ── JEFERIÓN ── dinosaurio jefe: cráneo de tiranosaurio, placas en el lomo,
-   gafas redondas, laurel y banda morada */
-const JV = {piel:'#8CBF4F', sombra:'#5F8F32', vientre:'#C9DE8A', banda:'#7E5C86', oro:'#E9B84E', laurel:'#6E9A2E', placa:'#E39B3C'};
+/* ── JEFERIÓN ── dinosaurio, dueño de una empresa de carros y jefe de
+   Listillón: cráneo de tiranosaurio, placas en el lomo, gafas redondas y
+   banda morada */
+const JV = {piel:'#8CBF4F', sombra:'#5F8F32', vientre:'#C9DE8A', banda:'#7E5C86', oro:'#E9B84E', placa:'#E39B3C'};
 /* las placas del lomo: triángulos romos puestos SOBRE el contorno. Se
    calcula el punto de la curva (una Bézier cuadrática [p0, c, p1]) y su
    tangente; la placa se apoya con la base en la curva y la punta sale
@@ -212,18 +213,6 @@ function jeferion(pose){
   };
   s += ojo(37, 22) + ojo(51, 21);
   s += '<path d="M43.6 21.6 H44.4" stroke="' + TINTA + '" stroke-width="2"/>';
-  /* la corona de laurel, dorada: dos ramas de hojas en punta que se juntan
-     delante, bien separadas de la piel para que se lea como corona */
-  s += '<path d="M61 16 Q46 3 31 18" fill="none" stroke="#8A6A1A" stroke-width="1.3" stroke-linecap="round"/>';
-  for(let i = 0; i < 7; i++){
-    const t = .06 + i * .14, u = 1 - t;
-    const x = u * u * 61 + 2 * u * t * 46 + t * t * 31, y = u * u * 16 + 2 * u * t * 3 + t * t * 18;
-    const tx = 2 * u * (46 - 61) + 2 * t * (31 - 46), ty = 2 * u * (3 - 16) + 2 * t * (18 - 3);
-    const a = Math.atan2(ty, tx) * 180 / Math.PI;
-    [-38, 38].forEach(d => {
-      s += '<path d="M0 0 Q3.2 -2 7 0 Q3.2 2 0 0 Z" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + (a + d).toFixed(0) + ')" fill="' + JV.oro + '" stroke="#8A6A1A" stroke-width=".7" stroke-linejoin="round"/>';
-    });
-  }
   s += '</g>';
   if(asoma){
     s += '</g>';

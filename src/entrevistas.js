@@ -100,7 +100,6 @@ const TABLILLA_DE_CERCA = (() => {
       raya('M8 -12 l3 6 l3 -6 l3 6 l3 -6 l3 6 l3 -6', 1.3) +                                          /* dientes abajo */
       raya('M2 -28 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 M22 -30 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 M10 -28 L14 -30', 1.8) + /* gafas */
       raya('M-4 -30 l4 3 M18 -32 l4 3', 1.4) +                                                        /* ojos apretados de reír */
-      raya('M-14 -34 q6 -8 14 -6 q8 -6 16 -2 q8 -6 14 0', 1.6) +                                      /* el laurel, a rayas */
       raya('M-8 4 q-6 18 4 30 M14 4 q6 16 -2 30 M-6 32 h32', 1.8) +                                    /* el cuerpo, de palo */
       raya('M-6 12 l-14 -8 M12 12 l16 -6 l-2 6', 1.6) +                                                /* los brazos, uno señalando */
       texto(-30, -50, 'JA JA JA', 13, -8) +
