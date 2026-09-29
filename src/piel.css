@@ -58,6 +58,10 @@ body{margin:0;color:var(--tinta);font-family:var(--letra);font-size:15px;line-he
   background-attachment:fixed;-webkit-text-size-adjust:100%;min-height:100vh}
 html[data-tema="proyector"], html[data-tema="proyector"] body{background:#FFFFFF}
 .lienzo{max-width:760px;margin:0 auto;padding:12px 12px 36px}
+/* en «Escríbelo», el campo va encima de la tablilla: se ve la película y,
+   justo debajo, donde se escribe */
+.lienzo{display:flex;flex-direction:column}
+.lienzo:has(.tablilla.escribe) > :is(.tablilla, footer){order:1}
 
 /* ── LA CABECERA: una sola hoja con el nombre y, en letra pequeña y sin
    cajas, las acciones; debajo, lo que se puede hacer, como pestañas ── */
@@ -164,6 +168,7 @@ button.b:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
   box-shadow:0 3px 0 #6e4e14, inset 0 2px 0 rgba(255,245,210,.7)}
 .tl-ver{width:100%}
 .tablilla:has(.tl-ej:not([hidden])) .tl-cursor{display:none}
+.tablilla.escribe:has(.tl-ej:not([hidden])) .tl-cursor{display:inline-block}
 .tl-pie{margin-top:10px}
 
 /* ── EL ACTA, en su propia hoja, por encima de todo ── */

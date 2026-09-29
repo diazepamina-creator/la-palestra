@@ -207,11 +207,15 @@
   /* S.cur: dónde está el cursor (null: al final, que es lo normal) */
   const cursor = () => S.cur === null || S.cur === undefined ? S.tok.length : Math.min(S.cur, S.tok.length);
   function tecla(tk){
-    if(S.ej) return;                         // en los ejercicios no se escribe
-    if(tk.t === '='){ igual(); return; }
+    const escribe = S.ej && S.ej.modo === 'escribe';
+    if(S.ej && !escribe) return;             // en los ejercicios no se escribe, salvo en «Escríbelo»
+    if(tk.t === '='){ if(escribe) comprueba(); else igual(); return; }
     if(tk.t === 'menu'){ teclado.abre(tk.m); return; }
     const r = TL.pulsa(S.tok, tk, cursor());
-    S.tok = r.tok; S.cur = r.cur === S.tok.length ? null : r.cur; S.pel = null; S.visto = false; R.para();
+    S.tok = r.tok; S.cur = r.cur === S.tok.length ? null : r.cur;
+    /* en «Escríbelo» la película sigue ahí: se escribe mirándola */
+    if(escribe){ $('tlAviso').innerHTML = r.aviso; pintaTablilla(); return; }
+    S.pel = null; S.visto = false; R.para();
     $('tlAviso').innerHTML = r.aviso;
     pintaTablilla();
     $('panelCampo').hidden = true;
@@ -255,12 +259,51 @@
     if(m.modo === 'argos'){
       for(let k = 0; k < 40 && !argos; k++){ ej = E.genera(m.niveles[k % m.niveles.length]); argos = window.Argos.conFallo(ej.tok); }
     }
-    S.ej = {valor: ej.valor, visto: false, fase: 'pensando', id: Date.now(), cuenta: P.escribe(ej.pel.arbol), argos};
+    /* escríbelo: una cuenta de entrar y retirarse, que solo se ve en el campo */
+    if(m.modo === 'escribe') ej = E.genera(m.niveles[Math.floor(Math.random() * m.niveles.length)]);
+    S.ej = {valor: ej.valor, visto: m.modo === 'escribe', fase: 'pensando', id: Date.now(), cuenta: P.escribe(ej.pel.arbol), argos,
+            modo: m.modo || 'resultado', real: ej.tok, pel: ej.pel};
     S.tok = ej.tok; S.cur = null; S.pel = null; S.visto = false; R.para();
     $('tlResp').value = '';
     $('tlAviso').innerHTML = '';
     $('panelCampo').hidden = true;
-    pintaTablilla(); pintaMarca(); pintaArgos();
+    if(S.ej.modo === 'escribe') S.tok = [];
+    pintaTablilla(); pintaMarca(); pintaArgos(); pintaEscribe();
+  }
+  /* ── ESCRÍBELO: el campo pasa la película sin la cartela, y la cuenta se
+     escribe en la tablilla con sus teclas ── */
+  function pintaEscribe(){
+    const esc = !!(S.ej && S.ej.modo === 'escribe');
+    document.querySelector('.tablilla').classList.toggle('escribe', esc);
+    $('tlResp').hidden = esc; $('tlVer').hidden = esc;
+    if(S.ej) $('tlTeclas').hidden = !esc;
+    R.preguntas = esc ? false : aj.preguntas;
+    if(!esc) return;
+    $('panelCampo').hidden = false;
+    R.carga(S.ej.pel);
+    $('tlAviso').innerHTML = 'Pasa la película con <b>▶</b> y escribe aquí lo que ocurre: quién entra y quién se retira.';
+  }
+  function compruebaEscrito(){
+    if(!S.tok.length){ $('tlAviso').innerHTML = 'Todavía no has escrito nada.'; return; }
+    const r = E.comparaEscrito(S.tok, S.ej.real);
+    if(r.estado === 'error'){ $('tlAviso').innerHTML = r.pista; return; }
+    const dicho = P.escribe(P.analiza(S.tok));
+    if(r.estado === 'igual'){
+      S.ej.fase = 'bien';
+      E.anota(sesion, ruta, true, detalle(dicho));
+      const cumplida = E.acierta(ruta);
+      $('tlAviso').innerHTML = '<b>¡Eso es!</b> Eso es lo que ha pasado.' + (cumplida ? ' <b>Misión cumplida.</b>' : '');
+      if(R.pel) pintaMandos(R);                    // ahora sí, la cartela con la cuenta
+      E.guarda(ruta, sesion); pintaRuta(); pintaMarca(); pintaActa();
+      const yo = S.ej;
+      setTimeout(() => { if(S.ej === yo) ronda(); }, 2600);
+      return;
+    }
+    E.anota(sesion, ruta, false, detalle(dicho));
+    E.guarda(ruta, sesion);
+    $('tlAviso').innerHTML = (r.estado === 'mismoValor' ? 'La bandera acabaría igual, pero <b>no es lo que ha pasado</b>. ' : 'No es lo que ha pasado. ') +
+      (r.pista ? r.pista + ' ' : '') + 'Míralo otra vez con <b>▶</b>.';
+    pintaMarca(); pintaActa();
   }
   /* ── EL OJO DE ARGOS: las líneas de Listillón, para tocar la primera mal ── */
   function pintaArgos(){
@@ -295,12 +338,14 @@
   });
   function pintaMarca(){
     const m = sesion.mision[ruta.i] || {bien: 0, mal: 0};
+    /* en «Escríbelo» siempre se mira: no hay «sin mirar» */
     $('tlMarca').innerHTML = '<span class="fi">resueltas <b>' + m.bien + '</b></span>' +
-      '<span class="fi">sin mirar <b>' + (m.solas || 0) + '</b></span>';
+      (S.ej && S.ej.modo === 'escribe' ? '' : '<span class="fi">sin mirar <b>' + (m.solas || 0) + '</b></span>');
   }
   const esEntero = t => /^[-+]?\d+$/.test(String(t).replace(/[−–]/g, '-').replace(/\s+/g, ''));
   function comprueba(){
     if(!S.ej || S.ej.fase === 'bien') return;
+    if(S.ej.modo === 'escribe'){ compruebaEscrito(); return; }
     const resp = String($('tlResp').value).trim();
     if(!resp) return;
     if(!esEntero(resp)){ $('tlAviso').innerHTML = 'Escribe un número: con cifras, y el signo delante si lo lleva.'; return; }
@@ -330,7 +375,7 @@
     $('tlTeclas').hidden = si;
     $('tlPie').hidden = si;
     if(si){ pintaRuta(); ronda(); }
-    else{ S.ej = null; pintaArgos(); S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
+    else{ S.ej = null; pintaArgos(); pintaEscribe(); S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
     pintaPestanas();
   }
   /* ── EL ACTA, en su propia hoja ── */
@@ -381,16 +426,19 @@
   });
   function pintaTablilla(){
     /* el cursor, en su sitio; en los ejercicios y con el resultado a la vista, no hay */
-    let h = S.tok.length ? TL.htmlCuenta(S.tok, null, S.ej ? undefined : cursor()) : '';
+    const sinCursor = S.ej && S.ej.modo !== 'escribe';
+    let h = S.tok.length ? TL.htmlCuenta(S.tok, null, sinCursor ? undefined : cursor()) : '';
     if(S.pel){
       const fin = S.pel.sinTeatro || (R.pel === S.pel && R.k === S.pel.pasos.length);
       if(fin) h += '<span class="op"> = </span><b class="tl-res' + (S.pel.exacto[1] !== 1 ? ' frac' : '') + '">' + P.fracTxt(S.pel.exacto) + '</b>';
     }
-    $('tlEscrito').innerHTML = h || (S.ej ? '' : '<span class="tl-cursor" aria-hidden="true"></span>') + '<span class="tl-vacia">escribe aquí…</span>';
+    $('tlEscrito').innerHTML = h || (sinCursor ? '' : '<span class="tl-cursor" aria-hidden="true"></span><span class="tl-vacia">escribe aquí…</span>');
   }
   /* la cartela: la cuenta con el trozo que se juega iluminado, y debajo qué pasa */
   function cartela(R){
     const c = $('cartela'), pel = R.pel, k = R.k, n = pel.pasos.length;
+    /* en «Escríbelo» la cuenta no se enseña hasta que se acierta */
+    if(S.ej && S.ej.modo === 'escribe' && S.ej.fase !== 'bien'){ c.hidden = true; return; }
     const hechos = new Set();
     pel.pasos.slice(0, Math.max(0, k - 1)).forEach(p => p.m.forEach(i => hechos.add(i)));
     let on = new Set(), x = '', clase = '';

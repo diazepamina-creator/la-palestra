@@ -77,7 +77,7 @@ test('el acta lleva el detalle, ejercicio a ejercicio', () => {
   assert.deepEqual(s.ejercicios[1].d, [3, 7, -3]);
   assert.equal(s.mision[0].solas, 1, 'solo el primero sale sin mirar');
   const txt = E.actaEnTexto(s, s.t0 + 300000, r);
-  assert.match(txt, /Ruta: misión 1 de 7 \(Entra gente\)/);
+  assert.match(txt, /Ruta: misión 1 de 8 \(Entra gente\)/);
   assert.match(txt, /1\. Entra gente — 2 de 5, 1 sin mirar  \(floja\)/);
   assert.match(txt, /09:41  M1  −2 \+ 5 = \+3 · bien a la primera, sin mirar/);
   assert.match(txt, /M1  2 − 5 = −3 · bien tras 2 fallos \(\+3, \+7\), mirando el campo/);
@@ -93,4 +93,18 @@ test('el turno se guarda, se lee y caduca a los 90 minutos', () => {
   assert.equal(d.ruta.i, 2); assert.equal(d.ruta.hechas, 3);
   assert.equal(E.lee(st, 5000 + 91 * 60 * 1000), null, 'caducado');
   assert.equal(alm.size, 0, 'y borrado');
+});
+
+test('escríbelo: lo escrito se compara con lo que ha pasado', () => {
+  const n = f => ({t: 'n', f}), mas = {t: '+'}, menos = {t: '-'};
+  const real = [n(-3), mas, n(5), menos, n(2)];
+  assert.equal(E.comparaEscrito([n(-3), mas, n(5), menos, n(2)], real).estado, 'igual');
+  /* la bandera acaba igual, pero el +2 no entró como −2: se retiró */
+  const r = E.comparaEscrito([n(-3), mas, n(5), mas, n(-2)], real);
+  assert.equal(r.estado, 'mismoValor');
+  assert.match(r.pista, /El \+2 <b>se retira<\/b>: se escribe <b>− 2<\/b>/);
+  assert.equal(E.comparaEscrito([n(-3), mas, n(5)], real).estado, 'distinto');
+  assert.equal(E.comparaEscrito([n(-3), mas], real).estado, 'error');
+  /* un negativo que entra se escribe + (−2) */
+  assert.match(E.comparaEscrito([n(4)], [n(4), mas, n(-2)]).pista, /El −2 <b>entra<\/b>: se escribe <b>\+ \(−2\)<\/b>/);
 });
