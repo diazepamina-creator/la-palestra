@@ -29,7 +29,7 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 - `src/ajustes.css` — el campo a la luz del día (arena de día y proyector) y el modo aula para la pizarra digital (la lógica de los ajustes va en `src/pagina.html`).
 - `src/arranque.js` y `src/arranque.css` — la escena de inicio, como en Las piezas de Miut: −3 + 5 = +2 jugado en el campo de verdad y el nombre. Solo al abrir la app; se salta tocando y se quita en Ajustes.
 - `VERSION` — el número de versión; `construye.mjs` lo pone en la página.
-- `pruebas/` — `node --test pruebas/motor.test.mjs pruebas/ejercicios.test.mjs pruebas/construccion.test.mjs`. La última comprueba que `index.html` está al día.
+- `pruebas/` — `node --test pruebas/*.test.mjs`: el motor, los ejercicios, la tablilla (escribir y editar con el cursor) y la construcción, que comprueba que `index.html` está al día.
 - `construye.mjs` — funde `src/` en `index.html`.
 
 ## Pasos
@@ -46,4 +46,4 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 10. ✅ Ajustes (colores, modo aula, velocidad, preguntas), empezar de cero y el acta ejercicio a ejercicio.
 11. ✅ La escena de inicio.
 12. ✅ La disposición de Las piezas de Miut (pestañas, hojas y botones) sobre la arena de la palestra.
-13. ✅ La TABLI·CAS·IO: la tablilla de arcilla con hechura de calculadora, modelada a mano, con Listillón trazado con una ramita.
+13. ✅ La TABLI·CAS·IO: la tablilla de arcilla con hechura de calculadora, modelada a mano, con Listillón trazado con una ramita; cursor ◀ ▶ para editar y las pociones en × y ÷.

@@ -99,8 +99,11 @@ function brazo2(x0, y0, a1, l1, a2, l2, g, color, mano){
     '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="' + g +
     '" stroke-linecap="round" stroke-linejoin="round"/>' + (mano ? mano(x1, y1, a2) : '');
 }
-/* ── JEFERIÓN ── cocodrilo jefe: gafas redondas, laurel, banda morada */
-const JV = {piel:'#8CBF4F', sombra:'#5F8F32', vientre:'#C9DE8A', banda:'#7E5C86', oro:'#E9B84E', laurel:'#6E9A2E'};
+/* ── JEFERIÓN ── dinosaurio jefe: cráneo de tiranosaurio, placas en el lomo,
+   gafas redondas, laurel y banda morada */
+const JV = {piel:'#8CBF4F', sombra:'#5F8F32', vientre:'#C9DE8A', banda:'#7E5C86', oro:'#E9B84E', laurel:'#6E9A2E', placa:'#E39B3C'};
+/* una placa del lomo: un triángulo romo, girado según la curva de la espalda */
+const placaJ = (x, y, a, k) => '<path d="M-5 3 Q-1 -9 1 -9 Q3 -8 5 3 Z" transform="translate(' + x + ' ' + y + ') rotate(' + a + ') scale(' + (k || 1) + ')" fill="' + JV.placa + '" stroke="' + TINTA + '" stroke-width="1.2" stroke-linejoin="round"/>';
 /* la mano de Jeferión es la pezuña de la manaza, en pequeño: una bola con
    dos dedos rechonchos y la punta de cuerno, mirando hacia donde va el brazo.
    Contorno y relleno por separado, para que el contorno salga de una pieza */
@@ -134,13 +137,17 @@ function jeferion(pose){
   let s = '<svg viewBox="0 0 100 100" class="pj pj-jef pose-' + pose + '" aria-hidden="true">';
   if(asoma) s += '<g transform="translate(4 40)">';
   if(!asoma){
-  /* cola, por detrás */
-  s += '<path d="M66 88 Q88 90 95 76 Q90 84 80 83 Q72 82 66 80 Z" fill="' + JV.sombra + '" stroke="' + TINTA + '" stroke-width="1.4" stroke-linejoin="round"/>';
-  s += '<path d="M78 82 l2 -4 l2 3.4 l2.4 -4.2 l1.8 3.6" fill="none" stroke="' + TINTA + '" stroke-width="1.1" stroke-linejoin="round"/>';
+  /* las placas del lomo, por detrás del cuello y la espalda */
+  [[64,30,22,1],[68,41,30,1.05],[71,52,34,1],[74,63,38,.95]].forEach(([x,y,a,k]) => { s += placaJ(x, y, a, k); });
+  /* cola gorda, por detrás, con sus placas */
+  [[82,79,62,.8],[90,75,75,.7]].forEach(([x,y,a,k]) => { s += placaJ(x, y, a, k); });
+  s += '<path d="M62 94 Q84 96 96 80 Q99 74 94 74 Q88 84 74 82 Q68 80 64 76 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.5" stroke-linejoin="round"/>';
+  s += '<path d="M70 88 Q82 88 90 80" fill="none" stroke="' + JV.sombra + '" stroke-width="1.2" opacity=".7"/>';
   /* brazo de atrás */
   s += brazoDe(33, 62, P.bI);
-  /* cuerpo */
-  s += '<path d="M24 98 Q22 66 38 56 L62 56 Q78 64 76 98 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  /* cuerpo y cuello de una pieza: la cabeza ya no flota */
+  s += '<path d="M24 98 Q22 70 34 61 Q39 56 40 40 L61 38 Q61 54 67 60 Q78 68 76 98 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  s += '<path d="M44 48 Q50 52 57 48 M45 54 Q51 58 58 54" fill="none" stroke="' + JV.sombra + '" stroke-width="1.1" opacity=".6"/>';
   s += '<path d="M36 98 Q36 72 48 64 Q60 70 62 98 Z" fill="' + JV.vientre + '" opacity=".9"/>';
   s += '<path d="M40 76 H58 M39 84 H60 M38 92 H61" stroke="' + JV.sombra + '" stroke-width="1" opacity=".55"/>';
   /* banda */
@@ -155,12 +162,16 @@ function jeferion(pose){
   if(P.boca > .1) s += '<path d="M10 41 Q26 46 42 44 L40 52 Q24 54 10 46 Z" fill="#B5484A" stroke="' + TINTA + '" stroke-width="1.2" transform="rotate(' + (-P.boca * 8).toFixed(1) + ' 42 44)"/>';
   s += '<path d="M42 50 Q30 54 14 52 Q6 51 6 46 Q6 42 12 42 L38 43 Z" transform="' + giro + '" fill="' + JV.sombra + '" stroke="' + TINTA + '" stroke-width="1.5" stroke-linejoin="round"/>';
   if(P.boca > .1) s += '<path d="M13 43 l1.6 -2.4 l1.6 2.4 M21 43.6 l1.6 -2.4 l1.6 2.4" transform="' + giro + '" fill="#fff" stroke="' + TINTA + '" stroke-width=".7"/>';
-  s += '<path d="M60 44 Q62 22 46 18 Q36 16 32 24 L10 29 Q3 30 3 36 Q3 42 10 42 L38 44 Q48 50 60 44 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  /* las placas del cogote asoman por detrás del cráneo */
+  s += placaJ(58, 15, 8, .95) + placaJ(63, 22, 18, 1);
+  /* el cráneo, alto y redondo, con el hocico corto de tiranosaurio */
+  s += '<path d="M62 42 Q66 20 50 12 Q38 8 30 16 Q25 21 21 25 L12 27 Q5 29 5 35 Q5 41 12 41 L38 44 Q50 50 62 42 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  s += '<path d="M20 26 Q23 30 22 36" fill="none" stroke="' + JV.sombra + '" stroke-width="1.1" opacity=".7"/>';
   /* dientes */
   s += '<path d="M12 42 l1.6 2.6 l1.6 -2.6 M19 42.4 l1.6 2.6 l1.6 -2.6 M26 43 l1.6 2.6 l1.6 -2.6" fill="#fff" stroke="' + TINTA + '" stroke-width=".7" stroke-linejoin="round"/>';
   /* orificios y escamas */
-  s += '<circle cx="7.5" cy="33.2" r="1.1" fill="' + TINTA + '"/><circle cx="11" cy="32.2" r="1.1" fill="' + TINTA + '"/>';
-  s += '<path d="M18 33 q2 -1.6 4 0 M25 32 q2 -1.6 4 0" fill="none" stroke="' + JV.sombra + '" stroke-width="1"/>';
+  s += '<circle cx="8.5" cy="31.6" r="1.1" fill="' + TINTA + '"/><circle cx="12" cy="30.8" r="1.1" fill="' + TINTA + '"/>';
+  s += '<path d="M25 35 q2 -1.6 4 0 M31 37 q2 -1.6 4 0 M28 39.5 q2 -1.6 4 0" fill="none" stroke="' + JV.sombra + '" stroke-width="1"/>';
   /* ojos con gafas redondas */
   const [mx, my] = P.mira;
   const ojo = (cx, cy) => {
@@ -189,8 +200,10 @@ function jeferion(pose){
   s += '</svg>';
   return s;
 }
-/* ── LISTILLÓN ── escriba: pájaro azul, gorra roja, su tablilla bajo el ala */
-const LV = {pluma:'#57B8D6', sombra:'#3F9CBC', gorra:'#C0392B', pico:'#E9B84E', tabla:'#C8B48B'};
+/* ── LISTILLÓN ── escriba griego: pájaro azul con pétaso (el sombrero de ala
+   ancha de los viajeros y de Hermes), manto con greca, la tablilla bajo el
+   ala y el estilete para rayarla */
+const LV = {pluma:'#57B8D6', sombra:'#3F9CBC', petaso:'#C9974E', ala:'#A8773A', cinta:'#A8432D', manto:'#F4EFE3', pico:'#E9B84E', tabla:'#C8B48B'};
 function listillon(pose){
   pose = pose || 'habla';
   const P = {
@@ -211,11 +224,15 @@ function listillon(pose){
   /* cuerpo */
   s += '<ellipse cx="50" cy="70" rx="26" ry="23" fill="' + LV.pluma + '" stroke="' + TINTA + '" stroke-width="1.6"/>';
   s += '<ellipse cx="54" cy="76" rx="15" ry="14" fill="#9ED7EA" opacity=".75"/>';
+  /* el manto, cruzado del hombro a la cadera, con su greca */
+  s += '<path d="M31 55 Q53 66 75 83 L71 90 Q50 74 28 62 Z" fill="' + LV.manto + '" stroke="' + TINTA + '" stroke-width="1.2" stroke-linejoin="round"/>';
+  s += '<path d="M30.5 59.6 Q51.5 71.6 72.6 87" fill="none" stroke="' + LV.cinta + '" stroke-width="1.6" stroke-dasharray="2.4 1.6"/>';
   s += '<path d="M24 74 q-8 4 -10 12 q7 -3 12 -4" fill="' + LV.sombra + '" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
   /* tablilla bajo el ala (o en alto) */
   const tabla = P.tabla === 'arriba'
     ? '<g transform="rotate(-8 30 22)"><rect x="18" y="12" width="26" height="18" rx="2" fill="' + LV.tabla + '" stroke="' + TINTA + '" stroke-width="1.4"/><path d="M22 18 H40 M22 22 H36 M22 26 H38" stroke="' + TINTA + '" stroke-width=".9" opacity=".5"/></g>'
-    : '<g transform="rotate(-6 30 70)"><rect x="16" y="60" width="26" height="18" rx="2" fill="' + LV.tabla + '" stroke="' + TINTA + '" stroke-width="1.4"/><path d="M20 66 H38 M20 70 H34 M20 74 H36" stroke="' + TINTA + '" stroke-width=".9" opacity=".5"/></g>';
+    : '<g transform="rotate(-6 30 70)"><path d="M36 64 L46 50" stroke="#6E4E26" stroke-width="2" stroke-linecap="round"/><path d="M46 50 l1.4 -2.2" stroke="' + TINTA + '" stroke-width="1.2" stroke-linecap="round"/>' +
+      '<rect x="16" y="60" width="26" height="18" rx="2" fill="' + LV.tabla + '" stroke="' + TINTA + '" stroke-width="1.4"/><path d="M20 66 H38 M20 70 H34 M20 74 H36" stroke="' + TINTA + '" stroke-width=".9" opacity=".5"/></g>';
   if(P.tabla !== 'arriba') s += tabla;
   /* ala que sujeta la tablilla */
   s += P.tabla === 'arriba'
@@ -242,11 +259,14 @@ function listillon(pose){
   const cj = {seria:[[53,27,62,29],[64,28.6,72,26]], alta:[[53,25,62,23.4],[64,23,72,24.6]],
               alegre:[[53,27,62,26],[64,25.6,72,27]], piensa:[[53,26,62,28],[64,26,72,24]]}[P.ceja];
   cj.forEach(c => { s += '<path d="M' + c[0] + ' ' + c[1] + ' L' + c[2] + ' ' + c[3] + '" stroke="' + TINTA + '" stroke-width="2.4" stroke-linecap="round"/>'; });
-  /* gorra con visera hacia delante */
-  s += '<path d="M36 26 Q40 8 56 9 Q70 10 72 24 Z" fill="' + LV.gorra + '" stroke="' + TINTA + '" stroke-width="1.5" stroke-linejoin="round"/>';
-  s += '<path d="M60 22 Q74 19 82 24 Q74 26 62 26 Z" fill="#A5301F" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
-  s += '<path d="M37 24 Q54 20 71 23" fill="none" stroke="#fff" stroke-width="1.2" opacity=".55"/>';
-  s += '<circle cx="54" cy="9.6" r="2" fill="#A5301F" stroke="' + TINTA + '" stroke-width="1"/>';
+  /* el pétaso: la copa baja, el ala ancha un poco ladeada y la cinta de
+     almagre; el cordón le baja por detrás de la cabeza */
+  s += '<path d="M38 24 Q33 38 42 50" fill="none" stroke="#6E4E26" stroke-width="1.2" stroke-linecap="round"/>';
+  s += '<path d="M44 21 Q45 7 56 7 Q67 7.5 67 21 Z" fill="' + LV.petaso + '" stroke="' + TINTA + '" stroke-width="1.5" stroke-linejoin="round"/>';
+  s += '<path d="M44.5 18 Q56 15 66.8 18 L67 21 L44 21 Z" fill="' + LV.cinta + '" stroke="' + TINTA + '" stroke-width="1"/>';
+  s += '<ellipse cx="55" cy="21.5" rx="26" ry="5.2" transform="rotate(-5 55 21.5)" fill="' + LV.ala + '" stroke="' + TINTA + '" stroke-width="1.5"/>';
+  s += '<path d="M33 22.6 Q55 18.4 77 18.8" fill="none" stroke="#E2BE7E" stroke-width="1.1" opacity=".8"/>';
+  s += '<path d="M47 12 Q52 9.4 58 10" fill="none" stroke="#fff" stroke-width="1.1" opacity=".45"/>';
   s += '</g>';
   if(asoma){
     s += '</g>';

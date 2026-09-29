@@ -48,7 +48,7 @@
 .tl-tabla .tl-res{display:block;text-align:right;color:#2e2114;font-size:32px;line-height:1.15;font-weight:700}
 .tl-tabla .tl-res.frac{font-size:26px}
 .tl-vacia{color:rgba(95,80,64,.55);font-style:italic;font-family:var(--letra);font-size:15px}
-.tl-cursor{display:inline-block;width:2px;height:1.1em;margin-left:2px;vertical-align:-3px;
+.tl-cursor{display:inline-block;width:2px;height:1.1em;margin:0 1px;vertical-align:-3px;
   background:var(--ink);animation:parpadea 1s steps(1) infinite}
 @keyframes parpadea{50%{opacity:0}}
 .tl-tabla:has(.tl-res) .tl-cursor{display:none}
@@ -63,7 +63,7 @@
 .tl-teclas button{position:relative;cursor:pointer;font:inherit;min-width:0;padding:3px 2px;color:var(--ink);
   transition:transform .07s ease, box-shadow .07s ease}
 .tl-teclas button[data-sobre]::before{content:attr(data-sobre);position:absolute;left:-4px;right:-4px;top:-14px;text-align:center;
-  font-family:var(--letra);font-weight:700;font-size:10.5px;line-height:1;color:#A8432D;white-space:nowrap;pointer-events:none;
+  font-family:var(--letra);font-weight:700;font-style:normal;font-size:10.5px;line-height:1;color:#A8432D;white-space:nowrap;pointer-events:none;
   text-shadow:0 1px 0 rgba(255,250,235,.6)}
 .tl-teclas button:focus-visible{outline:3px solid #7f5a0e;outline-offset:2px}
 /* teclas hechas a mano: cada una con sus cantos, un poco torcida y alguna
@@ -157,3 +157,37 @@
 .tablilla .habla > div::after{content:"";position:absolute;left:0;right:12%;bottom:0;height:6px;
   background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='6' preserveAspectRatio='none'><path d='M1 3 C40 1 70 5 110 3 S170 1 199 4' fill='none' stroke='%235a4122' stroke-width='1.4' stroke-linecap='round' opacity='.7'/></svg>") no-repeat;background-size:100% 100%}
 @media (prefers-reduced-motion: reduce){ .tablilla, .tl-marco, .tl-tabla{transform:none} }
+
+/* ── LA CRUCETA: el cursor atrás y adelante, un óvalo de barro con dos
+   flechas, como el mando redondo de las calculadoras ── */
+.tl-cur{display:flex;justify-content:center;margin-bottom:-4px}
+.tl-cruceta{display:flex;gap:2px;padding:4px;border-radius:26px 22px 28px 20px / 22px 28px 20px 26px;transform:rotate(-1deg);
+  background:var(--grano), linear-gradient(180deg,#b8955e,#a07e4a);background-size:140px 140px, 100% 100%;
+  box-shadow:inset 0 2px 4px rgba(60,40,10,.45), 0 1px 0 rgba(255,250,235,.6)}
+.tl-teclas .tl-flecha{min-height:38px;width:62px;font-size:16px;color:#2e2114;border:2px solid #7a5a2e;
+  background:var(--grano), radial-gradient(ellipse at 30% 20%, #fbf3dc 0, #efdfbb 45%, #dcc493 100%);background-size:140px 140px, 100% 100%;
+  box-shadow:0 3px 0 #7a5a2e, inset 0 2px 0 rgba(255,250,235,.75)}
+.tl-teclas .tl-flecha:first-child{border-radius:20px 8px 8px 22px / 18px 8px 8px 20px}
+.tl-teclas .tl-flecha:last-child{border-radius:8px 22px 20px 8px / 8px 20px 18px 8px}
+/* × y ÷: un poco más grandes, que abren la cajita de los frascos */
+.tl-teclas .tl-menu-b{font-size:28px;font-weight:700;line-height:1}
+.tl-teclas .tl-menu-b[aria-expanded="true"]{box-shadow:0 0 0 #7a5a2e, inset 0 2px 6px rgba(110,78,30,.45);transform:rotate(var(--gira,0deg)) translateY(3px)}
+/* la cajita: un cuenco de barro que sale sobre las teclas, con los frascos */
+.tl-teclas{position:relative}
+.tl-menu{position:absolute;left:-4px;right:-4px;top:100px;z-index:5;padding:8px 10px 10px;border:2px solid #7a5a2e;
+  border-radius:18px 12px 20px 14px / 14px 20px 12px 18px;
+  background:var(--grano), radial-gradient(ellipse at 30% 10%, #f7ecd2 0, #eadbb6 60%, #dcc596 100%);background-size:140px 140px, 100% 100%;
+  box-shadow:0 10px 18px rgba(40,25,5,.4), inset 0 2px 0 rgba(255,250,235,.7);animation:tlMenu .18s ease-out}
+.tl-menu[data-m="entre"]{left:12%;right:-4px}
+@keyframes tlMenu{from{opacity:0;transform:translateY(-6px) scale(.97)}}
+.tl-menu-t{margin:0 0 6px;font-family:var(--letra);font-weight:700;font-size:13px;color:#8a3a1f}
+.tl-menu-t b{font-size:16px}
+.tl-menu-f{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.tl-menu[data-m="entre"] .tl-menu-f{grid-template-columns:repeat(3,1fr)}
+.tl-menu-f button{min-height:54px;color:var(--ink);border:2px solid #7a5a2e;border-radius:14px 17px 13px 16px / 16px 13px 17px 14px;
+  background:var(--grano), radial-gradient(ellipse at 30% 20%, #fbf3dc 0, #efdfbb 45%, #dcc493 100%);background-size:140px 140px, 100% 100%;
+  box-shadow:0 3px 0 #7a5a2e, inset 0 2px 0 rgba(255,250,235,.75);cursor:pointer;font:inherit;padding:4px 1px 3px}
+.tl-menu-f button:active{transform:translateY(3px);box-shadow:0 0 0 #7a5a2e}
+.tl-menu-f button:focus-visible{outline:3px solid #7f5a0e;outline-offset:2px}
+.tl-menu-f .pocion .etq{font-size:10.5px}
+@media (prefers-reduced-motion: reduce){ .tl-menu{animation:none} }
