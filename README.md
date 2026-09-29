@@ -23,8 +23,9 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 - `src/reproductor.js` y `src/banquillo.css` — el reproductor: la foto k al instante y el paso k+1 animado; la predicción antes de los pasos clave; ▶▶.
 - `src/cartela.css` — la cartela: la cuenta iluminada encima del campo.
 - `src/personajes.js`, `src/zeus.js` y `src/personajes.css` — Jeferión, Listillón y Zeus, las caras que hablan y el rayo.
-- `src/ejercicios.js` — las seis misiones, el generador de cuentas comprobado con el motor, el acta y el turno guardado.
+- `src/ejercicios.js` — las siete misiones, el generador de cuentas comprobado con el motor, el acta y el turno guardado.
 - `src/entrevistas.js` y `src/entrevistas.css` — las entrevistas.
+- `src/argos.js` — el ojo de Argos: la resolución de Listillón, paso a paso como en el cuaderno, con un fallo de los de verdad (restar o sumar un negativo, sumar las fuerzas que tiran en contra, el signo de un producto o una potencia); hay que tocar la primera línea mal.
 - `src/piel.css` — la piel: la disposición de Las piezas de Miut (la cabecera con pestañas, las hojas, los botones, las cajas de lo que dicen Listillón y Jeferión, el acta y el pie) sobre la arena rastrillada de la palestra, de día o de noche, o el papel del proyector. La letra: Cinzel en los rótulos y Alegreya Sans para leer; las cuentas, en Space Mono.
 - `src/ajustes.css` — el campo a la luz del día (arena de día y proyector) y el modo aula para la pizarra digital (la lógica de los ajustes va en `src/pagina.html`).
 - `src/arranque.js` y `src/arranque.css` — la escena de inicio, como en Las piezas de Miut: −3 + 5 = +2 jugado en el campo de verdad y el nombre. Solo al abrir la app; se salta tocando y se quita en Ajustes.
@@ -46,4 +47,5 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 10. ✅ Ajustes (colores, modo aula, velocidad, preguntas), empezar de cero y el acta ejercicio a ejercicio.
 11. ✅ La escena de inicio.
 12. ✅ La disposición de Las piezas de Miut (pestañas, hojas y botones) sobre la arena de la palestra.
+14. ✅ El ojo de Argos: encontrar el primer fallo (traído de El pulso de los dioses).
 13. ✅ La TABLI·CAS·IO: la tablilla de arcilla con hechura de calculadora, modelada a mano, con Listillón trazado con una ramita; cursor ◀ ▶ para editar y las pociones en × y ÷.

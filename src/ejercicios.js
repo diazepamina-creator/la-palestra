@@ -18,7 +18,10 @@ const MISIONES = [
   {t: 'Pociones',           nivel: 2, meta: 4, d: 'El frasco se bebe en el <b>banquillo</b>. Con calavera, cambia de bando.'},
   {t: 'El paréntesis',      nivel: 3, meta: 4, d: 'Primero se <b>reduce</b> el paréntesis; luego bebe.'},
   {t: 'Potencias',          nivel: 4, meta: 3, d: '<b>(−2)²</b> no es <b>−2²</b>.'},
-  {t: 'Todo junto',         nivel: 5, meta: 5, d: 'De todo un poco.'}
+  {t: 'Todo junto',         nivel: 5, meta: 5, d: 'De todo un poco.'},
+  /* el ojo de Argos: no se calcula, se revisa. Listillón se equivoca en un paso */
+  {t: 'El ojo de Argos',    nivel: 5, meta: 3, modo: 'argos', niveles: [1, 2, 4, 5],
+   d: 'Listillón se ha equivocado en <b>un</b> paso. Toca la <b>primera</b> línea que está mal.'}
 ];
 
 /* el azar se puede sustituir en las pruebas */
@@ -126,7 +129,7 @@ function reloj(ms){
   const s = Math.max(0, Math.round(ms / 1000));
   return Math.floor(s / 60) + ' min ' + String(s % 60).padStart(2, '0') + ' s';
 }
-const firma = v => v > 0 ? '+' + v : v < 0 ? '−' + (-v) : '0';
+const firma = v => typeof v === 'string' ? v : v > 0 ? '+' + v : v < 0 ? '−' + (-v) : '0';
 const dos = x => String(x).padStart(2, '0');
 const hora = ms => { const f = new Date(ms); return dos(f.getHours()) + ':' + dos(f.getMinutes()); };
 /* un ejercicio del acta en palabras: «a la primera, sin mirar», «tras 2 fallos (+3, −1), mirando»… */

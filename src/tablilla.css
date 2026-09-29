@@ -191,3 +191,21 @@
 .tl-menu-f button:focus-visible{outline:3px solid #7f5a0e;outline-offset:2px}
 .tl-menu-f .pocion .etq{font-size:10.5px}
 @media (prefers-reduced-motion: reduce){ .tl-menu{animation:none} }
+
+/* ── EL OJO DE ARGOS: la resolución de Listillón, línea a línea, rayada en
+   el barro; se toca la primera que está mal ── */
+.tl-argos{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}
+.tl-linea{width:100%;display:flex;align-items:baseline;gap:10px;text-align:left;cursor:pointer;font:inherit;color:#2e2114;
+  padding:8px 12px;min-height:44px;border:2px solid #9a7a45;border-radius:12px 8px 13px 9px / 9px 13px 8px 12px;
+  background:var(--grano), linear-gradient(180deg,#e2d0a8,#eee0c0);background-size:140px 140px, 100% 100%;
+  box-shadow:inset 0 2px 5px rgba(90,64,30,.3), 0 1px 0 rgba(255,250,235,.6)}
+.tl-linea:hover{border-color:#6e4e14}
+.tl-linea:focus-visible{outline:3px solid #7f5a0e;outline-offset:2px}
+.tl-ln{font-family:var(--letra);font-weight:700;font-size:12px;color:#8a3a1f;min-width:12px}
+.tl-lt{font-family:'Space Mono',monospace;font-size:17px}
+.tl-linea.buena{border-color:#2f6b28;box-shadow:inset 0 0 0 1px #2f6b28}
+.tl-linea.buena .tl-ln::after{content:" ✓";color:#2f6b28}
+.tl-linea.arrastra{border-style:dashed;border-color:#b8862a}
+.tl-linea.cazada{border-color:#a8432d;box-shadow:inset 0 0 0 1px #a8432d, 0 0 0 3px rgba(168,67,45,.2)}
+.tl-linea.cazada .tl-lt{text-decoration:line-through;text-decoration-color:#a8432d;text-decoration-thickness:2px}
+.tl-era{margin-left:10px;font-style:normal;font-weight:700;color:#2f6b28;display:inline-block;text-decoration:none}

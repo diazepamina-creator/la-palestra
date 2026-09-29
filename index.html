@@ -709,6 +709,24 @@ html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;
 .tl-menu-f button:focus-visible{outline:3px solid #7f5a0e;outline-offset:2px}
 .tl-menu-f .pocion .etq{font-size:10.5px}
 @media (prefers-reduced-motion: reduce){ .tl-menu{animation:none} }
+
+/* ── EL OJO DE ARGOS: la resolución de Listillón, línea a línea, rayada en
+   el barro; se toca la primera que está mal ── */
+.tl-argos{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}
+.tl-linea{width:100%;display:flex;align-items:baseline;gap:10px;text-align:left;cursor:pointer;font:inherit;color:#2e2114;
+  padding:8px 12px;min-height:44px;border:2px solid #9a7a45;border-radius:12px 8px 13px 9px / 9px 13px 8px 12px;
+  background:var(--grano), linear-gradient(180deg,#e2d0a8,#eee0c0);background-size:140px 140px, 100% 100%;
+  box-shadow:inset 0 2px 5px rgba(90,64,30,.3), 0 1px 0 rgba(255,250,235,.6)}
+.tl-linea:hover{border-color:#6e4e14}
+.tl-linea:focus-visible{outline:3px solid #7f5a0e;outline-offset:2px}
+.tl-ln{font-family:var(--letra);font-weight:700;font-size:12px;color:#8a3a1f;min-width:12px}
+.tl-lt{font-family:'Space Mono',monospace;font-size:17px}
+.tl-linea.buena{border-color:#2f6b28;box-shadow:inset 0 0 0 1px #2f6b28}
+.tl-linea.buena .tl-ln::after{content:" ✓";color:#2f6b28}
+.tl-linea.arrastra{border-style:dashed;border-color:#b8862a}
+.tl-linea.cazada{border-color:#a8432d;box-shadow:inset 0 0 0 1px #a8432d, 0 0 0 3px rgba(168,67,45,.2)}
+.tl-linea.cazada .tl-lt{text-decoration:line-through;text-decoration-color:#a8432d;text-decoration-thickness:2px}
+.tl-era{margin-left:10px;font-style:normal;font-weight:700;color:#2f6b28;display:inline-block;text-decoration:none}
 </style>
 <style>
 /* ── EL BANQUILLO: un término compuesto se prepara aquí, fuera de la cuerda,
@@ -1139,7 +1157,8 @@ html[data-inicio="si"] main{visibility:hidden}
     </div>
     <div class="tl-ej" id="tlEj" hidden>
       <p class="tl-marca" id="tlMarca"></p>
-      <div class="tl-resp">
+      <ol class="tl-argos" id="tlArgos" hidden aria-label="La resolución de Listillón: toca la primera línea mal"></ol>
+      <div class="tl-resp" id="tlRespFila">
         <input id="tlResp" type="text" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="¿Dónde acaba?" aria-label="Tu respuesta">
         <button type="button" id="tlComprueba" class="b ok">Comprobar</button>
       </div>
@@ -1167,7 +1186,7 @@ html[data-inicio="si"] main{visibility:hidden}
     <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><div><div class="quien">Jeferión</div><p class="aviso" id="jefAviso" role="status"></p></div></div>
   </section>
 
-  <footer>versión 0.21</footer>
+  <footer>versión 0.22</footer>
 </main>
 
 <div class="modal" id="mActa" hidden>
@@ -3112,7 +3131,10 @@ const MISIONES = [
   {t: 'Pociones',           nivel: 2, meta: 4, d: 'El frasco se bebe en el <b>banquillo</b>. Con calavera, cambia de bando.'},
   {t: 'El paréntesis',      nivel: 3, meta: 4, d: 'Primero se <b>reduce</b> el paréntesis; luego bebe.'},
   {t: 'Potencias',          nivel: 4, meta: 3, d: '<b>(−2)²</b> no es <b>−2²</b>.'},
-  {t: 'Todo junto',         nivel: 5, meta: 5, d: 'De todo un poco.'}
+  {t: 'Todo junto',         nivel: 5, meta: 5, d: 'De todo un poco.'},
+  /* el ojo de Argos: no se calcula, se revisa. Listillón se equivoca en un paso */
+  {t: 'El ojo de Argos',    nivel: 5, meta: 3, modo: 'argos', niveles: [1, 2, 4, 5],
+   d: 'Listillón se ha equivocado en <b>un</b> paso. Toca la <b>primera</b> línea que está mal.'}
 ];
 
 /* el azar se puede sustituir en las pruebas */
@@ -3220,7 +3242,7 @@ function reloj(ms){
   const s = Math.max(0, Math.round(ms / 1000));
   return Math.floor(s / 60) + ' min ' + String(s % 60).padStart(2, '0') + ' s';
 }
-const firma = v => v > 0 ? '+' + v : v < 0 ? '−' + (-v) : '0';
+const firma = v => typeof v === 'string' ? v : v > 0 ? '+' + v : v < 0 ? '−' + (-v) : '0';
 const dos = x => String(x).padStart(2, '0');
 const hora = ms => { const f = new Date(ms); return dos(f.getHours()) + ':' + dos(f.getMinutes()); };
 /* un ejercicio del acta en palabras: «a la primera, sin mirar», «tras 2 fallos (+3, −1), mirando»… */
@@ -3488,6 +3510,89 @@ raiz.Entrevistas = {ENTREVISTAS, monta, TABLILLA_DE_CERCA};
 </script>
 <script>
 /* ══════════════════════════════════════════════════════════════════════
+   LA PALESTRA · el ojo de Argos
+   Listillón copia la resolución de una cuenta, paso a paso como en el
+   cuaderno, y se equivoca en uno: hay que encontrar la PRIMERA línea mal.
+   Las líneas son de dos clases: el valor de un término compuesto
+   («3·(−2 + 1) = −3») y el total que se va acumulando («+2 − (−2) = +4»).
+   El fallo es de los que se cometen de verdad con los enteros, y lo de
+   después sigue bien hecho a partir del error: así solo hay un primer fallo.
+   Todo sale del motor: ni una cuenta escrita a mano.
+   ══════════════════════════════════════════════════════════════════════ */
+(function (raiz) {
+'use strict';
+const P = raiz.Palestra;
+let azar = Math.random;
+const elige = xs => xs[Math.floor(azar() * xs.length)];
+
+const cs = P.conSigno;
+const operando = v => v < 0 ? '(' + cs(v) + ')' : String(v);        // lo de la derecha, con paréntesis si es negativo
+const valorDe = t => { const [n, d] = P.exacto({terms: [Object.assign({}, t, {sign: '+'})]}); return d === 1 ? n : null; };
+const esCompuesto = t => !!(t.pre.length || t.post.length || t.exp > 1 || t.factor.t === 'g');
+const textoTermino = t => P.escribe({terms: [Object.assign({}, t, {sign: '+'})]}, false);
+
+/* la resolución: [{clase, ...}]. «forzar» = {i, r}: en la línea i, Listillón
+   pone r en vez de lo que toca, y todo lo de después sale de ahí. null si
+   algún término no da entero */
+function construye(tok, forzar){
+  const arbol = P.analiza(tok), lineas = [];
+  let total = null;
+  const pon = (l, bien) => { const i = lineas.length; const r = forzar && forzar.i === i ? forzar.r : bien; lineas.push(Object.assign(l, {r})); return r; };
+  for(const t of arbol.terms){
+    let v = valorDe(t);
+    if(v === null) return null;
+    if(esCompuesto(t)) v = pon({clase: 'termino', txt: textoTermino(t)}, v);
+    const efec = t.sign === '-' ? -v : v;
+    if(total === null){ total = efec; continue; }       // el primero no es una línea: es de donde se parte
+    total = pon({clase: 'total', a: total, op: t.sign, b: v}, total + efec);
+  }
+  return lineas.length >= 2 ? lineas : null;
+}
+const resolucion = tok => construye(tok);
+/* la línea escrita */
+function texto(l){
+  if(l.clase === 'termino') return l.txt + ' = ' + cs(l.r);
+  return cs(l.a) + ' ' + (l.op === '-' ? '−' : '+') + ' ' + operando(l.b) + ' = ' + cs(l.r);
+}
+
+/* los fallos que se cometen de verdad, según la línea */
+function fallos(l){
+  const f = [];
+  if(l.clase === 'termino'){
+    if(l.r !== 0) f.push({r: -l.r, por: 'el signo de ' + (/[²³]/.test(l.txt) ? 'la potencia' : 'la multiplicación')});
+    return f;
+  }
+  const bien = l.r, efec = l.op === '-' ? -l.b : l.b;
+  if(l.op === '-' && l.b < 0) f.push({r: l.a - Math.abs(l.b), por: 'restar un negativo: si se retira uno que tira a la izquierda, la bandera va a la derecha'});
+  if(l.op === '+' && l.b < 0) f.push({r: l.a + Math.abs(l.b), por: 'sumar un negativo: el que entra tira hacia la izquierda'});
+  /* los dos siguientes solo tienen sentido cuando tiran en contra: con los
+     dos hacia el mismo lado nadie se equivoca así */
+  if(l.a !== 0 && efec !== 0 && Math.sign(l.a) !== Math.sign(efec)){
+    f.push({r: Math.sign(l.a) * (Math.abs(l.a) + Math.abs(efec)), por: 'sumar las fuerzas cuando tiran en contra: se restan'});
+    if(bien !== 0) f.push({r: -bien, por: 'el signo del resultado: gana el bando más fuerte'});
+  }
+  return f.filter(x => x.r !== bien);
+}
+
+/* la resolución con un fallo: {lineas, bien, malo, por}. «malo» es la
+   primera línea mal; las de después arrastran el error */
+function conFallo(tok){
+  const L = construye(tok);
+  if(!L) return null;
+  const candidatas = L.map((l, i) => ({i, f: fallos(l)})).filter(c => c.f.length);
+  if(!candidatas.length) return null;
+  const c = elige(candidatas), f = elige(c.f);
+  const M = construye(tok, {i: c.i, r: f.r});
+  return {lineas: M.map(texto), bien: L.map(texto), malo: c.i, por: f.por};
+}
+
+const A = {resolucion, conFallo, texto, conAzar: f => { azar = f; }};
+if(typeof module !== 'undefined' && module.exports) module.exports = A;
+else raiz.Argos = A;
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
    LA PALESTRA · la escena de inicio
    La app en pequeño, como en Las piezas de Miut: entra un −3 y tira a la
    izquierda; entra un +5, tira más fuerte a la derecha, y la bandera acaba
@@ -3625,14 +3730,49 @@ raiz.Arranque = {escena};
   }
   function ronda(){
     const m = E.MISIONES[ruta.i];
-    const ej = E.genera(m.nivel);
-    S.ej = {valor: ej.valor, visto: false, fase: 'pensando', id: Date.now(), cuenta: P.escribe(ej.pel.arbol)};
+    let ej = E.genera(m.nivel), argos = null;
+    /* el ojo de Argos: una cuenta de las misiones, resuelta por Listillón con un fallo */
+    if(m.modo === 'argos'){
+      for(let k = 0; k < 40 && !argos; k++){ ej = E.genera(m.niveles[k % m.niveles.length]); argos = window.Argos.conFallo(ej.tok); }
+    }
+    S.ej = {valor: ej.valor, visto: false, fase: 'pensando', id: Date.now(), cuenta: P.escribe(ej.pel.arbol), argos};
     S.tok = ej.tok; S.cur = null; S.pel = null; S.visto = false; R.para();
     $('tlResp').value = '';
     $('tlAviso').innerHTML = '';
     $('panelCampo').hidden = true;
-    pintaTablilla(); pintaMarca();
+    pintaTablilla(); pintaMarca(); pintaArgos();
   }
+  /* ── EL OJO DE ARGOS: las líneas de Listillón, para tocar la primera mal ── */
+  function pintaArgos(){
+    const a = S.ej && S.ej.argos;
+    $('tlArgos').hidden = !a; $('tlRespFila').hidden = !!a;
+    if(!a) return;
+    $('tlArgos').innerHTML = a.lineas.map((l, k) => '<li><button type="button" class="tl-linea" data-k="' + k + '">' +
+      '<span class="tl-ln">' + (k + 1) + '</span><span class="tl-lt">' + l + '</span></button></li>').join('');
+    $('tlAviso').innerHTML = 'Lo he copiado paso a paso… y en uno me he liado. ¿En <b>cuál</b>, el primero?';
+  }
+  $('tlArgos').addEventListener('click', ev => {
+    const b = ev.target.closest('.tl-linea'), a = S.ej && S.ej.argos;
+    if(!b || !a || S.ej.fase === 'bien') return;
+    const k = Number(b.dataset.k), linea = 'línea ' + (k + 1);
+    if(k === a.malo){
+      S.ej.fase = 'bien';
+      E.anota(sesion, ruta, true, detalle(linea));
+      b.classList.add('cazada');
+      b.querySelector('.tl-lt').insertAdjacentHTML('beforeend', '<i class="tl-era">era ' + a.bien[k].split('= ').pop() + '</i>');
+      const cumplida = E.acierta(ruta);
+      $('tlAviso').innerHTML = '<b>¡Cazado!</b> Me he liado con ' + a.por + '.' + (cumplida ? ' <b>Misión cumplida.</b>' : '');
+      E.guarda(ruta, sesion); pintaRuta(); pintaMarca(); pintaActa();
+      const yo = S.ej;
+      setTimeout(() => { if(S.ej === yo) ronda(); }, 3200);
+      return;
+    }
+    E.anota(sesion, ruta, false, detalle(linea));
+    E.guarda(ruta, sesion);
+    if(k < a.malo){ b.classList.add('buena'); $('tlAviso').innerHTML = 'Esa está bien. Mi fallo viene <b>después</b>.'; }
+    else{ b.classList.add('arrastra'); $('tlAviso').innerHTML = 'Esa sale mal, sí… pero porque arrastra un fallo de <b>antes</b>. Busca el primero.'; }
+    pintaMarca(); pintaActa();
+  });
   function pintaMarca(){
     const m = sesion.mision[ruta.i] || {bien: 0, mal: 0};
     $('tlMarca').innerHTML = '<span class="fi">resueltas <b>' + m.bien + '</b></span>' +
@@ -3670,7 +3810,7 @@ raiz.Arranque = {escena};
     $('tlTeclas').hidden = si;
     $('tlPie').hidden = si;
     if(si){ pintaRuta(); ronda(); }
-    else{ S.ej = null; S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
+    else{ S.ej = null; pintaArgos(); S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
     pintaPestanas();
   }
   /* ── EL ACTA, en su propia hoja ── */

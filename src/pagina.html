@@ -126,7 +126,8 @@
     </div>
     <div class="tl-ej" id="tlEj" hidden>
       <p class="tl-marca" id="tlMarca"></p>
-      <div class="tl-resp">
+      <ol class="tl-argos" id="tlArgos" hidden aria-label="La resolución de Listillón: toca la primera línea mal"></ol>
+      <div class="tl-resp" id="tlRespFila">
         <input id="tlResp" type="text" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="¿Dónde acaba?" aria-label="Tu respuesta">
         <button type="button" id="tlComprueba" class="b ok">Comprobar</button>
       </div>
@@ -178,6 +179,7 @@
 <script src="src/zeus.js"></script>
 <script src="src/ejercicios.js"></script>
 <script src="src/entrevistas.js"></script>
+<script src="src/argos.js"></script>
 <script src="src/arranque.js"></script>
 <script>
   const P = window.Palestra, C = window.Campo, TL = window.Tablilla, PJ = window.Personajes, E = window.Ejercicios;
@@ -248,14 +250,49 @@
   }
   function ronda(){
     const m = E.MISIONES[ruta.i];
-    const ej = E.genera(m.nivel);
-    S.ej = {valor: ej.valor, visto: false, fase: 'pensando', id: Date.now(), cuenta: P.escribe(ej.pel.arbol)};
+    let ej = E.genera(m.nivel), argos = null;
+    /* el ojo de Argos: una cuenta de las misiones, resuelta por Listillón con un fallo */
+    if(m.modo === 'argos'){
+      for(let k = 0; k < 40 && !argos; k++){ ej = E.genera(m.niveles[k % m.niveles.length]); argos = window.Argos.conFallo(ej.tok); }
+    }
+    S.ej = {valor: ej.valor, visto: false, fase: 'pensando', id: Date.now(), cuenta: P.escribe(ej.pel.arbol), argos};
     S.tok = ej.tok; S.cur = null; S.pel = null; S.visto = false; R.para();
     $('tlResp').value = '';
     $('tlAviso').innerHTML = '';
     $('panelCampo').hidden = true;
-    pintaTablilla(); pintaMarca();
+    pintaTablilla(); pintaMarca(); pintaArgos();
   }
+  /* ── EL OJO DE ARGOS: las líneas de Listillón, para tocar la primera mal ── */
+  function pintaArgos(){
+    const a = S.ej && S.ej.argos;
+    $('tlArgos').hidden = !a; $('tlRespFila').hidden = !!a;
+    if(!a) return;
+    $('tlArgos').innerHTML = a.lineas.map((l, k) => '<li><button type="button" class="tl-linea" data-k="' + k + '">' +
+      '<span class="tl-ln">' + (k + 1) + '</span><span class="tl-lt">' + l + '</span></button></li>').join('');
+    $('tlAviso').innerHTML = 'Lo he copiado paso a paso… y en uno me he liado. ¿En <b>cuál</b>, el primero?';
+  }
+  $('tlArgos').addEventListener('click', ev => {
+    const b = ev.target.closest('.tl-linea'), a = S.ej && S.ej.argos;
+    if(!b || !a || S.ej.fase === 'bien') return;
+    const k = Number(b.dataset.k), linea = 'línea ' + (k + 1);
+    if(k === a.malo){
+      S.ej.fase = 'bien';
+      E.anota(sesion, ruta, true, detalle(linea));
+      b.classList.add('cazada');
+      b.querySelector('.tl-lt').insertAdjacentHTML('beforeend', '<i class="tl-era">era ' + a.bien[k].split('= ').pop() + '</i>');
+      const cumplida = E.acierta(ruta);
+      $('tlAviso').innerHTML = '<b>¡Cazado!</b> Me he liado con ' + a.por + '.' + (cumplida ? ' <b>Misión cumplida.</b>' : '');
+      E.guarda(ruta, sesion); pintaRuta(); pintaMarca(); pintaActa();
+      const yo = S.ej;
+      setTimeout(() => { if(S.ej === yo) ronda(); }, 3200);
+      return;
+    }
+    E.anota(sesion, ruta, false, detalle(linea));
+    E.guarda(ruta, sesion);
+    if(k < a.malo){ b.classList.add('buena'); $('tlAviso').innerHTML = 'Esa está bien. Mi fallo viene <b>después</b>.'; }
+    else{ b.classList.add('arrastra'); $('tlAviso').innerHTML = 'Esa sale mal, sí… pero porque arrastra un fallo de <b>antes</b>. Busca el primero.'; }
+    pintaMarca(); pintaActa();
+  });
   function pintaMarca(){
     const m = sesion.mision[ruta.i] || {bien: 0, mal: 0};
     $('tlMarca').innerHTML = '<span class="fi">resueltas <b>' + m.bien + '</b></span>' +
@@ -293,7 +330,7 @@
     $('tlTeclas').hidden = si;
     $('tlPie').hidden = si;
     if(si){ pintaRuta(); ronda(); }
-    else{ S.ej = null; S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
+    else{ S.ej = null; pintaArgos(); S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
     pintaPestanas();
   }
   /* ── EL ACTA, en su propia hoja ── */
