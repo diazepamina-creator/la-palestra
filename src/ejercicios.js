@@ -13,6 +13,10 @@ const n = f => ({t: 'n', f}), MAS = {t: '+'}, MENOS = {t: '-'}, AB = {t: '('}, C
 const po = k => ({t: 'p', k, pre: false}), pre = k => ({t: 'p', k, pre: true}), e = x => ({t: 'e', n: x});
 
 const MISIONES = [
+  /* fuerza y bando: antes de sumar, los números. La fuerza es el número sin
+     signo; el orden, la posición en la regla */
+  {t: 'Fuerza y bando',     nivel: 0, meta: 4, modo: 'canon',
+   d: 'La <b>fuerza</b> es el número sin signo. En la regla, más a la izquierda es <b>menor</b>.'},
   {t: 'Entra gente',        nivel: 0, meta: 4, d: 'Entrar es <b>sumar</b>, con su signo.'},
   {t: 'Alguien se retira',  nivel: 1, meta: 4, d: 'Retirarse es <b>restar</b>. Si no está, entra su pareja.'},
   /* escríbelo: al revés, del campo a la cuenta. Se ve lo que pasa, sin la cuenta */
@@ -105,6 +109,25 @@ function siguiente(ruta){
   if(ruta.i >= MISIONES.length - 1) return false;
   ruta.i++; ruta.hechas = 0; ruta.hecho = false; ruta.tropezo = false;
   return true;
+}
+
+/* ── fuerza y bando: dos números y una pregunta; se toca uno ──
+   {tipo: 'fuerza' | 'menor' | 'mayor', a, b, bien: 0 | 1}. En «fuerza» nunca
+   empatan; en «menor» y «mayor» salen a menudo dos negativos, que es donde
+   más se tropieza */
+function generaCanon(){
+  const tipo = elige(['fuerza', 'fuerza', 'menor', 'menor', 'mayor']);
+  const num = () => elige([1, 2, 3, 4, 5, 6, 7, 8]) * elige([1, -1]);
+  let a, b;
+  for(;;){
+    a = num(); b = num();
+    if(tipo !== 'fuerza' && azar() < .35){ a = -Math.abs(a); b = -Math.abs(b); }   // dos negativos
+    if(tipo === 'fuerza' && azar() < .6 && Math.sign(a) === Math.sign(b)) b = -b;    // casi siempre, de bandos distintos
+    if(a === b || (tipo === 'fuerza' && Math.abs(a) === Math.abs(b))) continue;
+    break;
+  }
+  const bien = tipo === 'fuerza' ? (Math.abs(a) > Math.abs(b) ? 0 : 1) : tipo === 'menor' ? (a < b ? 0 : 1) : (a > b ? 0 : 1);
+  return {tipo, a, b, bien};
 }
 
 /* ── escríbelo: ¿lo escrito es lo que ha pasado? ──
@@ -212,7 +235,7 @@ function lee(alm, ahora){
 }
 function borra(alm){ try{ (alm || raiz.localStorage).removeItem(GUARDADO); }catch(err){} }
 
-const E = {MISIONES, genera, plantilla, comparaEscrito, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto, comoFue, hora,
+const E = {MISIONES, genera, plantilla, comparaEscrito, generaCanon, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto, comoFue, hora,
   guarda, lee, borra, conAzar: f => { azar = f; }};
 if(typeof module !== 'undefined' && module.exports) module.exports = E;
 else raiz.Ejercicios = E;

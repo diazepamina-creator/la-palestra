@@ -300,3 +300,6 @@
    regla se estrecha, no queda hueco a los lados */
 .suelo{position:absolute;left:0;right:0;bottom:0;height:52px;z-index:0;pointer-events:none;
   background:linear-gradient(180deg,rgba(48,35,44,.65) 0,#2B1F2C 30%,#1A1322 100%);border-top:1px solid rgba(233,184,78,.5)}
+/* los números que se comparan, señalados en la regla */
+.marca-n.marcada{color:var(--ink);font-weight:700;background:rgba(233,184,78,.35);box-shadow:0 0 0 1.5px #E9B84E}
+.marca-n.marcada i{height:36px;margin-top:-10px;background:linear-gradient(180deg,rgba(233,184,78,.1),#E9B84E)}

@@ -126,6 +126,7 @@
     </div>
     <div class="tl-ej" id="tlEj" hidden>
       <p class="tl-marca" id="tlMarca"></p>
+      <div class="tl-canon" id="tlCanon" hidden role="group" aria-label="Toca uno"></div>
       <ol class="tl-argos" id="tlArgos" hidden aria-label="La resolución de Listillón: toca la primera línea mal"></ol>
       <div class="tl-resp" id="tlRespFila">
         <input id="tlResp" type="text" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="¿Dónde acaba?" aria-label="Tu respuesta">
@@ -259,16 +260,84 @@
     if(m.modo === 'argos'){
       for(let k = 0; k < 40 && !argos; k++){ ej = E.genera(m.niveles[k % m.niveles.length]); argos = window.Argos.conFallo(ej.tok); }
     }
+    /* fuerza y bando: dos números y una pregunta */
+    let canon = null;
+    if(m.modo === 'canon') canon = E.generaCanon();
     /* escríbelo: una cuenta de entrar y retirarse, que solo se ve en el campo */
     if(m.modo === 'escribe') ej = E.genera(m.niveles[Math.floor(Math.random() * m.niveles.length)]);
     S.ej = {valor: ej.valor, visto: m.modo === 'escribe', fase: 'pensando', id: Date.now(), cuenta: P.escribe(ej.pel.arbol), argos,
-            modo: m.modo || 'resultado', real: ej.tok, pel: ej.pel};
+            modo: m.modo || 'resultado', real: ej.tok, pel: ej.pel, canon};
+    if(canon){
+      S.ej.valor = canon.bien === 0 ? canon.a : canon.b;
+      S.ej.cuenta = {fuerza: 'más fuerte', menor: 'menor', mayor: 'mayor'}[canon.tipo] + ': ' + P.conSigno(canon.a) + ' o ' + P.conSigno(canon.b);
+    }
+    $('panelCampo').classList.remove('quieto');
     S.tok = ej.tok; S.cur = null; S.pel = null; S.visto = false; R.para();
     $('tlResp').value = '';
     $('tlAviso').innerHTML = '';
     $('panelCampo').hidden = true;
-    if(S.ej.modo === 'escribe') S.tok = [];
-    pintaTablilla(); pintaMarca(); pintaArgos(); pintaEscribe();
+    if(S.ej.modo === 'escribe' || S.ej.modo === 'canon') S.tok = [];
+    pintaTablilla(); pintaMarca(); pintaArgos(); pintaEscribe(); pintaCanon();
+  }
+  /* ── FUERZA Y BANDO: dos números; se toca el que responde a la pregunta ── */
+  const numSpan = v => '<span class="' + (v < 0 ? 'izq' : 'der') + '">' + P.conSigno(v) + '</span>';
+  function pantallaCanon(c){
+    const x = v => c.tipo === 'fuerza' ? '|' + numSpan(v) + '|' : numSpan(v);
+    return x(c.a) + '<span class="op">  ?  </span>' + x(c.b);
+  }
+  function pintaCanon(){
+    const c = S.ej && S.ej.canon;
+    $('tlCanon').hidden = !c;
+    if(!c) return;
+    $('tlRespFila').hidden = true;
+    $('tlCanon').innerHTML = [c.a, c.b].map((v, k) => '<button type="button" class="tl-opcion" data-k="' + k + '">' + numSpan(v) + '</button>').join('');
+    $('tlAviso').innerHTML = {fuerza: '¿Quién tira <b>más fuerte</b>?', menor: '¿Cuál es <b>menor</b>?', mayor: '¿Cuál es <b>mayor</b>?'}[c.tipo];
+  }
+  $('tlCanon').addEventListener('click', ev => {
+    const b = ev.target.closest('.tl-opcion'), c = S.ej && S.ej.canon;
+    if(!b || !c || S.ej.fase === 'bien') return;
+    const k = Number(b.dataset.k), dicho = P.conSigno(k === 0 ? c.a : c.b);
+    const [x, y] = c.bien === 0 ? [c.a, c.b] : [c.b, c.a], cs = P.conSigno;
+    if(k === c.bien){
+      S.ej.fase = 'bien';
+      E.anota(sesion, ruta, true, detalle(dicho));
+      b.classList.add('buena');
+      const cumplida = E.acierta(ruta);
+      $('tlAviso').innerHTML = '<b>¡Eso es!</b> ' + (c.tipo === 'fuerza'
+        ? '|' + cs(x) + '| = ' + Math.abs(x) + ' y |' + cs(y) + '| = ' + Math.abs(y) + ': tira más fuerte el ' + cs(x) + '.'
+        : c.tipo === 'menor' ? cs(x) + ' &lt; ' + cs(y) + ': en la regla, más a la izquierda.'
+        : cs(x) + ' &gt; ' + cs(y) + ': en la regla, más a la derecha.') + (cumplida ? ' <b>Misión cumplida.</b>' : '');
+      E.guarda(ruta, sesion); pintaRuta(); pintaMarca(); pintaActa();
+      const yo = S.ej;
+      setTimeout(() => { if(S.ej === yo) ronda(); }, 2400);
+      return;
+    }
+    E.anota(sesion, ruta, false, detalle(dicho));
+    E.guarda(ruta, sesion);
+    b.classList.add('mala');
+    $('tlAviso').innerHTML = c.tipo === 'fuerza'
+      ? 'Ese tira menos. La fuerza va <b>sin signo</b>: |' + cs(c.a) + '| = ' + Math.abs(c.a) + ' y |' + cs(c.b) + '| = ' + Math.abs(c.b) + '.'
+      : (c.a < 0 && c.b < 0 ? 'No. Con los negativos, cuanta más fuerza, <b>más a la izquierda</b>. ' : 'No. ') +
+        (c.tipo === 'menor' ? 'Míralo en la regla: más a la izquierda, <b>menor</b>.' : 'Míralo en la regla: más a la derecha, <b>mayor</b>.');
+    pintaMarca(); pintaActa();
+  });
+  /* el campo, quieto: los dos tiradores tirando, o la regla con los dos números */
+  function verCanon(){
+    const c = S.ej.canon;
+    if(S.ej.fase !== 'bien') S.ej.visto = true;
+    R.para();
+    $('panelCampo').hidden = false; $('panelCampo').classList.add('quieto');
+    $('cartela').hidden = true; $('banquillo').hidden = true;
+    if(c.tipo === 'fuerza'){
+      C.pinta(campo, {cuerda: [{id: 1, f: c.a, venia: null}, {id: 2, f: c.b, venia: null}], banquillo: [], bandera: c.a + c.b}, {alcance: 8});
+      $('jefAviso').innerHTML = Math.sign(c.a) === Math.sign(c.b)
+        ? 'Los dos tiran hacia el mismo lado: el más grande es el que tiene más <b>fuerza</b>.'
+        : 'Cada uno tira hacia su lado: la bandera se va hacia el que tiene más <b>fuerza</b>.';
+    }else{
+      C.pinta(campo, {cuerda: [], banquillo: [], bandera: 0}, {alcance: 8, marcas: [c.a, c.b]});
+      $('jefAviso').innerHTML = 'En la regla, más a la izquierda es <b>menor</b>; más a la derecha, <b>mayor</b>.';
+    }
+    $('panelCampo').scrollIntoView({behavior: 'smooth', block: 'start'});
   }
   /* ── ESCRÍBELO: el campo pasa la película sin la cartela, y la cuenta se
      escribe en la tablilla con sus teclas ── */
@@ -375,7 +444,7 @@
     $('tlTeclas').hidden = si;
     $('tlPie').hidden = si;
     if(si){ pintaRuta(); ronda(); }
-    else{ S.ej = null; pintaArgos(); pintaEscribe(); S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
+    else{ S.ej = null; pintaArgos(); pintaEscribe(); pintaCanon(); $('panelCampo').classList.remove('quieto'); S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
     pintaPestanas();
   }
   /* ── EL ACTA, en su propia hoja ── */
@@ -405,7 +474,7 @@
   addEventListener('keydown', ev => { if(ev.key === 'Escape' && !$('mActa').hidden) cierraActa(); });
   $('tlComprueba').addEventListener('click', comprueba);
   $('tlResp').addEventListener('keydown', ev => { if(ev.key === 'Enter'){ ev.preventDefault(); comprueba(); } });
-  $('tlVer').addEventListener('click', () => { if(S.ej) igual(); });
+  $('tlVer').addEventListener('click', () => { if(S.ej && S.ej.canon) verCanon(); else if(S.ej) igual(); });
   $('rtSigue').addEventListener('click', () => { if(E.siguiente(ruta)){ E.guarda(ruta, sesion); pintaRuta(); ronda(); } });
   $('rtSalta').addEventListener('click', () => { if(E.siguiente(ruta)){ E.guarda(ruta, sesion); pintaRuta(); ronda(); } });
   $('acNombre').addEventListener('input', () => { sesion.nombre = $('acNombre').value; E.guarda(ruta, sesion); });
@@ -426,6 +495,7 @@
   });
   function pintaTablilla(){
     /* el cursor, en su sitio; en los ejercicios y con el resultado a la vista, no hay */
+    if(S.ej && S.ej.canon){ $('tlEscrito').innerHTML = pantallaCanon(S.ej.canon); return; }
     const sinCursor = S.ej && S.ej.modo !== 'escribe';
     let h = S.tok.length ? TL.htmlCuenta(S.tok, null, sinCursor ? undefined : cursor()) : '';
     if(S.pel){
