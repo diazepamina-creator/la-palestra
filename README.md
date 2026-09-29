@@ -29,6 +29,7 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 - `src/piel.css` — la piel: la disposición de Las piezas de Miut (la cabecera con pestañas, las hojas, los botones, las cajas de lo que dicen Listillón y Jeferión, el acta y el pie) sobre la arena rastrillada de la palestra, de día o de noche, o el papel del proyector. La letra: Cinzel en los rótulos y Alegreya Sans para leer; las cuentas, en Space Mono.
 - `src/ajustes.css` — el campo a la luz del día (arena de día y proyector) y el modo aula para la pizarra digital (la lógica de los ajustes va en `src/pagina.html`).
 - `src/arranque.js` y `src/arranque.css` — la escena de inicio, como en Las piezas de Miut: −3 + 5 = +2 jugado en el campo de verdad y el nombre. Solo al abrir la app; se salta tocando y se quita en Ajustes.
+- `src/sonido.js` — el sonido, sintetizado con Web Audio (sin archivos): el graderío al tirar, el rugido de Jeferión al acertar, el graznido de Listillón al fallar, el trueno de Zeus, el descorche y el trago de las pociones. Bajito, y se quita en Ajustes.
 - `VERSION` — el número de versión; `construye.mjs` lo pone en la página.
 - `pruebas/` — `node --test pruebas/*.test.mjs`: el motor, los ejercicios, la tablilla (escribir y editar con el cursor) y la construcción, que comprueba que `index.html` está al día.
 - `construye.mjs` — funde `src/` en `index.html`.
@@ -51,3 +52,4 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 14. ✅ El ojo de Argos: encontrar el primer fallo (traído de El pulso de los dioses).
 15. ✅ Escríbelo: ver lo que pasa en el campo y escribir la cuenta (traído de El pulso de los dioses).
 16. ✅ Fuerza y bando: la fuerza sin signo y el orden en la regla (el canon de El pulso de los dioses).
+17. ✅ El sonido, y la pata de Listillón sujetando su tablilla en la entrevista.

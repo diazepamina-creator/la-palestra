@@ -61,6 +61,7 @@ function chamusca(campo, elT, fza){
   setTimeout(() => m.remove(), 4200);
 }
 function rayo(campo, elT, fza){
+  if(raiz.Sonido) raiz.Sonido.toca('trueno');
   const u = varaDe(fza);
   const rc = rect(campo), rn = rect(elT);
   const cx = rn.left + rn.width / 2 - rc.left;
@@ -110,7 +111,7 @@ function humo(campo, elT){
 /* la escena entera: Zeus se asoma, lanza, el tirador se va. Devuelve una
    promesa que se cumple cuando el tirador ya no está; Zeus se retira solo */
 function fulmina(campo, elT, fza, espera){
-  if(REDUCIDO || !elT){ if(elT) elT.classList.add('saliendo'); return espera(REDUCIDO ? 60 : 500); }
+  if(REDUCIDO || !elT){ if(elT){ elT.classList.add('saliendo'); if(raiz.Sonido) raiz.Sonido.toca('trueno'); } return espera(REDUCIDO ? 60 : 500); }
   const z = asoma(campo, elT);
   return espera(560).then(() => {
     lanza(z);

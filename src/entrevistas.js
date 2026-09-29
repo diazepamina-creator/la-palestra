@@ -80,7 +80,7 @@ const TABLILLA_DE_CERCA = (() => {
   const raya = (d, w) => '<path d="' + d + '" fill="none" stroke="' + T + '" stroke-width="' + (w || 1.6) + '" stroke-linecap="round" stroke-linejoin="round"/>';
   const texto = (x, y, s, tam, giro) => '<text x="' + x + '" y="' + y + '" font-family="Space Mono, monospace" font-size="' + tam + '" fill="' + T + '"' +
     (giro ? ' transform="rotate(' + giro + ' ' + x + ' ' + y + ')"' : '') + '>' + s + '</text>';
-  return '<svg viewBox="0 0 320 200" role="img" aria-label="La tablilla de Listillón, de cerca: la cuenta con signos y una caricatura de Jeferión riéndose">' +
+  return '<svg viewBox="0 0 346 200" role="img" aria-label="La tablilla de Listillón, de cerca, sujeta con su pata azul: la cuenta con signos y una caricatura de Jeferión riéndose">' +
     '<defs><linearGradient id="tdc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6d4ac"/><stop offset="1" stop-color="#d2bb8a"/></linearGradient></defs>' +
     '<rect x="6" y="6" width="308" height="188" rx="14" fill="url(#tdc)" stroke="#8a6a3b" stroke-width="3"/>' +
     '<rect x="14" y="14" width="292" height="172" rx="9" fill="none" stroke="#b8a074" stroke-width="1.2" stroke-dasharray="3 4"/>' +
@@ -109,8 +109,16 @@ const TABLILLA_DE_CERCA = (() => {
       texto(-30, -54, 'JA JA JA', 13, -8) +
       texto(30, 44, 'el jefe', 10, 4) +
     '</g>' +
-    /* la mano de Listillón tapando la esquina, que esto no lo vea nadie */
-    raya('M262 186 q10 -22 34 -18 q16 4 18 22', 2) +
+    /* la pata de Listillón, el ala azul con sus plumas-dedo, asomando por el
+       borde derecho y agarrando la tablilla: que esto no lo vea nadie */
+    '<g transform="translate(0 14)" stroke="#241C36" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">' +
+      '<path d="M346 112 Q328 114 316 124 Q306 134 306 148 Q306 164 318 170 Q332 174 346 166 Z" fill="#57B8D6"/>' +
+      '<path d="M346 150 Q332 156 320 154" fill="none" stroke="#3F9CBC" stroke-width="2.2"/>' +
+      '<path d="M312 128 Q300 126 293 133 Q292 139 299 139 Q306 137 311 134 Z" fill="#57B8D6"/>' +
+      '<path d="M309 141 Q296 141 290 149 Q290 155 297 154 Q304 151 309 147 Z" fill="#57B8D6"/>' +
+      '<path d="M310 154 Q299 156 295 163 Q296 168 302 166 Q307 163 311 160 Z" fill="#57B8D6"/>' +
+      '<path d="M297 134 l4 -1 M295 150 l4 -1 M299 163 l4 -2" fill="none" stroke="#3F9CBC" stroke-width="1.2"/>' +
+    '</g>' +
   '</svg>';
 })();
 
@@ -161,6 +169,7 @@ function monta(el, o){
   /* la respuesta sale letra a letra, con la boca moviéndose; al acabar, la postura */
   function contesta(pose, html, prueba, conZoom){
     const tok = ++ev.tok;
+    if(ev.quien === 'lis' && raiz.Sonido) raiz.Sonido.toca('graznido');   // Listillón, al empezar a hablar
     const cara = $('.ev-cara'), dibu = DIBUJA[ev.quien], txt = $('.ev-respuesta'), bp = $('.ev-prueba');
     bp.hidden = true;
     const zoom = $('.ev-zoom');
@@ -174,6 +183,11 @@ function monta(el, o){
       /* Zeus enfadado: truena */
       el.classList.remove('ev-trueno');
       if(ev.quien === 'zeus' && pose === 'enfada' && !REDUCIDO){ void el.offsetWidth; el.classList.add('ev-trueno'); }
+      /* y su sonido: el trueno de Zeus enfadado, el rugido de Jeferión contento */
+      if(raiz.Sonido){
+        if(ev.quien === 'zeus' && pose === 'enfada') raiz.Sonido.toca('trueno');
+        if(ev.quien === 'jef' && pose === 'celebra') raiz.Sonido.toca('rugido');
+      }
       if(conZoom && zoom){ zoom.innerHTML = TABLILLA_DE_CERCA; zoom.hidden = false; }
       if(prueba && o && o.alPrueba){
         bp.hidden = false;

@@ -115,6 +115,7 @@ function crea(o){
           nodo.style.setProperty('--giraF', (q0.f < 0 ? -190 : 190) + 'deg');
           nodo.classList.add('trago');
         }
+        if(raiz.Sonido){ raiz.Sonido.toca('descorche'); raiz.Sonido.toca('trago', .5); }
         await espera(2150); if(!vivo()) return;
         /* ya bebido: la fuerza nueva, la cara que le queda y el destello */
         C.pinta(campo, paso, {alcance: R.alcance});
@@ -214,6 +215,7 @@ function kDe(paso){
   return m[1] === ':' ? 1 / v : v;
 }
 function tiron(campo){
+  if(raiz.Sonido) raiz.Sonido.toca('graderio');          // el público, al tirar
   campo.classList.remove('tiron'); void campo.offsetWidth; campo.classList.add('tiron');
   setTimeout(() => campo.classList.remove('tiron'), 620);
 }

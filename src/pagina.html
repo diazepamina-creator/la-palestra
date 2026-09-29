@@ -78,6 +78,9 @@
     <div class="aj"><span class="etq">Antes de mover la bandera</span>
       <span class="ops" data-aj="preguntas" role="group" aria-label="Antes de mover la bandera"><button type="button" data-v="si">Decir dónde acaba</button><button type="button" data-v="no">Jugar sin más</button></span>
       <small>Con «decir dónde acaba», ▶ pide tocar en la regla dónde quedará la bandera antes de cada paso que la mueve.</small></div>
+    <div class="aj"><span class="etq">El sonido</span>
+      <span class="ops" data-aj="sonido" role="group" aria-label="El sonido"><button type="button" data-v="si">Con sonido</button><button type="button" data-v="no">Sin sonido</button></span>
+      <small>Bajito: el graderío al tirar, el rugido de Jeferión al acertar, el graznido de Listillón al fallar, el trueno de Zeus y las pociones.</small></div>
     <div class="aj"><span class="etq">Al abrir</span>
       <span class="ops" data-aj="inicio" role="group" aria-label="La animación de inicio"><button type="button" data-v="si">Con animación</button><button type="button" data-v="no">Sin animación</button></span></div>
     <div class="aj"><span class="etq">Empezar de cero</span>
@@ -172,6 +175,7 @@
   </div>
 </div>
 <script src="src/motor.js"></script>
+<script src="src/sonido.js"></script>
 <script src="src/tirador.js"></script>
 <script src="src/campo.js"></script>
 <script src="src/tablilla.js"></script>
@@ -302,7 +306,7 @@
       S.ej.fase = 'bien';
       E.anota(sesion, ruta, true, detalle(dicho));
       b.classList.add('buena');
-      const cumplida = E.acierta(ruta);
+      const cumplida = E.acierta(ruta); sonar('rugido');
       $('tlAviso').innerHTML = '<b>¡Eso es!</b> ' + (c.tipo === 'fuerza'
         ? '|' + cs(x) + '| = ' + Math.abs(x) + ' y |' + cs(y) + '| = ' + Math.abs(y) + ': tira más fuerte el ' + cs(x) + '.'
         : c.tipo === 'menor' ? cs(x) + ' &lt; ' + cs(y) + ': en la regla, más a la izquierda.'
@@ -312,7 +316,7 @@
       setTimeout(() => { if(S.ej === yo) ronda(); }, 2400);
       return;
     }
-    E.anota(sesion, ruta, false, detalle(dicho));
+    E.anota(sesion, ruta, false, detalle(dicho)); sonar('graznido');
     E.guarda(ruta, sesion);
     b.classList.add('mala');
     $('tlAviso').innerHTML = c.tipo === 'fuerza'
@@ -360,7 +364,7 @@
     if(r.estado === 'igual'){
       S.ej.fase = 'bien';
       E.anota(sesion, ruta, true, detalle(dicho));
-      const cumplida = E.acierta(ruta);
+      const cumplida = E.acierta(ruta); sonar('rugido');
       $('tlAviso').innerHTML = '<b>¡Eso es!</b> Eso es lo que ha pasado.' + (cumplida ? ' <b>Misión cumplida.</b>' : '');
       if(R.pel) pintaMandos(R);                    // ahora sí, la cartela con la cuenta
       E.guarda(ruta, sesion); pintaRuta(); pintaMarca(); pintaActa();
@@ -368,7 +372,7 @@
       setTimeout(() => { if(S.ej === yo) ronda(); }, 2600);
       return;
     }
-    E.anota(sesion, ruta, false, detalle(dicho));
+    E.anota(sesion, ruta, false, detalle(dicho)); sonar('graznido');
     E.guarda(ruta, sesion);
     $('tlAviso').innerHTML = (r.estado === 'mismoValor' ? 'La bandera acabaría igual, pero <b>no es lo que ha pasado</b>. ' : 'No es lo que ha pasado. ') +
       (r.pista ? r.pista + ' ' : '') + 'Míralo otra vez con <b>▶</b>.';
@@ -392,14 +396,14 @@
       E.anota(sesion, ruta, true, detalle(linea));
       b.classList.add('cazada');
       b.querySelector('.tl-lt').insertAdjacentHTML('beforeend', '<i class="tl-era">era ' + a.bien[k].split('= ').pop() + '</i>');
-      const cumplida = E.acierta(ruta);
+      const cumplida = E.acierta(ruta); sonar('rugido');
       $('tlAviso').innerHTML = '<b>¡Cazado!</b> Me he liado con ' + a.por + '.' + (cumplida ? ' <b>Misión cumplida.</b>' : '');
       E.guarda(ruta, sesion); pintaRuta(); pintaMarca(); pintaActa();
       const yo = S.ej;
       setTimeout(() => { if(S.ej === yo) ronda(); }, 3200);
       return;
     }
-    E.anota(sesion, ruta, false, detalle(linea));
+    E.anota(sesion, ruta, false, detalle(linea)); sonar('graznido');
     E.guarda(ruta, sesion);
     if(k < a.malo){ b.classList.add('buena'); $('tlAviso').innerHTML = 'Esa está bien. Mi fallo viene <b>después</b>.'; }
     else{ b.classList.add('arrastra'); $('tlAviso').innerHTML = 'Esa sale mal, sí… pero porque arrastra un fallo de <b>antes</b>. Busca el primero.'; }
@@ -422,20 +426,22 @@
     if(dicho === S.ej.valor){
       S.ej.fase = 'bien';
       E.anota(sesion, ruta, true, detalle(dicho));
-      const cumplida = E.acierta(ruta);
+      const cumplida = E.acierta(ruta); sonar('rugido');
       $('tlAviso').innerHTML = '<b>¡Correcto!</b>' + (S.ej.visto ? '' : ' Y sin mirar.') + (cumplida ? ' <b>Misión cumplida.</b>' : '');
       E.guarda(ruta, sesion);
       pintaRuta(); pintaMarca(); pintaActa();
       const yo = S.ej;
       setTimeout(() => { if(S.ej === yo) ronda(); }, 2000);
     }else{
-      E.anota(sesion, ruta, false, detalle(dicho));
+      E.anota(sesion, ruta, false, detalle(dicho)); sonar('graznido');
       E.guarda(ruta, sesion);
       $('tlAviso').innerHTML = 'No es <b>' + resp.replace('-', '−') + '</b>. Pulsa <b>▶ Verlo en el campo</b> y mira dónde acaba.';
       $('tlResp').value = '';
       pintaMarca(); pintaActa();
     }
   }
+  /* el sonido: el rugido de Jeferión al acertar, el graznido de Listillón al fallar */
+  const sonar = n => { if(window.Sonido) window.Sonido.toca(n); };
   /* lo que el acta apunta de cada respuesta */
   const detalle = dicho => ({id: S.ej.id, cuenta: S.ej.cuenta, dicho, valor: S.ej.valor, visto: S.ej.visto});
   function modoRuta(si){
@@ -616,7 +622,7 @@
 
   /* ── LOS AJUSTES: se guardan en este navegador y no caducan ── */
   const AJUSTES = 'palestra.ajustes.v1';
-  const aj = {tema: 'dia', aula: false, lento: false, preguntas: true, inicio: true};
+  const aj = {tema: 'dia', aula: false, lento: false, preguntas: true, inicio: true, sonido: true};
   try{ Object.assign(aj, JSON.parse(localStorage.getItem(AJUSTES) || '{}')); }catch(err){}
   if(['dia', 'noche', 'proyector'].indexOf(aj.tema) < 0) aj.tema = 'dia';
   function aplica(){
@@ -626,7 +632,8 @@
     h.style.setProperty('--lento', aj.lento ? 1.6 : 1);
     window.Reproductor.ponRitmo(aj.lento ? 1.6 : 1);
     R.preguntas = aj.preguntas;
-    const valor = {tema: aj.tema, aula: aj.aula ? 'si' : 'no', lento: aj.lento ? 'si' : 'no', preguntas: aj.preguntas ? 'si' : 'no', inicio: aj.inicio ? 'si' : 'no'};
+    if(window.Sonido) window.Sonido.activo(aj.sonido);
+    const valor = {tema: aj.tema, aula: aj.aula ? 'si' : 'no', lento: aj.lento ? 'si' : 'no', preguntas: aj.preguntas ? 'si' : 'no', inicio: aj.inicio ? 'si' : 'no', sonido: aj.sonido ? 'si' : 'no'};
     document.querySelectorAll('[data-aj]').forEach(g => g.querySelectorAll('button').forEach(b =>
       b.setAttribute('aria-pressed', String(b.dataset.v === valor[g.dataset.aj])) ));
     $('bAula').setAttribute('aria-pressed', String(aj.aula));
