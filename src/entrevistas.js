@@ -33,7 +33,7 @@ const ENTREVISTAS = {
   jef: {nombre:'Jeferión', cargo:'jefe del almacén de carros y patrocinador del equipo de la derecha',
     hola:['habla', 'Pregunte rápido, que tengo carros que cargar. Y hable bien de mí.'],
     preguntas:[
-      {id:'j1', p:'¿Por qué lleva gafas, si es un cocodrilo?', pose:'habla',
+      {id:'j1', p:'¿Por qué lleva gafas, si es un dinosaurio?', pose:'habla',
        r:'Para leer las tablillas de Listillón. Escribe muy pequeño y con <b>muchos paréntesis</b>.'},
       {id:'j2', p:'¿Por qué siempre va con los de la derecha?', pose:'celebra',
        r:'¡Porque los de la derecha tiran hacia los positivos! Aunque Listillón dice que un <b>−5 tira más fuerte que un +3</b>. Me sigue doliendo.'},
@@ -64,8 +64,8 @@ const ENTREVISTAS = {
        r:'Que lo quiere todo en positivo. Le digo que el total es −4 y me contesta: «Escríbelo más bonito». <b>El −4 ya es bonito</b>, jefe.'},
       {id:'l5', p:'¿Se lleva bien con Zeus?', pose:'sorpresa',
        r:'Nos respetamos. Él lanza los rayos y yo apunto las restas. Una vez se equivocó de tirador y… eso pregúnteselo a él.'},
-      {id:'l6', p:'¿Por qué lleva gorra?', pose:'celebra',
-       r:'Para que no me caigan encima los paréntesis. Hay días que llueven.'},
+      {id:'l6', p:'¿Por qué lleva ese sombrero?', pose:'celebra',
+       r:'Es un <b>pétaso</b>, el sombrero de los viajeros y de Hermes. Y para que no me caigan encima los paréntesis: hay días que llueven.'},
       {id:'l7', p:'¿Qué le diría a quien odia los números negativos?', pose:'celebra',
        r:'Que no son malos: son <b>del otro bando</b>. Sin ellos no habría pulso, solo gente tirando de una cuerda hacia el mismo lado. Qué aburrimiento.'},
       {id:'l8', p:'¿Cómo sabe que una cuenta está bien?', pose:'senala',
@@ -92,18 +92,21 @@ const TABLILLA_DE_CERCA = (() => {
     raya('M24 132 q40 3 82 0 t50 1', 1.2) +
     texto(26, 160, 'el jefe: «escríbelo más bonito»', 11, -.8) +
     texto(26, 178, 'ya es bonito.', 11, .6) +
-    /* la caricatura del jefe: cabezón, gafas, dientes y carcajada */
+    /* la caricatura del jefe: dinosaurio cabezón, con gafas, púas, colita y carcajada */
     '<g transform="translate(226 92) rotate(6)">' +
-      raya('M-18 -8 Q-30 -30 -4 -36 Q26 -40 40 -26 L52 -22 L38 -14 Q30 -4 0 2 Q-14 4 -18 -8 Z', 2.2) +   /* cabeza y hocico */
-      raya('M-2 -14 L48 -20', 1.8) +                                                                  /* la boca, abierta de risa */
-      raya('M6 -16 l2 -6 l3 6 l3 -6 l3 6 l3 -6 l3 6 l3 -6 l3 6', 1.3) +                              /* dientes arriba */
-      raya('M8 -12 l3 6 l3 -6 l3 6 l3 -6 l3 6 l3 -6', 1.3) +                                          /* dientes abajo */
-      raya('M2 -28 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 M22 -30 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 M10 -28 L14 -30', 1.8) + /* gafas */
-      raya('M-4 -30 l4 3 M18 -32 l4 3', 1.4) +                                                        /* ojos apretados de reír */
-      raya('M-14 -34 q6 -8 14 -6 q8 -6 16 -2 q8 -6 14 0', 1.6) +                                      /* el laurel, a rayas */
-      raya('M-8 4 q-6 18 4 30 M14 4 q6 16 -2 30 M-6 32 h32', 1.8) +                                    /* el cuerpo, de palo */
-      raya('M-6 12 l-14 -8 M12 12 l16 -6 l-2 6', 1.6) +                                                /* los brazos, uno señalando */
-      texto(-30, -50, 'JA JA JA', 13, -8) +
+      raya('M-26 -18 l-8 -2 l6 -6 M-27 -29 l-7 -5 l8 -3 M-20 -38 l-3 -8 l8 1', 1.6) +                  /* púas del cogote */
+      raya('M-20 -6 Q-32 -36 -2 -43 Q24 -47 32 -29 Q40 -28 45 -23 Q49 -18 44 -14 L30 -10 Q20 -2 0 2 Q-16 4 -20 -6 Z', 2.2) + /* cráneo redondo, hocico corto */
+      raya('M40 -24 l2 0', 1.6) +                                                                          /* el orificio */
+      raya('M2 -14 L42 -18', 1.8) +                                                                        /* la boca, abierta de risa */
+      raya('M8 -16 l2 -5 l3 5 l3 -5 l3 5 l3 -5 l3 5 l3 -5 l3 5', 1.3) +                                   /* dientes arriba */
+      raya('M10 -12 l3 5 l3 -5 l3 5 l3 -5 l3 5', 1.3) +                                                   /* dientes abajo */
+      raya('M0 -30 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 M20 -32 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 M8 -30 L12 -32', 1.8) + /* gafas */
+      raya('M-6 -32 l4 3 M16 -34 l4 3', 1.4) +                                                             /* ojos apretados de reír */
+      raya('M-8 4 q-6 18 4 30 M14 4 q6 16 -2 30 M-6 32 h32', 1.8) +                                        /* el cuerpo, de palo */
+      raya('M-13 12 l-6 -2 l5 -4 M-13 22 l-6 -1 l5 -5', 1.4) +                                             /* púas en la espalda */
+      raya('M-4 30 q-16 6 -26 -4 l-2 -6 l6 3', 1.6) +                                                      /* la cola */
+      raya('M-6 12 l-14 -8 M12 12 l16 -6 l-2 6', 1.6) +                                                    /* los brazos, uno señalando */
+      texto(-30, -54, 'JA JA JA', 13, -8) +
       texto(30, 44, 'el jefe', 10, 4) +
     '</g>' +
     /* la mano de Listillón tapando la esquina, que esto no lo vea nadie */

@@ -99,8 +99,28 @@ function brazo2(x0, y0, a1, l1, a2, l2, g, color, mano){
     '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="' + g +
     '" stroke-linecap="round" stroke-linejoin="round"/>' + (mano ? mano(x1, y1, a2) : '');
 }
-/* ── JEFERIÓN ── cocodrilo jefe: gafas redondas, laurel, banda morada */
-const JV = {piel:'#8CBF4F', sombra:'#5F8F32', vientre:'#C9DE8A', banda:'#7E5C86', oro:'#E9B84E', laurel:'#6E9A2E'};
+/* ── JEFERIÓN ── dinosaurio, dueño de una empresa de carros y jefe de
+   Listillón: cráneo de tiranosaurio, placas en el lomo, gafas redondas y
+   banda morada */
+const JV = {piel:'#8CBF4F', sombra:'#5F8F32', vientre:'#C9DE8A', banda:'#7E5C86', oro:'#E9B84E', placa:'#E39B3C'};
+/* las placas del lomo: triángulos romos puestos SOBRE el contorno. Se
+   calcula el punto de la curva (una Bézier cuadrática [p0, c, p1]) y su
+   tangente; la placa se apoya con la base en la curva y la punta sale
+   perpendicular, hacia fuera («lado» +1 o −1 según hacia dónde queda fuera).
+   Van por detrás del cuerpo, así que la base queda escondida */
+const placaJ = (x, y, a, k) => '<path d="M-5 3 Q-1 -9 1 -9 Q3 -8 5 3 Z" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + a.toFixed(0) + ') scale(' + (k || 1) + ')" fill="' + JV.placa + '" stroke="' + TINTA + '" stroke-width="1.2" stroke-linejoin="round"/>';
+function placasSobre(curva, ts, ks, lado){
+  const [[x0, y0], [cx, cy], [x1, y1]] = curva;
+  return ts.map((t, i) => {
+    const u = 1 - t;
+    const x = u * u * x0 + 2 * u * t * cx + t * t * x1, y = u * u * y0 + 2 * u * t * cy + t * t * y1;
+    let tx = 2 * u * (cx - x0) + 2 * t * (x1 - cx), ty = 2 * u * (cy - y0) + 2 * t * (y1 - cy);
+    const l = Math.hypot(tx, ty) || 1; tx /= l; ty /= l;
+    const nx = ty * lado, ny = -tx * lado;                 // la normal, hacia fuera
+    const ang = Math.atan2(nx, -ny) * 180 / Math.PI;       // la punta de la placa mira a la normal
+    return placaJ(x - nx * 1.5, y - ny * 1.5, ang, ks[i]);
+  }).join('');
+}
 /* la mano de Jeferión es la pezuña de la manaza, en pequeño: una bola con
    dos dedos rechonchos y la punta de cuerno, mirando hacia donde va el brazo.
    Contorno y relleno por separado, para que el contorno salga de una pieza */
@@ -118,6 +138,7 @@ function manoJ(x, y, ang, k){
 function manoJdedo(x, y, ang){
   return manoJ(x, y, ang, 1.55);
 }
+let nJ = 0;             // cada dibujo de Jeferión, su propio recorte
 function jeferion(pose){
   pose = pose || 'habla';
   const P = {
@@ -134,19 +155,32 @@ function jeferion(pose){
   let s = '<svg viewBox="0 0 100 100" class="pj pj-jef pose-' + pose + '" aria-hidden="true">';
   if(asoma) s += '<g transform="translate(4 40)">';
   if(!asoma){
-  /* cola, por detrás */
-  s += '<path d="M66 88 Q88 90 95 76 Q90 84 80 83 Q72 82 66 80 Z" fill="' + JV.sombra + '" stroke="' + TINTA + '" stroke-width="1.4" stroke-linejoin="round"/>';
-  s += '<path d="M78 82 l2 -4 l2 3.4 l2.4 -4.2 l1.8 3.6" fill="none" stroke="' + TINTA + '" stroke-width="1.1" stroke-linejoin="round"/>';
+  /* las placas, sobre el contorno: por el cuello y la espalda, y por encima
+     de la cola, cada vez más pequeñas */
+  s += placasSobre([[61,38],[61,54],[67,60]], [.15,.55,.95], [1.05,1.05,1], 1);
+  s += placasSobre([[67,60],[78,68],[76,98]], [.18,.45], [.95,.85], 1);
+  s += placasSobre([[64,76],[68,80],[74,82]], [.6], [.72], 1);
+  s += placasSobre([[74,82],[88,84],[94,74]], [.3,.66], [.64,.52], 1);
+  s += '<path d="M62 94 Q84 96 96 80 Q99 74 94 74 Q88 84 74 82 Q68 80 64 76 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.5" stroke-linejoin="round"/>';
+  s += '<path d="M70 88 Q82 88 90 80" fill="none" stroke="' + JV.sombra + '" stroke-width="1.2" opacity=".7"/>';
   /* brazo de atrás */
   s += brazoDe(33, 62, P.bI);
-  /* cuerpo */
-  s += '<path d="M24 98 Q22 66 38 56 L62 56 Q78 64 76 98 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  /* cuerpo y cuello de una pieza: la cabeza ya no flota */
+  const CUERPO_J = 'M24 98 Q22 70 34 61 Q39 56 40 40 L61 38 Q61 54 67 60 Q78 68 76 98 Z';
+  const idc = 'cuerpoJ' + (++nJ);
+  s += '<defs><clipPath id="' + idc + '"><path d="' + CUERPO_J + '"/></clipPath></defs>';
+  s += '<path d="' + CUERPO_J + '" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  s += '<path d="M44 48 Q50 52 57 48 M45 54 Q51 58 58 54" fill="none" stroke="' + JV.sombra + '" stroke-width="1.1" opacity=".6"/>';
   s += '<path d="M36 98 Q36 72 48 64 Q60 70 62 98 Z" fill="' + JV.vientre + '" opacity=".9"/>';
   s += '<path d="M40 76 H58 M39 84 H60 M38 92 H61" stroke="' + JV.sombra + '" stroke-width="1" opacity=".55"/>';
-  /* banda */
-  s += '<path d="M30 60 Q50 76 70 96" stroke="' + TINTA + '" stroke-width="9.4" fill="none"/>';
-  s += '<path d="M30 60 Q50 76 70 96" stroke="' + JV.banda + '" stroke-width="7.2" fill="none"/>';
-  s += '<path d="M30.6 58.4 Q51 74.4 71.4 94.4" stroke="' + JV.oro + '" stroke-width="1.2" fill="none" opacity=".9"/>';
+  /* la banda, del hombro a la cadera, siguiendo la barriga; recortada justo
+     al cuerpo, que no sobresalga por ningún lado */
+  s += '<g clip-path="url(#' + idc + ')">' +
+    '<path d="M28 58 Q50 70 76 98" stroke="' + TINTA + '" stroke-width="9.6" fill="none"/>' +
+    '<path d="M28 58 Q50 70 76 98" stroke="' + JV.banda + '" stroke-width="7.4" fill="none"/>' +
+    '<path d="M28.9 55.9 Q51.4 68 77.6 96.4" stroke="' + JV.oro + '" stroke-width="1.2" fill="none" opacity=".9"/>' +
+    '<path d="M27 60.2 Q48.8 72.2 74.4 99.6" stroke="#5E4166" stroke-width="1" fill="none" opacity=".7"/></g>';
+  s += '<path d="' + CUERPO_J + '" fill="none" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
   }
   /* cabeza: cráneo y hocico largo hacia la izquierda */
   const ab = P.boca * 7;                         // cuánto se abre la mandíbula
@@ -155,12 +189,16 @@ function jeferion(pose){
   if(P.boca > .1) s += '<path d="M10 41 Q26 46 42 44 L40 52 Q24 54 10 46 Z" fill="#B5484A" stroke="' + TINTA + '" stroke-width="1.2" transform="rotate(' + (-P.boca * 8).toFixed(1) + ' 42 44)"/>';
   s += '<path d="M42 50 Q30 54 14 52 Q6 51 6 46 Q6 42 12 42 L38 43 Z" transform="' + giro + '" fill="' + JV.sombra + '" stroke="' + TINTA + '" stroke-width="1.5" stroke-linejoin="round"/>';
   if(P.boca > .1) s += '<path d="M13 43 l1.6 -2.4 l1.6 2.4 M21 43.6 l1.6 -2.4 l1.6 2.4" transform="' + giro + '" fill="#fff" stroke="' + TINTA + '" stroke-width=".7"/>';
-  s += '<path d="M60 44 Q62 22 46 18 Q36 16 32 24 L10 29 Q3 30 3 36 Q3 42 10 42 L38 44 Q48 50 60 44 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  /* las placas del cogote, sobre la curva del cráneo */
+  s += placasSobre([[50,12],[66,20],[62,42]], [.28,.52,.78], [.9,1,1.05], 1);
+  /* el cráneo, alto y redondo, con el hocico corto de tiranosaurio */
+  s += '<path d="M62 42 Q66 20 50 12 Q38 8 30 16 Q25 21 21 25 L12 27 Q5 29 5 35 Q5 41 12 41 L38 44 Q50 50 62 42 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  s += '<path d="M20 26 Q23 30 22 36" fill="none" stroke="' + JV.sombra + '" stroke-width="1.1" opacity=".7"/>';
   /* dientes */
   s += '<path d="M12 42 l1.6 2.6 l1.6 -2.6 M19 42.4 l1.6 2.6 l1.6 -2.6 M26 43 l1.6 2.6 l1.6 -2.6" fill="#fff" stroke="' + TINTA + '" stroke-width=".7" stroke-linejoin="round"/>';
   /* orificios y escamas */
-  s += '<circle cx="7.5" cy="33.2" r="1.1" fill="' + TINTA + '"/><circle cx="11" cy="32.2" r="1.1" fill="' + TINTA + '"/>';
-  s += '<path d="M18 33 q2 -1.6 4 0 M25 32 q2 -1.6 4 0" fill="none" stroke="' + JV.sombra + '" stroke-width="1"/>';
+  s += '<circle cx="8.5" cy="31.6" r="1.1" fill="' + TINTA + '"/><circle cx="12" cy="30.8" r="1.1" fill="' + TINTA + '"/>';
+  s += '<path d="M25 35 q2 -1.6 4 0 M31 37 q2 -1.6 4 0 M28 39.5 q2 -1.6 4 0" fill="none" stroke="' + JV.sombra + '" stroke-width="1"/>';
   /* ojos con gafas redondas */
   const [mx, my] = P.mira;
   const ojo = (cx, cy) => {
@@ -175,11 +213,6 @@ function jeferion(pose){
   };
   s += ojo(37, 22) + ojo(51, 21);
   s += '<path d="M43.6 21.6 H44.4" stroke="' + TINTA + '" stroke-width="2"/>';
-  /* laurel */
-  s += '<path d="M31 17 Q44 5 60 14" fill="none" stroke="' + JV.laurel + '" stroke-width="1.6" stroke-linecap="round"/>';
-  [[33,14,-40],[37,10.6,-25],[42,8.6,-10],[47,8.2,5],[52,9.2,18],[57,11.6,32]].forEach(([x,y,a]) => {
-    s += '<ellipse cx="' + x + '" cy="' + y + '" rx="3.2" ry="1.4" transform="rotate(' + a + ' ' + x + ' ' + y + ')" fill="#8DB84A" stroke="' + TINTA + '" stroke-width=".6"/>';
-  });
   s += '</g>';
   if(asoma){
     s += '</g>';
@@ -189,8 +222,22 @@ function jeferion(pose){
   s += '</svg>';
   return s;
 }
-/* ── LISTILLÓN ── escriba: pájaro azul, gorra roja, su tablilla bajo el ala */
-const LV = {pluma:'#57B8D6', sombra:'#3F9CBC', gorra:'#C0392B', pico:'#E9B84E', tabla:'#C8B48B'};
+/* ── LISTILLÓN ── escriba griego: pájaro azul con su quitón blanco de cenefa
+   de almagre, el himatión terracota cruzado, la tablilla bajo el ala y el
+   estilete para rayarla; en la cabeza, la tenia roja */
+const LV = {pluma:'#57B8D6', sombra:'#3F9CBC', cinta:'#A8432D', quiton:'#F4EFE3', quitonS:'#D9D2C2', himation:'#B5563A', himationS:'#8E3E27', pico:'#E9B84E', tabla:'#C8B48B', tenia:'#C0392B', teniaS:'#8E2A1F'};
+/* la tenia: la cinta roja de los griegos, ceñida a la cabeza, con el nudo
+   detrás y dos puntas en cola de golondrina. Va por debajo de los ojos y las
+   cejas, así que no les tapa nada */
+const teniaL = () =>
+  /* las dos puntas, por detrás del nudo */
+  '<path d="M37.4 31.4 Q31 35.6 28.6 42.6 L31 41 L32 44.2 Q33.6 37.6 39 33.8 Z" fill="' + LV.teniaS + '" stroke="' + TINTA + '" stroke-width="1.1" stroke-linejoin="round"/>' +
+  '<path d="M38.4 32.6 Q35.2 39.4 35.8 46.4 L37.6 44.4 L39.4 46.6 Q38.8 40 40.8 34.4 Z" fill="' + LV.tenia + '" stroke="' + TINTA + '" stroke-width="1.1" stroke-linejoin="round"/>' +
+  /* la cinta, que rodea la cabeza de oreja a frente */
+  '<path d="M36.2 29.6 Q51 13.6 67.4 22.6 L69 24.8 Q52 17.6 37.4 33.6 Z" fill="' + LV.tenia + '" stroke="' + TINTA + '" stroke-width="1.2" stroke-linejoin="round"/>' +
+  '<path d="M39 29.2 Q51.6 17.6 65.6 22.4" fill="none" stroke="#fff" stroke-width=".9" opacity=".45"/>' +
+  /* el nudo */
+  '<ellipse cx="37.6" cy="31.6" rx="2.6" ry="2.2" fill="' + LV.tenia + '" stroke="' + TINTA + '" stroke-width="1.1"/>';
 function listillon(pose){
   pose = pose || 'habla';
   const P = {
@@ -211,11 +258,23 @@ function listillon(pose){
   /* cuerpo */
   s += '<ellipse cx="50" cy="70" rx="26" ry="23" fill="' + LV.pluma + '" stroke="' + TINTA + '" stroke-width="1.6"/>';
   s += '<ellipse cx="54" cy="76" rx="15" ry="14" fill="#9ED7EA" opacity=".75"/>';
+  /* el quitón: la túnica blanca, del pecho a los pies, con sus pliegues
+     rectos, el cinturón y la cenefa de almagre en el bajo */
+  s += '<path d="M28 62 Q50 57 72 62 Q78 78 72 90 Q66 95.5 50 95.5 Q34 95.5 28 90 Q22 78 28 62 Z" fill="' + LV.quiton + '" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
+  s += '<path d="M38 74 Q37 84 38 94 M46 75 V95 M54 75 V95 M62 74 Q63 84 62 94" fill="none" stroke="' + LV.quitonS + '" stroke-width="1.1"/>';
+  s += '<path d="M28.6 89.4 Q50 96.4 71.4 89.4" fill="none" stroke="' + LV.cinta + '" stroke-width="3.4"/>';
+  s += '<path d="M29.4 89.6 Q50 96.4 70.6 89.6" fill="none" stroke="' + LV.quiton + '" stroke-width="1" stroke-dasharray="1.8 1.8"/>';
+  s += '<path d="M24.8 73 Q50 78.4 75.2 73" fill="none" stroke="#8a6a3b" stroke-width="1.8"/>';
+  /* el himatión: el manto de lana, echado sobre el hombro, que cae en curva
+     cruzando el pecho y acaba en pico, con sus pliegues */
+  s += '<path d="M30 55 Q38 49 48 53 Q60 60 70 70 Q74 76 72 84 Q66 80 60 81 Q58 75 50 71 Q40 66 31 66 Q26 60 30 55 Z" fill="' + LV.himation + '" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
+  s += '<path d="M34 56 Q48 58 64 73 M33 61 Q46 63 58 75 M66 72 Q69 77 68 82" fill="none" stroke="' + LV.himationS + '" stroke-width="1.1" stroke-linecap="round" opacity=".85"/>';
   s += '<path d="M24 74 q-8 4 -10 12 q7 -3 12 -4" fill="' + LV.sombra + '" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
   /* tablilla bajo el ala (o en alto) */
   const tabla = P.tabla === 'arriba'
     ? '<g transform="rotate(-8 30 22)"><rect x="18" y="12" width="26" height="18" rx="2" fill="' + LV.tabla + '" stroke="' + TINTA + '" stroke-width="1.4"/><path d="M22 18 H40 M22 22 H36 M22 26 H38" stroke="' + TINTA + '" stroke-width=".9" opacity=".5"/></g>'
-    : '<g transform="rotate(-6 30 70)"><rect x="16" y="60" width="26" height="18" rx="2" fill="' + LV.tabla + '" stroke="' + TINTA + '" stroke-width="1.4"/><path d="M20 66 H38 M20 70 H34 M20 74 H36" stroke="' + TINTA + '" stroke-width=".9" opacity=".5"/></g>';
+    : '<g transform="rotate(-6 30 70)"><path d="M36 64 L46 50" stroke="#6E4E26" stroke-width="2" stroke-linecap="round"/><path d="M46 50 l1.4 -2.2" stroke="' + TINTA + '" stroke-width="1.2" stroke-linecap="round"/>' +
+      '<rect x="16" y="60" width="26" height="18" rx="2" fill="' + LV.tabla + '" stroke="' + TINTA + '" stroke-width="1.4"/><path d="M20 66 H38 M20 70 H34 M20 74 H36" stroke="' + TINTA + '" stroke-width=".9" opacity=".5"/></g>';
   if(P.tabla !== 'arriba') s += tabla;
   /* ala que sujeta la tablilla */
   s += P.tabla === 'arriba'
@@ -231,6 +290,7 @@ function listillon(pose){
   s += '<path d="M63 40 L85 ' + (43.5 + ab * .5).toFixed(1) + ' Q80 ' + (46 + ab).toFixed(1) + ' 69 ' + (46 + ab).toFixed(1) + ' L63 45 Z" fill="#D9962B" stroke="' + TINTA + '" stroke-width="1.2" stroke-linejoin="round"/>';
   s += '<path d="M63 32 Q78 34 89 40.5 Q80 43 63 43 Z" fill="' + LV.pico + '" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
   s += '<circle cx="54" cy="36" r="19" fill="' + LV.pluma + '" stroke="' + TINTA + '" stroke-width="1.6"/>';
+  s += teniaL();
   /* ojos */
   const [mx, my] = P.mira;
   const ojo = (cx, cy, r) => (P.ceja === 'alegre'
@@ -242,11 +302,6 @@ function listillon(pose){
   const cj = {seria:[[53,27,62,29],[64,28.6,72,26]], alta:[[53,25,62,23.4],[64,23,72,24.6]],
               alegre:[[53,27,62,26],[64,25.6,72,27]], piensa:[[53,26,62,28],[64,26,72,24]]}[P.ceja];
   cj.forEach(c => { s += '<path d="M' + c[0] + ' ' + c[1] + ' L' + c[2] + ' ' + c[3] + '" stroke="' + TINTA + '" stroke-width="2.4" stroke-linecap="round"/>'; });
-  /* gorra con visera hacia delante */
-  s += '<path d="M36 26 Q40 8 56 9 Q70 10 72 24 Z" fill="' + LV.gorra + '" stroke="' + TINTA + '" stroke-width="1.5" stroke-linejoin="round"/>';
-  s += '<path d="M60 22 Q74 19 82 24 Q74 26 62 26 Z" fill="#A5301F" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
-  s += '<path d="M37 24 Q54 20 71 23" fill="none" stroke="#fff" stroke-width="1.2" opacity=".55"/>';
-  s += '<circle cx="54" cy="9.6" r="2" fill="#A5301F" stroke="' + TINTA + '" stroke-width="1"/>';
   s += '</g>';
   if(asoma){
     s += '</g>';

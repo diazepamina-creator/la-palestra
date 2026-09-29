@@ -48,9 +48,13 @@ function miniTirador(f){
 
 /* ── la cuenta escrita, pieza a pieza; «clase(i)» marca las que se iluminan ── */
 const numHtml = (f, primero) => '<span class="' + (f < 0 ? 'izq' : 'der') + '">' + P.numCuaderno(f, primero) + '</span>';
-function htmlCuenta(tok, clase){
+const CURSOR = '<span class="tl-cursor" aria-hidden="true"></span>';
+/* «cursor»: si se da, el cursor parpadea delante de la pieza de ese número
+   (o al final, si es tok.length) */
+function htmlCuenta(tok, clase, cursor){
   let h = '', primero = true, abierta = '';
   tok.forEach((t, i) => {
+    if(i === cursor) h += CURSOR;
     const sig = tok[i + 1];
     let x = '';
     /* un negativo elevado va siempre entre paréntesis: (−2)² no es −2² */
@@ -67,13 +71,37 @@ function htmlCuenta(tok, clase){
     h += x;
   });
   if(abierta) h += '</span>';
+  if(cursor === tok.length) h += CURSOR;
   return h;
 }
 
 /* ── qué pasa al pulsar una tecla: devuelve la cuenta nueva y, si algo no
    encaja, el aviso. Es una función pura: no toca la pantalla ── */
 const esFactor = t => t && (t.t === 'n' || t.t === ')' || t.t === 'e' || (t.t === 'p' && !t.pre));
-function pulsa(tok, tk){
+const empiezaFactor = t => t && (t.t === 'n' || t.t === '(' || (t.t === 'p' && t.pre));
+/* con cursor: la tecla se escribe donde está el cursor, mirando lo que hay
+   delante como si fuera el final de la cuenta, y luego se cose con lo de
+   detrás. Devuelve también dónde queda el cursor */
+function pulsa(tok, tk, cur){
+  cur = cur === undefined ? tok.length : Math.max(0, Math.min(tok.length, cur));
+  if(tk.t === 'izq') return {tok, cur: Math.max(0, cur - 1), aviso: ''};
+  if(tk.t === 'der') return {tok, cur: Math.min(tok.length, cur + 1), aviso: ''};
+  if(tk.t === 'ac') return {tok: [], cur: 0, aviso: ''};
+  if(tk.t === 'borra'){
+    if(!cur) return {tok, cur, aviso: ''};
+    const T = tok.slice(); T.splice(cur - 1, 1);
+    return {tok: T, cur: cur - 1, aviso: ''};
+  }
+  const delante = tok.slice(0, cur), detras = tok.slice(cur);
+  const r = pulsaAlFinal(delante, tk);
+  if(r.aviso) return {tok, cur, aviso: r.aviso};
+  const hecho = r.tok, ult = hecho[hecho.length - 1], sig = detras[0];
+  let costura = [];
+  if(esFactor(ult) && empiezaFactor(sig)) costura = [{t: '+'}];      // dos tiradores seguidos: se suman
+  else if(ult && (ult.t === '+' || ult.t === '-') && sig && (sig.t === '+' || sig.t === '-')) detras.shift();   // dos signos seguidos: manda el nuevo
+  return {tok: hecho.concat(costura, detras), cur: hecho.length + costura.length, aviso: ''};
+}
+function pulsaAlFinal(tok, tk){
   const T = tok.slice(), ult = T[T.length - 1];
   const abiertos = T.filter(t => t.t === '(').length - T.filter(t => t.t === ')').length;
   const no = aviso => ({tok, aviso});
@@ -112,9 +140,14 @@ function pulsa(tok, tk){
   return {tok: T, aviso: ''};
 }
 
+/* las pociones, repartidas en dos teclas: × las que multiplican y ÷ las
+   que reparten. Al pulsar, se abre una cajita con los frascos */
+const POR = [2, 3, -1, -2, -3], ENTRE = [1/2, 1/3, -1/2];
+
 /* ── montar las teclas dentro de un elemento. «al» recibe cada tecla pulsada.
-   «sobre» es el rótulo amarillo de encima, como las segundas funciones de
-   una calculadora; aquí dice qué hace la tecla ── */
+   «sobre» es el rótulo de encima, como las segundas funciones de una
+   calculadora; aquí dice qué hace la tecla. Devuelve {abre(m)} para abrir la
+   cajita de × o de ÷ desde el teclado ── */
 function monta(el, al){
   const fila = cls => { const d = document.createElement('div'); d.className = 'tl-fila ' + cls; el.appendChild(d); return d; };
   const tecla = (fil, html, cls, etq, tk, sobre) => {
@@ -122,38 +155,74 @@ function monta(el, al){
     b.type = 'button'; b.className = cls; b.innerHTML = html;
     b.setAttribute('aria-label', etq); b.title = etq;
     if(sobre) b.dataset.sobre = sobre;
-    b.addEventListener('click', () => al(tk));
+    if(tk) b.addEventListener('click', () => { cierra(); al(tk); });
     fil.appendChild(b);
     return b;
   };
-  /* las de función, dos filas de seis: arriba las pociones que no cambian
-     de bando y los paréntesis; abajo las de traición y las potencias */
+  /* la cruceta, arriba: el cursor adelante y atrás */
+  const fc = fila('tl-cur');
+  const cruz = document.createElement('div'); cruz.className = 'tl-cruceta'; fc.appendChild(cruz);
+  tecla(cruz, '◀', 'tl-flecha', 'Cursor atrás', {t: 'izq'});
+  tecla(cruz, '▶', 'tl-flecha', 'Cursor adelante', {t: 'der'});
+  /* las de función: × ÷ ( ) x² x³ */
   const ff = fila('tl-fun');
-  const pocion = k => { const po = P.pocionDe(k); tecla(ff, frascoHtml(po) + '<span class="etq">' + po.e + '</span>', clasePoc(po) + ' tl-p', po.n + ', ' + po.e + ': ' + po.d, {t: 'p', k: po.k}); };
-  [2, 3, 1/2, 1/3].forEach(pocion);
+  const bPor = tecla(ff, '×', 'tl-o tl-menu-b', 'Por: una poción que multiplica', null, 'poción');
+  const bEntre = tecla(ff, '÷', 'tl-o tl-menu-b', 'Entre: una poción que reparte', null, 'reparte');
   tecla(ff, '(', 'tl-o', 'Abre paréntesis', {t: '('}, 'abre');
   tecla(ff, ')', 'tl-o', 'Cierra paréntesis', {t: ')'}, 'cierra');
-  [-1, -2, -3, -1/2].forEach(pocion);
   tecla(ff, 'x²', 'tl-o tl-pot', 'Al cuadrado', {t: 'e', n: 2}, 'cuadrado');
   tecla(ff, 'x³', 'tl-o tl-pot', 'Al cubo', {t: 'e', n: 3}, 'cubo');
+  /* la cajita de los frascos */
+  const menu = document.createElement('div');
+  menu.className = 'tl-menu'; menu.hidden = true; menu.setAttribute('role', 'group');
+  el.appendChild(menu);
+  let abierto = null;
+  function abre(m){
+    if(abierto === m){ cierra(); return; }
+    abierto = m;
+    const ks = m === 'por' ? POR : ENTRE, b = m === 'por' ? bPor : bEntre;
+    menu.setAttribute('aria-label', m === 'por' ? 'Pociones que multiplican' : 'Pociones que reparten');
+    menu.innerHTML = '<p class="tl-menu-t">' + (m === 'por' ? '¿Qué poción? <b>×</b>' : '¿Entre cuántos? <b>÷</b>') + '</p><div class="tl-menu-f"></div>';
+    const f = menu.querySelector('.tl-menu-f');
+    ks.forEach(k => { const po = P.pocionDe(k);
+      tecla(f, frascoHtml(po) + '<span class="etq">' + po.e + '</span>', clasePoc(po) + ' tl-p', po.n + ', ' + po.e + ': ' + po.d, {t: 'p', k: po.k}); });
+    [bPor, bEntre].forEach(x => x.setAttribute('aria-expanded', String(x === b)));
+    menu.dataset.m = m; menu.hidden = false;
+    menu.style.top = (ff.offsetTop + ff.offsetHeight + 6) + 'px';      // justo debajo de × y ÷, sobre las negras
+    const primera = f.querySelector('button'); if(primera) primera.focus({preventScroll: true});
+  }
+  function cierra(){
+    if(!abierto) return;
+    abierto = null; menu.hidden = true;
+    [bPor, bEntre].forEach(x => x.setAttribute('aria-expanded', 'false'));
+  }
+  [bPor, bEntre].forEach(x => x.setAttribute('aria-haspopup', 'true'));
+  bPor.addEventListener('click', ev => { ev.stopPropagation(); abre('por'); });
+  bEntre.addEventListener('click', ev => { ev.stopPropagation(); abre('entre'); });
+  document.addEventListener('click', ev => { if(abierto && !menu.contains(ev.target)) cierra(); });
+  document.addEventListener('keydown', ev => { if(abierto && ev.key === 'Escape'){ cierra(); (abierto === 'entre' ? bEntre : bPor).focus(); } });
   /* las negras grandes: los tiradores, y + − DEL AC = */
   const fn = fila('tl-num');
   [-1, -2, -3, -4, -5].forEach(f => tecla(fn, miniTirador(f) + '<b>' + P.conSigno(f) + '</b>', 'tl-t izq', 'Tirador de ' + P.conSigno(f), {t: 'n', f}));
   [1, 2, 3, 4, 5].forEach(f => tecla(fn, miniTirador(f) + '<b>' + P.conSigno(f) + '</b>', 'tl-t der', 'Tirador de ' + P.conSigno(f), {t: 'n', f}));
   tecla(fn, '+', 'tl-o', 'Más: que entre', {t: '+'}, 'entra');
   tecla(fn, '−', 'tl-o', 'Menos: que se retire', {t: '-'}, 'se retira');
-  tecla(fn, 'DEL', 'tl-o tl-amarilla', 'Borra lo último', {t: 'borra'}, 'borra uno');
+  tecla(fn, 'DEL', 'tl-o tl-amarilla', 'Borra lo de antes del cursor', {t: 'borra'}, 'borra uno');
   tecla(fn, 'AC', 'tl-o tl-amarilla', 'Borra la cuenta entera', {t: 'ac'}, 'borra todo');
   tecla(fn, '=', 'tl-o tl-igual', 'Igual: a jugar', {t: '='}, '¡a tirar!');
+  return {abre, cierra};
 }
 
 /* las teclas también desde el teclado del ordenador */
 function teclaDeTeclado(ev){
-  const m = {'+': {t: '+'}, '-': {t: '-'}, '(': {t: '('}, ')': {t: ')'}, 'Backspace': {t: 'borra'}, 'Delete': {t: 'ac'}, '=': {t: '='}, 'Enter': {t: '='}};
+  const m = {'+': {t: '+'}, '-': {t: '-'}, '(': {t: '('}, ')': {t: ')'}, 'Backspace': {t: 'borra'}, 'Delete': {t: 'ac'}, '=': {t: '='}, 'Enter': {t: '='},
+    'ArrowLeft': {t: 'izq'}, 'ArrowRight': {t: 'der'}, '*': {t: 'menu', m: 'por'}, '/': {t: 'menu', m: 'entre'}, ':': {t: 'menu', m: 'entre'}};
   if(m[ev.key]) return m[ev.key];
   if(/^[1-5]$/.test(ev.key)) return {t: 'n', f: ev.shiftKey || ev.altKey ? -Number(ev.key) : Number(ev.key)};
   return null;
 }
 
-raiz.Tablilla = {htmlCuenta, pulsa, monta, teclaDeTeclado, frascoHtml, clasePoc, miniTirador, CALAVERA};
-})(window);
+const T = {htmlCuenta, pulsa, monta, teclaDeTeclado, frascoHtml, clasePoc, miniTirador, CALAVERA};
+if(typeof module !== 'undefined' && module.exports) module.exports = T;
+else raiz.Tablilla = T;
+})(typeof window !== 'undefined' ? window : globalThis);

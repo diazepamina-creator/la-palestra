@@ -122,7 +122,7 @@
       <span class="tl-lema" aria-hidden="true">con teatro incorporado · escriba: Listillón</span>
     </div>
     <div class="tl-marco">
-      <div class="tl-tabla" aria-live="polite"><span class="tl-ind" aria-hidden="true">TEATRO</span><span id="tlEscrito"></span><span class="tl-cursor" aria-hidden="true"></span></div>
+      <div class="tl-tabla" aria-live="polite"><span class="tl-ind" aria-hidden="true">TEATRO</span><span id="tlEscrito"></span></div>
     </div>
     <div class="tl-ej" id="tlEj" hidden>
       <p class="tl-marca" id="tlMarca"></p>
@@ -192,7 +192,7 @@
   let muestra = 0;
 
   /* ── el estado de la página: la cuenta escrita y, si se ha pulsado =, su película ── */
-  const S = {tok: [], pel: null, visto: false, ej: null};
+  const S = {tok: [], cur: null, pel: null, visto: false, ej: null};
   /* la ruta y el acta; si hay un turno guardado de esta clase, se retoma */
   let ruta = E.nuevaRuta(), sesion = E.nuevaSesion();
   { const d = E.lee(); if(d){ ruta = d.ruta; sesion = d.sesion; } }
@@ -200,13 +200,16 @@
   const campo = C.monta($('campo'));
   const R = window.Reproductor.crea({campo, banquillo: $('banquillo'), alCambiar: pintaMandos});
   C.alTocarRegla(campo, v => R.elige(v));
-  TL.monta($('tlTeclas'), tecla);
+  const teclado = TL.monta($('tlTeclas'), tecla);
 
+  /* S.cur: dónde está el cursor (null: al final, que es lo normal) */
+  const cursor = () => S.cur === null || S.cur === undefined ? S.tok.length : Math.min(S.cur, S.tok.length);
   function tecla(tk){
     if(S.ej) return;                         // en los ejercicios no se escribe
     if(tk.t === '='){ igual(); return; }
-    const r = TL.pulsa(S.tok, tk);
-    S.tok = r.tok; S.pel = null; S.visto = false; R.para();
+    if(tk.t === 'menu'){ teclado.abre(tk.m); return; }
+    const r = TL.pulsa(S.tok, tk, cursor());
+    S.tok = r.tok; S.cur = r.cur === S.tok.length ? null : r.cur; S.pel = null; S.visto = false; R.para();
     $('tlAviso').innerHTML = r.aviso;
     pintaTablilla();
     $('panelCampo').hidden = true;
@@ -247,7 +250,7 @@
     const m = E.MISIONES[ruta.i];
     const ej = E.genera(m.nivel);
     S.ej = {valor: ej.valor, visto: false, fase: 'pensando', id: Date.now(), cuenta: P.escribe(ej.pel.arbol)};
-    S.tok = ej.tok; S.pel = null; S.visto = false; R.para();
+    S.tok = ej.tok; S.cur = null; S.pel = null; S.visto = false; R.para();
     $('tlResp').value = '';
     $('tlAviso').innerHTML = '';
     $('panelCampo').hidden = true;
@@ -290,7 +293,7 @@
     $('tlTeclas').hidden = si;
     $('tlPie').hidden = si;
     if(si){ pintaRuta(); ronda(); }
-    else{ S.ej = null; S.tok = []; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
+    else{ S.ej = null; S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
     pintaPestanas();
   }
   /* ── EL ACTA, en su propia hoja ── */
@@ -340,12 +343,13 @@
     $('acMsg').textContent = '✓ Acta descargada.';
   });
   function pintaTablilla(){
-    let h = TL.htmlCuenta(S.tok);
+    /* el cursor, en su sitio; en los ejercicios y con el resultado a la vista, no hay */
+    let h = S.tok.length ? TL.htmlCuenta(S.tok, null, S.ej ? undefined : cursor()) : '';
     if(S.pel){
       const fin = S.pel.sinTeatro || (R.pel === S.pel && R.k === S.pel.pasos.length);
       if(fin) h += '<span class="op"> = </span><b class="tl-res' + (S.pel.exacto[1] !== 1 ? ' frac' : '') + '">' + P.fracTxt(S.pel.exacto) + '</b>';
     }
-    $('tlEscrito').innerHTML = h || '<span class="tl-vacia">escribe aquí…</span>';
+    $('tlEscrito').innerHTML = h || (S.ej ? '' : '<span class="tl-cursor" aria-hidden="true"></span>') + '<span class="tl-vacia">escribe aquí…</span>';
   }
   /* la cartela: la cuenta con el trozo que se juega iluminado, y debajo qué pasa */
   function cartela(R){
@@ -405,7 +409,7 @@
   $('atras').addEventListener('click', () => R.retrocede());
   $('inicio').addEventListener('click', () => R.principio());
   $('todo').addEventListener('click', () => R.repasa());
-  $('tlMuestra').addEventListener('click', () => { S.tok = MUESTRAS[muestra++ % MUESTRAS.length].slice(); S.pel = null; R.para(); $('tlAviso').innerHTML = ''; pintaTablilla(); $('panelCampo').hidden = true; });
+  $('tlMuestra').addEventListener('click', () => { S.tok = MUESTRAS[muestra++ % MUESTRAS.length].slice(); S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = ''; pintaTablilla(); $('panelCampo').hidden = true; });
   document.addEventListener('keydown', ev => {
     if(ev.target && /INPUT|TEXTAREA|SELECT/.test(ev.target.tagName)) return;
     if(S.pel && !S.pel.sinTeatro && (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft')){
@@ -429,7 +433,7 @@
   const EV = window.Entrevistas.monta($('entrevista'), {alPrueba: tok => {
     entrevista(false);
     modoRuta(false);
-    S.tok = tok; pintaTablilla(); igual();
+    S.tok = tok; S.cur = null; pintaTablilla(); igual();
   }});
   function entrevista(si){
     $('entrevista').hidden = !si;

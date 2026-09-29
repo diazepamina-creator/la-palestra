@@ -566,7 +566,7 @@ html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;
 .tl-tabla .tl-res{display:block;text-align:right;color:#2e2114;font-size:32px;line-height:1.15;font-weight:700}
 .tl-tabla .tl-res.frac{font-size:26px}
 .tl-vacia{color:rgba(95,80,64,.55);font-style:italic;font-family:var(--letra);font-size:15px}
-.tl-cursor{display:inline-block;width:2px;height:1.1em;margin-left:2px;vertical-align:-3px;
+.tl-cursor{display:inline-block;width:2px;height:1.1em;margin:0 1px;vertical-align:-3px;
   background:var(--ink);animation:parpadea 1s steps(1) infinite}
 @keyframes parpadea{50%{opacity:0}}
 .tl-tabla:has(.tl-res) .tl-cursor{display:none}
@@ -581,7 +581,7 @@ html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;
 .tl-teclas button{position:relative;cursor:pointer;font:inherit;min-width:0;padding:3px 2px;color:var(--ink);
   transition:transform .07s ease, box-shadow .07s ease}
 .tl-teclas button[data-sobre]::before{content:attr(data-sobre);position:absolute;left:-4px;right:-4px;top:-14px;text-align:center;
-  font-family:var(--letra);font-weight:700;font-size:10.5px;line-height:1;color:#A8432D;white-space:nowrap;pointer-events:none;
+  font-family:var(--letra);font-weight:700;font-style:normal;font-size:10.5px;line-height:1;color:#A8432D;white-space:nowrap;pointer-events:none;
   text-shadow:0 1px 0 rgba(255,250,235,.6)}
 .tl-teclas button:focus-visible{outline:3px solid #7f5a0e;outline-offset:2px}
 /* teclas hechas a mano: cada una con sus cantos, un poco torcida y alguna
@@ -675,6 +675,40 @@ html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;
 .tablilla .habla > div::after{content:"";position:absolute;left:0;right:12%;bottom:0;height:6px;
   background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='6' preserveAspectRatio='none'><path d='M1 3 C40 1 70 5 110 3 S170 1 199 4' fill='none' stroke='%235a4122' stroke-width='1.4' stroke-linecap='round' opacity='.7'/></svg>") no-repeat;background-size:100% 100%}
 @media (prefers-reduced-motion: reduce){ .tablilla, .tl-marco, .tl-tabla{transform:none} }
+
+/* ── LA CRUCETA: el cursor atrás y adelante, un óvalo de barro con dos
+   flechas, como el mando redondo de las calculadoras ── */
+.tl-cur{display:flex;justify-content:center;margin-bottom:-4px}
+.tl-cruceta{display:flex;gap:2px;padding:4px;border-radius:26px 22px 28px 20px / 22px 28px 20px 26px;transform:rotate(-1deg);
+  background:var(--grano), linear-gradient(180deg,#b8955e,#a07e4a);background-size:140px 140px, 100% 100%;
+  box-shadow:inset 0 2px 4px rgba(60,40,10,.45), 0 1px 0 rgba(255,250,235,.6)}
+.tl-teclas .tl-flecha{min-height:38px;width:62px;font-size:16px;color:#2e2114;border:2px solid #7a5a2e;
+  background:var(--grano), radial-gradient(ellipse at 30% 20%, #fbf3dc 0, #efdfbb 45%, #dcc493 100%);background-size:140px 140px, 100% 100%;
+  box-shadow:0 3px 0 #7a5a2e, inset 0 2px 0 rgba(255,250,235,.75)}
+.tl-teclas .tl-flecha:first-child{border-radius:20px 8px 8px 22px / 18px 8px 8px 20px}
+.tl-teclas .tl-flecha:last-child{border-radius:8px 22px 20px 8px / 8px 20px 18px 8px}
+/* × y ÷: un poco más grandes, que abren la cajita de los frascos */
+.tl-teclas .tl-menu-b{font-size:28px;font-weight:700;line-height:1}
+.tl-teclas .tl-menu-b[aria-expanded="true"]{box-shadow:0 0 0 #7a5a2e, inset 0 2px 6px rgba(110,78,30,.45);transform:rotate(var(--gira,0deg)) translateY(3px)}
+/* la cajita: un cuenco de barro que sale sobre las teclas, con los frascos */
+.tl-teclas{position:relative}
+.tl-menu{position:absolute;left:-4px;right:-4px;top:100px;z-index:5;padding:8px 10px 10px;border:2px solid #7a5a2e;
+  border-radius:18px 12px 20px 14px / 14px 20px 12px 18px;
+  background:var(--grano), radial-gradient(ellipse at 30% 10%, #f7ecd2 0, #eadbb6 60%, #dcc596 100%);background-size:140px 140px, 100% 100%;
+  box-shadow:0 10px 18px rgba(40,25,5,.4), inset 0 2px 0 rgba(255,250,235,.7);animation:tlMenu .18s ease-out}
+.tl-menu[data-m="entre"]{left:12%;right:-4px}
+@keyframes tlMenu{from{opacity:0;transform:translateY(-6px) scale(.97)}}
+.tl-menu-t{margin:0 0 6px;font-family:var(--letra);font-weight:700;font-size:13px;color:#8a3a1f}
+.tl-menu-t b{font-size:16px}
+.tl-menu-f{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.tl-menu[data-m="entre"] .tl-menu-f{grid-template-columns:repeat(3,1fr)}
+.tl-menu-f button{min-height:54px;color:var(--ink);border:2px solid #7a5a2e;border-radius:14px 17px 13px 16px / 16px 13px 17px 14px;
+  background:var(--grano), radial-gradient(ellipse at 30% 20%, #fbf3dc 0, #efdfbb 45%, #dcc493 100%);background-size:140px 140px, 100% 100%;
+  box-shadow:0 3px 0 #7a5a2e, inset 0 2px 0 rgba(255,250,235,.75);cursor:pointer;font:inherit;padding:4px 1px 3px}
+.tl-menu-f button:active{transform:translateY(3px);box-shadow:0 0 0 #7a5a2e}
+.tl-menu-f button:focus-visible{outline:3px solid #7f5a0e;outline-offset:2px}
+.tl-menu-f .pocion .etq{font-size:10.5px}
+@media (prefers-reduced-motion: reduce){ .tl-menu{animation:none} }
 </style>
 <style>
 /* ── EL BANQUILLO: un término compuesto se prepara aquí, fuera de la cuerda,
@@ -1101,7 +1135,7 @@ html[data-inicio="si"] main{visibility:hidden}
       <span class="tl-lema" aria-hidden="true">con teatro incorporado · escriba: Listillón</span>
     </div>
     <div class="tl-marco">
-      <div class="tl-tabla" aria-live="polite"><span class="tl-ind" aria-hidden="true">TEATRO</span><span id="tlEscrito"></span><span class="tl-cursor" aria-hidden="true"></span></div>
+      <div class="tl-tabla" aria-live="polite"><span class="tl-ind" aria-hidden="true">TEATRO</span><span id="tlEscrito"></span></div>
     </div>
     <div class="tl-ej" id="tlEj" hidden>
       <p class="tl-marca" id="tlMarca"></p>
@@ -1133,7 +1167,7 @@ html[data-inicio="si"] main{visibility:hidden}
     <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><div><div class="quien">Jeferión</div><p class="aviso" id="jefAviso" role="status"></p></div></div>
   </section>
 
-  <footer>versión 0.20</footer>
+  <footer>versión 0.21</footer>
 </main>
 
 <div class="modal" id="mActa" hidden>
@@ -2087,9 +2121,13 @@ function miniTirador(f){
 
 /* ── la cuenta escrita, pieza a pieza; «clase(i)» marca las que se iluminan ── */
 const numHtml = (f, primero) => '<span class="' + (f < 0 ? 'izq' : 'der') + '">' + P.numCuaderno(f, primero) + '</span>';
-function htmlCuenta(tok, clase){
+const CURSOR = '<span class="tl-cursor" aria-hidden="true"></span>';
+/* «cursor»: si se da, el cursor parpadea delante de la pieza de ese número
+   (o al final, si es tok.length) */
+function htmlCuenta(tok, clase, cursor){
   let h = '', primero = true, abierta = '';
   tok.forEach((t, i) => {
+    if(i === cursor) h += CURSOR;
     const sig = tok[i + 1];
     let x = '';
     /* un negativo elevado va siempre entre paréntesis: (−2)² no es −2² */
@@ -2106,13 +2144,37 @@ function htmlCuenta(tok, clase){
     h += x;
   });
   if(abierta) h += '</span>';
+  if(cursor === tok.length) h += CURSOR;
   return h;
 }
 
 /* ── qué pasa al pulsar una tecla: devuelve la cuenta nueva y, si algo no
    encaja, el aviso. Es una función pura: no toca la pantalla ── */
 const esFactor = t => t && (t.t === 'n' || t.t === ')' || t.t === 'e' || (t.t === 'p' && !t.pre));
-function pulsa(tok, tk){
+const empiezaFactor = t => t && (t.t === 'n' || t.t === '(' || (t.t === 'p' && t.pre));
+/* con cursor: la tecla se escribe donde está el cursor, mirando lo que hay
+   delante como si fuera el final de la cuenta, y luego se cose con lo de
+   detrás. Devuelve también dónde queda el cursor */
+function pulsa(tok, tk, cur){
+  cur = cur === undefined ? tok.length : Math.max(0, Math.min(tok.length, cur));
+  if(tk.t === 'izq') return {tok, cur: Math.max(0, cur - 1), aviso: ''};
+  if(tk.t === 'der') return {tok, cur: Math.min(tok.length, cur + 1), aviso: ''};
+  if(tk.t === 'ac') return {tok: [], cur: 0, aviso: ''};
+  if(tk.t === 'borra'){
+    if(!cur) return {tok, cur, aviso: ''};
+    const T = tok.slice(); T.splice(cur - 1, 1);
+    return {tok: T, cur: cur - 1, aviso: ''};
+  }
+  const delante = tok.slice(0, cur), detras = tok.slice(cur);
+  const r = pulsaAlFinal(delante, tk);
+  if(r.aviso) return {tok, cur, aviso: r.aviso};
+  const hecho = r.tok, ult = hecho[hecho.length - 1], sig = detras[0];
+  let costura = [];
+  if(esFactor(ult) && empiezaFactor(sig)) costura = [{t: '+'}];      // dos tiradores seguidos: se suman
+  else if(ult && (ult.t === '+' || ult.t === '-') && sig && (sig.t === '+' || sig.t === '-')) detras.shift();   // dos signos seguidos: manda el nuevo
+  return {tok: hecho.concat(costura, detras), cur: hecho.length + costura.length, aviso: ''};
+}
+function pulsaAlFinal(tok, tk){
   const T = tok.slice(), ult = T[T.length - 1];
   const abiertos = T.filter(t => t.t === '(').length - T.filter(t => t.t === ')').length;
   const no = aviso => ({tok, aviso});
@@ -2151,9 +2213,14 @@ function pulsa(tok, tk){
   return {tok: T, aviso: ''};
 }
 
+/* las pociones, repartidas en dos teclas: × las que multiplican y ÷ las
+   que reparten. Al pulsar, se abre una cajita con los frascos */
+const POR = [2, 3, -1, -2, -3], ENTRE = [1/2, 1/3, -1/2];
+
 /* ── montar las teclas dentro de un elemento. «al» recibe cada tecla pulsada.
-   «sobre» es el rótulo amarillo de encima, como las segundas funciones de
-   una calculadora; aquí dice qué hace la tecla ── */
+   «sobre» es el rótulo de encima, como las segundas funciones de una
+   calculadora; aquí dice qué hace la tecla. Devuelve {abre(m)} para abrir la
+   cajita de × o de ÷ desde el teclado ── */
 function monta(el, al){
   const fila = cls => { const d = document.createElement('div'); d.className = 'tl-fila ' + cls; el.appendChild(d); return d; };
   const tecla = (fil, html, cls, etq, tk, sobre) => {
@@ -2161,41 +2228,77 @@ function monta(el, al){
     b.type = 'button'; b.className = cls; b.innerHTML = html;
     b.setAttribute('aria-label', etq); b.title = etq;
     if(sobre) b.dataset.sobre = sobre;
-    b.addEventListener('click', () => al(tk));
+    if(tk) b.addEventListener('click', () => { cierra(); al(tk); });
     fil.appendChild(b);
     return b;
   };
-  /* las de función, dos filas de seis: arriba las pociones que no cambian
-     de bando y los paréntesis; abajo las de traición y las potencias */
+  /* la cruceta, arriba: el cursor adelante y atrás */
+  const fc = fila('tl-cur');
+  const cruz = document.createElement('div'); cruz.className = 'tl-cruceta'; fc.appendChild(cruz);
+  tecla(cruz, '◀', 'tl-flecha', 'Cursor atrás', {t: 'izq'});
+  tecla(cruz, '▶', 'tl-flecha', 'Cursor adelante', {t: 'der'});
+  /* las de función: × ÷ ( ) x² x³ */
   const ff = fila('tl-fun');
-  const pocion = k => { const po = P.pocionDe(k); tecla(ff, frascoHtml(po) + '<span class="etq">' + po.e + '</span>', clasePoc(po) + ' tl-p', po.n + ', ' + po.e + ': ' + po.d, {t: 'p', k: po.k}); };
-  [2, 3, 1/2, 1/3].forEach(pocion);
+  const bPor = tecla(ff, '×', 'tl-o tl-menu-b', 'Por: una poción que multiplica', null, 'poción');
+  const bEntre = tecla(ff, '÷', 'tl-o tl-menu-b', 'Entre: una poción que reparte', null, 'reparte');
   tecla(ff, '(', 'tl-o', 'Abre paréntesis', {t: '('}, 'abre');
   tecla(ff, ')', 'tl-o', 'Cierra paréntesis', {t: ')'}, 'cierra');
-  [-1, -2, -3, -1/2].forEach(pocion);
   tecla(ff, 'x²', 'tl-o tl-pot', 'Al cuadrado', {t: 'e', n: 2}, 'cuadrado');
   tecla(ff, 'x³', 'tl-o tl-pot', 'Al cubo', {t: 'e', n: 3}, 'cubo');
+  /* la cajita de los frascos */
+  const menu = document.createElement('div');
+  menu.className = 'tl-menu'; menu.hidden = true; menu.setAttribute('role', 'group');
+  el.appendChild(menu);
+  let abierto = null;
+  function abre(m){
+    if(abierto === m){ cierra(); return; }
+    abierto = m;
+    const ks = m === 'por' ? POR : ENTRE, b = m === 'por' ? bPor : bEntre;
+    menu.setAttribute('aria-label', m === 'por' ? 'Pociones que multiplican' : 'Pociones que reparten');
+    menu.innerHTML = '<p class="tl-menu-t">' + (m === 'por' ? '¿Qué poción? <b>×</b>' : '¿Entre cuántos? <b>÷</b>') + '</p><div class="tl-menu-f"></div>';
+    const f = menu.querySelector('.tl-menu-f');
+    ks.forEach(k => { const po = P.pocionDe(k);
+      tecla(f, frascoHtml(po) + '<span class="etq">' + po.e + '</span>', clasePoc(po) + ' tl-p', po.n + ', ' + po.e + ': ' + po.d, {t: 'p', k: po.k}); });
+    [bPor, bEntre].forEach(x => x.setAttribute('aria-expanded', String(x === b)));
+    menu.dataset.m = m; menu.hidden = false;
+    menu.style.top = (ff.offsetTop + ff.offsetHeight + 6) + 'px';      // justo debajo de × y ÷, sobre las negras
+    const primera = f.querySelector('button'); if(primera) primera.focus({preventScroll: true});
+  }
+  function cierra(){
+    if(!abierto) return;
+    abierto = null; menu.hidden = true;
+    [bPor, bEntre].forEach(x => x.setAttribute('aria-expanded', 'false'));
+  }
+  [bPor, bEntre].forEach(x => x.setAttribute('aria-haspopup', 'true'));
+  bPor.addEventListener('click', ev => { ev.stopPropagation(); abre('por'); });
+  bEntre.addEventListener('click', ev => { ev.stopPropagation(); abre('entre'); });
+  document.addEventListener('click', ev => { if(abierto && !menu.contains(ev.target)) cierra(); });
+  document.addEventListener('keydown', ev => { if(abierto && ev.key === 'Escape'){ cierra(); (abierto === 'entre' ? bEntre : bPor).focus(); } });
   /* las negras grandes: los tiradores, y + − DEL AC = */
   const fn = fila('tl-num');
   [-1, -2, -3, -4, -5].forEach(f => tecla(fn, miniTirador(f) + '<b>' + P.conSigno(f) + '</b>', 'tl-t izq', 'Tirador de ' + P.conSigno(f), {t: 'n', f}));
   [1, 2, 3, 4, 5].forEach(f => tecla(fn, miniTirador(f) + '<b>' + P.conSigno(f) + '</b>', 'tl-t der', 'Tirador de ' + P.conSigno(f), {t: 'n', f}));
   tecla(fn, '+', 'tl-o', 'Más: que entre', {t: '+'}, 'entra');
   tecla(fn, '−', 'tl-o', 'Menos: que se retire', {t: '-'}, 'se retira');
-  tecla(fn, 'DEL', 'tl-o tl-amarilla', 'Borra lo último', {t: 'borra'}, 'borra uno');
+  tecla(fn, 'DEL', 'tl-o tl-amarilla', 'Borra lo de antes del cursor', {t: 'borra'}, 'borra uno');
   tecla(fn, 'AC', 'tl-o tl-amarilla', 'Borra la cuenta entera', {t: 'ac'}, 'borra todo');
   tecla(fn, '=', 'tl-o tl-igual', 'Igual: a jugar', {t: '='}, '¡a tirar!');
+  return {abre, cierra};
 }
 
 /* las teclas también desde el teclado del ordenador */
 function teclaDeTeclado(ev){
-  const m = {'+': {t: '+'}, '-': {t: '-'}, '(': {t: '('}, ')': {t: ')'}, 'Backspace': {t: 'borra'}, 'Delete': {t: 'ac'}, '=': {t: '='}, 'Enter': {t: '='}};
+  const m = {'+': {t: '+'}, '-': {t: '-'}, '(': {t: '('}, ')': {t: ')'}, 'Backspace': {t: 'borra'}, 'Delete': {t: 'ac'}, '=': {t: '='}, 'Enter': {t: '='},
+    'ArrowLeft': {t: 'izq'}, 'ArrowRight': {t: 'der'}, '*': {t: 'menu', m: 'por'}, '/': {t: 'menu', m: 'entre'}, ':': {t: 'menu', m: 'entre'}};
   if(m[ev.key]) return m[ev.key];
   if(/^[1-5]$/.test(ev.key)) return {t: 'n', f: ev.shiftKey || ev.altKey ? -Number(ev.key) : Number(ev.key)};
   return null;
 }
 
-raiz.Tablilla = {htmlCuenta, pulsa, monta, teclaDeTeclado, frascoHtml, clasePoc, miniTirador, CALAVERA};
-})(window);
+const T = {htmlCuenta, pulsa, monta, teclaDeTeclado, frascoHtml, clasePoc, miniTirador, CALAVERA};
+if(typeof module !== 'undefined' && module.exports) module.exports = T;
+else raiz.Tablilla = T;
+})(typeof window !== 'undefined' ? window : globalThis);
 </script>
 <script>
 /* ══════════════════════════════════════════════════════════════════════
@@ -2523,8 +2626,28 @@ function brazo2(x0, y0, a1, l1, a2, l2, g, color, mano){
     '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="' + g +
     '" stroke-linecap="round" stroke-linejoin="round"/>' + (mano ? mano(x1, y1, a2) : '');
 }
-/* ── JEFERIÓN ── cocodrilo jefe: gafas redondas, laurel, banda morada */
-const JV = {piel:'#8CBF4F', sombra:'#5F8F32', vientre:'#C9DE8A', banda:'#7E5C86', oro:'#E9B84E', laurel:'#6E9A2E'};
+/* ── JEFERIÓN ── dinosaurio, dueño de una empresa de carros y jefe de
+   Listillón: cráneo de tiranosaurio, placas en el lomo, gafas redondas y
+   banda morada */
+const JV = {piel:'#8CBF4F', sombra:'#5F8F32', vientre:'#C9DE8A', banda:'#7E5C86', oro:'#E9B84E', placa:'#E39B3C'};
+/* las placas del lomo: triángulos romos puestos SOBRE el contorno. Se
+   calcula el punto de la curva (una Bézier cuadrática [p0, c, p1]) y su
+   tangente; la placa se apoya con la base en la curva y la punta sale
+   perpendicular, hacia fuera («lado» +1 o −1 según hacia dónde queda fuera).
+   Van por detrás del cuerpo, así que la base queda escondida */
+const placaJ = (x, y, a, k) => '<path d="M-5 3 Q-1 -9 1 -9 Q3 -8 5 3 Z" transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') rotate(' + a.toFixed(0) + ') scale(' + (k || 1) + ')" fill="' + JV.placa + '" stroke="' + TINTA + '" stroke-width="1.2" stroke-linejoin="round"/>';
+function placasSobre(curva, ts, ks, lado){
+  const [[x0, y0], [cx, cy], [x1, y1]] = curva;
+  return ts.map((t, i) => {
+    const u = 1 - t;
+    const x = u * u * x0 + 2 * u * t * cx + t * t * x1, y = u * u * y0 + 2 * u * t * cy + t * t * y1;
+    let tx = 2 * u * (cx - x0) + 2 * t * (x1 - cx), ty = 2 * u * (cy - y0) + 2 * t * (y1 - cy);
+    const l = Math.hypot(tx, ty) || 1; tx /= l; ty /= l;
+    const nx = ty * lado, ny = -tx * lado;                 // la normal, hacia fuera
+    const ang = Math.atan2(nx, -ny) * 180 / Math.PI;       // la punta de la placa mira a la normal
+    return placaJ(x - nx * 1.5, y - ny * 1.5, ang, ks[i]);
+  }).join('');
+}
 /* la mano de Jeferión es la pezuña de la manaza, en pequeño: una bola con
    dos dedos rechonchos y la punta de cuerno, mirando hacia donde va el brazo.
    Contorno y relleno por separado, para que el contorno salga de una pieza */
@@ -2542,6 +2665,7 @@ function manoJ(x, y, ang, k){
 function manoJdedo(x, y, ang){
   return manoJ(x, y, ang, 1.55);
 }
+let nJ = 0;             // cada dibujo de Jeferión, su propio recorte
 function jeferion(pose){
   pose = pose || 'habla';
   const P = {
@@ -2558,19 +2682,32 @@ function jeferion(pose){
   let s = '<svg viewBox="0 0 100 100" class="pj pj-jef pose-' + pose + '" aria-hidden="true">';
   if(asoma) s += '<g transform="translate(4 40)">';
   if(!asoma){
-  /* cola, por detrás */
-  s += '<path d="M66 88 Q88 90 95 76 Q90 84 80 83 Q72 82 66 80 Z" fill="' + JV.sombra + '" stroke="' + TINTA + '" stroke-width="1.4" stroke-linejoin="round"/>';
-  s += '<path d="M78 82 l2 -4 l2 3.4 l2.4 -4.2 l1.8 3.6" fill="none" stroke="' + TINTA + '" stroke-width="1.1" stroke-linejoin="round"/>';
+  /* las placas, sobre el contorno: por el cuello y la espalda, y por encima
+     de la cola, cada vez más pequeñas */
+  s += placasSobre([[61,38],[61,54],[67,60]], [.15,.55,.95], [1.05,1.05,1], 1);
+  s += placasSobre([[67,60],[78,68],[76,98]], [.18,.45], [.95,.85], 1);
+  s += placasSobre([[64,76],[68,80],[74,82]], [.6], [.72], 1);
+  s += placasSobre([[74,82],[88,84],[94,74]], [.3,.66], [.64,.52], 1);
+  s += '<path d="M62 94 Q84 96 96 80 Q99 74 94 74 Q88 84 74 82 Q68 80 64 76 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.5" stroke-linejoin="round"/>';
+  s += '<path d="M70 88 Q82 88 90 80" fill="none" stroke="' + JV.sombra + '" stroke-width="1.2" opacity=".7"/>';
   /* brazo de atrás */
   s += brazoDe(33, 62, P.bI);
-  /* cuerpo */
-  s += '<path d="M24 98 Q22 66 38 56 L62 56 Q78 64 76 98 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  /* cuerpo y cuello de una pieza: la cabeza ya no flota */
+  const CUERPO_J = 'M24 98 Q22 70 34 61 Q39 56 40 40 L61 38 Q61 54 67 60 Q78 68 76 98 Z';
+  const idc = 'cuerpoJ' + (++nJ);
+  s += '<defs><clipPath id="' + idc + '"><path d="' + CUERPO_J + '"/></clipPath></defs>';
+  s += '<path d="' + CUERPO_J + '" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  s += '<path d="M44 48 Q50 52 57 48 M45 54 Q51 58 58 54" fill="none" stroke="' + JV.sombra + '" stroke-width="1.1" opacity=".6"/>';
   s += '<path d="M36 98 Q36 72 48 64 Q60 70 62 98 Z" fill="' + JV.vientre + '" opacity=".9"/>';
   s += '<path d="M40 76 H58 M39 84 H60 M38 92 H61" stroke="' + JV.sombra + '" stroke-width="1" opacity=".55"/>';
-  /* banda */
-  s += '<path d="M30 60 Q50 76 70 96" stroke="' + TINTA + '" stroke-width="9.4" fill="none"/>';
-  s += '<path d="M30 60 Q50 76 70 96" stroke="' + JV.banda + '" stroke-width="7.2" fill="none"/>';
-  s += '<path d="M30.6 58.4 Q51 74.4 71.4 94.4" stroke="' + JV.oro + '" stroke-width="1.2" fill="none" opacity=".9"/>';
+  /* la banda, del hombro a la cadera, siguiendo la barriga; recortada justo
+     al cuerpo, que no sobresalga por ningún lado */
+  s += '<g clip-path="url(#' + idc + ')">' +
+    '<path d="M28 58 Q50 70 76 98" stroke="' + TINTA + '" stroke-width="9.6" fill="none"/>' +
+    '<path d="M28 58 Q50 70 76 98" stroke="' + JV.banda + '" stroke-width="7.4" fill="none"/>' +
+    '<path d="M28.9 55.9 Q51.4 68 77.6 96.4" stroke="' + JV.oro + '" stroke-width="1.2" fill="none" opacity=".9"/>' +
+    '<path d="M27 60.2 Q48.8 72.2 74.4 99.6" stroke="#5E4166" stroke-width="1" fill="none" opacity=".7"/></g>';
+  s += '<path d="' + CUERPO_J + '" fill="none" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
   }
   /* cabeza: cráneo y hocico largo hacia la izquierda */
   const ab = P.boca * 7;                         // cuánto se abre la mandíbula
@@ -2579,12 +2716,16 @@ function jeferion(pose){
   if(P.boca > .1) s += '<path d="M10 41 Q26 46 42 44 L40 52 Q24 54 10 46 Z" fill="#B5484A" stroke="' + TINTA + '" stroke-width="1.2" transform="rotate(' + (-P.boca * 8).toFixed(1) + ' 42 44)"/>';
   s += '<path d="M42 50 Q30 54 14 52 Q6 51 6 46 Q6 42 12 42 L38 43 Z" transform="' + giro + '" fill="' + JV.sombra + '" stroke="' + TINTA + '" stroke-width="1.5" stroke-linejoin="round"/>';
   if(P.boca > .1) s += '<path d="M13 43 l1.6 -2.4 l1.6 2.4 M21 43.6 l1.6 -2.4 l1.6 2.4" transform="' + giro + '" fill="#fff" stroke="' + TINTA + '" stroke-width=".7"/>';
-  s += '<path d="M60 44 Q62 22 46 18 Q36 16 32 24 L10 29 Q3 30 3 36 Q3 42 10 42 L38 44 Q48 50 60 44 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  /* las placas del cogote, sobre la curva del cráneo */
+  s += placasSobre([[50,12],[66,20],[62,42]], [.28,.52,.78], [.9,1,1.05], 1);
+  /* el cráneo, alto y redondo, con el hocico corto de tiranosaurio */
+  s += '<path d="M62 42 Q66 20 50 12 Q38 8 30 16 Q25 21 21 25 L12 27 Q5 29 5 35 Q5 41 12 41 L38 44 Q50 50 62 42 Z" fill="' + JV.piel + '" stroke="' + TINTA + '" stroke-width="1.6" stroke-linejoin="round"/>';
+  s += '<path d="M20 26 Q23 30 22 36" fill="none" stroke="' + JV.sombra + '" stroke-width="1.1" opacity=".7"/>';
   /* dientes */
   s += '<path d="M12 42 l1.6 2.6 l1.6 -2.6 M19 42.4 l1.6 2.6 l1.6 -2.6 M26 43 l1.6 2.6 l1.6 -2.6" fill="#fff" stroke="' + TINTA + '" stroke-width=".7" stroke-linejoin="round"/>';
   /* orificios y escamas */
-  s += '<circle cx="7.5" cy="33.2" r="1.1" fill="' + TINTA + '"/><circle cx="11" cy="32.2" r="1.1" fill="' + TINTA + '"/>';
-  s += '<path d="M18 33 q2 -1.6 4 0 M25 32 q2 -1.6 4 0" fill="none" stroke="' + JV.sombra + '" stroke-width="1"/>';
+  s += '<circle cx="8.5" cy="31.6" r="1.1" fill="' + TINTA + '"/><circle cx="12" cy="30.8" r="1.1" fill="' + TINTA + '"/>';
+  s += '<path d="M25 35 q2 -1.6 4 0 M31 37 q2 -1.6 4 0 M28 39.5 q2 -1.6 4 0" fill="none" stroke="' + JV.sombra + '" stroke-width="1"/>';
   /* ojos con gafas redondas */
   const [mx, my] = P.mira;
   const ojo = (cx, cy) => {
@@ -2599,11 +2740,6 @@ function jeferion(pose){
   };
   s += ojo(37, 22) + ojo(51, 21);
   s += '<path d="M43.6 21.6 H44.4" stroke="' + TINTA + '" stroke-width="2"/>';
-  /* laurel */
-  s += '<path d="M31 17 Q44 5 60 14" fill="none" stroke="' + JV.laurel + '" stroke-width="1.6" stroke-linecap="round"/>';
-  [[33,14,-40],[37,10.6,-25],[42,8.6,-10],[47,8.2,5],[52,9.2,18],[57,11.6,32]].forEach(([x,y,a]) => {
-    s += '<ellipse cx="' + x + '" cy="' + y + '" rx="3.2" ry="1.4" transform="rotate(' + a + ' ' + x + ' ' + y + ')" fill="#8DB84A" stroke="' + TINTA + '" stroke-width=".6"/>';
-  });
   s += '</g>';
   if(asoma){
     s += '</g>';
@@ -2613,8 +2749,22 @@ function jeferion(pose){
   s += '</svg>';
   return s;
 }
-/* ── LISTILLÓN ── escriba: pájaro azul, gorra roja, su tablilla bajo el ala */
-const LV = {pluma:'#57B8D6', sombra:'#3F9CBC', gorra:'#C0392B', pico:'#E9B84E', tabla:'#C8B48B'};
+/* ── LISTILLÓN ── escriba griego: pájaro azul con su quitón blanco de cenefa
+   de almagre, el himatión terracota cruzado, la tablilla bajo el ala y el
+   estilete para rayarla; en la cabeza, la tenia roja */
+const LV = {pluma:'#57B8D6', sombra:'#3F9CBC', cinta:'#A8432D', quiton:'#F4EFE3', quitonS:'#D9D2C2', himation:'#B5563A', himationS:'#8E3E27', pico:'#E9B84E', tabla:'#C8B48B', tenia:'#C0392B', teniaS:'#8E2A1F'};
+/* la tenia: la cinta roja de los griegos, ceñida a la cabeza, con el nudo
+   detrás y dos puntas en cola de golondrina. Va por debajo de los ojos y las
+   cejas, así que no les tapa nada */
+const teniaL = () =>
+  /* las dos puntas, por detrás del nudo */
+  '<path d="M37.4 31.4 Q31 35.6 28.6 42.6 L31 41 L32 44.2 Q33.6 37.6 39 33.8 Z" fill="' + LV.teniaS + '" stroke="' + TINTA + '" stroke-width="1.1" stroke-linejoin="round"/>' +
+  '<path d="M38.4 32.6 Q35.2 39.4 35.8 46.4 L37.6 44.4 L39.4 46.6 Q38.8 40 40.8 34.4 Z" fill="' + LV.tenia + '" stroke="' + TINTA + '" stroke-width="1.1" stroke-linejoin="round"/>' +
+  /* la cinta, que rodea la cabeza de oreja a frente */
+  '<path d="M36.2 29.6 Q51 13.6 67.4 22.6 L69 24.8 Q52 17.6 37.4 33.6 Z" fill="' + LV.tenia + '" stroke="' + TINTA + '" stroke-width="1.2" stroke-linejoin="round"/>' +
+  '<path d="M39 29.2 Q51.6 17.6 65.6 22.4" fill="none" stroke="#fff" stroke-width=".9" opacity=".45"/>' +
+  /* el nudo */
+  '<ellipse cx="37.6" cy="31.6" rx="2.6" ry="2.2" fill="' + LV.tenia + '" stroke="' + TINTA + '" stroke-width="1.1"/>';
 function listillon(pose){
   pose = pose || 'habla';
   const P = {
@@ -2635,11 +2785,23 @@ function listillon(pose){
   /* cuerpo */
   s += '<ellipse cx="50" cy="70" rx="26" ry="23" fill="' + LV.pluma + '" stroke="' + TINTA + '" stroke-width="1.6"/>';
   s += '<ellipse cx="54" cy="76" rx="15" ry="14" fill="#9ED7EA" opacity=".75"/>';
+  /* el quitón: la túnica blanca, del pecho a los pies, con sus pliegues
+     rectos, el cinturón y la cenefa de almagre en el bajo */
+  s += '<path d="M28 62 Q50 57 72 62 Q78 78 72 90 Q66 95.5 50 95.5 Q34 95.5 28 90 Q22 78 28 62 Z" fill="' + LV.quiton + '" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
+  s += '<path d="M38 74 Q37 84 38 94 M46 75 V95 M54 75 V95 M62 74 Q63 84 62 94" fill="none" stroke="' + LV.quitonS + '" stroke-width="1.1"/>';
+  s += '<path d="M28.6 89.4 Q50 96.4 71.4 89.4" fill="none" stroke="' + LV.cinta + '" stroke-width="3.4"/>';
+  s += '<path d="M29.4 89.6 Q50 96.4 70.6 89.6" fill="none" stroke="' + LV.quiton + '" stroke-width="1" stroke-dasharray="1.8 1.8"/>';
+  s += '<path d="M24.8 73 Q50 78.4 75.2 73" fill="none" stroke="#8a6a3b" stroke-width="1.8"/>';
+  /* el himatión: el manto de lana, echado sobre el hombro, que cae en curva
+     cruzando el pecho y acaba en pico, con sus pliegues */
+  s += '<path d="M30 55 Q38 49 48 53 Q60 60 70 70 Q74 76 72 84 Q66 80 60 81 Q58 75 50 71 Q40 66 31 66 Q26 60 30 55 Z" fill="' + LV.himation + '" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
+  s += '<path d="M34 56 Q48 58 64 73 M33 61 Q46 63 58 75 M66 72 Q69 77 68 82" fill="none" stroke="' + LV.himationS + '" stroke-width="1.1" stroke-linecap="round" opacity=".85"/>';
   s += '<path d="M24 74 q-8 4 -10 12 q7 -3 12 -4" fill="' + LV.sombra + '" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
   /* tablilla bajo el ala (o en alto) */
   const tabla = P.tabla === 'arriba'
     ? '<g transform="rotate(-8 30 22)"><rect x="18" y="12" width="26" height="18" rx="2" fill="' + LV.tabla + '" stroke="' + TINTA + '" stroke-width="1.4"/><path d="M22 18 H40 M22 22 H36 M22 26 H38" stroke="' + TINTA + '" stroke-width=".9" opacity=".5"/></g>'
-    : '<g transform="rotate(-6 30 70)"><rect x="16" y="60" width="26" height="18" rx="2" fill="' + LV.tabla + '" stroke="' + TINTA + '" stroke-width="1.4"/><path d="M20 66 H38 M20 70 H34 M20 74 H36" stroke="' + TINTA + '" stroke-width=".9" opacity=".5"/></g>';
+    : '<g transform="rotate(-6 30 70)"><path d="M36 64 L46 50" stroke="#6E4E26" stroke-width="2" stroke-linecap="round"/><path d="M46 50 l1.4 -2.2" stroke="' + TINTA + '" stroke-width="1.2" stroke-linecap="round"/>' +
+      '<rect x="16" y="60" width="26" height="18" rx="2" fill="' + LV.tabla + '" stroke="' + TINTA + '" stroke-width="1.4"/><path d="M20 66 H38 M20 70 H34 M20 74 H36" stroke="' + TINTA + '" stroke-width=".9" opacity=".5"/></g>';
   if(P.tabla !== 'arriba') s += tabla;
   /* ala que sujeta la tablilla */
   s += P.tabla === 'arriba'
@@ -2655,6 +2817,7 @@ function listillon(pose){
   s += '<path d="M63 40 L85 ' + (43.5 + ab * .5).toFixed(1) + ' Q80 ' + (46 + ab).toFixed(1) + ' 69 ' + (46 + ab).toFixed(1) + ' L63 45 Z" fill="#D9962B" stroke="' + TINTA + '" stroke-width="1.2" stroke-linejoin="round"/>';
   s += '<path d="M63 32 Q78 34 89 40.5 Q80 43 63 43 Z" fill="' + LV.pico + '" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
   s += '<circle cx="54" cy="36" r="19" fill="' + LV.pluma + '" stroke="' + TINTA + '" stroke-width="1.6"/>';
+  s += teniaL();
   /* ojos */
   const [mx, my] = P.mira;
   const ojo = (cx, cy, r) => (P.ceja === 'alegre'
@@ -2666,11 +2829,6 @@ function listillon(pose){
   const cj = {seria:[[53,27,62,29],[64,28.6,72,26]], alta:[[53,25,62,23.4],[64,23,72,24.6]],
               alegre:[[53,27,62,26],[64,25.6,72,27]], piensa:[[53,26,62,28],[64,26,72,24]]}[P.ceja];
   cj.forEach(c => { s += '<path d="M' + c[0] + ' ' + c[1] + ' L' + c[2] + ' ' + c[3] + '" stroke="' + TINTA + '" stroke-width="2.4" stroke-linecap="round"/>'; });
-  /* gorra con visera hacia delante */
-  s += '<path d="M36 26 Q40 8 56 9 Q70 10 72 24 Z" fill="' + LV.gorra + '" stroke="' + TINTA + '" stroke-width="1.5" stroke-linejoin="round"/>';
-  s += '<path d="M60 22 Q74 19 82 24 Q74 26 62 26 Z" fill="#A5301F" stroke="' + TINTA + '" stroke-width="1.3" stroke-linejoin="round"/>';
-  s += '<path d="M37 24 Q54 20 71 23" fill="none" stroke="#fff" stroke-width="1.2" opacity=".55"/>';
-  s += '<circle cx="54" cy="9.6" r="2" fill="#A5301F" stroke="' + TINTA + '" stroke-width="1"/>';
   s += '</g>';
   if(asoma){
     s += '</g>';
@@ -3159,7 +3317,7 @@ const ENTREVISTAS = {
   jef: {nombre:'Jeferión', cargo:'jefe del almacén de carros y patrocinador del equipo de la derecha',
     hola:['habla', 'Pregunte rápido, que tengo carros que cargar. Y hable bien de mí.'],
     preguntas:[
-      {id:'j1', p:'¿Por qué lleva gafas, si es un cocodrilo?', pose:'habla',
+      {id:'j1', p:'¿Por qué lleva gafas, si es un dinosaurio?', pose:'habla',
        r:'Para leer las tablillas de Listillón. Escribe muy pequeño y con <b>muchos paréntesis</b>.'},
       {id:'j2', p:'¿Por qué siempre va con los de la derecha?', pose:'celebra',
        r:'¡Porque los de la derecha tiran hacia los positivos! Aunque Listillón dice que un <b>−5 tira más fuerte que un +3</b>. Me sigue doliendo.'},
@@ -3190,8 +3348,8 @@ const ENTREVISTAS = {
        r:'Que lo quiere todo en positivo. Le digo que el total es −4 y me contesta: «Escríbelo más bonito». <b>El −4 ya es bonito</b>, jefe.'},
       {id:'l5', p:'¿Se lleva bien con Zeus?', pose:'sorpresa',
        r:'Nos respetamos. Él lanza los rayos y yo apunto las restas. Una vez se equivocó de tirador y… eso pregúnteselo a él.'},
-      {id:'l6', p:'¿Por qué lleva gorra?', pose:'celebra',
-       r:'Para que no me caigan encima los paréntesis. Hay días que llueven.'},
+      {id:'l6', p:'¿Por qué lleva ese sombrero?', pose:'celebra',
+       r:'Es un <b>pétaso</b>, el sombrero de los viajeros y de Hermes. Y para que no me caigan encima los paréntesis: hay días que llueven.'},
       {id:'l7', p:'¿Qué le diría a quien odia los números negativos?', pose:'celebra',
        r:'Que no son malos: son <b>del otro bando</b>. Sin ellos no habría pulso, solo gente tirando de una cuerda hacia el mismo lado. Qué aburrimiento.'},
       {id:'l8', p:'¿Cómo sabe que una cuenta está bien?', pose:'senala',
@@ -3218,18 +3376,21 @@ const TABLILLA_DE_CERCA = (() => {
     raya('M24 132 q40 3 82 0 t50 1', 1.2) +
     texto(26, 160, 'el jefe: «escríbelo más bonito»', 11, -.8) +
     texto(26, 178, 'ya es bonito.', 11, .6) +
-    /* la caricatura del jefe: cabezón, gafas, dientes y carcajada */
+    /* la caricatura del jefe: dinosaurio cabezón, con gafas, púas, colita y carcajada */
     '<g transform="translate(226 92) rotate(6)">' +
-      raya('M-18 -8 Q-30 -30 -4 -36 Q26 -40 40 -26 L52 -22 L38 -14 Q30 -4 0 2 Q-14 4 -18 -8 Z', 2.2) +   /* cabeza y hocico */
-      raya('M-2 -14 L48 -20', 1.8) +                                                                  /* la boca, abierta de risa */
-      raya('M6 -16 l2 -6 l3 6 l3 -6 l3 6 l3 -6 l3 6 l3 -6 l3 6', 1.3) +                              /* dientes arriba */
-      raya('M8 -12 l3 6 l3 -6 l3 6 l3 -6 l3 6 l3 -6', 1.3) +                                          /* dientes abajo */
-      raya('M2 -28 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 M22 -30 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 M10 -28 L14 -30', 1.8) + /* gafas */
-      raya('M-4 -30 l4 3 M18 -32 l4 3', 1.4) +                                                        /* ojos apretados de reír */
-      raya('M-14 -34 q6 -8 14 -6 q8 -6 16 -2 q8 -6 14 0', 1.6) +                                      /* el laurel, a rayas */
-      raya('M-8 4 q-6 18 4 30 M14 4 q6 16 -2 30 M-6 32 h32', 1.8) +                                    /* el cuerpo, de palo */
-      raya('M-6 12 l-14 -8 M12 12 l16 -6 l-2 6', 1.6) +                                                /* los brazos, uno señalando */
-      texto(-30, -50, 'JA JA JA', 13, -8) +
+      raya('M-26 -18 l-8 -2 l6 -6 M-27 -29 l-7 -5 l8 -3 M-20 -38 l-3 -8 l8 1', 1.6) +                  /* púas del cogote */
+      raya('M-20 -6 Q-32 -36 -2 -43 Q24 -47 32 -29 Q40 -28 45 -23 Q49 -18 44 -14 L30 -10 Q20 -2 0 2 Q-16 4 -20 -6 Z', 2.2) + /* cráneo redondo, hocico corto */
+      raya('M40 -24 l2 0', 1.6) +                                                                          /* el orificio */
+      raya('M2 -14 L42 -18', 1.8) +                                                                        /* la boca, abierta de risa */
+      raya('M8 -16 l2 -5 l3 5 l3 -5 l3 5 l3 -5 l3 5 l3 -5 l3 5', 1.3) +                                   /* dientes arriba */
+      raya('M10 -12 l3 5 l3 -5 l3 5 l3 -5 l3 5', 1.3) +                                                   /* dientes abajo */
+      raya('M0 -30 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 M20 -32 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0 M8 -30 L12 -32', 1.8) + /* gafas */
+      raya('M-6 -32 l4 3 M16 -34 l4 3', 1.4) +                                                             /* ojos apretados de reír */
+      raya('M-8 4 q-6 18 4 30 M14 4 q6 16 -2 30 M-6 32 h32', 1.8) +                                        /* el cuerpo, de palo */
+      raya('M-13 12 l-6 -2 l5 -4 M-13 22 l-6 -1 l5 -5', 1.4) +                                             /* púas en la espalda */
+      raya('M-4 30 q-16 6 -26 -4 l-2 -6 l6 3', 1.6) +                                                      /* la cola */
+      raya('M-6 12 l-14 -8 M12 12 l16 -6 l-2 6', 1.6) +                                                    /* los brazos, uno señalando */
+      texto(-30, -54, 'JA JA JA', 13, -8) +
       texto(30, 44, 'el jefe', 10, 4) +
     '</g>' +
     /* la mano de Listillón tapando la esquina, que esto no lo vea nadie */
@@ -3408,7 +3569,7 @@ raiz.Arranque = {escena};
   let muestra = 0;
 
   /* ── el estado de la página: la cuenta escrita y, si se ha pulsado =, su película ── */
-  const S = {tok: [], pel: null, visto: false, ej: null};
+  const S = {tok: [], cur: null, pel: null, visto: false, ej: null};
   /* la ruta y el acta; si hay un turno guardado de esta clase, se retoma */
   let ruta = E.nuevaRuta(), sesion = E.nuevaSesion();
   { const d = E.lee(); if(d){ ruta = d.ruta; sesion = d.sesion; } }
@@ -3416,13 +3577,16 @@ raiz.Arranque = {escena};
   const campo = C.monta($('campo'));
   const R = window.Reproductor.crea({campo, banquillo: $('banquillo'), alCambiar: pintaMandos});
   C.alTocarRegla(campo, v => R.elige(v));
-  TL.monta($('tlTeclas'), tecla);
+  const teclado = TL.monta($('tlTeclas'), tecla);
 
+  /* S.cur: dónde está el cursor (null: al final, que es lo normal) */
+  const cursor = () => S.cur === null || S.cur === undefined ? S.tok.length : Math.min(S.cur, S.tok.length);
   function tecla(tk){
     if(S.ej) return;                         // en los ejercicios no se escribe
     if(tk.t === '='){ igual(); return; }
-    const r = TL.pulsa(S.tok, tk);
-    S.tok = r.tok; S.pel = null; S.visto = false; R.para();
+    if(tk.t === 'menu'){ teclado.abre(tk.m); return; }
+    const r = TL.pulsa(S.tok, tk, cursor());
+    S.tok = r.tok; S.cur = r.cur === S.tok.length ? null : r.cur; S.pel = null; S.visto = false; R.para();
     $('tlAviso').innerHTML = r.aviso;
     pintaTablilla();
     $('panelCampo').hidden = true;
@@ -3463,7 +3627,7 @@ raiz.Arranque = {escena};
     const m = E.MISIONES[ruta.i];
     const ej = E.genera(m.nivel);
     S.ej = {valor: ej.valor, visto: false, fase: 'pensando', id: Date.now(), cuenta: P.escribe(ej.pel.arbol)};
-    S.tok = ej.tok; S.pel = null; S.visto = false; R.para();
+    S.tok = ej.tok; S.cur = null; S.pel = null; S.visto = false; R.para();
     $('tlResp').value = '';
     $('tlAviso').innerHTML = '';
     $('panelCampo').hidden = true;
@@ -3506,7 +3670,7 @@ raiz.Arranque = {escena};
     $('tlTeclas').hidden = si;
     $('tlPie').hidden = si;
     if(si){ pintaRuta(); ronda(); }
-    else{ S.ej = null; S.tok = []; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
+    else{ S.ej = null; S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
     pintaPestanas();
   }
   /* ── EL ACTA, en su propia hoja ── */
@@ -3556,12 +3720,13 @@ raiz.Arranque = {escena};
     $('acMsg').textContent = '✓ Acta descargada.';
   });
   function pintaTablilla(){
-    let h = TL.htmlCuenta(S.tok);
+    /* el cursor, en su sitio; en los ejercicios y con el resultado a la vista, no hay */
+    let h = S.tok.length ? TL.htmlCuenta(S.tok, null, S.ej ? undefined : cursor()) : '';
     if(S.pel){
       const fin = S.pel.sinTeatro || (R.pel === S.pel && R.k === S.pel.pasos.length);
       if(fin) h += '<span class="op"> = </span><b class="tl-res' + (S.pel.exacto[1] !== 1 ? ' frac' : '') + '">' + P.fracTxt(S.pel.exacto) + '</b>';
     }
-    $('tlEscrito').innerHTML = h || '<span class="tl-vacia">escribe aquí…</span>';
+    $('tlEscrito').innerHTML = h || (S.ej ? '' : '<span class="tl-cursor" aria-hidden="true"></span>') + '<span class="tl-vacia">escribe aquí…</span>';
   }
   /* la cartela: la cuenta con el trozo que se juega iluminado, y debajo qué pasa */
   function cartela(R){
@@ -3621,7 +3786,7 @@ raiz.Arranque = {escena};
   $('atras').addEventListener('click', () => R.retrocede());
   $('inicio').addEventListener('click', () => R.principio());
   $('todo').addEventListener('click', () => R.repasa());
-  $('tlMuestra').addEventListener('click', () => { S.tok = MUESTRAS[muestra++ % MUESTRAS.length].slice(); S.pel = null; R.para(); $('tlAviso').innerHTML = ''; pintaTablilla(); $('panelCampo').hidden = true; });
+  $('tlMuestra').addEventListener('click', () => { S.tok = MUESTRAS[muestra++ % MUESTRAS.length].slice(); S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = ''; pintaTablilla(); $('panelCampo').hidden = true; });
   document.addEventListener('keydown', ev => {
     if(ev.target && /INPUT|TEXTAREA|SELECT/.test(ev.target.tagName)) return;
     if(S.pel && !S.pel.sinTeatro && (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft')){
@@ -3645,7 +3810,7 @@ raiz.Arranque = {escena};
   const EV = window.Entrevistas.monta($('entrevista'), {alPrueba: tok => {
     entrevista(false);
     modoRuta(false);
-    S.tok = tok; pintaTablilla(); igual();
+    S.tok = tok; S.cur = null; pintaTablilla(); igual();
   }});
   function entrevista(si){
     $('entrevista').hidden = !si;
