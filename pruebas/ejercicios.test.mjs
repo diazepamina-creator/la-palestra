@@ -58,8 +58,8 @@ test('el acta cuenta aciertos y fallos por misión', () => {
   assert.match(t, /Nombre: Ana/);
   assert.match(t, /Tiempo: 2 min 05 s/);
   assert.match(t, /Resueltas: 2   Falladas: 2   Acierto: 50%/);
-  assert.match(t, /1\. Entra gente — 1 de 3  \(floja\)/);
-  assert.match(t, /2\. Alguien se retira — 1 de 1\n/);
+  assert.match(t, /1\. Fuerza y bando — 1 de 3  \(floja\)/);
+  assert.match(t, /2\. Entra gente — 1 de 1\n/);
 });
 
 test('el acta lleva el detalle, ejercicio a ejercicio', () => {
@@ -77,8 +77,8 @@ test('el acta lleva el detalle, ejercicio a ejercicio', () => {
   assert.deepEqual(s.ejercicios[1].d, [3, 7, -3]);
   assert.equal(s.mision[0].solas, 1, 'solo el primero sale sin mirar');
   const txt = E.actaEnTexto(s, s.t0 + 300000, r);
-  assert.match(txt, /Ruta: misión 1 de 8 \(Entra gente\)/);
-  assert.match(txt, /1\. Entra gente — 2 de 5, 1 sin mirar  \(floja\)/);
+  assert.match(txt, /Ruta: misión 1 de 9 \(Fuerza y bando\)/);
+  assert.match(txt, /1\. Fuerza y bando — 2 de 5, 1 sin mirar  \(floja\)/);
   assert.match(txt, /09:41  M1  −2 \+ 5 = \+3 · bien a la primera, sin mirar/);
   assert.match(txt, /M1  2 − 5 = −3 · bien tras 2 fallos \(\+3, \+7\), mirando el campo/);
   assert.match(txt, /M1  4 \+ \(−1\) = \+3 · sin resolver \(\+5\)/);
@@ -107,4 +107,18 @@ test('escríbelo: lo escrito se compara con lo que ha pasado', () => {
   assert.equal(E.comparaEscrito([n(-3), mas], real).estado, 'error');
   /* un negativo que entra se escribe + (−2) */
   assert.match(E.comparaEscrito([n(4)], [n(4), mas, n(-2)]).pista, /El −2 <b>entra<\/b>: se escribe <b>\+ \(−2\)<\/b>/);
+});
+
+test('fuerza y bando: la buena es la que toca, y sin empates', () => {
+  const vistos = new Set();
+  for(let i = 0; i < 400; i++){
+    const c = E.generaCanon();
+    vistos.add(c.tipo);
+    assert.notEqual(c.a, c.b);
+    const [x, y] = c.bien === 0 ? [c.a, c.b] : [c.b, c.a];
+    if(c.tipo === 'fuerza'){ assert.ok(Math.abs(x) > Math.abs(y)); }
+    if(c.tipo === 'menor') assert.ok(x < y);
+    if(c.tipo === 'mayor') assert.ok(x > y);
+  }
+  assert.deepEqual([...vistos].sort(), ['fuerza', 'mayor', 'menor']);
 });

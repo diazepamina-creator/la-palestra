@@ -149,6 +149,7 @@ button.b:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
 .mandos{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
 .mandos button.b{font-family:'Space Mono',monospace;font-size:18px;min-width:52px;letter-spacing:0}
 .paso-t{font-family:'Space Mono',monospace;font-size:12px;color:var(--tenue);flex:1;text-align:right;white-space:nowrap}
+#panelCampo.quieto .mandos{display:none}
 .bq-lista{margin:6px 0 0;font-size:14px;color:var(--tenue)}
 .bq-lista b.izq{color:var(--izq)} .bq-lista b.der{color:var(--der)}
 

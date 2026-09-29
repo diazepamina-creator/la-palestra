@@ -50,7 +50,7 @@ function pintaRegla(regla, alcance, paso, bandera, hayGente, opciones){
   let h = '';
   for(let v = -alcance; v <= alcance; v++){
     const clase = (v === 0 ? ' cero' : '') + (hayGente && v === bandera ? ' aqui' : '') +
-      (opciones.pin === v ? ' pronostico' : '') + (v % 2 === 0 ? ' par' : ' impar');
+      (opciones.pin === v ? ' pronostico' : '') + ((opciones.marcas || []).indexOf(v) >= 0 ? ' marcada' : '') + (v % 2 === 0 ? ' par' : ' impar');
     h += '<span class="marca-n' + clase + '" data-v="' + v + '" style="left:calc(50% + ' + (v * paso) + 'px)"><i></i>' + v + '</span>';
   }
   regla.innerHTML = h;
@@ -63,7 +63,8 @@ function pintaRegla(regla, alcance, paso, bandera, hayGente, opciones){
 
 /* pinta la foto. opciones: {alcance} para que la regla no cambie de tamaño
    a mitad de una película; {nuevos: [ids]} los que acaban de llegar;
-   {viva} la regla se puede tocar; {pin} el número que dijo el alumno */
+   {viva} la regla se puede tocar; {pin} el número que dijo el alumno;
+   {marcas: [números]} los que se señalan en la regla (para comparar) */
 function pinta(el, foto, opciones){
   opciones = opciones || {};
   const cuerda = foto.cuerda || [], bandera = foto.bandera || 0;

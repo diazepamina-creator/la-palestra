@@ -23,7 +23,7 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 - `src/reproductor.js` y `src/banquillo.css` — el reproductor: la foto k al instante y el paso k+1 animado; la predicción antes de los pasos clave; ▶▶.
 - `src/cartela.css` — la cartela: la cuenta iluminada encima del campo.
 - `src/personajes.js`, `src/zeus.js` y `src/personajes.css` — Jeferión, Listillón y Zeus, las caras que hablan y el rayo.
-- `src/ejercicios.js` — las ocho misiones (entre ellas «Escríbelo», del campo a la cuenta, con `comparaEscrito`), el generador de cuentas comprobado con el motor, el acta y el turno guardado.
+- `src/ejercicios.js` — las nueve misiones (entre ellas «Fuerza y bando», con `generaCanon`, y «Escríbelo», del campo a la cuenta, con `comparaEscrito`), el generador de cuentas comprobado con el motor, el acta y el turno guardado.
 - `src/entrevistas.js` y `src/entrevistas.css` — las entrevistas.
 - `src/argos.js` — el ojo de Argos: la resolución de Listillón, paso a paso como en el cuaderno, con un fallo de los de verdad (restar o sumar un negativo, sumar las fuerzas que tiran en contra, el signo de un producto o una potencia); hay que tocar la primera línea mal.
 - `src/piel.css` — la piel: la disposición de Las piezas de Miut (la cabecera con pestañas, las hojas, los botones, las cajas de lo que dicen Listillón y Jeferión, el acta y el pie) sobre la arena rastrillada de la palestra, de día o de noche, o el papel del proyector. La letra: Cinzel en los rótulos y Alegreya Sans para leer; las cuentas, en Space Mono.
@@ -50,3 +50,4 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 13. ✅ La TABLI·CAS·IO: la tablilla de arcilla con hechura de calculadora, modelada a mano, con Listillón trazado con una ramita; cursor ◀ ▶ para editar y las pociones en × y ÷.
 14. ✅ El ojo de Argos: encontrar el primer fallo (traído de El pulso de los dioses).
 15. ✅ Escríbelo: ver lo que pasa en el campo y escribir la cuenta (traído de El pulso de los dioses).
+16. ✅ Fuerza y bando: la fuerza sin signo y el orden en la regla (el canon de El pulso de los dioses).

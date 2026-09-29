@@ -160,6 +160,7 @@ button.b:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
 .mandos{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
 .mandos button.b{font-family:'Space Mono',monospace;font-size:18px;min-width:52px;letter-spacing:0}
 .paso-t{font-family:'Space Mono',monospace;font-size:12px;color:var(--tenue);flex:1;text-align:right;white-space:nowrap}
+#panelCampo.quieto .mandos{display:none}
 .bq-lista{margin:6px 0 0;font-size:14px;color:var(--tenue)}
 .bq-lista b.izq{color:var(--izq)} .bq-lista b.der{color:var(--der)}
 
@@ -519,6 +520,9 @@ html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;
    regla se estrecha, no queda hueco a los lados */
 .suelo{position:absolute;left:0;right:0;bottom:0;height:52px;z-index:0;pointer-events:none;
   background:linear-gradient(180deg,rgba(48,35,44,.65) 0,#2B1F2C 30%,#1A1322 100%);border-top:1px solid rgba(233,184,78,.5)}
+/* los números que se comparan, señalados en la regla */
+.marca-n.marcada{color:var(--ink);font-weight:700;background:rgba(233,184,78,.35);box-shadow:0 0 0 1.5px #E9B84E}
+.marca-n.marcada i{height:36px;margin-top:-10px;background:linear-gradient(180deg,rgba(233,184,78,.1),#E9B84E)}
 </style>
 <style>
 /* ── LA TABLI·CAS·IO: la tablilla de arcilla de Listillón, y de broma con
@@ -732,6 +736,19 @@ html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;
 .tl-linea.cazada{border-color:#a8432d;box-shadow:inset 0 0 0 1px #a8432d, 0 0 0 3px rgba(168,67,45,.2)}
 .tl-linea.cazada .tl-lt{text-decoration:line-through;text-decoration-color:#a8432d;text-decoration-thickness:2px}
 .tl-era{margin-left:10px;font-style:normal;font-weight:700;color:#2f6b28;display:inline-block;text-decoration:none}
+
+/* ── FUERZA Y BANDO: dos números grandes, de barro, para tocar uno ── */
+.tl-canon{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 10px}
+.tl-opcion{min-height:64px;cursor:pointer;font:inherit;font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:#2e2114;
+  border:2px solid #7a5a2e;border-radius:16px 12px 18px 13px / 13px 18px 12px 16px;
+  background:var(--grano), radial-gradient(ellipse at 30% 20%, #fbf3dc 0, #efdfbb 45%, #dcc493 100%);background-size:140px 140px, 100% 100%;
+  box-shadow:0 4px 0 #7a5a2e, 0 6px 7px rgba(40,25,5,.3), inset 0 2px 0 rgba(255,250,235,.75)}
+.tl-opcion:nth-child(2){transform:rotate(1deg)} .tl-opcion:nth-child(1){transform:rotate(-1deg)}
+.tl-opcion:active{transform:translateY(3px);box-shadow:0 1px 0 #7a5a2e}
+.tl-opcion:focus-visible{outline:3px solid #7f5a0e;outline-offset:2px}
+.tl-opcion .izq{color:var(--izq)} .tl-opcion .der{color:var(--der)}
+.tl-opcion.buena{border-color:#2f6b28;box-shadow:0 4px 0 #2f6b28, inset 0 0 0 2px #2f6b28}
+.tl-opcion.mala{opacity:.55;border-style:dashed}
 </style>
 <style>
 /* ── EL BANQUILLO: un término compuesto se prepara aquí, fuera de la cuerda,
@@ -1162,6 +1179,7 @@ html[data-inicio="si"] main{visibility:hidden}
     </div>
     <div class="tl-ej" id="tlEj" hidden>
       <p class="tl-marca" id="tlMarca"></p>
+      <div class="tl-canon" id="tlCanon" hidden role="group" aria-label="Toca uno"></div>
       <ol class="tl-argos" id="tlArgos" hidden aria-label="La resolución de Listillón: toca la primera línea mal"></ol>
       <div class="tl-resp" id="tlRespFila">
         <input id="tlResp" type="text" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="¿Dónde acaba?" aria-label="Tu respuesta">
@@ -1191,7 +1209,7 @@ html[data-inicio="si"] main{visibility:hidden}
     <div class="habla jef"><span class="cara jef" aria-hidden="true"></span><div><div class="quien">Jeferión</div><p class="aviso" id="jefAviso" role="status"></p></div></div>
   </section>
 
-  <footer>versión 0.23</footer>
+  <footer>versión 0.24</footer>
 </main>
 
 <div class="modal" id="mActa" hidden>
@@ -2016,7 +2034,7 @@ function pintaRegla(regla, alcance, paso, bandera, hayGente, opciones){
   let h = '';
   for(let v = -alcance; v <= alcance; v++){
     const clase = (v === 0 ? ' cero' : '') + (hayGente && v === bandera ? ' aqui' : '') +
-      (opciones.pin === v ? ' pronostico' : '') + (v % 2 === 0 ? ' par' : ' impar');
+      (opciones.pin === v ? ' pronostico' : '') + ((opciones.marcas || []).indexOf(v) >= 0 ? ' marcada' : '') + (v % 2 === 0 ? ' par' : ' impar');
     h += '<span class="marca-n' + clase + '" data-v="' + v + '" style="left:calc(50% + ' + (v * paso) + 'px)"><i></i>' + v + '</span>';
   }
   regla.innerHTML = h;
@@ -2029,7 +2047,8 @@ function pintaRegla(regla, alcance, paso, bandera, hayGente, opciones){
 
 /* pinta la foto. opciones: {alcance} para que la regla no cambie de tamaño
    a mitad de una película; {nuevos: [ids]} los que acaban de llegar;
-   {viva} la regla se puede tocar; {pin} el número que dijo el alumno */
+   {viva} la regla se puede tocar; {pin} el número que dijo el alumno;
+   {marcas: [números]} los que se señalan en la regla (para comparar) */
 function pinta(el, foto, opciones){
   opciones = opciones || {};
   const cuerda = foto.cuerda || [], bandera = foto.bandera || 0;
@@ -3131,6 +3150,10 @@ const n = f => ({t: 'n', f}), MAS = {t: '+'}, MENOS = {t: '-'}, AB = {t: '('}, C
 const po = k => ({t: 'p', k, pre: false}), pre = k => ({t: 'p', k, pre: true}), e = x => ({t: 'e', n: x});
 
 const MISIONES = [
+  /* fuerza y bando: antes de sumar, los números. La fuerza es el número sin
+     signo; el orden, la posición en la regla */
+  {t: 'Fuerza y bando',     nivel: 0, meta: 4, modo: 'canon',
+   d: 'La <b>fuerza</b> es el número sin signo. En la regla, más a la izquierda es <b>menor</b>.'},
   {t: 'Entra gente',        nivel: 0, meta: 4, d: 'Entrar es <b>sumar</b>, con su signo.'},
   {t: 'Alguien se retira',  nivel: 1, meta: 4, d: 'Retirarse es <b>restar</b>. Si no está, entra su pareja.'},
   /* escríbelo: al revés, del campo a la cuenta. Se ve lo que pasa, sin la cuenta */
@@ -3223,6 +3246,25 @@ function siguiente(ruta){
   if(ruta.i >= MISIONES.length - 1) return false;
   ruta.i++; ruta.hechas = 0; ruta.hecho = false; ruta.tropezo = false;
   return true;
+}
+
+/* ── fuerza y bando: dos números y una pregunta; se toca uno ──
+   {tipo: 'fuerza' | 'menor' | 'mayor', a, b, bien: 0 | 1}. En «fuerza» nunca
+   empatan; en «menor» y «mayor» salen a menudo dos negativos, que es donde
+   más se tropieza */
+function generaCanon(){
+  const tipo = elige(['fuerza', 'fuerza', 'menor', 'menor', 'mayor']);
+  const num = () => elige([1, 2, 3, 4, 5, 6, 7, 8]) * elige([1, -1]);
+  let a, b;
+  for(;;){
+    a = num(); b = num();
+    if(tipo !== 'fuerza' && azar() < .35){ a = -Math.abs(a); b = -Math.abs(b); }   // dos negativos
+    if(tipo === 'fuerza' && azar() < .6 && Math.sign(a) === Math.sign(b)) b = -b;    // casi siempre, de bandos distintos
+    if(a === b || (tipo === 'fuerza' && Math.abs(a) === Math.abs(b))) continue;
+    break;
+  }
+  const bien = tipo === 'fuerza' ? (Math.abs(a) > Math.abs(b) ? 0 : 1) : tipo === 'menor' ? (a < b ? 0 : 1) : (a > b ? 0 : 1);
+  return {tipo, a, b, bien};
 }
 
 /* ── escríbelo: ¿lo escrito es lo que ha pasado? ──
@@ -3330,7 +3372,7 @@ function lee(alm, ahora){
 }
 function borra(alm){ try{ (alm || raiz.localStorage).removeItem(GUARDADO); }catch(err){} }
 
-const E = {MISIONES, genera, plantilla, comparaEscrito, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto, comoFue, hora,
+const E = {MISIONES, genera, plantilla, comparaEscrito, generaCanon, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto, comoFue, hora,
   guarda, lee, borra, conAzar: f => { azar = f; }};
 if(typeof module !== 'undefined' && module.exports) module.exports = E;
 else raiz.Ejercicios = E;
@@ -3772,16 +3814,84 @@ raiz.Arranque = {escena};
     if(m.modo === 'argos'){
       for(let k = 0; k < 40 && !argos; k++){ ej = E.genera(m.niveles[k % m.niveles.length]); argos = window.Argos.conFallo(ej.tok); }
     }
+    /* fuerza y bando: dos números y una pregunta */
+    let canon = null;
+    if(m.modo === 'canon') canon = E.generaCanon();
     /* escríbelo: una cuenta de entrar y retirarse, que solo se ve en el campo */
     if(m.modo === 'escribe') ej = E.genera(m.niveles[Math.floor(Math.random() * m.niveles.length)]);
     S.ej = {valor: ej.valor, visto: m.modo === 'escribe', fase: 'pensando', id: Date.now(), cuenta: P.escribe(ej.pel.arbol), argos,
-            modo: m.modo || 'resultado', real: ej.tok, pel: ej.pel};
+            modo: m.modo || 'resultado', real: ej.tok, pel: ej.pel, canon};
+    if(canon){
+      S.ej.valor = canon.bien === 0 ? canon.a : canon.b;
+      S.ej.cuenta = {fuerza: 'más fuerte', menor: 'menor', mayor: 'mayor'}[canon.tipo] + ': ' + P.conSigno(canon.a) + ' o ' + P.conSigno(canon.b);
+    }
+    $('panelCampo').classList.remove('quieto');
     S.tok = ej.tok; S.cur = null; S.pel = null; S.visto = false; R.para();
     $('tlResp').value = '';
     $('tlAviso').innerHTML = '';
     $('panelCampo').hidden = true;
-    if(S.ej.modo === 'escribe') S.tok = [];
-    pintaTablilla(); pintaMarca(); pintaArgos(); pintaEscribe();
+    if(S.ej.modo === 'escribe' || S.ej.modo === 'canon') S.tok = [];
+    pintaTablilla(); pintaMarca(); pintaArgos(); pintaEscribe(); pintaCanon();
+  }
+  /* ── FUERZA Y BANDO: dos números; se toca el que responde a la pregunta ── */
+  const numSpan = v => '<span class="' + (v < 0 ? 'izq' : 'der') + '">' + P.conSigno(v) + '</span>';
+  function pantallaCanon(c){
+    const x = v => c.tipo === 'fuerza' ? '|' + numSpan(v) + '|' : numSpan(v);
+    return x(c.a) + '<span class="op">  ?  </span>' + x(c.b);
+  }
+  function pintaCanon(){
+    const c = S.ej && S.ej.canon;
+    $('tlCanon').hidden = !c;
+    if(!c) return;
+    $('tlRespFila').hidden = true;
+    $('tlCanon').innerHTML = [c.a, c.b].map((v, k) => '<button type="button" class="tl-opcion" data-k="' + k + '">' + numSpan(v) + '</button>').join('');
+    $('tlAviso').innerHTML = {fuerza: '¿Quién tira <b>más fuerte</b>?', menor: '¿Cuál es <b>menor</b>?', mayor: '¿Cuál es <b>mayor</b>?'}[c.tipo];
+  }
+  $('tlCanon').addEventListener('click', ev => {
+    const b = ev.target.closest('.tl-opcion'), c = S.ej && S.ej.canon;
+    if(!b || !c || S.ej.fase === 'bien') return;
+    const k = Number(b.dataset.k), dicho = P.conSigno(k === 0 ? c.a : c.b);
+    const [x, y] = c.bien === 0 ? [c.a, c.b] : [c.b, c.a], cs = P.conSigno;
+    if(k === c.bien){
+      S.ej.fase = 'bien';
+      E.anota(sesion, ruta, true, detalle(dicho));
+      b.classList.add('buena');
+      const cumplida = E.acierta(ruta);
+      $('tlAviso').innerHTML = '<b>¡Eso es!</b> ' + (c.tipo === 'fuerza'
+        ? '|' + cs(x) + '| = ' + Math.abs(x) + ' y |' + cs(y) + '| = ' + Math.abs(y) + ': tira más fuerte el ' + cs(x) + '.'
+        : c.tipo === 'menor' ? cs(x) + ' &lt; ' + cs(y) + ': en la regla, más a la izquierda.'
+        : cs(x) + ' &gt; ' + cs(y) + ': en la regla, más a la derecha.') + (cumplida ? ' <b>Misión cumplida.</b>' : '');
+      E.guarda(ruta, sesion); pintaRuta(); pintaMarca(); pintaActa();
+      const yo = S.ej;
+      setTimeout(() => { if(S.ej === yo) ronda(); }, 2400);
+      return;
+    }
+    E.anota(sesion, ruta, false, detalle(dicho));
+    E.guarda(ruta, sesion);
+    b.classList.add('mala');
+    $('tlAviso').innerHTML = c.tipo === 'fuerza'
+      ? 'Ese tira menos. La fuerza va <b>sin signo</b>: |' + cs(c.a) + '| = ' + Math.abs(c.a) + ' y |' + cs(c.b) + '| = ' + Math.abs(c.b) + '.'
+      : (c.a < 0 && c.b < 0 ? 'No. Con los negativos, cuanta más fuerza, <b>más a la izquierda</b>. ' : 'No. ') +
+        (c.tipo === 'menor' ? 'Míralo en la regla: más a la izquierda, <b>menor</b>.' : 'Míralo en la regla: más a la derecha, <b>mayor</b>.');
+    pintaMarca(); pintaActa();
+  });
+  /* el campo, quieto: los dos tiradores tirando, o la regla con los dos números */
+  function verCanon(){
+    const c = S.ej.canon;
+    if(S.ej.fase !== 'bien') S.ej.visto = true;
+    R.para();
+    $('panelCampo').hidden = false; $('panelCampo').classList.add('quieto');
+    $('cartela').hidden = true; $('banquillo').hidden = true;
+    if(c.tipo === 'fuerza'){
+      C.pinta(campo, {cuerda: [{id: 1, f: c.a, venia: null}, {id: 2, f: c.b, venia: null}], banquillo: [], bandera: c.a + c.b}, {alcance: 8});
+      $('jefAviso').innerHTML = Math.sign(c.a) === Math.sign(c.b)
+        ? 'Los dos tiran hacia el mismo lado: el más grande es el que tiene más <b>fuerza</b>.'
+        : 'Cada uno tira hacia su lado: la bandera se va hacia el que tiene más <b>fuerza</b>.';
+    }else{
+      C.pinta(campo, {cuerda: [], banquillo: [], bandera: 0}, {alcance: 8, marcas: [c.a, c.b]});
+      $('jefAviso').innerHTML = 'En la regla, más a la izquierda es <b>menor</b>; más a la derecha, <b>mayor</b>.';
+    }
+    $('panelCampo').scrollIntoView({behavior: 'smooth', block: 'start'});
   }
   /* ── ESCRÍBELO: el campo pasa la película sin la cartela, y la cuenta se
      escribe en la tablilla con sus teclas ── */
@@ -3888,7 +3998,7 @@ raiz.Arranque = {escena};
     $('tlTeclas').hidden = si;
     $('tlPie').hidden = si;
     if(si){ pintaRuta(); ronda(); }
-    else{ S.ej = null; pintaArgos(); pintaEscribe(); S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
+    else{ S.ej = null; pintaArgos(); pintaEscribe(); pintaCanon(); $('panelCampo').classList.remove('quieto'); S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
     pintaPestanas();
   }
   /* ── EL ACTA, en su propia hoja ── */
@@ -3918,7 +4028,7 @@ raiz.Arranque = {escena};
   addEventListener('keydown', ev => { if(ev.key === 'Escape' && !$('mActa').hidden) cierraActa(); });
   $('tlComprueba').addEventListener('click', comprueba);
   $('tlResp').addEventListener('keydown', ev => { if(ev.key === 'Enter'){ ev.preventDefault(); comprueba(); } });
-  $('tlVer').addEventListener('click', () => { if(S.ej) igual(); });
+  $('tlVer').addEventListener('click', () => { if(S.ej && S.ej.canon) verCanon(); else if(S.ej) igual(); });
   $('rtSigue').addEventListener('click', () => { if(E.siguiente(ruta)){ E.guarda(ruta, sesion); pintaRuta(); ronda(); } });
   $('rtSalta').addEventListener('click', () => { if(E.siguiente(ruta)){ E.guarda(ruta, sesion); pintaRuta(); ronda(); } });
   $('acNombre').addEventListener('input', () => { sesion.nombre = $('acNombre').value; E.guarda(ruta, sesion); });
@@ -3939,6 +4049,7 @@ raiz.Arranque = {escena};
   });
   function pintaTablilla(){
     /* el cursor, en su sitio; en los ejercicios y con el resultado a la vista, no hay */
+    if(S.ej && S.ej.canon){ $('tlEscrito').innerHTML = pantallaCanon(S.ej.canon); return; }
     const sinCursor = S.ej && S.ej.modo !== 'escribe';
     let h = S.tok.length ? TL.htmlCuenta(S.tok, null, sinCursor ? undefined : cursor()) : '';
     if(S.pel){
