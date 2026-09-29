@@ -15,6 +15,9 @@ const po = k => ({t: 'p', k, pre: false}), pre = k => ({t: 'p', k, pre: true}), 
 const MISIONES = [
   {t: 'Entra gente',        nivel: 0, meta: 4, d: 'Entrar es <b>sumar</b>, con su signo.'},
   {t: 'Alguien se retira',  nivel: 1, meta: 4, d: 'Retirarse es <b>restar</b>. Si no está, entra su pareja.'},
+  /* escríbelo: al revés, del campo a la cuenta. Se ve lo que pasa, sin la cuenta */
+  {t: 'Escríbelo',          nivel: 1, meta: 3, modo: 'escribe', niveles: [0, 1, 1],
+   d: 'Mira lo que pasa en el campo y <b>escríbelo</b>: quién entra y quién se retira, con su signo.'},
   {t: 'Pociones',           nivel: 2, meta: 4, d: 'El frasco se bebe en el <b>banquillo</b>. Con calavera, cambia de bando.'},
   {t: 'El paréntesis',      nivel: 3, meta: 4, d: 'Primero se <b>reduce</b> el paréntesis; luego bebe.'},
   {t: 'Potencias',          nivel: 4, meta: 3, d: '<b>(−2)²</b> no es <b>−2²</b>.'},
@@ -104,6 +107,31 @@ function siguiente(ruta){
   return true;
 }
 
+/* ── escríbelo: ¿lo escrito es lo que ha pasado? ──
+   'igual' si cuenta lo mismo término a término; 'mismoValor' si la bandera
+   acaba igual pero no es lo que ha pasado (el caso de «+ (−2)» por «− 2»);
+   'distinto' si no. La pista habla del primer término que no cuadra */
+function comparaEscrito(escrito, real){
+  let a;
+  try{ a = P.analiza(escrito); }catch(err){ return {estado: 'error', pista: err.message}; }
+  const b = P.analiza(real);
+  if(P.escribe(a) === P.escribe(b)) return {estado: 'igual', pista: ''};
+  const [n1, d1] = P.exacto(a), [n2, d2] = P.exacto(b);
+  const estado = n1 * d2 === n2 * d1 ? 'mismoValor' : 'distinto';
+  /* un término con la acción delante: «− 2», «+ (−2)» */
+  const txt = t => (t.sign === '-' ? '− ' : '+ ') + P.escribe({terms: [Object.assign({}, t, {sign: '+'})]}, false).trim();
+  let pista = '';
+  for(let i = 0; i < b.terms.length; i++){
+    const t = b.terms[i], s = a.terms[i];
+    if(s && txt(s) === txt(t)) continue;
+    const quien = t.factor.t === 'n' ? P.conSigno(t.factor.f) : null;
+    if(quien) pista = 'El ' + quien + (t.sign === '-' ? ' <b>se retira</b>: se escribe <b>' : ' <b>entra</b>: se escribe <b>') + txt(t) + '</b>.';
+    break;
+  }
+  if(!pista && a.terms.length > b.terms.length) pista = 'Sobra algo al final: mira cuántos se mueven.';
+  return {estado, pista};
+}
+
 /* ── el acta de la jornada ──
    Por misión, cuántas se resuelven, cuántas respuestas fallan y cuántas salen
    sin mirar el campo. Y ejercicio a ejercicio: la cuenta, lo que se contestó
@@ -184,7 +212,7 @@ function lee(alm, ahora){
 }
 function borra(alm){ try{ (alm || raiz.localStorage).removeItem(GUARDADO); }catch(err){} }
 
-const E = {MISIONES, genera, plantilla, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto, comoFue, hora,
+const E = {MISIONES, genera, plantilla, comparaEscrito, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto, comoFue, hora,
   guarda, lee, borra, conAzar: f => { azar = f; }};
 if(typeof module !== 'undefined' && module.exports) module.exports = E;
 else raiz.Ejercicios = E;
