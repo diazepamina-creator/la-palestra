@@ -55,3 +55,4 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 17. ✅ El sonido, y la pata de Listillón sujetando su tablilla en la entrevista.
 18. ✅ Mejor sonido: el rugido y el trueno se oyen en altavoces pequeños, un graznido de pájaro de verdad y el «¡plop!» del corcho.
 19. ✅ En el pie, un enlace a El pulso de los dioses.
+20. ✅ El pie, como el de Las piezas de Miut: autoría y licencia, la app anterior y los materiales. Fuera de los buscadores.
