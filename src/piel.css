@@ -205,6 +205,5 @@ button.b:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
 footer{margin-top:26px;padding-top:12px;border-top:1px solid var(--linea);text-align:center;
   font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tenue)}
 html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;border-top-color:rgba(90,66,38,.3)}
-/* el enlace a la app de la que salió: discreto, del color del pie */
-footer a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor;opacity:.85}
-footer a:hover{opacity:1}
+/* los enlaces del pie, como en Las piezas de Miut: del color del pie y subrayados */
+footer a{color:inherit}
