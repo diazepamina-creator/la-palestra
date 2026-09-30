@@ -54,3 +54,4 @@ La app es **un solo `index.html`**, como las demás: se genera con `node constru
 16. ✅ Fuerza y bando: la fuerza sin signo y el orden en la regla (el canon de El pulso de los dioses).
 17. ✅ El sonido, y la pata de Listillón sujetando su tablilla en la entrevista.
 18. ✅ Mejor sonido: el rugido y el trueno se oyen en altavoces pequeños, un graznido de pájaro de verdad y el «¡plop!» del corcho.
+19. ✅ En el pie, un enlace a El pulso de los dioses.
