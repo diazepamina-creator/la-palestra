@@ -82,7 +82,7 @@ html[data-tema="proyector"], html[data-tema="proyector"] body{background:#FFFFFF
 @media (max-width:620px){
   .cab .acc{width:100%;margin:5px 0 0;padding-top:4px;border-top:1px solid var(--linea);justify-content:space-around;gap:6px}
 }
-.juegos{display:grid;grid-template-columns:repeat(3,1fr);margin:8px -14px 0;border-top:1px solid var(--linea)}
+.juegos{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));margin:8px -14px 0;border-top:1px solid var(--linea)}
 .juegos button{font:inherit;cursor:pointer;text-align:center;color:var(--tinta);background:none;border:0;border-bottom:3px solid transparent;
   border-radius:0;padding:6px 4px 4px;line-height:1.2}
 .juegos button + button{border-left:1px solid var(--linea)}
@@ -207,3 +207,32 @@ footer{margin-top:26px;padding-top:12px;border-top:1px solid var(--linea);text-a
 html:not([data-tema="noche"]):not([data-tema="proyector"]) footer{color:#5a4226;border-top-color:rgba(90,66,38,.3)}
 /* los enlaces del pie, como en Las piezas de Miut: del color del pie y subrayados */
 footer a{color:inherit}
+
+/* ── PRACTICAR: la misión que se practica, a elegir ── */
+.rt-elige{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;padding-top:9px;border-top:1px dashed var(--linea)}
+.rt-elige button{font-family:var(--rotulo);font-weight:700;font-size:12px;letter-spacing:.6px;text-transform:uppercase;cursor:pointer;
+  color:var(--tinta);background:var(--panel);border:1px solid var(--linea);border-radius:16px;padding:6px 11px;min-height:34px}
+.rt-elige button b{color:var(--oro);margin-right:2px}
+.rt-elige button:hover{border-color:var(--oro)}
+.rt-elige button[aria-pressed="true"]{background:var(--oro);border-color:var(--oro);color:var(--panel)}
+.rt-elige button[aria-pressed="true"] b{color:var(--panel)}
+
+/* ── LA GUÍA: un foco sobre cada parte de la palestra y una tablilla que la explica ── */
+.guia{position:fixed;inset:0;z-index:80;cursor:pointer}
+.guia-foco{position:fixed;border-radius:13px;border:2px solid #F0C75E;pointer-events:none;
+  box-shadow:0 0 0 9999px rgba(30,16,6,.72),0 0 22px rgba(240,199,94,.55);
+  transition:top .28s ease,left .28s ease,width .28s ease,height .28s ease}
+.guia-globo{position:fixed;z-index:81;width:min(340px,calc(100vw - 32px));cursor:default;
+  background:linear-gradient(180deg,var(--panel2,var(--panel)),var(--panel));border:1px solid var(--oro);border-radius:14px;padding:13px 15px;
+  box-shadow:0 18px 44px rgba(0,0,0,.5);transition:top .28s ease,left .28s ease}
+.guia-globo .tit{display:flex;align-items:center;gap:8px;font-family:var(--rotulo);font-weight:700;font-size:15px;letter-spacing:1.4px;text-transform:uppercase;color:var(--oro);margin-bottom:4px}
+.guia-globo .tit::before{content:'';width:18px;height:18px;flex:0 0 18px;background:var(--oro);-webkit-mask:var(--sello) center/contain no-repeat;mask:var(--sello) center/contain no-repeat}
+.guia-globo:focus{outline:none}
+.guia-globo p{margin:0;font-size:15.5px;line-height:1.5}
+.guia-globo p b{color:var(--oro)}
+.guia-pie{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:11px}
+.guia-pie span{font-family:'Space Mono',monospace;font-size:11px;color:var(--tenue)}
+.guia-pie .botones{margin:0}
+.guia-pie button.b{min-height:36px;padding:5px 12px}
+@media (prefers-reduced-motion: reduce){ .guia-foco,.guia-globo{transition:none} }
+@media print{ .guia{display:none} }
