@@ -171,6 +171,7 @@ function anota(sesion, ruta, ok, det, ahora){
   let e = lista[lista.length - 1];
   if(!e || e.id !== det.id){
     e = {id: det.id, m: ruta.i, c: det.cuenta, v: det.valor, d: [], ok: false, visto: false, t: ahora || Date.now()};
+    if(det.p) e.p = 1;                                     // hecho en Practicar
     lista.push(e);
     if(lista.length > 400) lista.shift();
   }
@@ -213,7 +214,7 @@ function actaEnTexto(sesion, ahora, ruta){
   if(ejs.length){
     t += 'Ejercicio a ejercicio:\n';
     ejs.forEach(e => {
-      t += '  ' + hora(e.t) + '  M' + (e.m + 1) + '  ' + e.c + ' = ' + firma(e.v) + ' · ' + comoFue(e) + '\n';
+      t += '  ' + hora(e.t) + '  M' + (e.m + 1) + (e.p ? ' (practicar)' : '') + '  ' + e.c + ' = ' + firma(e.v) + ' · ' + comoFue(e) + '\n';
     });
   }
   return t;
