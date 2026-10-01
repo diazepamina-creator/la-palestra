@@ -1,0 +1,116 @@
+\documentclass[12pt]{article}
+\usepackage{palestra1}
+\newcommand{\poc}[3]{\begin{tabular}[b]{@{}c@{}}\bebe{#1}{#2}\\[1mm]#3\end{tabular}}
+\begin{document}
+\begin{ficha}{Las pociones}{Multiplicar y dividir}{3}
+
+\begin{encargo}
+En el banquillo, el tirador se bebe un frasco y sale a tirar ya hecho. Los
+\textcolor{crece}{\textbf{verdes}} le hacen crecer, los
+\textcolor{mengua}{\textbf{azules}} menguar, y los de
+\textcolor{bando}{\textbf{calavera}} le cambian de bando.
+\end{encargo}
+
+\bloque{1}{Mira cómo se hace}{En el campo}\quad{\small así se juega $(-3)\cdot 2$}
+
+\vspace{1.5mm}
+\begin{minipage}[c]{.7\linewidth}
+\paso{1}\textbf{¿Quién bebe?}\ El \nm{-3}: fuerza 3, bando rojo.\\[1.5mm]
+\paso{2}\textbf{¿Qué frasco?}\ ·2, verde: tira el doble. Fuerza 6.\\[1.5mm]
+\paso{3}\textbf{¿Tiene calavera?}\ No: sigue en su bando. Sale el \nm{-6}.
+\end{minipage}%
+\begin{minipage}[c]{.3\linewidth}\centering
+\bebe{-3}{\doblon}
+\end{minipage}
+
+\vspace{1.5mm}
+\begin{listillon}
+Se multiplican las fuerzas. Si los dos tienen el \textbf{mismo signo}, sale
+\textbf{+}; si tienen \textbf{distinto signo}, sale \textbf{−}.\\[1mm]
+\centerline{$(+)\cdot(+) = +$\quad $(-)\cdot(-) = +$\quad $(+)\cdot(-) = -$\quad $(-)\cdot(+) = -$}
+\end{listillon}
+
+\bloque{2}{Ahora tú}{En el campo}\quad{\small ¿con qué número sale a tirar?}
+
+\vspace{1.5mm}
+\begin{tabular}{@{}c@{\hspace{8mm}}c@{\hspace{8mm}}c@{\hspace{8mm}}c@{}}
+\poc{4}{\doblon}{\ej{a}$(+4)\cdot 2 = $\casillita[7mm]} &
+\poc{-2}{\triplon}{\ej{b}$(-2)\cdot 3 = $\casillita[7mm]} &
+\poc{-5}{\traicion}{\ej{c}$(-5)\cdot(-1) = $\casillita[7mm]} &
+\poc{3}{\traiciondoble}{\ej{d}$(+3)\cdot(-2) = $\casillita[7mm]}\\
+\end{tabular}
+
+\bloque{3}{Sin banquillo}{Sobre el papel}
+
+\vspace{1mm}
+{\renewcommand{\arraystretch}{2.1}
+\begin{tabular}{@{}l@{\hspace{14mm}}l@{}}
+\ej{a}$(-4)\cdot(-2) = $ \casillita[8mm] & \ej{b}$10\dv(-5) = $ \casillita[8mm]\\
+\ej{c}$(-3)\cdot 3 = $ \casillita[8mm] & \ej{d}$(-8)\dv(-4) = $ \casillita[8mm]\\
+\end{tabular}}
+
+\alto{$(-4)\cdot(-2)$ no es $-8$: con dos menos, el tirador vuelve a su bando.
+Da $+8$.}
+
+\reto{¿Qué frasco convierte un $+5$ en un $-5$?}
+
+\comprueba{Cada código abre esa cuenta en Practicar.}{%
+\qr{1}{j=pociones\&m=5\&c=n-3_p2}\hfill\qr{2a}{j=pociones\&m=5\&c=n4_p2}\hfill
+\qr{2b}{j=pociones\&m=5\&c=n-2_p3}\hfill\qr{2c}{j=pociones\&m=5\&c=n-5_p-1}\hfill
+\qr{2d}{j=pociones\&m=5\&c=n3_p-2}\hfill\qr{3a}{j=pociones\&m=5\&c=n-4_p-2}}
+
+\end{ficha}
+
+% ─────────────────────────────── REVERSO ──────────────────────────────────
+\begin{dorso}{Las pociones}{Primero el banquillo}{3}
+
+\bloque{1}{Mira cómo se hace}{En el campo}\quad{\small así se juega $5 + (-2)\cdot 3$}
+
+\vspace{1.5mm}
+\begin{minipage}[c]{.55\linewidth}
+\paso{1}\textbf{El banquillo.}\ $(-2)\cdot 3 = -6$\\[1.5mm]
+\paso{2}\textbf{Sale a tirar} el \nm{-6} contra el \nm{5}.\\[1.5mm]
+\paso{3}\textbf{La bandera:}\ $5 + (-6) = -1$
+\end{minipage}%
+\begin{minipage}[c]{.45\linewidth}\centering
+\campo[paso=3mm,escala=.55]{5,-6}
+\end{minipage}
+
+\bloque{2}{Ahora tú}{En el campo}\quad{\small primero el banquillo; luego, a la cuerda}
+
+\vspace{1.5mm}
+{\renewcommand{\arraystretch}{1.9}
+\begin{tabular}{@{}l@{\hspace{8mm}}c@{\hspace{8mm}}c@{}}
+& \small\textbf{en el banquillo} & \small\textbf{bandera}\\
+\ej{a}$4 + 3\cdot(-2)$ & \hueco[3.2cm] & \casillita[8mm]\\
+\ej{b}$-1 + (-2)\cdot(-3)$ & \hueco[3.2cm] & \casillita[8mm]\\
+\ej{c}$(+6)\dv 2 + (-5)$ & \hueco[3.2cm] & \casillita[8mm]\\
+\end{tabular}}
+
+\begin{minipage}[t]{.55\linewidth}\vspace{0pt}
+\bloque{3}{Problemas}{Sobre el papel}
+
+\vspace{1.5mm}
+\ej{a}Un buzo baja 2\,m cada minuto. ¿A qué altura está a los 5 minutos?\\[1mm]
+\hueco[4cm]
+
+\vspace{4mm}
+\ej{b}Tres amigos deben 12\,€ entre todos, a partes iguales. ¿Cuánto debe cada
+uno?\\[1mm]\hueco[4cm]
+\end{minipage}\hfill
+\begin{minipage}[t]{.4\linewidth}\vspace{6mm}
+\tablamult
+\end{minipage}
+
+\vspace{2mm}
+\begin{semaforo}
+\sfila{Sé qué hace cada frasco}
+\sfila{Pongo bien el signo al multiplicar}
+\sfila{Hago primero el banquillo y luego sumo}
+\end{semaforo}
+
+\comprueba{Cada código abre esa cuenta en Practicar.}{%
+\qr{1}{j=pociones\&m=5\&c=n5_s_n-2_p3}\hfill\qr{2a}{j=pociones\&m=5\&c=n4_s_q3_n-2}\hfill
+\qr{2b}{j=pociones\&m=5\&c=n-1_s_n-2_p-3}\hfill\qr{2c}{j=pociones\&m=5\&c=n6_p1/2_s_n-5}}
+\end{dorso}
+\end{document}

@@ -1,0 +1,150 @@
+\documentclass[11pt]{article}
+\usepackage{palestra}
+\newcommand{\poc}[3]{\begin{tabular}[b]{@{}c@{}}\bebe{#1}{#2}\\[1mm]#3\end{tabular}}
+% una línea del cuaderno de Listillón, para el ojo de Argos
+\newcommand{\linea}[1]{\hspace*{4mm}$= #1$\hfill\tikz[baseline=-.6ex]\draw[tinta!45,line width=.5pt](0,0)circle(1.7mm);\\[1.2mm]}
+\begin{document}
+\begin{ficha}{Potencias}{Su propio frasco}{4}
+
+\begin{encargo}
+Elevar al cuadrado es multiplicar un número por sí mismo. En la palestra, el
+tirador \textbf{se bebe su propio frasco}: en $(-2)^2$, el $-2$ se bebe un
+frasco de $\cdot(-2)$. Al cubo, se lo bebe dos veces.
+\end{encargo}
+
+\bloque{1}{Su propio frasco}{En el campo}\quad
+{\footnotesize ¿qué se bebe, cuántas veces, y con qué número sale?}
+
+\vspace{1.5mm}
+{\small
+\begin{tabular}{@{}c@{\hspace{14mm}}c@{\hspace{14mm}}c@{}}
+\poc{-2}{\traiciondoble}{\ej{a}$(-2)^2 = $\casillita[7mm]} &
+\poc{3}{\triplon}{\ej{b}$(+3)^2 = $\casillita[7mm]} &
+\poc{-3}{\traiciontriple}{\ej{c}$(-3)^2 = $\casillita[7mm]}\\[2mm]
+\poc{2}{\doblon\doblon}{\ej{d}$(+2)^3 = $\casillita[7mm]} &
+\poc{-2}{\traiciondoble\traiciondoble}{\ej{e}$(-2)^3 = $\casillita[7mm]} & \\
+\end{tabular}}
+
+\vspace{1.5mm}
+{\small En \ej{e}, ¿en qué bando está después del primer frasco? \hueco[1.5cm]\quad
+¿Y después del segundo? \hueco[1.5cm]}
+
+\vspace{1.5mm}
+\begin{listillon}
+Una \textbf{potencia de base negativa} es positiva si el exponente es
+\textbf{par}, y negativa si es \textbf{impar}. El exponente solo afecta a lo que
+tiene justo debajo: en $(-3)^2$ la base es $-3$, y vale $+9$; en $-3^2$ la base
+es 3, y el menos va fuera: $-3^2 = -9$.
+\end{listillon}
+
+\bloque{2}{¿Con o sin paréntesis?}{Sobre el papel}\quad
+{\footnotesize calcula las dos y pon el signo: $<$, $>$ o $=$}
+
+\vspace{1mm}
+{\small\renewcommand{\arraystretch}{2.1}
+\begin{tabular}{@{}l@{\hspace{14mm}}l@{}}
+\ej{a}$(-3)^2 = $ \casillita[7mm] \ \signo\ \ $-3^2 = $ \casillita[7mm] &
+\ej{b}$(-2)^3 = $ \casillita[7mm] \ \signo\ \ $-2^3 = $ \casillita[7mm]\\
+\ej{c}$(-1)^4 = $ \casillita[7mm] \ \signo\ \ $-1^4 = $ \casillita[7mm] &
+\ej{d}$(-2)^2 = $ \casillita[7mm] \ \signo\ \ $2^2 = $ \casillita[7mm]\\
+\end{tabular}}
+
+\vspace{.5mm}
+{\small ¿En cuáles da lo mismo con paréntesis que sin él? \hueco[2cm]\quad ¿Por qué? \hueco[4.2cm]}
+
+\bloque{3}{Todo junto}{Sobre el papel}\quad
+{\footnotesize primero las potencias, luego los frascos, y al final se suma}
+
+\vspace{1mm}
+{\small\renewcommand{\arraystretch}{2.1}
+\begin{tabular}{@{}l@{\hspace{10mm}}l@{\hspace{10mm}}l@{}}
+\ej{a}$5 - (-2)^2 = $ \casillita[7mm] & \ej{b}$(-3)^2 - 2\cdot 4 = $ \casillita[7mm] &
+\ej{c}$-2^2 + (-5)\cdot(-1) = $ \casillita[7mm]\\
+\ej{d}$4 + (-2)^3 = $ \casillita[7mm] & \ej{e}$(-1)^3 - (-3)^2 = $ \casillita[7mm] &
+\ej{f}$10 - 3\cdot(-2)^2 = $ \casillita[7mm]\\
+\end{tabular}}
+
+\alto{$-3^2$ no es $+9$: el cuadrado es del 3, no del $-3$. Primero $3^2 = 9$, y
+luego el menos: $-9$. Si se quiere que el $-3$ se beba su frasco, hay que
+escribir el paréntesis: $(-3)^2 = +9$.}
+
+\reto{¿Cuánto valen $(-1)^2$, $(-1)^3$, $(-1)^4$…? ¿Y $(-1)^{100}$? ¿Y
+$(-1)^{101}$? Explica cómo lo sabes sin hacer cien multiplicaciones.}
+
+\comprueba{Cada código abre esa cuenta en Practicar; si fallas, mira el banquillo.}{%
+\qr{1c}{j=potencias\&m=7\&c=n-3_e2}\hfill\qr{1e}{j=potencias\&m=7\&c=n-2_e3}\hfill
+\qr{3a}{j=potencias\&m=8\&c=n5_r_n-2_e2}\hfill\qr{3b}{j=potencias\&m=8\&c=n-3_e2_r_q2_n4}\hfill
+\qr{3c}{j=potencias\&m=8\&c=r_n2_e2_s_n-5_p-1}\hfill\qr{3d}{j=potencias\&m=8\&c=n4_s_n-2_e3}}
+
+\end{ficha}
+
+% ─────────────────────────────── REVERSO ──────────────────────────────────
+\begin{dorso}{Potencias}{El ojo de Argos}{4}
+
+\bloque{1}{El ojo de Argos}{Sobre el papel}\quad
+{\footnotesize Listillón se ha equivocado en \textbf{un} paso: marca la
+\textbf{primera} línea mal y corrígela al lado}
+
+\vspace{2mm}
+{\small
+\begin{minipage}[t]{.47\linewidth}
+\ej{a}$-8 - 3\cdot(-2)$\\[1.2mm]
+\linea{-8 - (-6)}
+\linea{-8 - 6}
+\linea{-14}
+\end{minipage}\hfill
+\begin{minipage}[t]{.47\linewidth}
+\ej{b}$(-2)^3 + 5$\\[1.2mm]
+\linea{(-2)\cdot(-2)\cdot(-2) + 5}
+\linea{8 + 5}
+\linea{13}
+\end{minipage}
+
+\vspace{4mm}
+\begin{minipage}[t]{.47\linewidth}
+\ej{c}$-3^2 + 2\cdot(-1 + 4)$\\[1.2mm]
+\linea{-9 + 2\cdot(-1 + 4)}
+\linea{-9 + 2\cdot 5}
+\linea{-9 + 10}
+\linea{1}
+\end{minipage}\hfill
+\begin{minipage}[t]{.47\linewidth}
+\ej{d}$(-12)\dv (-3) - (-2)^2$\\[1.2mm]
+\linea{4 - (-2)^2}
+\linea{4 - (+4)}
+\linea{4 + 4}
+\linea{8}
+\end{minipage}}
+
+\vspace{2mm}
+{\small ¿Cuál de los fallos de Listillón es el que más se repite en clase? \hueco[5.4cm]}
+
+\bloque{2}{Más todo junto}{Sobre el papel}
+
+\vspace{1mm}
+{\small\renewcommand{\arraystretch}{2.3}
+\begin{tabular}{@{}l@{\hspace{10mm}}l@{\hspace{10mm}}l@{}}
+\ej{a}$2\cdot(-3)^2 - 5\cdot(-1) = $ \casillita[7mm] & \ej{b}$(-4 + 1)^2 - 10 = $ \casillita[7mm] &
+\ej{c}$-(-2)^2 - (-2)^3 = $ \casillita[7mm]\\
+\ej{d}$(-2)^2\cdot(-3) + 1 = $ \casillita[7mm] & \ej{e}$(-18)\dv (-3)^2 = $ \casillita[7mm] &
+\ej{f}$(5 - 7)^3 + (-1)^5 = $ \casillita[7mm]\\
+\end{tabular}}
+
+\bloque{3}{Inventa}{Sobre el papel}\quad
+{\footnotesize una cuenta tuya, para que la resuelva tu compañero}
+
+\vspace{1.5mm}
+{\small Escribe una cuenta con una \textbf{potencia}, un \textbf{paréntesis} y un
+\textbf{frasco}, en la que la bandera acabe en $-3$.\\[5mm]
+\rule{.7\linewidth}{.4pt}\\[5mm]
+Pruébala en la palestra, en Practicar, con «tu cuenta». ¿Ha acabado en $-3$? \hueco[1.5cm]}\par\vspace{4mm}
+
+\reto{Listillón dice que $-2^2$ y $(-2)^2$ son iguales, «que el paréntesis es de
+adorno». ¿Con qué número sale a tirar cada uno? Convéncele con el campo.}
+
+\comprueba{Los del bloque 1, en el ojo de Argos de la app (con otro fallo); los del reto, jugados.}{%
+\qr{1a}{j=potencias\&m=9\&c=n-8_r_q3_n-2}\hfill\qr{1b}{j=potencias\&m=9\&c=n-2_e3_s_n5}\hfill
+\qr{1c}{j=potencias\&m=9\&c=r_n3_e2_s_q2_a_n-1_s_n4_c}\hfill\qr{2d}{j=potencias\&m=8\&c=n-2_e2_p-3_s_n1}\hfill
+\qr{reto}{j=potencias\&t=1\&c=r_n2_e2}\hfill\qr{reto}{j=potencias\&t=1\&c=n-2_e2}}
+\end{dorso}
+\end{document}

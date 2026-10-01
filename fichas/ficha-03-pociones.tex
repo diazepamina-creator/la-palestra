@@ -1,0 +1,140 @@
+\documentclass[11pt]{article}
+\usepackage{palestra}
+\newcommand{\poc}[3]{\begin{tabular}[b]{@{}c@{}}\bebe{#1}{#2}\\[1mm]#3\end{tabular}}
+\begin{document}
+\begin{ficha}{Las pociones}{Multiplicar y dividir}{3}
+
+\begin{encargo}
+Antes de salir a tirar, un tirador se puede beber un frasco en el banquillo.
+Los \textcolor{crece}{\textbf{verdes}} le hacen crecer; los
+\textcolor{mengua}{\textbf{azules}}, menguar; y los de
+\textcolor{bando}{\textbf{calavera}} le hacen \textbf{cambiar de bando}. Sale a
+tirar ya hecho.
+\end{encargo}
+
+\bloque{1}{El banquillo}{En el campo}\quad
+{\footnotesize ¿con qué número sale a tirar?}
+
+\vspace{1.5mm}
+{\small
+\begin{tabular}{@{}c@{\hspace{14mm}}c@{\hspace{14mm}}c@{}}
+\poc{3}{\doblon}{\ej{a}$(+3)\cdot 2 = $\casillita[7mm]} &
+\poc{-4}{\doblon}{\ej{b}$(-4)\cdot 2 = $\casillita[7mm]} &
+\poc{6}{\aguada}{\ej{c}$(+6)\dv 2 = $\casillita[7mm]}\\[2mm]
+\poc{-3}{\traicion}{\ej{d}$(-3)\cdot(-1) = $\casillita[7mm]} &
+\poc{2}{\traiciontriple}{\ej{e}$(+2)\cdot(-3) = $\casillita[7mm]} &
+\poc{-8}{\traicionaguada}{\ej{f}$(-8)\dv(-2) = $\casillita[7mm]}\\
+\end{tabular}}
+
+\vspace{1.5mm}
+{\small ¿Qué frascos le cambian el bando? \hueco[3cm]\quad ¿Y cuáles le dejan en el suyo? \hueco[3cm]}
+
+\vspace{1.5mm}
+\begin{listillon}
+Para \textbf{multiplicar o dividir} dos números enteros, se multiplican (o se
+dividen) las fuerzas, y el signo sale de la \textbf{regla de los signos}: si los
+dos tienen el mismo signo, el resultado es positivo; si tienen distinto signo,
+negativo.\\[1mm]\centerline{$(+)\cdot(+) = +$\quad $(-)\cdot(-) = +$\quad $(+)\cdot(-) = -$\quad $(-)\cdot(+) = -$}
+\end{listillon}
+
+\bloque{2}{¿Quién sale a tirar?}{En el campo}\quad
+{\footnotesize primero el banquillo; luego, a la cuerda}
+
+\vspace{1.5mm}
+{\small\renewcommand{\arraystretch}{1.9}
+\begin{tabular}{@{}l@{\hspace{8mm}}c@{\hspace{8mm}}c@{\hspace{8mm}}c@{}}
+& \textbf{en el banquillo} & \textbf{sale a tirar} & \textbf{bandera}\\
+\ej{a}$5 + (-2)\cdot 3$ & \hueco[2.8cm] & \casillita[7mm] & \casillita[7mm]\\
+\ej{b}$-4 + (-3)\cdot(-2)$ & \hueco[2.8cm] & \casillita[7mm] & \casillita[7mm]\\
+\ej{c}$(+8)\dv 2 + (-7)$ & \hueco[2.8cm] & \casillita[7mm] & \casillita[7mm]\\
+\ej{d}$3 + 2\cdot(-4)$ & \hueco[2.8cm] & \casillita[7mm] & \casillita[7mm]\\
+\end{tabular}}
+
+\bloque{3}{Sin banquillo}{Sobre el papel}
+
+\vspace{1mm}
+{\small\renewcommand{\arraystretch}{2}
+\begin{tabular}{@{}l@{\hspace{7mm}}l@{\hspace{7mm}}l@{\hspace{7mm}}l@{}}
+\ej{a}$(-6)\cdot(-2) = $ \casillita[7mm] & \ej{b}$12\dv (-3) = $ \casillita[7mm] &
+\ej{c}$(-5)\cdot 4 = $ \casillita[7mm] & \ej{d}$(-20)\dv (-4) = $ \casillita[7mm]\\
+\ej{e}$(-1)\cdot(-1)\cdot(-1) = $ \casillita[7mm] & \ej{f}$(-2)\cdot 3\cdot(-2) = $ \casillita[7mm] &
+\ej{g}$15\dv (-5) = $ \casillita[7mm] & \ej{h}$(-4)\cdot(-3)\cdot(-1) = $ \casillita[7mm]\\
+\end{tabular}}
+
+\alto{$(-3)\cdot(-2)$ no es $-6$: con dos signos menos, el tirador vuelve a su
+bando, $+6$. Y $-3 - 2$ no es $+6$ ni $+5$: ahí no hay frasco; hay alguien que se
+retira, y da $-5$.}
+
+\reto{¿Qué frasco convierte un $+6$ en un $-2$? ¿Y un $-6$ en un $+12$? ¿Hay
+alguno que deje a un $+6$ como estaba?}
+
+\comprueba{Cada código abre esa cuenta en Practicar; si fallas, mira el banquillo.}{%
+\qr{1b}{j=pociones\&m=5\&c=n-4_p2}\hfill\qr{1d}{j=pociones\&m=5\&c=n-3_p-1}\hfill
+\qr{1f}{j=pociones\&m=5\&c=n-8_p-1/2}\hfill\qr{2a}{j=pociones\&m=5\&c=n5_s_n-2_p3}\hfill
+\qr{2b}{j=pociones\&m=5\&c=n-4_s_n-3_p-2}\hfill\qr{2d}{j=pociones\&m=5\&c=n3_s_q2_n-4}}
+
+\end{ficha}
+
+% ─────────────────────────────── REVERSO ──────────────────────────────────
+\begin{dorso}{Las pociones}{El paréntesis}{3}
+
+\bloque{1}{Primero se reduce}{En el campo}\quad
+{\footnotesize así se juega $2\cdot(-3 + 5)$}
+
+\vspace{1.5mm}
+{\footnotesize
+\begin{tabular}{@{}c@{\hspace{5mm}}c@{\hspace{5mm}}c@{}}
+\tirador{-3}\ \tirador{5} & \bebe{2}{\doblon} & \campo[alcance=6,paso=3.2mm,escala=.5]{4}\\[1mm]
+\parbox[t]{4.4cm}{\centering En el banquillo, el \nm{-3} y el \nm{5} se juntan: el paréntesis vale \nm{2}.} &
+\parbox[t]{4.4cm}{\centering El \nm{2} se bebe el frasco de ·2: queda \nm{4}.} &
+\parbox[t]{5cm}{\centering Sale a tirar el \nm{4}: la bandera, en \nm{4}.}\\
+\end{tabular}}
+
+\vspace{2mm}
+{\small\renewcommand{\arraystretch}{1.9}
+\begin{tabular}{@{}l@{\hspace{6mm}}c@{\hspace{6mm}}c@{\hspace{6mm}}c@{\hspace{6mm}}c@{}}
+& \textbf{el paréntesis vale} & \textbf{bebe} & \textbf{sale a tirar} & \textbf{bandera}\\
+\ej{a}$3\cdot(-1 + 4)$ & \casillita[7mm] & \hueco[1.2cm] & \casillita[7mm] & \casillita[7mm]\\
+\ej{b}$(-4 + 1)\cdot(-2)$ & \casillita[7mm] & \hueco[1.2cm] & \casillita[7mm] & \casillita[7mm]\\
+\ej{c}$6 - (3 - 8)$ & \casillita[7mm] & \hueco[1.2cm] & \casillita[7mm] & \casillita[7mm]\\
+\ej{d}$5 + 2\cdot(-6 + 3)$ & \casillita[7mm] & \hueco[1.2cm] & \casillita[7mm] & \casillita[7mm]\\
+\end{tabular}}
+
+\vspace{1mm}
+{\small En \ej{c} no hay frasco, pero hay un menos delante del paréntesis. ¿Qué
+le hace al que sale? \hueco[5cm]}
+
+\bloque{2}{Sobre el papel}{Sobre el papel}\quad
+{\footnotesize primero los paréntesis, luego los frascos, y al final se suma}
+
+\vspace{1mm}
+{\small\renewcommand{\arraystretch}{2.2}
+\begin{tabular}{@{}l@{\hspace{10mm}}l@{\hspace{10mm}}l@{}}
+\ej{a}$4 - 3\cdot(-2) = $ \casillita[7mm] & \ej{b}$-2\cdot(5 - 7) + 1 = $ \casillita[7mm] &
+\ej{c}$(-12)\dv (-4) - 3 = $ \casillita[7mm]\\
+\ej{d}$-(4 - 9) - 2\cdot 3 = $ \casillita[7mm] & \ej{e}$(-3 + 7)\dv (-2) = $ \casillita[7mm] &
+\ej{f}$5 - 2\cdot(1 - 4) = $ \casillita[7mm]\\
+\end{tabular}}
+
+\bloque{3}{Fuera de la palestra}{Sobre el papel}\quad
+{\footnotesize escribe la cuenta y resuélvela}
+
+\vspace{1.5mm}
+{\small
+\ej{a}Un buzo baja 3\,m cada minuto. ¿A qué altura está a los 4 minutos?\par\vspace{7mm}
+
+\ej{b}A las ocho, el termómetro marca $+5$\,°C, y baja 2 grados cada hora. ¿Qué
+marca cuatro horas después?\par\vspace{7mm}
+
+\ej{c}Tres amigos deben entre todos 18\,€ y lo reparten a partes iguales. ¿Cuánto
+debe cada uno? Escríbelo como una división de enteros.\par\vspace{7mm}}
+
+\reto{Jeferión dice que $-(2 - 5)$ y $-2 - 5$ son lo mismo, «que el paréntesis no
+cambia nada». ¿Tiene razón? Juégalas las dos en la palestra.}
+
+\comprueba{Los del bloque 1, en Practicar; los dos del reto, jugados en el campo.}{%
+\qr{1a}{j=pociones\&m=6\&c=q3_a_n-1_s_n4_c}\hfill\qr{1b}{j=pociones\&m=6\&c=a_n-4_s_n1_c_p-2}\hfill
+\qr{1c}{j=pociones\&m=6\&c=n6_r_a_n3_r_n8_c}\hfill\qr{1d}{j=pociones\&m=6\&c=n5_s_q2_a_n-6_s_n3_c}\hfill
+\qr{reto}{j=pociones\&t=1\&c=r_a_n2_r_n5_c}\hfill\qr{reto}{j=pociones\&t=1\&c=n-2_r_n5}}
+\end{dorso}
+\end{document}

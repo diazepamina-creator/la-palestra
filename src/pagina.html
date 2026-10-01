@@ -221,6 +221,7 @@
 
   /* ── el estado de la página: la cuenta escrita y, si se ha pulsado =, su película ── */
   const S = {tok: [], cur: null, pel: null, visto: false, ej: null};
+  let fijo = null;   // el ejercicio que pide un enlace, para la primera ronda
   /* la ruta y el acta; si hay un turno guardado de esta clase, se retoma */
   let ruta = E.nuevaRuta(), sesion = E.nuevaSesion();
   { const d = E.lee(); if(d){ ruta = Object.assign(E.nuevaRuta(), d.ruta); sesion = d.sesion; } }
@@ -300,16 +301,19 @@
   }
   function ronda(){
     const m = E.MISIONES[mi()];
-    let ej = E.genera(m.nivel), argos = null;
+    /* la primera, si se viene de un QR de las fichas, la que pide el enlace */
+    const f = fijo || {}; fijo = null;
+    let ej = f.ej || E.genera(m.nivel), argos = null;
     /* el ojo de Argos: una cuenta de las misiones, resuelta por Listillón con un fallo */
     if(m.modo === 'argos'){
+      if(f.ej) argos = window.Argos.conFallo(ej.tok);
       for(let k = 0; k < 40 && !argos; k++){ ej = E.genera(m.niveles[k % m.niveles.length]); argos = window.Argos.conFallo(ej.tok); }
     }
     /* fuerza y bando: dos números y una pregunta */
     let canon = null;
-    if(m.modo === 'canon') canon = E.generaCanon();
+    if(m.modo === 'canon') canon = f.canon || E.generaCanon();
     /* escríbelo: una cuenta de entrar y retirarse, que solo se ve en el campo */
-    if(m.modo === 'escribe') ej = E.genera(m.niveles[Math.floor(Math.random() * m.niveles.length)]);
+    if(m.modo === 'escribe' && !f.ej) ej = E.genera(m.niveles[Math.floor(Math.random() * m.niveles.length)]);
     S.ej = {valor: ej.valor, visto: m.modo === 'escribe', fase: 'pensando', id: Date.now(), cuenta: P.escribe(ej.pel.arbol), argos,
             modo: m.modo || 'resultado', real: ej.tok, pel: ej.pel, canon};
     if(canon){
@@ -801,14 +805,17 @@
   addEventListener('scroll', colocaGuia, {passive: true});
   addEventListener('resize', colocaGuia);
 
-  /* un enlace: ?j=pestaña abre esa pestaña (y &p=1, en Practicar); la dirección se limpia */
+  /* un enlace: ?j=pestaña abre esa pestaña (y &p=1, en Practicar); con una cuenta
+     o dos números, ese ejercicio (los QR de las fichas). La dirección se limpia */
   let vieneDeEnlace = false;
-  try{ const q = new URLSearchParams(location.search), j = q.get('j'), P = E.PESTANAS.find(x => x.id === j);
-    if(P){ vieneDeEnlace = true; const p = practica(); p.on = q.get('p') === '1'; p.libre = false; p.i = P.m[0]; E.cambia(ruta, j); }
-    if(j) history.replaceState(null, '', location.pathname); }catch(err){}
+  try{ const q = new URLSearchParams(location.search), d = E.deEnlace(q);
+    if(d){ vieneDeEnlace = true; E.cambia(ruta, d.pestana); const p = practica(); p.on = d.practica; p.libre = d.libre; p.i = d.i; fijo = d; }
+    if(q.get('j')) history.replaceState(null, '', location.pathname); }catch(err){}
   aplica();
   pintaTablilla();
   modoRuta(!(practica().on && practica().libre));
+  if(fijo && fijo.libre){ S.tok = fijo.tok; S.cur = null; fijo = null; pintaTablilla(); igual(); }
+  fijo = null;
   pintaActa();
   /* la escena de inicio, si la cabecera ha dicho que toca; la primera vez, después, la guía */
   const primeraVez = (() => { try{ return localStorage.getItem('palestra.guia') !== 'vista'; }catch(err){ return false; } })();

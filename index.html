@@ -1256,7 +1256,7 @@ html[data-inicio="si"] main{visibility:hidden}
     <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.es" rel="license">© 2026 Andrés Asensio · CC BY-NC-ND 4.0</a>
     · <a href="https://diazepamina-creator.github.io/pulso-de-los-dioses/">El pulso de los dioses (anterior)</a>
     · <a href="https://diazepamina-creator.github.io/">Materiales</a>
-    · versión 0.30
+    · versión 0.31
   </footer>
 </main>
 
@@ -3554,8 +3554,61 @@ function generaCanon(){
     if(a === b || (tipo === 'fuerza' && Math.abs(a) === Math.abs(b))) continue;
     break;
   }
-  const bien = tipo === 'fuerza' ? (Math.abs(a) > Math.abs(b) ? 0 : 1) : tipo === 'menor' ? (a < b ? 0 : 1) : (a > b ? 0 : 1);
-  return {tipo, a, b, bien};
+  return canonDe(tipo, a, b);
+}
+const canonDe = (tipo, a, b) => ({tipo, a, b,
+  bien: tipo === 'fuerza' ? (Math.abs(a) > Math.abs(b) ? 0 : 1) : tipo === 'menor' ? (a < b ? 0 : 1) : (a > b ? 0 : 1)});
+
+/* ── los enlaces de las fichas: cada QR abre ese ejercicio ──
+   ?j=pestaña             la pestaña (y &p=1, en Practicar)
+   &m=3                   la misión, con su número del acta (M3)
+   &c=n-3_r_n-5           una cuenta: el ejercicio, en Practicar (con &t=1, en «tu cuenta», jugada)
+   &a=-5&b=3&q=menor      fuerza y bando: los dos números y la pregunta (fuerza, menor o mayor)
+   La cuenta va pieza a pieza, separadas por «_»: n-3 un tirador, s (+) que entre,
+   r (−) que se retire, a y c el paréntesis, p2 o p-1/2 un frasco detrás, q3 un
+   frasco delante, e2 la potencia */
+const numDe = x => { const [a, b] = x.split('/'); const v = b === undefined ? Number(a) : Number(a) / Number(b);
+  if(!a || !isFinite(v) || !v) throw new Error('número'); return v; };
+function leeCuenta(txt){
+  return String(txt).split('_').map(x => {
+    const r = x.slice(1);
+    switch(x[0]){
+      case 'n': return n(numDe(r));
+      case 's': return MAS;
+      case 'r': return MENOS;
+      case 'a': return AB;
+      case 'c': return CI;
+      case 'p': return po(numDe(r));
+      case 'q': return pre(numDe(r));
+      case 'e': if(r === '2' || r === '3') return e(Number(r));
+    }
+    throw new Error('pieza');
+  });
+}
+const kTxt = k => Number.isInteger(k) ? String(k) : (k < 0 ? '-' : '') + '1/' + Math.round(1 / Math.abs(k));
+const escribeCuenta = tok => tok.map(t => ({n: () => 'n' + t.f, '+': () => 's', '-': () => 'r', '(': () => 'a', ')': () => 'c',
+  p: () => (t.pre ? 'q' : 'p') + kTxt(t.k), e: () => 'e' + t.n})[t.t]()).join('_');
+/* lo que pide el enlace, o null. {pestana, i, practica, libre, ej, tok, canon} */
+function deEnlace(q){
+  const pe = PESTANAS.find(x => x.id === q.get('j'));
+  if(!pe) return null;
+  const d = {pestana: pe.id, i: pe.m[0], practica: q.get('p') === '1', libre: false, ej: null, tok: null, canon: null};
+  const m = Number(q.get('m')) - 1;
+  if(pe.m.includes(m)) d.i = m;
+  if(q.get('c')){
+    try{
+      const tok = leeCuenta(q.get('c')), pel = P.graba(tok);
+      d.tok = tok; d.practica = true;
+      if(q.get('t') === '1') d.libre = true;
+      else if(!pel.sinTeatro && pel.valor !== null) d.ej = {tok, valor: pel.valor, pel};
+    }catch(err){}
+  }
+  const a = Number(q.get('a')), b = Number(q.get('b')), tipo = q.get('q');
+  if(MISIONES[d.i].modo === 'canon' && ['fuerza', 'menor', 'mayor'].includes(tipo) && Number.isInteger(a) && Number.isInteger(b) &&
+     a && b && a !== b && !(tipo === 'fuerza' && Math.abs(a) === Math.abs(b))){
+    d.canon = canonDe(tipo, a, b); d.practica = true;
+  }
+  return d;
 }
 
 /* ── escríbelo: ¿lo escrito es lo que ha pasado? ──
@@ -3664,7 +3717,7 @@ function lee(alm, ahora){
 }
 function borra(alm){ try{ (alm || raiz.localStorage).removeItem(GUARDADO); }catch(err){} }
 
-const E = {MISIONES, PESTANAS, pestanaDe, cambia, ultimaDeSuPestana, genera, plantilla, comparaEscrito, generaCanon, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto, comoFue, hora,
+const E = {MISIONES, PESTANAS, pestanaDe, leeCuenta, escribeCuenta, deEnlace, canonDe, cambia, ultimaDeSuPestana, genera, plantilla, comparaEscrito, generaCanon, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto, comoFue, hora,
   guarda, lee, borra, conAzar: f => { azar = f; }};
 if(typeof module !== 'undefined' && module.exports) module.exports = E;
 else raiz.Ejercicios = E;
@@ -4056,6 +4109,7 @@ raiz.Arranque = {escena};
 
   /* ── el estado de la página: la cuenta escrita y, si se ha pulsado =, su película ── */
   const S = {tok: [], cur: null, pel: null, visto: false, ej: null};
+  let fijo = null;   // el ejercicio que pide un enlace, para la primera ronda
   /* la ruta y el acta; si hay un turno guardado de esta clase, se retoma */
   let ruta = E.nuevaRuta(), sesion = E.nuevaSesion();
   { const d = E.lee(); if(d){ ruta = Object.assign(E.nuevaRuta(), d.ruta); sesion = d.sesion; } }
@@ -4135,16 +4189,19 @@ raiz.Arranque = {escena};
   }
   function ronda(){
     const m = E.MISIONES[mi()];
-    let ej = E.genera(m.nivel), argos = null;
+    /* la primera, si se viene de un QR de las fichas, la que pide el enlace */
+    const f = fijo || {}; fijo = null;
+    let ej = f.ej || E.genera(m.nivel), argos = null;
     /* el ojo de Argos: una cuenta de las misiones, resuelta por Listillón con un fallo */
     if(m.modo === 'argos'){
+      if(f.ej) argos = window.Argos.conFallo(ej.tok);
       for(let k = 0; k < 40 && !argos; k++){ ej = E.genera(m.niveles[k % m.niveles.length]); argos = window.Argos.conFallo(ej.tok); }
     }
     /* fuerza y bando: dos números y una pregunta */
     let canon = null;
-    if(m.modo === 'canon') canon = E.generaCanon();
+    if(m.modo === 'canon') canon = f.canon || E.generaCanon();
     /* escríbelo: una cuenta de entrar y retirarse, que solo se ve en el campo */
-    if(m.modo === 'escribe') ej = E.genera(m.niveles[Math.floor(Math.random() * m.niveles.length)]);
+    if(m.modo === 'escribe' && !f.ej) ej = E.genera(m.niveles[Math.floor(Math.random() * m.niveles.length)]);
     S.ej = {valor: ej.valor, visto: m.modo === 'escribe', fase: 'pensando', id: Date.now(), cuenta: P.escribe(ej.pel.arbol), argos,
             modo: m.modo || 'resultado', real: ej.tok, pel: ej.pel, canon};
     if(canon){
@@ -4636,14 +4693,17 @@ raiz.Arranque = {escena};
   addEventListener('scroll', colocaGuia, {passive: true});
   addEventListener('resize', colocaGuia);
 
-  /* un enlace: ?j=pestaña abre esa pestaña (y &p=1, en Practicar); la dirección se limpia */
+  /* un enlace: ?j=pestaña abre esa pestaña (y &p=1, en Practicar); con una cuenta
+     o dos números, ese ejercicio (los QR de las fichas). La dirección se limpia */
   let vieneDeEnlace = false;
-  try{ const q = new URLSearchParams(location.search), j = q.get('j'), P = E.PESTANAS.find(x => x.id === j);
-    if(P){ vieneDeEnlace = true; const p = practica(); p.on = q.get('p') === '1'; p.libre = false; p.i = P.m[0]; E.cambia(ruta, j); }
-    if(j) history.replaceState(null, '', location.pathname); }catch(err){}
+  try{ const q = new URLSearchParams(location.search), d = E.deEnlace(q);
+    if(d){ vieneDeEnlace = true; E.cambia(ruta, d.pestana); const p = practica(); p.on = d.practica; p.libre = d.libre; p.i = d.i; fijo = d; }
+    if(q.get('j')) history.replaceState(null, '', location.pathname); }catch(err){}
   aplica();
   pintaTablilla();
   modoRuta(!(practica().on && practica().libre));
+  if(fijo && fijo.libre){ S.tok = fijo.tok; S.cur = null; fijo = null; pintaTablilla(); igual(); }
+  fijo = null;
   pintaActa();
   /* la escena de inicio, si la cabecera ha dicho que toca; la primera vez, después, la guía */
   const primeraVez = (() => { try{ return localStorage.getItem('palestra.guia') !== 'vista'; }catch(err){ return false; } })();

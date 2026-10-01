@@ -137,3 +137,26 @@ test('fuerza y bando: la buena es la que toca, y sin empates', () => {
   }
   assert.deepEqual([...vistos].sort(), ['fuerza', 'mayor', 'menor']);
 });
+
+test('los enlaces de las fichas: la cuenta va y vuelve', () => {
+  const casos = ['n-3_r_n-5', 'n4_s_q-2_a_n3_s_n-1_c', 'a_n2_s_n-6_c_p-1/2', 'r_n2_e2', 'n-2_e3_s_n5'];
+  for(const c of casos) assert.equal(E.escribeCuenta(E.leeCuenta(c)), c);
+  assert.throws(() => E.leeCuenta('n-3_x'));
+  assert.throws(() => E.leeCuenta('n0'));
+});
+
+test('los enlaces de las fichas: qué abre cada uno', () => {
+  const q = s => new URLSearchParams(s);
+  assert.equal(E.deEnlace(q('j=nada')), null);
+  let d = E.deEnlace(q('j=sumar&m=3&c=n-3_r_n-5'));
+  assert.equal(d.pestana, 'sumar'); assert.equal(d.i, 2); assert.ok(d.practica); assert.equal(d.ej.valor, 2);
+  d = E.deEnlace(q('j=sumar&m=7&c=n2'));                 // la misión 7 no es de esta pestaña
+  assert.equal(d.i, 1);
+  d = E.deEnlace(q('j=fuerza&t=1&c=n-5_s_n3'));
+  assert.ok(d.libre); assert.equal(d.ej, null); assert.equal(d.tok.length, 3);
+  d = E.deEnlace(q('j=fuerza&a=-5&b=-2&q=menor'));
+  assert.deepEqual(d.canon, {tipo: 'menor', a: -5, b: -2, bien: 0}); assert.ok(d.practica);
+  assert.equal(E.deEnlace(q('j=fuerza&a=5&b=-5&q=fuerza')).canon, null);
+  d = E.deEnlace(q('j=pociones'));
+  assert.ok(!d.practica); assert.equal(d.ej, null);
+});

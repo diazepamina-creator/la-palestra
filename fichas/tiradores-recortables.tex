@@ -1,0 +1,80 @@
+\documentclass[11pt]{article}
+\usepackage{palestra}
+% LOS RECORTABLES: los tiradores, los frascos, la bandera y el campo de papel,
+% para jugar las cuentas en la mesa antes de la app. Se imprime a una cara.
+\newcommand{\tarjeta}[1]{\tikz{\node[draw=tinta!50,dash pattern=on 2pt off 1.5pt,
+  line width=.5pt,minimum width=4.2cm,minimum height=3.55cm,inner sep=0](t){};
+  \node[anchor=south]at([yshift=6mm]t.south){\includegraphics[scale=1.05]{\tirfich{#1}}};
+  \node[anchor=north west,font=\cinzel\bfseries\Large,text=\ifnum#1<0 izq\else der\fi]at([shift={(1.5mm,-1mm)}]t.north west){\ifnum#1<0 −\else+\fi\absDe{#1}};
+  \node[anchor=south,font=\rotulo\fontsize{6}{7}\selectfont,text=tenue]at([yshift=1.2mm]t.south){FUERZA \absDe{#1} · \ifnum#1<0 TIRA A LA IZQUIERDA\else TIRA A LA DERECHA\fi};}}
+\newcommand{\cartafrasco}[4]{\tikz{\node[draw=tinta!50,dash pattern=on 2pt off 1.5pt,
+  line width=.5pt,minimum width=4.2cm,minimum height=3cm,inner sep=0](t){};
+  \node at([yshift=3mm]t.center){\tikz[scale=2.1]{\frascodib{#1}}};
+  \node[anchor=north west,font=\mono\bfseries\large]at([shift={(1.5mm,-1.5mm)}]t.north west){#2};
+  \node[anchor=south,font=\cinzel\bfseries\small,text=#1]at([yshift=5mm]t.south){#3};
+  \node[anchor=south,font=\scriptsize\itshape,text=tenue]at([yshift=1.2mm]t.south){#4};}}
+
+% la hoja de recortar: con la cabecera de las fichas, sin nombre
+\newenvironment{hoja}[1]{\begin{tcolorbox}[marco]
+  \cabecera{RECORTABLES · PARA LA MESA}{#1}
+  \vspace{1.5mm}{\color{arena2}\hrule height .8pt}\vspace{2.5mm}}{\end{tcolorbox}}
+\begin{document}
+\begin{hoja}{Los tiradores}
+{\small\color{tenue}Recorta por las rayas. Los rojos, a la izquierda
+de la bandera; los azules, a la derecha. Hay dos de los más pequeños, que salen más.}
+
+\vspace{2mm}\centering
+\foreach \f in {-1,-2,-3,-4}{\tarjeta{\f}}\\
+\foreach \f in {-5,-6,-7,-8}{\tarjeta{\f}}\\
+\foreach \f in {1,2,3,4}{\tarjeta{\f}}\\
+\foreach \f in {5,6,7,8}{\tarjeta{\f}}\\
+\foreach \f in {-1,-2,1,2}{\tarjeta{\f}}\\
+\foreach \f in {-3,-4,3,4}{\tarjeta{\f}}\par
+\vfill
+\end{hoja}
+
+\newpage
+\begin{hoja}{Los frascos y el campo}
+{\small\color{tenue}Los frascos se beben en el banquillo, antes de
+salir a tirar. El campo se pega por la pestaña de puntos, si hace falta más largo.}
+
+\vspace{2mm}\centering
+\cartafrasco{crece}{·2}{DOBLÓN}{tira el doble}\cartafrasco{crece}{·3}{TRIPLÓN}{tira el triple}%
+\cartafrasco{mengua}{:2}{AGUADA}{se queda en la mitad}\cartafrasco{mengua}{:3}{AGUACHIRLE}{se queda en un tercio}\\
+\cartafrasco{bando}{·(−1)}{TRAICIÓN}{misma fuerza, otro bando}\cartafrasco{bando}{·(−2)}{TRAICIÓN DOBLE}{el doble, y en contra}%
+\cartafrasco{bando}{·(−3)}{TRAICIÓN TRIPLE}{el triple, y en contra}\cartafrasco{bando}{:(−2)}{TRAICIÓN AGUADA}{la mitad, y en contra}\par
+
+\vspace{6mm}
+{\rotulo\small\color{oro}EL CAMPO}\par\vspace{2mm}
+\begin{tikzpicture}
+  \fill[arena](-8.6,-.9)rectangle(8.6,0);
+  \draw[arena2!80!tinta,line width=.6pt](-8.6,0)--(8.6,0);
+  \foreach \v in {-8,...,8}{%
+    \draw[tinta,line width=.6pt](\v,0)--(\v,-.35);
+    \node[font=\mono\bfseries\small,below]at(\v,-.35){\ifnum\v<0 −\absDe{\v}\else\ifnum\v>0 +\fi\v\fi};}
+  \draw[tinta,line width=1.4pt](0,0)--(0,-.4);
+  \draw[tinta!40,dash pattern=on 2pt off 1.5pt](-8.6,-.9)rectangle(8.6,0);
+  \node[font=\rotulo\fontsize{6}{7}\selectfont,text=izq,anchor=west]at(-8.5,.25){← TIRAN LOS ROJOS};
+  \node[font=\rotulo\fontsize{6}{7}\selectfont,text=der,anchor=east]at(8.5,.25){TIRAN LOS AZULES →};
+\end{tikzpicture}
+
+\vspace{8mm}
+\begin{tikzpicture}
+  % el banquillo
+  \draw[tinta!40,dash pattern=on 2pt off 1.5pt](0,0)rectangle(9,3.4);
+  \fill[arena!45](.3,.3)rectangle(8.7,3.1);
+  \fill[arena2](.6,.6)rectangle(8.4,.95);
+  \fill[arena2!80!tinta](1,.6)rectangle(1.25,.2)(7.75,.6)rectangle(8,.2);
+  \node[font=\rotulo\small,text=oro]at(4.5,2.6){EL BANQUILLO};
+  \node[font=\footnotesize\itshape,text=tenue,align=center]at(4.5,1.75){aquí se bebe el frasco\\y se reduce el paréntesis};
+  % la bandera, con su palo
+  \begin{scope}[shift={(11,0)}]
+  \draw[tinta!40,dash pattern=on 2pt off 1.5pt](0,0)rectangle(3,3.4);
+  \fill[oro](1.2,.3)rectangle(1.4,3.1);
+  \fill[oro](1.4,3.1)--(2.6,2.6)--(1.4,2.1)--cycle;
+  \node[font=\rotulo\fontsize{6}{7}\selectfont,text=oro,rotate=90]at(.7,1.7){LA BANDERA};
+  \end{scope}
+\end{tikzpicture}
+\par\vfill
+\end{hoja}
+\end{document}

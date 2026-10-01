@@ -1,0 +1,141 @@
+\documentclass[11pt]{article}
+\usepackage{palestra}
+\begin{document}
+\begin{ficha}{Fuerza y bando}{El número y su signo}{1}
+
+\begin{encargo}
+En la palestra cada tirador lleva un número, y ese número dice dos cosas:
+\textbf{cuánto tira} —su fuerza— y \textbf{hacia dónde} —su bando—. Los rojos
+tiran hacia la izquierda; los azules, hacia la derecha.
+\end{encargo}
+
+\bloque{1}{Fuerza y bando}{En el campo}\quad
+{\footnotesize escribe el número de cada tirador con su signo, su fuerza, y rodea su bando}
+
+\vspace{2mm}
+{\small\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}r@{\hspace{3mm}}*{6}{c@{\hspace{5mm}}}@{}}
+& \tirador[.8]{-3} & \tirador[.8]{5} & \tirador[.8]{-1} & \tirador[.8]{2} & \tirador[.8]{-7} & \tirador[.8]{4}\\
+& \ej{a} & \ej{b} & \ej{c} & \ej{d} & \ej{e} & \ej{f}\\
+número & \casillita[7mm] & \casillita[7mm] & \casillita[7mm] & \casillita[7mm] & \casillita[7mm] & \casillita[7mm]\\
+fuerza & \casillita[7mm] & \casillita[7mm] & \casillita[7mm] & \casillita[7mm] & \casillita[7mm] & \casillita[7mm]\\
+bando & \bandos & \bandos & \bandos & \bandos & \bandos & \bandos\\
+\end{tabular}}
+
+\bloque{2}{Lejos del cero}{Con la regla}\quad
+{\footnotesize la fuerza es cuántos pasos hay hasta el 0}
+
+\vspace{1.5mm}
+{\small
+\begin{minipage}[c]{.55\linewidth}
+Marca en la regla \nm{-6}, \nm{4}, \nm{-2}, \nm{7} y \nm{-8}:\\[1.5mm]
+\reglavacia[5.4mm]{8}
+\end{minipage}%
+\begin{minipage}[c]{.45\linewidth}
+¿Quién tira más fuerte? Rodéalo y escribe las fuerzas.\\[1.5mm]
+\renewcommand{\arraystretch}{1.7}
+\begin{tabular}{@{}l@{\hspace{5mm}}l@{}}
+\ej{a}\nm{-6} o \nm{4} & $|{-6}| = $ \casillita\ \ $|{+4}| = $ \casillita\\
+\ej{b}\nm{-2} o \nm{5} & $|{-2}| = $ \casillita\ \ $|{+5}| = $ \casillita\\
+\ej{c}\nm{-7} o \nm{-3} & $|{-7}| = $ \casillita\ \ $|{-3}| = $ \casillita\\
+\end{tabular}
+\end{minipage}}
+
+\vspace{1.5mm}
+\begin{listillon}
+El \textbf{valor absoluto} de un número entero es el número sin su signo: la
+fuerza. Se escribe entre barras, $|{-6}| = 6$, y es la distancia del número al 0
+en la recta. Dos números con el mismo valor absoluto y distinto signo, como
+$-4$ y $+4$, se llaman \textbf{opuestos}: tiran igual de fuerte, cada uno hacia
+su lado.
+\end{listillon}
+
+\bloque{3}{Menor y mayor}{Con la regla}\quad
+{\footnotesize en la regla, más a la izquierda es menor}
+
+\vspace{1.5mm}
+{\small
+\begin{minipage}[c]{.55\linewidth}
+Márcalos en la regla y ordénalos de menor a mayor:\\
+\nm{-5},\ \nm{3},\ \nm{-2},\ 0,\ \nm{7},\ \nm{-8}\\[1.5mm]
+\reglavacia[5.4mm]{8}\\[2mm]
+\hueco[.8cm] $<$ \hueco[.8cm] $<$ \hueco[.8cm] $<$ \hueco[.8cm] $<$ \hueco[.8cm] $<$ \hueco[.8cm]
+\end{minipage}%
+\begin{minipage}[c]{.45\linewidth}
+Pon el signo: $<$ o $>$.\\[1mm]
+\renewcommand{\arraystretch}{1.9}
+\begin{tabular}{@{}l@{\hspace{8mm}}l@{}}
+\ej{a}$-3$ \signo\ $+1$ & \ej{b}$-7$ \signo\ $-2$\\
+\ej{c}$0$ \signo\ $-5$ & \ej{d}$-1$ \signo\ $-9$\\
+\end{tabular}
+\end{minipage}}
+
+\alto{$-7$ tira más fuerte que $-2$, pero es \textbf{menor}: está más a la
+izquierda. La fuerza dice cuánto tira; quién es mayor lo dice la regla.}
+
+\reto{¿Qué número tiene fuerza 0? ¿En qué bando tira? ¿Cuántos números
+tienen fuerza 5? ¿Y fuerza 0?}
+
+\comprueba{Cada código abre ese duelo en Practicar.}{%
+\qr{2a}{j=fuerza\&a=-6\&b=4\&q=fuerza}\hfill\qr{2b}{j=fuerza\&a=-2\&b=5\&q=fuerza}\hfill
+\qr{2c}{j=fuerza\&a=-7\&b=-3\&q=fuerza}\hfill\qr{3a}{j=fuerza\&a=-3\&b=1\&q=menor}\hfill
+\qr{3b}{j=fuerza\&a=-7\&b=-2\&q=menor}\hfill\qr{3d}{j=fuerza\&a=-1\&b=-9\&q=mayor}}
+
+\end{ficha}
+
+% ─────────────────────────────── REVERSO ──────────────────────────────────
+\begin{dorso}{Fuerza y bando}{Más duelos}{1}
+
+\bloque{1}{Dos preguntas, dos respuestas}{Sobre el papel}\quad
+{\footnotesize a veces gana el mismo, y a veces no}
+
+\vspace{2mm}
+{\small\renewcommand{\arraystretch}{2.1}
+\begin{tabular}{@{}l@{\hspace{10mm}}c@{\hspace{12mm}}c@{\hspace{12mm}}l@{}}
+& \textbf{¿Quién tira más fuerte?} & \textbf{¿Quién es mayor?} & \\
+\ej{a}\nm{-8} y \nm{3} & \hueco[1.4cm] & \hueco[1.4cm] & ¿el mismo? \hueco[.8cm]\\
+\ej{b}\nm{-2} y \nm{-5} & \hueco[1.4cm] & \hueco[1.4cm] & ¿el mismo? \hueco[.8cm]\\
+\ej{c}\nm{1} y \nm{-4} & \hueco[1.4cm] & \hueco[1.4cm] & ¿el mismo? \hueco[.8cm]\\
+\ej{d}\nm{-7} y \nm{-1} & \hueco[1.4cm] & \hueco[1.4cm] & ¿el mismo? \hueco[.8cm]\\
+\ej{e}\nm{6} y \nm{2} & \hueco[1.4cm] & \hueco[1.4cm] & ¿el mismo? \hueco[.8cm]\\
+\end{tabular}}
+
+\vspace{1mm}
+{\small ¿Cuándo gana el mismo las dos preguntas? \hueco[7cm]}
+
+\bloque{2}{En fila}{Con la regla}\quad
+{\footnotesize las temperaturas de una mañana de enero}
+
+\vspace{2mm}
+{\small
+\begin{tabular}{@{}l@{\hspace{6mm}}l@{\hspace{6mm}}l@{\hspace{6mm}}l@{\hspace{6mm}}l@{}}
+Burgos: $-4$\,°C & Sevilla: $+6$\,°C & Moscú: $-8$\,°C & Madrid: $+1$\,°C & Oslo: $-6$\,°C\\
+\end{tabular}\\[2mm]
+\reglavacia[6mm]{8}\\[2mm]
+De la más fría a la más cálida:\ \ \hueco[1.6cm], \hueco[1.6cm], \hueco[1.6cm],
+\hueco[1.6cm], \hueco[1.6cm]\\[2mm]
+¿Qué ciudad está más lejos del 0? \hueco[2.5cm]\quad ¿Es la más fría o la más cálida? \hueco[2.5cm]}
+
+\bloque{3}{Fuera de la palestra}{Sobre el papel}
+
+\vspace{1.5mm}
+{\small
+\ej{a}Un buzo nada a $-12$\,m y una gaviota vuela a $+8$\,m. ¿Quién está más lejos
+del nivel del mar? \hueco[2cm]\quad ¿Quién está más alto? \hueco[2cm]\par\vspace{6mm}
+
+\ej{b}El garaje está en la planta $-3$ y el trastero, en la $-1$. ¿Cuál está más
+abajo? \hueco[2cm]\quad ¿Cuántas plantas sube el ascensor del garaje al trastero? \hueco[1cm]\par\vspace{6mm}
+
+\ej{c}Euclides nació hacia el año 325 a.\,C. y Arquímedes, hacia el 287 a.\,C.
+Escríbelos como números enteros: \hueco[1.2cm] y \hueco[1.2cm]. ¿Quién nació
+antes? \hueco[2cm]\par\vspace{6mm}}
+
+\reto{Listillón dice: «cuanto más fuerte tira, mayor es el número». ¿En qué bando
+tiene razón? ¿En cuál no? Pon un ejemplo de cada.}
+
+\comprueba{Los del bloque 1, con su pregunta: primero la fuerza y luego el orden.}{%
+\qr{1a}{j=fuerza\&a=-8\&b=3\&q=fuerza}\hfill\qr{1a}{j=fuerza\&a=-8\&b=3\&q=mayor}\hfill
+\qr{1b}{j=fuerza\&a=-2\&b=-5\&q=fuerza}\hfill\qr{1b}{j=fuerza\&a=-2\&b=-5\&q=mayor}\hfill
+\qr{1d}{j=fuerza\&a=-7\&b=-1\&q=fuerza}\hfill\qr{1d}{j=fuerza\&a=-7\&b=-1\&q=mayor}}
+\end{dorso}
+\end{document}
