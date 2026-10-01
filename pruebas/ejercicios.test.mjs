@@ -44,16 +44,31 @@ test('la ruta avanza con la meta y se acaba en la última misión', () => {
   assert.equal(E.acierta(r), true, 'con la meta se cumple');
   assert.equal(E.acierta(r), false, 'y no se cumple dos veces');
   assert.equal(r.hechas, meta);
-  assert.ok(E.siguiente(r)); assert.equal(r.i, 1); assert.equal(r.hechas, 0);
+  assert.equal(E.siguiente(r), false, 'Fuerza y bando es una pestaña de una sola misión');
+  E.cambia(r, 'sumar'); assert.equal(r.i, 1); assert.equal(r.hechas, 0);
+  assert.ok(E.siguiente(r)); assert.equal(r.i, 2);
   while(E.siguiente(r));
-  assert.equal(r.i, E.MISIONES.length - 1);
+  assert.equal(r.i, 3, 'la ruta de Sumar y restar acaba en Escríbelo');
+  assert.ok(E.ultimaDeSuPestana(r));
+});
+
+test('las pestañas: cuatro contenidos con las nueve misiones, y cada una recuerda por dónde iba', () => {
+  assert.equal(E.PESTANAS.length, 4);
+  assert.deepEqual(E.PESTANAS.flatMap(p => p.m), E.MISIONES.map((m, i) => i));
+  const r = E.nuevaRuta();
+  E.acierta(r); E.acierta(r);                      // dos en Fuerza y bando
+  E.cambia(r, 'potencias'); assert.equal(r.i, 6); assert.equal(r.hechas, 0);
+  E.siguiente(r); E.acierta(r);                    // Todo junto, uno
+  E.cambia(r, 'fuerza'); assert.equal(r.i, 0); assert.equal(r.hechas, 2, 'vuelve con lo que llevaba');
+  E.cambia(r, 'potencias'); assert.equal(r.i, 7); assert.equal(r.hechas, 1, 'y a la misión donde se quedó');
+  assert.equal(E.pestanaDe(5).id, 'pociones');
 });
 
 test('el acta cuenta aciertos y fallos por misión', () => {
   const s = E.nuevaSesion(); s.t0 = 1000; s.nombre = 'Ana';
   const r = E.nuevaRuta();
   E.anota(s, r, true); E.anota(s, r, false); E.anota(s, r, false);
-  E.siguiente(r); E.anota(s, r, true);
+  E.cambia(r, 'sumar'); E.anota(s, r, true);
   const t = E.actaEnTexto(s, 1000 + 125000);
   assert.match(t, /Nombre: Ana/);
   assert.match(t, /Tiempo: 2 min 05 s/);

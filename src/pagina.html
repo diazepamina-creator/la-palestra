@@ -66,9 +66,11 @@
         <button type="button" id="bEntrevista" aria-pressed="false" aria-label="Entrevistas"><svg class="micro" viewBox="0 0 16 20" aria-hidden="true"><rect x="5" y="1" width="6" height="11" rx="3" fill="currentColor"/><path d="M2.5 9 Q2.5 15 8 15 Q13.5 15 13.5 9 M8 15 V19 M5 19 H11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
       </nav>
     </div>
-    <div class="juegos" role="group" aria-label="Qué hacer">
-      <button type="button" data-modo="ruta" aria-pressed="true"><b>La ruta</b><span>nueve misiones</span></button>
-      <button type="button" data-modo="libre" aria-pressed="false"><b>La tablilla</b><span>escribe tu cuenta</span></button>
+    <div class="juegos" role="group" aria-label="Los contenidos">
+      <button type="button" data-tab="fuerza" aria-pressed="true"><b>Fuerza y bando</b><span>el número y su signo</span></button>
+      <button type="button" data-tab="sumar" aria-pressed="false"><b>Sumar y restar</b><span>entrar y retirarse</span></button>
+      <button type="button" data-tab="pociones" aria-pressed="false"><b>Las pociones</b><span>multiplicar y dividir</span></button>
+      <button type="button" data-tab="potencias" aria-pressed="false"><b>Potencias</b><span>y todo junto</span></button>
     </div>
   </header>
 
@@ -221,9 +223,10 @@
   const S = {tok: [], cur: null, pel: null, visto: false, ej: null};
   /* la ruta y el acta; si hay un turno guardado de esta clase, se retoma */
   let ruta = E.nuevaRuta(), sesion = E.nuevaSesion();
-  { const d = E.lee(); if(d){ ruta = d.ruta; sesion = d.sesion; } }
-  /* PRACTICAR: cualquier misión, sin fin y sin tocar la ruta. Se guarda en la sesión */
-  const practica = () => sesion.practica || (sesion.practica = {on: false, i: 0});
+  { const d = E.lee(); if(d){ ruta = Object.assign(E.nuevaRuta(), d.ruta); sesion = d.sesion; } }
+  /* PRACTICAR: las misiones de la pestaña, sin fin y sin tocar la ruta, y «tu cuenta»
+     (libre: la tablilla para escribir la que se quiera). Se guarda en la sesión */
+  const practica = () => sesion.practica || (sesion.practica = {on: false, i: 0, libre: false});
   const mi = () => practica().on ? practica().i : ruta.i;          // la misión que se juega
   const donde = () => ({i: mi()});                                  // para el acta
   const cumple = () => practica().on ? false : E.acierta(ruta);    // en Practicar no se avanza
@@ -271,28 +274,29 @@
 
   /* ── LA RUTA Y LOS EJERCICIOS ── */
   function pintaRuta(){
-    $('bPracticar').setAttribute('aria-pressed', String(practica().on && !$('ruta').hidden));
+    const T = E.pestanaDe(mi());
     if(practica().on){
-      const m = E.MISIONES[mi()];
-      $('rtCab').textContent = 'Practicar';
-      $('rtTitulo').textContent = m.t;
-      $('rtTxt').innerHTML = m.d;
-      $('rtPuntos').innerHTML = '<span class="rt-hito">sin fin · no cuenta para la ruta</span>';
+      const lib = !!practica().libre, m = E.MISIONES[mi()];
+      $('rtCab').textContent = 'Practicar · ' + T.t;
+      $('rtTitulo').textContent = lib ? 'Tu cuenta' : m.t;
+      $('rtTxt').innerHTML = lib ? 'Escribe en la tablilla la cuenta que quieras y pulsa <b>=</b> para verla en el campo.' : m.d;
+      $('rtPuntos').innerHTML = '<span class="rt-hito">' + (lib ? 'la tablilla, para ti' : 'sin fin · no cuenta para la ruta') + '</span>';
       $('rtElige').hidden = false;
-      $('rtElige').innerHTML = E.MISIONES.map((q, k) => '<button type="button" data-k="' + k + '" aria-pressed="' + (k === mi()) + '"><b>' + (k + 1) + '</b> ' + q.t + '</button>').join('');
+      $('rtElige').innerHTML = T.m.map(k => '<button type="button" data-k="' + k + '" aria-pressed="' + (!lib && k === mi()) + '"><b>' + (k + 1) + '</b> ' + E.MISIONES[k].t + '</button>').join('') +
+        '<button type="button" data-k="libre" aria-pressed="' + lib + '">Tu cuenta</button>';
       $('rtSigue').hidden = true; $('rtSalta').hidden = true;
       return;
     }
     $('rtElige').hidden = true;
-    const m = E.MISIONES[ruta.i];
-    $('rtCab').textContent = 'Misión ' + (ruta.i + 1) + ' de ' + E.MISIONES.length;
+    const m = E.MISIONES[ruta.i], k = T.m.indexOf(ruta.i), ultima = E.ultimaDeSuPestana(ruta);
+    $('rtCab').textContent = 'Misión ' + (k + 1) + ' de ' + T.m.length;
     $('rtTitulo').textContent = m.t;
-    $('rtTxt').innerHTML = (ruta.hecho ? '<b>Misión cumplida.</b> ' : '') + m.d;
+    $('rtTxt').innerHTML = (ruta.hecho ? '<b>Misión cumplida.</b> ' + (ultima ? 'Con esta se acaba <b>' + T.t + '</b>: sigue en otra pestaña, o en Practicar. ' : '') : '') + m.d;
     let p = '';
-    for(let k = 0; k < m.meta; k++) p += '<span class="rt-p' + (k < ruta.hechas ? ' hecho' : '') + '"></span>';
+    for(let q = 0; q < m.meta; q++) p += '<span class="rt-p' + (q < ruta.hechas ? ' hecho' : '') + '"></span>';
     $('rtPuntos').innerHTML = p + '<span class="rt-hito">' + ruta.hechas + ' de ' + m.meta + '</span>';
-    $('rtSigue').hidden = !(ruta.hecho && ruta.i < E.MISIONES.length - 1);
-    $('rtSalta').hidden = ruta.hecho || ruta.i >= E.MISIONES.length - 1;
+    $('rtSigue').hidden = !(ruta.hecho && !ultima);
+    $('rtSalta').hidden = ruta.hecho || ultima;
   }
   function ronda(){
     const m = E.MISIONES[mi()];
@@ -482,12 +486,12 @@
   /* lo que el acta apunta de cada respuesta */
   const detalle = dicho => ({id: S.ej.id, cuenta: S.ej.cuenta, dicho, valor: S.ej.valor, visto: S.ej.visto, p: practica().on});
   function modoRuta(si){
-    $('ruta').hidden = !si;
+    $('ruta').hidden = false;
     $('tlEj').hidden = !si;
     $('tlTeclas').hidden = si;
     $('tlPie').hidden = si;
     if(si){ pintaRuta(); ronda(); }
-    else{ S.ej = null; pintaArgos(); pintaEscribe(); pintaCanon(); $('panelCampo').classList.remove('quieto'); S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
+    else{ pintaRuta(); S.ej = null; pintaArgos(); pintaEscribe(); pintaCanon(); $('panelCampo').classList.remove('quieto'); S.tok = []; S.cur = null; S.pel = null; R.para(); $('tlAviso').innerHTML = 'Escribe una cuenta y pulsa <b>=</b>.'; pintaTablilla(); $('panelCampo').hidden = true; }
     pintaPestanas();
   }
   /* ── EL ACTA, en su propia hoja ── */
@@ -520,16 +524,18 @@
   $('tlVer').addEventListener('click', () => { if(S.ej && S.ej.canon) verCanon(); else if(S.ej) igual(); });
   $('rtElige').addEventListener('click', ev => {
     const b = ev.target.closest('button'); if(!b) return;
-    practica().i = Number(b.dataset.k); E.guarda(ruta, sesion); pintaRuta(); ronda();
+    const p = practica();
+    if(b.dataset.k === 'libre'){ p.libre = true; E.guarda(ruta, sesion); modoRuta(false); return; }
+    p.i = Number(b.dataset.k); p.libre = false; E.guarda(ruta, sesion); modoRuta(true);
   });
-  /* el botón de la cabecera: entra y sale de Practicar (si se estaba en otra pestaña, va a la ruta) */
+  /* el botón de la cabecera: entra y sale de Practicar, en la pestaña en que se esté */
   $('bPracticar').addEventListener('click', () => {
-    const p = practica(), enOtra = $('ruta').hidden;
-    if(enOtra || !p.on){ if(!p.on) p.i = ruta.i; p.on = true; } else p.on = false;
+    const p = practica();
+    if(!$('entrevista').hidden){ entrevista(false); p.on = true; } else p.on = !p.on;
+    if(p.on && E.pestanaDe(p.i).id !== E.pestanaDe(ruta.i).id) p.i = ruta.i;
+    p.libre = false;
     E.guarda(ruta, sesion);
-    if(!$('entrevista').hidden) entrevista(false);
-    if($('ruta').hidden) modoRuta(true); else { pintaRuta(); ronda(); }
-    pintaMarca();
+    modoRuta(true); pintaMarca();
   });
   $('rtSigue').addEventListener('click', () => { if(E.siguiente(ruta)){ E.guarda(ruta, sesion); pintaRuta(); ronda(); } });
   $('rtSalta').addEventListener('click', () => { if(E.siguiente(ruta)){ E.guarda(ruta, sesion); pintaRuta(); ronda(); } });
@@ -640,35 +646,40 @@
       .observe(av, {childList: true, subtree: true, characterData: true});
   });
   /* ── LAS ENTREVISTAS ── */
-  let enRuta = true;
   const EV = window.Entrevistas.monta($('entrevista'), {alPrueba: tok => {
     entrevista(false);
+    const p = practica(); p.on = true; p.libre = true; E.guarda(ruta, sesion);
     modoRuta(false);
     S.tok = tok; S.cur = null; pintaTablilla(); igual();
   }});
   function entrevista(si){
     $('entrevista').hidden = !si;
     document.querySelector('.tablilla').hidden = si;
-    if(si){ enRuta = !$('ruta').hidden; $('ruta').hidden = true; $('panelCampo').hidden = true; EV.abre(); window.scrollTo({top: 0, behavior: 'smooth'}); }
-    else{ EV.calla(); $('ruta').hidden = !enRuta; }
+    if(si){ $('ruta').hidden = true; $('panelCampo').hidden = true; EV.abre(); window.scrollTo({top: 0, behavior: 'smooth'}); }
+    else{ EV.calla(); $('ruta').hidden = false; }
     pintaPestanas();
   }
-  /* ── LAS PESTAÑAS de la cabecera: la ruta, la tablilla libre y las entrevistas ── */
-  const modoActual = () => !$('entrevista').hidden ? 'entrevistas' : !$('ruta').hidden ? 'ruta' : 'libre';
+  /* ── LAS PESTAÑAS: los contenidos. Cada una lleva su ruta; en Practicar, sus misiones ── */
+  const modoActual = () => !$('entrevista').hidden ? 'entrevistas' : E.pestanaDe(mi()).id;
   function pintaPestanas(){
     const m = modoActual();
-    document.querySelectorAll('.juegos button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.modo === m)));
+    document.querySelectorAll('.juegos button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tab === m)));
     $('bEntrevista').setAttribute('aria-pressed', String(m === 'entrevistas'));
-    $('bPracticar').setAttribute('aria-pressed', String(m === 'ruta' && practica().on));
+    $('bPracticar').setAttribute('aria-pressed', String(m !== 'entrevistas' && practica().on));
+  }
+  function vaPestana(id){
+    const P = E.PESTANAS.find(q => q.id === id); if(!P) return;
+    if(!$('entrevista').hidden) entrevista(false);
+    const p = practica();
+    if(p.on){ p.i = ruta.en && ruta.en[id] !== undefined ? ruta.en[id] : P.m[0]; p.libre = false; }
+    else E.cambia(ruta, id);
+    E.guarda(ruta, sesion);
+    modoRuta(true); pintaMarca();
   }
   document.querySelector('.juegos').addEventListener('click', ev => {
     const b = ev.target.closest('button'); if(!b) return;
-    const quiere = b.dataset.modo;
-    if(quiere === modoActual()) return;
-    if(!$('entrevista').hidden) entrevista(false);
-    if(quiere === 'ruta' && $('ruta').hidden) modoRuta(true);
-    if(quiere === 'libre' && !$('ruta').hidden) modoRuta(false);
-    pintaPestanas();
+    if(b.dataset.tab === modoActual() && !(practica().on && practica().libre)) return;
+    vaPestana(b.dataset.tab);
   });
 
   /* el micrófono de la cabecera: abre y cierra las entrevistas */
@@ -727,7 +738,6 @@
     E.borra();
     ruta = E.nuevaRuta(); sesion = E.nuevaSesion();
     if(!$('entrevista').hidden) entrevista(false);
-    enRuta = true;
     modoRuta(true);
     pintaActa();
     ajustes(false);
@@ -737,12 +747,12 @@
 
   /* ── LA GUÍA: un foco sobre cada parte de la palestra y una tablilla que la explica ── */
   const GUIA = [
-    {sel: '.juegos', c: 'Qué hacer', t: '<b>La ruta</b>: las misiones, en orden. <b>La tablilla</b>: escribe tu propia cuenta y mírala en el campo.'},
+    {sel: '.juegos', c: 'Los contenidos', t: '<b>Fuerza y bando</b>: el número y su signo. <b>Sumar y restar</b>: entrar y retirarse. <b>Las pociones</b>: multiplicar y dividir. <b>Potencias</b>, y todo junto. Cada pestaña tiene su ruta de misiones.'},
     {sel: '#ruta', c: 'La misión', t: 'Lo que se pide en esta misión y, en los puntos, cuántas llevas de las que hacen falta para cumplirla.'},
     {sel: '.tl-marco', c: 'La tablilla', t: 'La TABLI·CAS·IO de Listillón: aquí sale la cuenta. En la tablilla libre se escribe con sus teclas, y <b>=</b> la juega en el campo.'},
     {sel: '#tlRespFila', c: 'Tu respuesta', t: '<b>¿Dónde acaba la bandera?</b> Escribe el número con su signo y comprueba. Si aciertas sin mirar el campo, el acta lo apunta.'},
     {sel: '#tlVer', c: 'Verlo en el campo', t: 'El tira y afloja, <b>fotograma a fotograma</b>: lo que tira en la cuerda es lo que suma. Antes de mover la bandera, te pide dónde acabará.'},
-    {sel: '#bPracticar', c: 'Practicar', t: 'Cualquier misión, con cuentas <b>nuevas cada vez</b> y sin fin. No cuenta para la ruta, pero sí va al acta.'},
+    {sel: '#bPracticar', c: 'Practicar', t: 'Las misiones de la pestaña, con cuentas <b>nuevas cada vez</b> y sin fin, y <b>tu cuenta</b>: la tablilla para escribir la que quieras y verla en el campo. No cuenta para la ruta, pero sí va al acta.'},
     {sel: '#bAjustes', c: 'Ajustes', t: 'La arena de día o de noche, o el papel del proyector; el ritmo del campo, la pregunta antes de mover la bandera, el sonido y la animación.'},
     {sel: '#bAula', c: 'El aula', t: 'Todo más grande, con la tablilla y el campo a la vez, para la pizarra digital.'},
     {sel: '#bEntrevista', c: 'Las entrevistas', t: 'El micrófono: pregúntales lo que quieras a <b>Zeus</b>, a <b>Jeferión</b> y a <b>Listillón</b>.'},
@@ -777,7 +787,7 @@
   function abreGuia(){
     ajustes(false);
     if(!$('entrevista').hidden) entrevista(false);
-    if($('ruta').hidden) modoRuta(true);                 // la guía recorre la ruta, que es lo que hay al empezar
+    if(practica().on){ practica().on = false; practica().libre = false; modoRuta(true); }   // la guía recorre la ruta
     guiaParadas = GUIA.filter(g => seVe(document.querySelector(g.sel))); vaGuia(0); $('guiaGlobo').focus();
   }
   $('bGuia').addEventListener('click', abreGuia);
@@ -791,13 +801,18 @@
   addEventListener('scroll', colocaGuia, {passive: true});
   addEventListener('resize', colocaGuia);
 
+  /* un enlace: ?j=pestaña abre esa pestaña (y &p=1, en Practicar); la dirección se limpia */
+  let vieneDeEnlace = false;
+  try{ const q = new URLSearchParams(location.search), j = q.get('j'), P = E.PESTANAS.find(x => x.id === j);
+    if(P){ vieneDeEnlace = true; const p = practica(); p.on = q.get('p') === '1'; p.libre = false; p.i = P.m[0]; E.cambia(ruta, j); }
+    if(j) history.replaceState(null, '', location.pathname); }catch(err){}
   aplica();
   pintaTablilla();
-  modoRuta(true);
+  modoRuta(!(practica().on && practica().libre));
   pintaActa();
   /* la escena de inicio, si la cabecera ha dicho que toca; la primera vez, después, la guía */
   const primeraVez = (() => { try{ return localStorage.getItem('palestra.guia') !== 'vista'; }catch(err){ return false; } })();
-  const arranca = () => { if(primeraVez) setTimeout(abreGuia, 400); };
+  const arranca = () => { if(primeraVez && !vieneDeEnlace) setTimeout(abreGuia, 400); };
   if(document.documentElement.dataset.inicio === 'si') window.Arranque.escena($('escenaInicio'), arranca);
   else arranca();
 </script>

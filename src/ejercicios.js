@@ -31,6 +31,16 @@ const MISIONES = [
    d: 'Listillón se ha equivocado en <b>un</b> paso. Toca la <b>primera</b> línea que está mal.'}
 ];
 
+/* LAS PESTAÑAS: los contenidos, cada uno con sus misiones (índices de MISIONES).
+   Cada pestaña tiene su ruta: se avanza dentro de ella y recuerda por dónde iba */
+const PESTANAS = [
+  {id: 'fuerza',    t: 'Fuerza y bando', s: 'el número y su signo',  m: [0]},
+  {id: 'sumar',     t: 'Sumar y restar', s: 'entrar y retirarse',    m: [1, 2, 3]},
+  {id: 'pociones',  t: 'Las pociones',   s: 'multiplicar y dividir', m: [4, 5]},
+  {id: 'potencias', t: 'Potencias',      s: 'y todo junto',          m: [6, 7, 8]}
+];
+const pestanaDe = i => PESTANAS.find(p => p.m.includes(i)) || PESTANAS[0];
+
 /* el azar se puede sustituir en las pruebas */
 let azar = Math.random;
 const elige = lista => lista[Math.floor(azar() * lista.length)];
@@ -97,7 +107,25 @@ function genera(nivel){
 }
 
 /* ── la ruta: dónde va el alumno ── */
-function nuevaRuta(){ return {i: 0, hechas: 0, hecho: false, tropezo: false}; }
+/* i: la misión en juego; mem: lo hecho en cada misión; en: por dónde va cada pestaña */
+function nuevaRuta(){ return {i: 0, hechas: 0, hecho: false, tropezo: false, mem: {}, en: {}}; }
+/* lo de la misión en juego, guardado antes de cambiar de misión */
+function recuerda(ruta){
+  ruta.mem = ruta.mem || {}; ruta.en = ruta.en || {};
+  ruta.mem[ruta.i] = {hechas: ruta.hechas, hecho: ruta.hecho};
+  ruta.en[pestanaDe(ruta.i).id] = ruta.i;
+}
+function pon(ruta, i){
+  const m = (ruta.mem || {})[i] || {hechas: 0, hecho: false};
+  ruta.i = i; ruta.hechas = m.hechas; ruta.hecho = m.hecho; ruta.tropezo = false;
+}
+/* cambiar de pestaña: vuelve a donde se quedó en ella (o a su primera misión) */
+function cambia(ruta, id){
+  const P = PESTANAS.find(p => p.id === id); if(!P) return false;
+  recuerda(ruta);
+  pon(ruta, ruta.en[id] !== undefined ? ruta.en[id] : P.m[0]);
+  return true;
+}
 /* un acierto: devuelve si con este se cumple la misión */
 function acierta(ruta){
   const m = MISIONES[ruta.i];
@@ -105,11 +133,14 @@ function acierta(ruta){
   if(ruta.hechas >= m.meta && !ruta.hecho){ ruta.hecho = true; return true; }
   return false;
 }
+/* la siguiente misión DE LA MISMA PESTAÑA; al final de la pestaña, no hay más */
 function siguiente(ruta){
-  if(ruta.i >= MISIONES.length - 1) return false;
-  ruta.i++; ruta.hechas = 0; ruta.hecho = false; ruta.tropezo = false;
+  const P = pestanaDe(ruta.i), k = P.m.indexOf(ruta.i);
+  if(k >= P.m.length - 1) return false;
+  recuerda(ruta); pon(ruta, P.m[k + 1]); ruta.en[P.id] = ruta.i;
   return true;
 }
+const ultimaDeSuPestana = ruta => { const P = pestanaDe(ruta.i); return P.m.indexOf(ruta.i) === P.m.length - 1; };
 
 /* ── fuerza y bando: dos números y una pregunta; se toca uno ──
    {tipo: 'fuerza' | 'menor' | 'mayor', a, b, bien: 0 | 1}. En «fuerza» nunca
@@ -236,7 +267,7 @@ function lee(alm, ahora){
 }
 function borra(alm){ try{ (alm || raiz.localStorage).removeItem(GUARDADO); }catch(err){} }
 
-const E = {MISIONES, genera, plantilla, comparaEscrito, generaCanon, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto, comoFue, hora,
+const E = {MISIONES, PESTANAS, pestanaDe, cambia, ultimaDeSuPestana, genera, plantilla, comparaEscrito, generaCanon, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto, comoFue, hora,
   guarda, lee, borra, conAzar: f => { azar = f; }};
 if(typeof module !== 'undefined' && module.exports) module.exports = E;
 else raiz.Ejercicios = E;
