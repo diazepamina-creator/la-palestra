@@ -1,0 +1,112 @@
+\documentclass[12pt]{article}
+\usepackage{palestra1}
+\begin{document}
+\begin{ficha}{Sumar y restar}{Entrar}{2}
+
+\begin{encargo}
+En la palestra, el \textbf{+} quiere decir «que entre». La bandera acaba en la
+suma de los que tiran.
+\end{encargo}
+
+\bloque{1}{Mira cómo se hace}{En el campo}\quad{\small así se juega $-3 + 5$}
+
+\vspace{1.5mm}
+\begin{minipage}[c]{.5\linewidth}
+\paso{1}\textbf{Entra el \nm{-3}.} La bandera, en \nm{-3}.\\[1.5mm]
+\paso{2}\textbf{Entra el \nm{5}.} Tira más fuerte.\\[1.5mm]
+\paso{3}\textbf{¿Dónde acaba?} En \nm{2}:\ \ $-3 + 5 = +2$
+\end{minipage}%
+\begin{minipage}[c]{.5\linewidth}\centering
+\campo[paso=3.2mm,escala=.6]{-3,5}
+\end{minipage}
+
+\vspace{1.5mm}
+\begin{listillon}
+Si los dos tienen el \textbf{mismo signo}, se suman las fuerzas: $-2 + (-3) = -5$.
+Si tienen \textbf{distinto signo}, se restan, y gana el signo del que tira más
+fuerte: $-4 + 6 = +2$.
+\end{listillon}
+
+\bloque{2}{Ahora tú}{En el campo}\quad{\small escribe la cuenta y dónde acaba la bandera}
+
+\vspace{1.5mm}
+\begin{tabular}{@{}c@{\hspace{8mm}}c@{}}
+\campo[bandera=?,paso=3.2mm,escala=.6]{-4,6} & \campo[bandera=?,paso=3.2mm,escala=.6]{-2,-3}\\[1mm]
+\ej{a}\hueco[3cm] $=$ \casillita[8mm] & \ej{b}\hueco[3cm] $=$ \casillita[8mm]\\
+\end{tabular}
+
+\bloque{3}{Sin campo}{Sobre el papel}
+
+\vspace{1mm}
+{\renewcommand{\arraystretch}{2.1}
+\begin{tabular}{@{}l@{\hspace{14mm}}l@{}}
+\ej{a}$-5 + 2 = $ \casillita[8mm] & \ej{b}$3 + (-7) = $ \casillita[8mm]\\
+\ej{c}$-1 + (-4) = $ \casillita[8mm] & \ej{d}$6 + (-6) = $ \casillita[8mm]\\
+\end{tabular}}
+
+\alto{$-2 + (-3)$ no es $+5$: los dos tiran hacia la izquierda, y la bandera se
+va a $-5$.}
+
+\reto{Haz que la bandera acabe en el 0 con dos tiradores. ¿De cuántas maneras se
+puede?}
+
+\comprueba{Cada código abre esa cuenta en Practicar.}{%
+\qr{1}{j=sumar\&m=2\&c=n-3_s_n5}\hfill\qr{2a}{j=sumar\&m=2\&c=n-4_s_n6}\hfill
+\qr{2b}{j=sumar\&m=2\&c=n-2_s_n-3}\hfill\qr{3a}{j=sumar\&m=2\&c=n-5_s_n2}\hfill
+\qr{3b}{j=sumar\&m=2\&c=n3_s_n-7}\hfill\qr{3c}{j=sumar\&m=2\&c=n-1_s_n-4}}
+
+\end{ficha}
+
+% ─────────────────────────────── REVERSO ──────────────────────────────────
+\begin{dorso}{Sumar y restar}{Retirarse}{2}
+
+\bloque{1}{Mira cómo se hace}{En el campo}\quad{\small el \textbf{−} es «que se retire»: así se juega $2 - (-3)$}
+
+\vspace{1mm}
+{\small
+\begin{tabular}{@{}c@{\hspace{3mm}}c@{\hspace{3mm}}c@{}}
+\campo[alcance=6,paso=3.2mm,escala=.5]{2} &
+\campo[alcance=6,paso=3.2mm,escala=.5]{2,-3,3} &
+\campo[alcance=6,paso=3.2mm,escala=.5]{2,3}\\
+\parbox[t]{5.2cm}{\centering\paso{1}Tira el \nm{2}.} &
+\parbox[t]{5.2cm}{\centering\paso{2}No hay ningún \nm{-3}: entra con su pareja, el \nm{3}. Suman 0.} &
+\parbox[t]{5.2cm}{\centering\paso{3}Se retira el \nm{-3}. La bandera, en \nm{5}.}\\
+\end{tabular}}
+
+\vspace{1.5mm}
+\begin{listillon}
+\textbf{Restar} es \textbf{sumar el opuesto}: $2 - (-3) = 2 + 3 = 5$.
+\end{listillon}
+
+\bloque{2}{Ahora tú}{En el campo}
+
+\vspace{1mm}
+{\renewcommand{\arraystretch}{1.9}
+\begin{tabular}{@{}l@{\hspace{8mm}}c@{\hspace{8mm}}c@{\hspace{8mm}}c@{}}
+& \small\textbf{¿está?} & \small\textbf{¿quién entra con su pareja?} & \small\textbf{bandera}\\
+\ej{a}$4 - (+1)$ & \hueco[1.2cm] & \hueco[2.6cm] & \casillita[8mm]\\
+\ej{b}$1 - (-2)$ & \hueco[1.2cm] & \hueco[2.6cm] & \casillita[8mm]\\
+\ej{c}$-3 - 2$ & \hueco[1.2cm] & \hueco[2.6cm] & \casillita[8mm]\\
+\end{tabular}}
+
+\bloque{3}{Sin campo}{Sobre el papel}
+
+\vspace{1mm}
+{\renewcommand{\arraystretch}{2.1}
+\begin{tabular}{@{}l@{\hspace{14mm}}l@{}}
+\ej{a}$5 - (-1) = $ \casillita[8mm] & \ej{b}$-2 - 4 = $ \casillita[8mm]\\
+\end{tabular}}
+
+\vspace{2mm}
+\begin{semaforo}
+\sfila{Sumo dos números con el mismo signo}
+\sfila{Sumo dos números con distinto signo}
+\sfila{Resto: sé quién entra con su pareja}
+\end{semaforo}
+
+\comprueba{Cada código abre esa cuenta en Practicar.}{%
+\qr{1}{j=sumar\&m=3\&c=n2_r_n-3}\hfill\qr{2a}{j=sumar\&m=3\&c=n4_r_n1}\hfill
+\qr{2b}{j=sumar\&m=3\&c=n1_r_n-2}\hfill\qr{2c}{j=sumar\&m=3\&c=n-3_r_n2}\hfill
+\qr{3a}{j=sumar\&m=3\&c=n5_r_n-1}\hfill\qr{3b}{j=sumar\&m=3\&c=n-2_r_n4}}
+\end{dorso}
+\end{document}

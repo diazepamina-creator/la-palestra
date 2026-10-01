@@ -1,0 +1,323 @@
+% ============================================================================
+%  palestra.sty · el formato de las FICHAS DE LA PALESTRA
+%  Fichas de «La palestra», una por pestaña de la app
+%  © Andrés Asensio 2026 · CC BY-NC-ND 4.0
+%
+%  Hermano de mesa.sty (Las piezas de Miut) y de cocina.sty (La grapadora de
+%  Nick): la misma idea de ficha, con lo de esta palestra. El marco es la
+%  arena rastrillada; dentro, el papel de las hojas de la app. Cada bloque
+%  lleva la etiqueta de cuánto ayuda el campo, la misma escalera que en la app:
+%     \etapa{En el campo}  →  \etapa{Con la regla}  →  \etapa{Sobre el papel}
+%
+%  Cómo se usa (ver ficha-01-fuerza.tex):
+%     \documentclass[11pt]{article}
+%     \usepackage{palestra}
+%     \begin{document}
+%     \begin{ficha}{Fuerza y bando}{El número y su signo}{1}
+%       ...anverso...
+%     \end{ficha}
+%     \begin{dorso}{Fuerza y bando}{Más duelos}{1}
+%       ...reverso...
+%     \end{dorso}
+%     \end{document}
+%
+%  Se compila con XELATEX. Fuentes: las de la app —Alegreya Sans para el
+%  texto, Cinzel para los rótulos, Space Mono para la regla—, en fuentes/.
+%  Los tiradores y los personajes, en personajes/ (salen de la app).
+%
+%  Las voces, como en la app:
+%     LISTILLÓN  la regla, con las palabras del libro, DESPUÉS de verla
+%     ZEUS       el árbitro: «¡Alto!», el error de siempre
+%     JEFERIÓN   el reto de la palestra, al final
+% ============================================================================
+\ProvidesPackage{palestra}[2026/10/01 Fichas de la palestra]
+
+\RequirePackage[a4paper,margin=1cm]{geometry}
+\RequirePackage{amsmath}\RequirePackage{mathspec}
+\RequirePackage{tcolorbox}\tcbuselibrary{skins}
+\RequirePackage{xcolor}\RequirePackage{graphicx}\RequirePackage{tikz}
+\RequirePackage{amssymb}
+\RequirePackage[nolinks]{qrcode}
+\usetikzlibrary{calc,arrows.meta}
+
+% LA LETRA, la de la app
+\setmainfont{AlegreyaSans}[Path=fuentes/,Numbers=Lining,Extension=.ttf,UprightFont=*-Regular,
+  BoldFont=*-Bold,ItalicFont=*-Italic,BoldItalicFont=*-BoldItalic]
+\newfontfamily\rotulo{Cinzel}[Path=fuentes/,Extension=.ttf,UprightFont=*-Bold,LetterSpace=4]
+\newfontfamily\cinzel{Cinzel}[Path=fuentes/,Extension=.ttf,UprightFont=*-Regular,BoldFont=*-Bold]
+\newfontfamily\mono{SpaceMono}[Path=fuentes/,Extension=.ttf,UprightFont=*-Regular,BoldFont=*-Bold]
+% las cuentas, con la letra del texto
+\setmathsfont(Digits,Latin)[Path=fuentes/,Extension=.ttf,UprightFont=*-Regular,
+  ItalicFont=*-Italic,Numbers=Lining]{AlegreyaSans}
+
+% LOS COLORES de la app: la arena, el papel de las hojas, el oro de los
+% rótulos, el rojo del bando de la izquierda y el azul del de la derecha
+\definecolor{papel}{HTML}{FFFBF2}
+\definecolor{papel2}{HTML}{FBF3E3}
+\definecolor{arena}{HTML}{E8D6AF}
+\definecolor{arena2}{HTML}{D6BC8C}
+\definecolor{tinta}{HTML}{2E2218}
+\definecolor{tenue}{HTML}{7D6650}
+\definecolor{linea}{HTML}{D8C3A0}
+\definecolor{oro}{HTML}{A8661B}
+\definecolor{izq}{HTML}{B0442C}
+\definecolor{der}{HTML}{1F6A88}
+\definecolor{verde}{HTML}{4F7A2E}
+\definecolor{morado}{HTML}{8A6A9E}
+\definecolor{crece}{HTML}{4F7A2E}
+\definecolor{mengua}{HTML}{3D63B0}
+\definecolor{bando}{HTML}{A5308F}
+\definecolor{calavera}{HTML}{E14FC6}
+\definecolor{corcho}{HTML}{8A6F45}
+
+\pagestyle{empty}\setlength{\parindent}{0pt}
+\AtBeginDocument{\color{tinta}}
+
+% ── LOS NÚMEROS, CON SU BANDO ───────────────────────────────────────────────
+% \nm{-3} → −3 en rojo; \nm{5} → +5 en azul. \nmc: igual, pero como en el
+% cuaderno (los negativos entre paréntesis): \nmc{-3} → (−3)
+\newcommand{\signoDe}[1]{\ifnum#1<0 −\else+\fi}
+\newcommand{\absDe}[1]{\ifnum#1<0 \number\numexpr-#1\relax\else\number#1\fi}
+\newcommand{\nm}[1]{\ifnum#1=0 0\else\ifnum#1<0 \textcolor{izq}{\textbf{−\absDe{#1}}}\else
+  \textcolor{der}{\textbf{+\absDe{#1}}}\fi\fi}
+\newcommand{\nmc}[1]{\ifnum#1<0 (\nm{#1})\else\nm{#1}\fi}
+\newcommand{\menos}{\ensuremath{-}}
+% dividir, con los dos puntos como operación (no como relación)
+\newcommand{\dv}{\mathbin{:}}
+
+% ── EL TIRADOR ──────────────────────────────────────────────────────────────
+% El de la app, con su fuerza: cuanto más fuerte, más grande. \tirador{-3}
+% Todos van a la misma escala (\escalatir), como en el campo.
+\newcommand{\escalatir}{.56}
+\newcommand{\tirancho}[1]{\ifcase#1 39\or39\or44.25\or47.25\or49.5\or51.75\or53.25\or54\or54.75\else54.75\fi}
+\newcommand{\tiralto}[1]{\ifcase#1 55.5\or55.5\or60.75\or63.75\or66\or67.5\or69\or69.75\or71.25\else71.25\fi}
+\newcommand{\tirfich}[1]{personajes/tirador\ifnum#1<0 m\else p\fi\absDe{#1}.pdf}
+\newcommand{\tirador}[2][\escalatir]{\raisebox{-.1\height}{\includegraphics[scale=#1]{\tirfich{#2}}}}
+
+% ── EL CAMPO ────────────────────────────────────────────────────────────────
+% Como en la app: la regla, la cuerda y la bandera; a la izquierda tiran los
+% negativos y a la derecha los positivos. La bandera marca la suma.
+%   \campo{-3,5}                   los que tiran; la bandera, en +2
+%   \campo[bandera=?]{-3,5}        la bandera, por saber: los equipos en medio
+%   \campo[bandera=no]{-3,5}       sin bandera
+%   \campo[alcance=6,paso=5mm]{…}  la regla, de −6 a +6, con pasos de 5 mm
+%   \campo{}                       el campo vacío, para dibujar
+\pgfkeys{/cp/.is family,/cp,
+  alcance/.store in=\cpAl,alcance=8,
+  paso/.store in=\cpPaso,paso=4.4mm,
+  escala/.store in=\cpEsc,escala=.56,
+  bandera/.store in=\cpBand,bandera=auto,
+  hueco/.store in=\cpHueco,hueco=4mm,
+  marcas/.store in=\cpMarcas,marcas={}}
+\newcommand{\campo}[2][]{\begingroup\pgfkeys{/cp,#1}%
+  \begin{tikzpicture}[baseline=(cpbase)]
+  \pgfmathsetmacro\cpP{\cpPaso/1cm}%
+  % la suma de los que tiran
+  \def\cpSuma{0}\def\cpHay{0}%
+  \foreach \f in {#2}{\pgfmathtruncatemacro\s{\cpSuma+\f}\xdef\cpSuma{\s}\xdef\cpHay{1}}%
+  \def\cpQ{?}\def\cpNo{no}\def\cpAuto{auto}%
+  \ifx\cpBand\cpAuto \edef\cpB{\cpSuma}\else\ifx\cpBand\cpQ \def\cpB{0}\else
+    \ifx\cpBand\cpNo \def\cpB{0}\else\edef\cpB{\cpBand}\fi\fi\fi
+  \pgfmathsetmacro\cpX{\cpB*\cpP}%
+  \coordinate(cpbase)at(0,.4);
+  % el suelo y la regla
+  \pgfmathsetmacro\cpL{(\cpAl+.8)*\cpP}%
+  \fill[arena](-\cpL,-.62)rectangle(\cpL,0);
+  \draw[arena2!80!tinta,line width=.5pt](-\cpL,0)--(\cpL,0);
+  \foreach \v in {-\cpAl,...,\cpAl}{%
+    \pgfmathsetmacro\xv{\v*\cpP}%
+    \ifnum\v=0 \draw[tinta,line width=1pt](\xv,0)--(\xv,-.22);
+      \node[font=\mono\bfseries\fontsize{6.5}{7}\selectfont,below=-1pt]at(\xv,-.22){0};
+    \else\ifodd\v \draw[tinta!55,line width=.4pt](\xv,0)--(\xv,-.12);
+      \ifdim\cpPaso<3.5mm\else
+      \node[font=\mono\fontsize{5.5}{6}\selectfont,text=tinta!75,below=-1pt]at(\xv,-.22){\ifnum\v<0 −\fi\absDe{\v}};\fi
+    \else \draw[tinta!70,line width=.5pt](\xv,0)--(\xv,-.17);
+      \node[font=\mono\fontsize{5.5}{6}\selectfont,text=tinta!75,below=-1pt]at(\xv,-.22){\ifnum\v<0 −\fi\absDe{\v}};\fi\fi}
+  \foreach \m in \cpMarcas{\pgfmathsetmacro\xv{\m*\cpP}%
+    \draw[oro,line width=1.4pt](\xv,0)--(\xv,-.2);}
+  % los equipos: los rojos, de la bandera hacia la izquierda; los azules, a la derecha
+  \pgfmathsetmacro\cpH{\cpHueco/1cm}%
+  \pgfmathsetmacro\cpCuerda{.36*64*\cpEsc/28.45}%
+  \xdef\cpIzq{\cpX-\cpH}\xdef\cpDer{\cpX+\cpH}%
+  \xdef\cpFinI{\cpX}\xdef\cpFinD{\cpX}%
+  \foreach \f in {#2}{%
+    \ifnum\f<0
+      \pgfmathsetmacro\w{\tirancho{\absDe{\f}}*\cpEsc/28.45}%
+      \node[anchor=south east,inner sep=0]at(\cpIzq,0){\includegraphics[scale=\cpEsc]{\tirfich{\f}}};
+      \pgfmathsetmacro\ni{\cpIzq-\w-.04}\xdef\cpIzq{\ni}\pgfmathsetmacro\cpfi{\cpIzq+.3*\w}\xdef\cpFinI{\cpfi}%
+    \else
+      \pgfmathsetmacro\w{\tirancho{\absDe{\f}}*\cpEsc/28.45}%
+      \node[anchor=south west,inner sep=0]at(\cpDer,0){\includegraphics[scale=\cpEsc]{\tirfich{\f}}};
+      \pgfmathsetmacro\nd{\cpDer+\w+.04}\xdef\cpDer{\nd}\pgfmathsetmacro\cpfd{\cpDer-.3*\w}\xdef\cpFinD{\cpfd}%
+    \fi}%
+  % la cuerda, por detrás de las manos, y la bandera en el nudo
+  \ifnum\cpHay=1
+    \draw[oro!55!tinta,line width=1.3pt,line cap=round](\cpFinI,\cpCuerda)--(\cpFinD,\cpCuerda);
+    \draw[oro!25!white,line width=.4pt](\cpFinI,\cpCuerda+.01)--(\cpFinD,\cpCuerda+.01);
+  \fi
+  \ifx\cpBand\cpNo\else\ifnum\cpHay=1
+    \ifx\cpBand\cpQ
+      \draw[tinta!55,line width=.5pt,fill=white,rounded corners=1.5pt](\cpX-.33,\cpCuerda+.12)rectangle(\cpX+.33,\cpCuerda+.62);
+      \node[font=\footnotesize\bfseries,text=tinta!45]at(\cpX,\cpCuerda+.37){?};
+    \else
+      \draw[oro,line width=.6pt,dash pattern=on 1pt off 1pt](\cpX,\cpCuerda)--(\cpX,0);
+      \fill[oro](\cpX-.03,\cpCuerda-.05)rectangle(\cpX+.03,\cpCuerda+.62);
+      \fill[oro](\cpX+.03,\cpCuerda+.62)--(\cpX+.36,\cpCuerda+.5)--(\cpX+.03,\cpCuerda+.37)--cycle;
+      \fill[oro](\cpX,\cpCuerda)circle(.06);
+      \draw[oro,line width=1.6pt](\cpX,0)--(\cpX,-.2);
+    \fi\fi\fi
+  \end{tikzpicture}\endgroup}
+
+% ── LA REGLA SOLA ───────────────────────────────────────────────────────────
+% \regla[paso]{alcance}{marcas}: la de la palestra, de −alcance a +alcance;
+% las marcas, número/color: \regla{8}{-3/izq,5/der}. \reglavacia{8}
+\newcommand{\regla}[3][5.6mm]{\begin{tikzpicture}[baseline=(b)]
+  \pgfmathsetmacro\rP{#1/1cm}\pgfmathsetmacro\rL{(#2+.6)*\rP}
+  \coordinate(b)at(0,-.1);
+  \fill[arena!70](-\rL,-.02)rectangle(\rL,.3);
+  \draw[tinta,line width=.6pt](-\rL,0)--(\rL,0);
+  \foreach \v in {-#2,...,#2}{\pgfmathsetmacro\xv{\v*\rP}%
+    \ifnum\v=0 \draw[tinta,line width=1pt](\xv,0)--(\xv,.34);\else
+    \draw[tinta!70,line width=.5pt](\xv,0)--(\xv,.2);\fi
+    \node[font=\mono\fontsize{6.5}{7}\selectfont,below=0pt]at(\xv,0){\ifnum\v>0 +\fi\ifnum\v<0 −\fi\absDe{\v}};}
+  \foreach \a/\c [count=\n] in {#3}{\pgfmathsetmacro\xv{\a*\rP}%
+    \pgfmathsetmacro\alto{.6+mod(\n+1,2)*.42}%
+    \draw[\c,line width=1.5pt](\xv,0)--(\xv,\alto);
+    \node[font=\small\bfseries,text=\c,above=0pt,fill=papel,inner sep=1pt]at(\xv,\alto){\ifnum\a>0 +\fi\ifnum\a<0 −\fi\absDe{\a}};}
+  \end{tikzpicture}}
+\newcommand{\reglavacia}[2][5.6mm]{\regla[#1]{#2}{}}
+
+% ── LOS FRASCOS ─────────────────────────────────────────────────────────────
+% Las pociones del banquillo: verde si hace crecer (·2, ·3), azul y pequeño
+% si hace menguar (:2, :3), morado y con calavera si cambia de bando.
+%   \frasco{crece}{·2}   \frasco{mengua}{:2}   \frasco{bando}{·(−1)}
+\newcommand{\frascodib}[1]{%
+  \def\fT{#1}\def\fM{mengua}\def\fB{bando}%
+  \ifx\fT\fM\def\fw{.13}\def\fl{.3}\else\def\fw{.2}\def\fl{.58}\fi
+  \fill[corcho,rounded corners=.5pt](-.09,.6)rectangle(.09,.68);
+  \draw[tinta!45,line width=.4pt](-.06,.47)--(-.06,.6)(.06,.47)--(.06,.6);
+  \begin{scope}\clip[rounded corners=2.5pt](-\fw,.05)rectangle(\fw,.48);
+    \fill[#1!85](-\fw,.05)rectangle(\fw,{.05+.43*\fl});\end{scope}
+  \draw[tinta!50,line width=.45pt,rounded corners=2.5pt](-\fw,.05)rectangle(\fw,.48);
+  \draw[tinta!40,line width=.4pt](-.07,0)--(.07,0)--(.07,.05)--(-.07,.05)--cycle;
+  \ifx\fT\fB
+    \fill[white,draw=calavera,line width=.5pt](.2,.56)circle(.11);
+    \fill[tinta](.2,.575)circle(.055);\fill[tinta](.18,.5)rectangle(.22,.53);
+    \fill[white](.18,.58)circle(.014);\fill[white](.22,.58)circle(.014);\fi}
+\newcommand{\frasco}[2]{\begin{tabular}[b]{@{}c@{}}\tikz[scale=1.15]{\frascodib{#1}}\\[-.8mm]
+  {\mono\fontsize{7}{8}\selectfont #2}\end{tabular}}
+% los ocho de la app, por su efecto: \doblon \triplon \aguada \aguachirle
+% \traicion \traiciondoble \traiciontriple \traicionaguada
+\newcommand{\doblon}{\frasco{crece}{·2}}
+\newcommand{\triplon}{\frasco{crece}{·3}}
+\newcommand{\aguada}{\frasco{mengua}{:2}}
+\newcommand{\aguachirle}{\frasco{mengua}{:3}}
+\newcommand{\traicion}{\frasco{bando}{·(−1)}}
+\newcommand{\traiciondoble}{\frasco{bando}{·(−2)}}
+\newcommand{\traiciontriple}{\frasco{bando}{·(−3)}}
+\newcommand{\traicionaguada}{\frasco{bando}{:(−2)}}
+% un tirador bebiendo: \bebe{-3}{\doblon}
+\newcommand{\bebe}[2]{\tirador{#1}\hspace{-1mm}#2}
+
+% ── LA ESCRITURA ────────────────────────────────────────────────────────────
+\newcommand{\raya}[1][3.2cm]{\rule[-1mm]{#1}{.5pt}}
+\newcommand{\hueco}[1][1cm]{\rule{#1}{.5pt}}
+\newcommand{\casillita}[1][4mm]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{.5pt}%
+  \raisebox{-.8mm}{\fcolorbox{tinta!55}{white}{\rule{0pt}{4.4mm}\hspace{#1}}}}}
+% una casilla para el signo: < > =
+\newcommand{\signo}{\tikz[baseline=-.75ex]\draw[oro,line width=.6pt,fill=white,
+  rounded corners=2pt](0,-.27)rectangle(.55,.3);}
+% la flecha del bando: ← o →, para rodear
+\newcommand{\bandos}{{\color{izq}\bfseries ←}\ \ {\color{der}\bfseries →}}
+
+% ── LA ETAPA ────────────────────────────────────────────────────────────────
+% La píldora de la app, al lado de cada bloque: cuánto ayuda el campo
+\newcommand{\etapa}[1]{\tikz[baseline=(e.base)]\node(e)[draw=oro,
+  line width=.6pt,rounded corners=4.5pt,inner xsep=5pt,inner ysep=2pt,
+  text=oro,font=\rotulo\fontsize{6.5}{7}\selectfont]{\MakeUppercase{#1}};}
+\newcommand{\bloque}[3]{\par\ifnum#1>1 \vfill\fi\vspace{1.5mm}{\large\bfseries #1. #2}\quad\etapa{#3}}
+\newcommand{\ej}[1]{\textbf{#1)}\ }
+
+% ── LAS VOCES ───────────────────────────────────────────────────────────────
+% EL ENCARGO: lo que pide la ficha, sin explicar nada
+\newtcolorbox{encargo}{colback=white,colframe=arena2,boxrule=.7pt,arc=3pt,
+  left=6pt,right=6pt,top=4pt,bottom=4pt,fontupper=\normalsize}
+% LISTILLÓN: la regla, con las palabras del libro, DESPUÉS de haberla visto
+% en el campo. Con \begin{voz}[jeferion]{JEFERIÓN} habla otro.
+\newlength{\caraancho}\setlength{\caraancho}{15mm}
+\newtcolorbox{cajavoz}{colback=arena!30,colframe=oro!70,boxrule=.8pt,arc=3pt,
+  left=6pt,right=6pt,top=4pt,bottom=4pt,fontupper=\small}
+\newenvironment{voz}[2][listillon]{%
+  \noindent\begin{minipage}[c]{\caraancho}\includegraphics[width=\caraancho]{personajes/#1.pdf}\end{minipage}%
+  \hspace{2mm}\begin{minipage}[c]{\dimexpr\linewidth-\caraancho-2mm\relax}
+  \begin{cajavoz}{\rotulo\fontsize{7}{8}\selectfont\color{oro}#2}\par\vspace{.5mm}}%
+  {\end{cajavoz}\end{minipage}}
+\newenvironment{listillon}{\begin{voz}[listillon]{LISTILLÓN, CON LAS PALABRAS DEL LIBRO}}{\end{voz}}
+% ZEUS: el árbitro. Sale para el error de siempre, no para dar la regla.
+\newcommand{\alto}[1]{%
+  \vspace{1mm}\noindent\begin{minipage}[c]{13mm}\includegraphics[width=13mm]{personajes/zeus.pdf}\end{minipage}%
+  \hspace{1.5mm}\begin{minipage}[c]{\dimexpr\linewidth-14.5mm\relax}
+  \footnotesize{\bfseries\color{izq}¡Alto! dice Zeus:}
+  \itshape\ #1\end{minipage}\vspace{1mm}}
+
+% EL RETO DE JEFERIÓN: la pregunta que se discute. Siempre al final.
+\newcommand{\reto}[2][.66\linewidth]{%
+  \begin{minipage}[b]{#1}\footnotesize
+  \begin{minipage}[t]{10mm}\vspace{0pt}\includegraphics[width=10mm]{personajes/jeferion.pdf}\end{minipage}%
+  \hspace{1.5mm}\begin{minipage}[t]{\dimexpr\linewidth-11.5mm\relax}\vspace{0pt}
+  {\rotulo\color{oro}EL RETO DE JEFERIÓN}\\[.5mm] #2\end{minipage}\\[2mm]
+  \rule{\linewidth}{.4pt}\\[3.5mm]\rule{\linewidth}{.4pt}\end{minipage}}
+
+% ── EL MARCO ────────────────────────────────────────────────────────────────
+% La ficha entera: el papel de la app sobre la arena de la palestra.
+\newif\ifclave\clavefalse
+% el sello de la cabecera: la bandera de la app
+\newcommand{\sello}[1][6mm]{\tikz[x=#1/14,y=#1/14,baseline=.4mm]{
+  \begin{scope}[yscale=-1,shift={(0,-14)}]
+  \fill[oro,rounded corners=.8](2.2,.8)rectangle(3.9,13.4);
+  \fill[oro](3.9,1.4)--(12.8,4.3)--(3.9,7.4)--cycle;
+  \end{scope}}}
+\tcbset{marco/.style={enhanced,colback=papel,colframe=arena2,boxrule=4pt,arc=8pt,
+    left=5mm,right=5mm,top=3mm,bottom=3mm,
+    borderline={.8pt}{2.4pt}{arena!60!white},drop fuzzy shadow=tinta!25}}
+% la cara entera tiene siempre la misma altura: lo de abajo (los códigos) va al pie
+\newlength{\altocara}\setlength{\altocara}{\dimexpr\textheight-34mm\relax}
+\newcommand{\cabecera}[2]{\sello\hspace{1.5mm}{\rotulo\small\color{oro}LA PALESTRA}\hfill
+  {\rotulo\footnotesize\color{oro}#1}\\[1mm]{\LARGE\bfseries #2}}
+\newenvironment{ficha}[3]{%
+  \begin{tcolorbox}[marco]
+  \cabecera{\ifclave CLAVE · NO SE REPARTE\else FICHA #3 · \MakeUppercase{#1}\fi}{#2}%
+  \hfill{\footnotesize\ifclave\relax\else NOMBRE: \raya[5cm]\fi}
+  \vspace{1.5mm}{\color{arena2}\hrule height .8pt}\vspace{2.5mm}
+  \ifclave\else\begin{minipage}[t][\altocara][t]{\linewidth}\fi
+}{\ifclave\else\end{minipage}\fi\end{tcolorbox}}
+% EL REVERSO: la otra cara de la hoja, para imprimir a doble cara
+\newenvironment{dorso}[3]{%
+  \newpage
+  \begin{tcolorbox}[marco]
+  \cabecera{FICHA #3 · \MakeUppercase{#1} · REVERSO}{#2}
+  \vspace{1.5mm}{\color{arena2}\hrule height .8pt}\vspace{2mm}
+  \begin{minipage}[t][\dimexpr\altocara+3mm\relax][t]{\linewidth}
+}{\end{minipage}\end{tcolorbox}}
+
+% ── LOS CÓDIGOS ─────────────────────────────────────────────────────────────
+% Cada ejercicio que la app puede jugar lleva su QR, que lo abre en Practicar
+% (ver deEnlace en src/ejercicios.js):
+%   una cuenta:     j=sumar & m=3 & c=n-3_r_n-5         (m: la misión, M1…M9)
+%                   con & t=1, en «tu cuenta», jugada en el campo
+%   fuerza y bando: j=fuerza & a=-6 & b=4 & q=fuerza    (q: fuerza, menor o mayor)
+% La cuenta, pieza a pieza: n-3 un tirador, s (+), r (−), a y c el paréntesis,
+% p2 o p-1/2 un frasco detrás, q3 un frasco delante, e2 la potencia.
+% Lo que no cabe en el campo (más de ±12, más de cinco por lado, fracciones)
+% NO lleva código.
+%   \qr{2a}{j=sumar\&m=3\&c=n-3_r_n-5}
+\newcommand{\urlpalestra}{https://diazepamina-creator.github.io/la-palestra/}
+\newlength{\qrlado}\setlength{\qrlado}{1.4cm}
+\newcommand{\qr}[2]{\begin{tabular}[t]{@{}c@{}}%
+  \qrcode[height=\qrlado,level=L]{\urlpalestra?#2}\\[-.6mm]
+  {\scriptsize\bfseries\color{oro}#1}\end{tabular}}
+\newcommand{\comprueba}[2]{%
+  \par\vfill\vspace{2mm}{\color{arena2}\hrule height .6pt}\vspace{1.5mm}
+  \noindent\begin{minipage}[c]{.27\linewidth}\footnotesize\itshape\raggedright
+  \textbf{Compruébalo en la palestra.} #1\end{minipage}\hfill
+  \begin{minipage}[c]{.71\linewidth}\raggedleft #2\end{minipage}}

@@ -1,0 +1,138 @@
+\documentclass[11pt]{article}
+\usepackage{palestra}
+\begin{document}
+\begin{ficha}{Sumar y restar}{Entrar y retirarse}{2}
+
+\begin{encargo}
+En la palestra, el \textbf{+} quiere decir «que entre» y el \textbf{−},
+«que se retire». La bandera acaba en la suma de los que tiran. Si se tiene que
+retirar alguien que no está, \textbf{entra con su pareja}: uno de cada bando, con
+la misma fuerza, que juntos no mueven la bandera.
+\end{encargo}
+
+\bloque{1}{Entra gente}{En el campo}\quad
+{\footnotesize escribe la cuenta de cada campo y dónde acaba la bandera}
+
+\vspace{1mm}
+{\small
+\begin{tabular}{@{}c@{\hspace{2mm}}c@{\hspace{2mm}}c@{}}
+\campo[bandera=?,paso=2.8mm,escala=.5]{-3,5} &
+\campo[bandera=?,paso=2.8mm,escala=.5]{-4,-2} &
+\campo[bandera=?,paso=2.8mm,escala=.5]{-6,2,3}\\[1mm]
+\ej{a}\hueco[2.6cm] $=$ \casillita[7mm] & \ej{b}\hueco[2.6cm] $=$ \casillita[7mm] &
+\ej{c}\hueco[2.6cm] $=$ \casillita[7mm]\\
+\end{tabular}}
+
+\bloque{2}{Alguien se retira}{En el campo}\quad
+{\footnotesize así se juega $2 - (-3)$}
+
+\vspace{1mm}
+{\footnotesize
+\begin{tabular}{@{}c@{\hspace{3mm}}c@{\hspace{3mm}}c@{}}
+\campo[alcance=6,paso=3.2mm,escala=.5]{2} &
+\campo[alcance=6,paso=3.2mm,escala=.5]{2,-3,3} &
+\campo[alcance=6,paso=3.2mm,escala=.5]{2,3}\\
+\parbox[t]{5.2cm}{\centering Tira el \nm{2}. La bandera, en \nm{2}.} &
+\parbox[t]{5.2cm}{\centering No hay ningún \nm{-3}: entra con su pareja, el \nm{3}. Suman 0: la bandera no se mueve.} &
+\parbox[t]{5.2cm}{\centering Se retira el \nm{-3}. Queda el \nm{3} tirando con el \nm{2}: la bandera, en \nm{5}.}\\
+\end{tabular}}
+
+\vspace{2mm}
+{\small\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{@{}l@{\hspace{8mm}}c@{\hspace{8mm}}c@{\hspace{8mm}}c@{}}
+& \textbf{¿está el que se retira?} & \textbf{¿quién entra con su pareja?} & \textbf{bandera}\\
+\ej{a}$5 - (+2)$ & \hueco[1.2cm] & \hueco[2.4cm] & \casillita[7mm]\\
+\ej{b}$1 - (-4)$ & \hueco[1.2cm] & \hueco[2.4cm] & \casillita[7mm]\\
+\ej{c}$-2 - 3$ & \hueco[1.2cm] & \hueco[2.4cm] & \casillita[7mm]\\
+\ej{d}$-6 - (-6)$ & \hueco[1.2cm] & \hueco[2.4cm] & \casillita[7mm]\\
+\end{tabular}}
+
+\vspace{1mm}
+\begin{listillon}
+\textbf{Restar} un número entero es \textbf{sumar su opuesto}:
+$2 - (-3) = 2 + 3 = 5$\quad y\quad $-2 - 3 = -2 + (-3) = -5$. Para
+\textbf{sumar}, si tienen el mismo signo se suman las fuerzas y se deja el signo;
+si lo tienen distinto, se restan y gana el signo del que tira más fuerte.
+\end{listillon}
+
+\bloque{3}{Sin campo}{Sobre el papel}
+
+\vspace{1mm}
+{\small\renewcommand{\arraystretch}{2}
+\begin{tabular}{@{}l@{\hspace{6mm}}l@{\hspace{6mm}}l@{\hspace{6mm}}l@{}}
+\ej{a}$-5 + 8 = $ \casillita[7mm] & \ej{b}$-3 - 4 = $ \casillita[7mm] &
+\ej{c}$6 - (-2) = $ \casillita[7mm] & \ej{d}$-7 - (-7) = $ \casillita[7mm]\\
+\ej{e}$4 + (-9) - (-3) = $ \casillita[7mm] & \ej{f}$-2 - 5 + (-1) = $ \casillita[7mm] &
+\ej{g}$3 - (+8) = $ \casillita[7mm] & \ej{h}$-4 - (-1) + 6 = $ \casillita[7mm]\\
+\end{tabular}}
+
+\alto{$-3 - 4$ no es $+7$ ni $-1$. Se retira un $+4$ que no está: entra con su
+pareja, se va el $+4$ y se queda el $-4$, tirando con el $-3$: $-7$. Dos signos
+menos solo hacen un más en $-(-4)$, cuando se retira un negativo.}
+
+\reto{¿Puede una resta dar más que el número del que partes? ¿Y una suma, dar
+menos? Pon un ejemplo de cada y explícalo con el campo.}
+
+\comprueba{Cada código abre esa cuenta en Practicar; si fallas, mira el campo.}{%
+\qr{2a}{j=sumar\&m=3\&c=n5_r_n2}\hfill\qr{2b}{j=sumar\&m=3\&c=n1_r_n-4}\hfill
+\qr{2c}{j=sumar\&m=3\&c=n-2_r_n3}\hfill\qr{2d}{j=sumar\&m=3\&c=n-6_r_n-6}\hfill
+\qr{3b}{j=sumar\&m=3\&c=n-3_r_n4}\hfill\qr{3e}{j=sumar\&m=3\&c=n4_s_n-9_r_n-3}}
+
+\end{ficha}
+
+% ─────────────────────────────── REVERSO ──────────────────────────────────
+\begin{dorso}{Sumar y restar}{Más jugadas}{2}
+
+\bloque{1}{Escríbelo}{En el campo}\quad
+{\footnotesize lo que pasa en el campo, escrito como cuenta}
+
+\vspace{2mm}
+{\small\renewcommand{\arraystretch}{2.3}
+\begin{tabular}{@{}p{8.2cm}@{\hspace{4mm}}l@{}}
+\ej{a}Tira un \nm{-4}. Entra un \nm{6}. Se retira el \nm{-4}. & \hueco[5cm] $=$ \casillita[7mm]\\
+\ej{b}Tira un \nm{3}. Se retira un \nm{5}, que no está. & \hueco[5cm] $=$ \casillita[7mm]\\
+\ej{c}Tira un \nm{-2}. Entra otro \nm{-2}. Se retira un \nm{-5}. & \hueco[5cm] $=$ \casillita[7mm]\\
+\end{tabular}}
+
+\vspace{1mm}
+{\small En \ej{c}, ¿quién entra con su pareja? \hueco[3cm]}
+
+\bloque{2}{Saltos en la regla}{Con la regla}\quad
+{\footnotesize dibuja el salto: dónde empieza, hacia dónde va y dónde acaba}
+
+\vspace{6mm}
+{\small
+\begin{tabular}{@{}l@{\hspace{3mm}}c@{\hspace{3mm}}l@{}}
+\ej{a}$-2 + 5$ & \reglavacia[5.4mm]{8} & $=$ \casillita[7mm]\\[10mm]
+\ej{b}$3 - 7$ & \reglavacia[5.4mm]{8} & $=$ \casillita[7mm]\\[10mm]
+\ej{c}$-4 - (-6)$ & \reglavacia[5.4mm]{8} & $=$ \casillita[7mm]\\
+\end{tabular}}
+
+\vspace{1mm}
+{\small En \ej{c}, ¿el salto va hacia la derecha o hacia la izquierda? \hueco[2cm]\quad ¿Por qué? \hueco[4cm]}
+
+\bloque{3}{Fuera de la palestra}{Sobre el papel}\quad
+{\footnotesize escribe la cuenta y resuélvela}
+
+\vspace{1.5mm}
+{\small
+\ej{a}A las siete de la mañana el termómetro marca $-5$\,°C; a mediodía ha subido
+9 grados. ¿Qué marca a mediodía?\par\vspace{7mm}
+
+\ej{b}Tienes 30\,€ en la cuenta y pagas una compra de 45\,€. ¿Cómo queda la cuenta?\par\vspace{7mm}
+
+\ej{c}Arquímedes nació en el año 287 a.\,C. y murió en el 212 a.\,C. ¿Cuántos años
+vivió? (Escríbelo como una resta de enteros.)\par\vspace{7mm}
+
+\ej{d}Un submarino está a $-40$\,m. Sube 15\,m y luego baja 30\,m. ¿A qué
+profundidad acaba?\par\vspace{7mm}}
+
+\reto{Con tres tiradores distintos, haz que la bandera acabe en el 0. ¿Puedes
+conseguirlo con una cuenta que lleve una resta?}
+
+\comprueba{Los del bloque 1 se juegan en el campo y hay que escribirlos; los del 2, en Practicar.}{%
+\qr{1a}{j=sumar\&m=4\&c=n-4_s_n6_r_n-4}\hfill\qr{1b}{j=sumar\&m=4\&c=n3_r_n5}\hfill
+\qr{1c}{j=sumar\&m=4\&c=n-2_s_n-2_r_n-5}\hfill\qr{2a}{j=sumar\&m=2\&c=n-2_s_n5}\hfill
+\qr{2b}{j=sumar\&m=3\&c=n3_r_n7}\hfill\qr{2c}{j=sumar\&m=3\&c=n-4_r_n-6}}
+\end{dorso}
+\end{document}

@@ -1,0 +1,28 @@
+LAS FICHAS DE LA PALESTRA
+=========================
+
+Una ficha por pestaña de la app, a doble cara, en dos formatos:
+
+  ficha-01-fuerza       Fuerza y bando       el número y su signo
+  ficha-02-sumar        Sumar y restar       entrar y retirarse
+  ficha-03-pociones     Las pociones         multiplicar y dividir
+  ficha-04-potencias    Potencias            y todo junto
+
+  pdf/2eso/       el formato de 2.º
+  pdf/1eso/       el formato de 1.º (pasos numerados, un ejemplo resuelto,
+                  «ahora tú» y el semáforo; en la hoja no pone «1.º»)
+  pdf/profesor/   la clave (no se reparte) y los recortables: los tiradores,
+                  los frascos, la bandera, el banquillo y el campo de papel
+
+Cada bloque lleva su etapa, como en la app: EN EL CAMPO → CON LA REGLA →
+SOBRE EL PAPEL. Las voces: Listillón da la regla con las palabras del libro,
+Zeus avisa del error de siempre («¡Alto!») y Jeferión pone el reto.
+
+LOS CÓDIGOS QR abren cada ejercicio en Practicar (ver deEnlace en
+src/ejercicios.js). Lo que no cabe en el campo no lleva código.
+
+COMPILAR: sh compila.sh (XeLaTeX). Fuentes en fuentes/ (Alegreya Sans,
+Cinzel y Space Mono, licencia OFL); tiradores y personajes en personajes/,
+sacados de la app. Formato: palestra.sty (2.º) y palestra1.sty (1.º).
+
+© Andrés Asensio 2026 · CC BY-NC-ND 4.0

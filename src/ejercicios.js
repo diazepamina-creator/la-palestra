@@ -157,8 +157,61 @@ function generaCanon(){
     if(a === b || (tipo === 'fuerza' && Math.abs(a) === Math.abs(b))) continue;
     break;
   }
-  const bien = tipo === 'fuerza' ? (Math.abs(a) > Math.abs(b) ? 0 : 1) : tipo === 'menor' ? (a < b ? 0 : 1) : (a > b ? 0 : 1);
-  return {tipo, a, b, bien};
+  return canonDe(tipo, a, b);
+}
+const canonDe = (tipo, a, b) => ({tipo, a, b,
+  bien: tipo === 'fuerza' ? (Math.abs(a) > Math.abs(b) ? 0 : 1) : tipo === 'menor' ? (a < b ? 0 : 1) : (a > b ? 0 : 1)});
+
+/* ── los enlaces de las fichas: cada QR abre ese ejercicio ──
+   ?j=pestaña             la pestaña (y &p=1, en Practicar)
+   &m=3                   la misión, con su número del acta (M3)
+   &c=n-3_r_n-5           una cuenta: el ejercicio, en Practicar (con &t=1, en «tu cuenta», jugada)
+   &a=-5&b=3&q=menor      fuerza y bando: los dos números y la pregunta (fuerza, menor o mayor)
+   La cuenta va pieza a pieza, separadas por «_»: n-3 un tirador, s (+) que entre,
+   r (−) que se retire, a y c el paréntesis, p2 o p-1/2 un frasco detrás, q3 un
+   frasco delante, e2 la potencia */
+const numDe = x => { const [a, b] = x.split('/'); const v = b === undefined ? Number(a) : Number(a) / Number(b);
+  if(!a || !isFinite(v) || !v) throw new Error('número'); return v; };
+function leeCuenta(txt){
+  return String(txt).split('_').map(x => {
+    const r = x.slice(1);
+    switch(x[0]){
+      case 'n': return n(numDe(r));
+      case 's': return MAS;
+      case 'r': return MENOS;
+      case 'a': return AB;
+      case 'c': return CI;
+      case 'p': return po(numDe(r));
+      case 'q': return pre(numDe(r));
+      case 'e': if(r === '2' || r === '3') return e(Number(r));
+    }
+    throw new Error('pieza');
+  });
+}
+const kTxt = k => Number.isInteger(k) ? String(k) : (k < 0 ? '-' : '') + '1/' + Math.round(1 / Math.abs(k));
+const escribeCuenta = tok => tok.map(t => ({n: () => 'n' + t.f, '+': () => 's', '-': () => 'r', '(': () => 'a', ')': () => 'c',
+  p: () => (t.pre ? 'q' : 'p') + kTxt(t.k), e: () => 'e' + t.n})[t.t]()).join('_');
+/* lo que pide el enlace, o null. {pestana, i, practica, libre, ej, tok, canon} */
+function deEnlace(q){
+  const pe = PESTANAS.find(x => x.id === q.get('j'));
+  if(!pe) return null;
+  const d = {pestana: pe.id, i: pe.m[0], practica: q.get('p') === '1', libre: false, ej: null, tok: null, canon: null};
+  const m = Number(q.get('m')) - 1;
+  if(pe.m.includes(m)) d.i = m;
+  if(q.get('c')){
+    try{
+      const tok = leeCuenta(q.get('c')), pel = P.graba(tok);
+      d.tok = tok; d.practica = true;
+      if(q.get('t') === '1') d.libre = true;
+      else if(!pel.sinTeatro && pel.valor !== null) d.ej = {tok, valor: pel.valor, pel};
+    }catch(err){}
+  }
+  const a = Number(q.get('a')), b = Number(q.get('b')), tipo = q.get('q');
+  if(MISIONES[d.i].modo === 'canon' && ['fuerza', 'menor', 'mayor'].includes(tipo) && Number.isInteger(a) && Number.isInteger(b) &&
+     a && b && a !== b && !(tipo === 'fuerza' && Math.abs(a) === Math.abs(b))){
+    d.canon = canonDe(tipo, a, b); d.practica = true;
+  }
+  return d;
 }
 
 /* ── escríbelo: ¿lo escrito es lo que ha pasado? ──
@@ -267,7 +320,7 @@ function lee(alm, ahora){
 }
 function borra(alm){ try{ (alm || raiz.localStorage).removeItem(GUARDADO); }catch(err){} }
 
-const E = {MISIONES, PESTANAS, pestanaDe, cambia, ultimaDeSuPestana, genera, plantilla, comparaEscrito, generaCanon, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto, comoFue, hora,
+const E = {MISIONES, PESTANAS, pestanaDe, leeCuenta, escribeCuenta, deEnlace, canonDe, cambia, ultimaDeSuPestana, genera, plantilla, comparaEscrito, generaCanon, nuevaRuta, acierta, siguiente, nuevaSesion, anota, reloj, actaEnTexto, comoFue, hora,
   guarda, lee, borra, conAzar: f => { azar = f; }};
 if(typeof module !== 'undefined' && module.exports) module.exports = E;
 else raiz.Ejercicios = E;

@@ -1,0 +1,107 @@
+\documentclass[12pt]{article}
+\usepackage{palestra1}
+\begin{document}
+\begin{ficha}{Fuerza y bando}{El número y su signo}{1}
+
+\begin{encargo}
+Cada tirador lleva un número. El \textbf{signo} dice su bando:
+\textcolor{izq}{\textbf{−}}, rojo, tira hacia la izquierda;
+\textcolor{der}{\textbf{+}}, azul, hacia la derecha. El número sin el signo es su
+\textbf{fuerza}.
+\end{encargo}
+
+\bloque{1}{Mira cómo se hace}{En el campo}
+
+\vspace{1.5mm}
+\begin{minipage}[c]{.68\linewidth}
+\paso{1}\textbf{¿De qué color es?}\ Rojo: tira hacia la izquierda, \textcolor{izq}{\textbf{−}}.\\[1.5mm]
+\paso{2}\textbf{¿Qué número lleva en la cabeza?}\ Un 4: su fuerza es 4.\\[1.5mm]
+\paso{3}\textbf{Su número, con su signo:}\ \nm{-4}.
+\end{minipage}%
+\begin{minipage}[c]{.32\linewidth}\centering
+\tirador[1.1]{-4}
+\end{minipage}
+
+\vspace{1.5mm}
+\begin{listillon}
+La fuerza es el \textbf{valor absoluto}: el número sin su signo. Se escribe
+entre barras: $|{-4}| = 4$.
+\end{listillon}
+
+\bloque{2}{Ahora tú}{En el campo}\quad{\small su número con signo y su fuerza}
+
+\vspace{1.5mm}
+{\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{@{}r@{\hspace{4mm}}*{4}{c@{\hspace{10mm}}}@{}}
+& \tirador[.85]{3} & \tirador[.85]{-2} & \tirador[.85]{-6} & \tirador[.85]{5}\\
+& \ej{a} & \ej{b} & \ej{c} & \ej{d}\\
+número & \casillita[8mm] & \casillita[8mm] & \casillita[8mm] & \casillita[8mm]\\
+fuerza & \casillita[8mm] & \casillita[8mm] & \casillita[8mm] & \casillita[8mm]\\
+\end{tabular}}
+
+\bloque{3}{En la regla}{Con la regla}\quad{\small más a la izquierda es menor}
+
+\vspace{2mm}
+\reglavacia[6mm]{8}
+
+\vspace{2mm}
+Márcalos en la regla y pon el signo $<$ o $>$:\\[2mm]
+\ej{a}$-3$ \signo\ $+2$\qquad\qquad \ej{b}$-5$ \signo\ $-1$\qquad\qquad \ej{c}$+4$ \signo\ $-6$
+
+\alto{$-5$ tira más fuerte que $-1$, pero $-5$ es \textbf{menor}: está más a
+la izquierda en la regla.}
+
+\reto{¿Puede haber un tirador de fuerza 0? ¿En qué bando tiraría?}
+
+\comprueba{Cada código abre ese duelo en Practicar.}{%
+\qr{3a}{j=fuerza\&a=-3\&b=2\&q=menor}\hfill\qr{3b}{j=fuerza\&a=-5\&b=-1\&q=menor}\hfill
+\qr{3c}{j=fuerza\&a=4\&b=-6\&q=mayor}}
+
+\end{ficha}
+
+% ─────────────────────────────── REVERSO ──────────────────────────────────
+\begin{dorso}{Fuerza y bando}{Más duelos}{1}
+
+\bloque{1}{¿Quién tira más fuerte?}{Sobre el papel}\quad{\small rodéalo}
+
+\vspace{2mm}
+{\renewcommand{\arraystretch}{2}
+\begin{tabular}{@{}l@{\hspace{16mm}}l@{}}
+\ej{a}\nm{-6}\quad o\quad \nm{4} & \ej{b}\nm{2}\quad o\quad \nm{-7}\\
+\ej{c}\nm{-3}\quad o\quad \nm{-8} & \ej{d}\nm{5}\quad o\quad \nm{-1}\\
+\end{tabular}}
+
+\bloque{2}{¿Quién es mayor?}{Con la regla}\quad{\small márcalos y pon el signo}
+
+\vspace{2mm}
+\reglavacia[6mm]{8}
+
+\vspace{2mm}
+{\renewcommand{\arraystretch}{2}
+\begin{tabular}{@{}l@{\hspace{16mm}}l@{}}
+\ej{a}$-4$ \signo\ $+1$ & \ej{b}$-2$ \signo\ $-6$\\
+\ej{c}$0$ \signo\ $-3$ & \ej{d}$+3$ \signo\ $-5$\\
+\end{tabular}}
+
+\bloque{3}{Problemas}{Sobre el papel}
+
+\vspace{1.5mm}
+\ej{a}En Burgos hay $-3$\,°C y en Madrid, $+2$\,°C. ¿Dónde hace más frío?\hfill\hueco[2.4cm]
+
+\vspace{4mm}
+\ej{b}El garaje está en la planta $-2$ y el trastero en la $-4$. ¿Cuál está más
+abajo?\hfill\hueco[2.4cm]
+
+\vspace{4mm}
+\begin{semaforo}
+\sfila{Escribo el número de un tirador con su signo}
+\sfila{Digo la fuerza de un número}
+\sfila{Sé cuál es mayor mirando la regla}
+\end{semaforo}
+
+\comprueba{Cada código abre ese duelo en Practicar.}{%
+\qr{1a}{j=fuerza\&a=-6\&b=4\&q=fuerza}\hfill\qr{1c}{j=fuerza\&a=-3\&b=-8\&q=fuerza}\hfill
+\qr{2a}{j=fuerza\&a=-4\&b=1\&q=mayor}\hfill\qr{2b}{j=fuerza\&a=-2\&b=-6\&q=mayor}\hfill
+\qr{2d}{j=fuerza\&a=3\&b=-5\&q=mayor}}
+\end{dorso}
+\end{document}

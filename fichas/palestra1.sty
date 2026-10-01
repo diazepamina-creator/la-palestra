@@ -1,0 +1,46 @@
+% ============================================================================
+%  palestra1.sty · el formato de 1.º de las fichas de la palestra
+%  Carga palestra.sty y añade lo que cambia en 1.º, como mesa1.sty en Miut y
+%  cocina1.sty en la cocina de Nick. Las matemáticas son las mismas que en
+%  2.º; cambia la carga de lectura:
+%   - siempre los mismos pasos, con su número en un círculo (\paso{1});
+%   - un ejemplo resuelto entero y, debajo, «ahora tú» con la misma forma;
+%   - el reto a tamaño de lectura;
+%   - la tabla de multiplicar como andamio (\tablamult) donde hace falta;
+%   - un semáforo de «¿cómo lo he hecho?» al final del reverso.
+%  En la hoja no pone «1.º» en ningún sitio: no es la ficha «fácil».
+% ============================================================================
+\ProvidesPackage{palestra1}[2026/10/01 Fichas de la palestra, formato de 1.º]
+\RequirePackage{palestra}
+
+\newcommand{\paso}[1]{\tikz[baseline=(p.base)]\node(p)[circle,fill=oro,
+  text=white,font=\bfseries\small,inner sep=1.6pt,minimum size=5mm]{#1};\ }
+\newcommand{\bien}{\textcolor{verde}{\checkmark}}
+
+\renewcommand{\reto}[2][.72\linewidth]{%
+  \begin{minipage}[b]{#1}\small
+  \begin{minipage}[t]{11mm}\vspace{0pt}\includegraphics[width=11mm]{personajes/jeferion.pdf}\end{minipage}%
+  \hspace{1.5mm}\begin{minipage}[t]{\dimexpr\linewidth-12.5mm\relax}\vspace{0pt}
+  {\rotulo\color{oro}EL RETO DE JEFERIÓN}\\[.5mm] #2\end{minipage}\\[4mm]
+  \rule{\linewidth}{.4pt}\end{minipage}}
+
+\newcommand{\tablamult}{{\rotulo\footnotesize\color{oro}LA TABLA, POR SI LA
+  NECESITAS}\\[2mm]
+  \begin{tikzpicture}[x=5mm,y=-5mm,every node/.style={font=\scriptsize,
+    inner sep=0}]
+  \foreach \i in {1,...,10}{
+    \node[font=\scriptsize\bfseries,text=oro]at(\i,0){\i};
+    \node[font=\scriptsize\bfseries,text=oro]at(0,\i){\i};
+    \foreach \j in {1,...,10}{\pgfmathtruncatemacro\p{\i*\j}\node at(\i,\j){\p};}}
+  \draw[arena2,line width=.5pt](.5,.5)rectangle(10.5,10.5);
+  \end{tikzpicture}}
+
+\newcommand{\circulo}{\tikz\draw(0,0)circle(2.3mm);}
+\newcommand{\sfila}[1]{#1 & \circulo & \circulo & \circulo\\}
+\newenvironment{semaforo}{%
+  {\rotulo\footnotesize\color{oro}¿CÓMO LO HE HECHO?}\quad
+  {\small colorea un círculo en cada fila}\par\vspace{2mm}
+  \renewcommand{\arraystretch}{1.55}
+  \begin{tabular}{@{}l@{\hspace{8mm}}c@{\hspace{5mm}}c@{\hspace{5mm}}c@{}}
+  & {\small solo} & {\small con ayuda} & {\small todavía no}\\}%
+  {\end{tabular}}
