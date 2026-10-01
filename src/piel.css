@@ -82,7 +82,7 @@ html[data-tema="proyector"], html[data-tema="proyector"] body{background:#FFFFFF
 @media (max-width:620px){
   .cab .acc{width:100%;margin:5px 0 0;padding-top:4px;border-top:1px solid var(--linea);justify-content:space-around;gap:6px}
 }
-.juegos{display:grid;grid-template-columns:repeat(3,1fr);margin:8px -14px 0;border-top:1px solid var(--linea)}
+.juegos{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));margin:8px -14px 0;border-top:1px solid var(--linea)}
 .juegos button{font:inherit;cursor:pointer;text-align:center;color:var(--tinta);background:none;border:0;border-bottom:3px solid transparent;
   border-radius:0;padding:6px 4px 4px;line-height:1.2}
 .juegos button + button{border-left:1px solid var(--linea)}
