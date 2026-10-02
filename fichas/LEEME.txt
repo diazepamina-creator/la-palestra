@@ -26,3 +26,17 @@ Cinzel y Space Mono, licencia OFL); tiradores y personajes en personajes/,
 sacados de la app. Formato: palestra.sty (2.º) y palestra1.sty (1.º).
 
 © Andrés Asensio 2026 · CC BY-NC-ND 4.0
+
+EL ÁLBUM DE TEORÍA (solo 1.º de ESO)
+  La teoría de la unidad como un álbum de cromos numerados, como el de Las
+  piezas de Miut: el alumno hace cada cromo en clase, marca «lo tengo» y el
+  profe lo sella. El andamiaje se retira a lo largo del curso:
+    pdf/album/*-guiado       la frase casi entera, con huecos: COMPLETA,
+                             TU EJEMPLO y CON TUS PALABRAS
+    pdf/album/*-semiguiado   el título y lo que tiene que llevar cada cromo
+    pdf/album/*-titulos      solo el título y el espacio
+    pdf/album/*-libre        el alumno decide los cromos («Mis cromos»)
+    pdf/album/*-oficial      los cromos completos, en boli (para Aules)
+    pdf/album/sueltos/       cada cromo oficial en su PDF
+  Los brillantes (estrella) son de ampliación. Se compila con
+  sh compila-album.sh (album.sty, adaptado del de Miut).

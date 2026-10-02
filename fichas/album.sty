@@ -1,0 +1,287 @@
+% ============================================================================
+%  album.sty · el ÁLBUM DE TEORÍA de La palestra (solo 1.º de ESO)
+%  © Andrés Asensio 2026 · CC BY-NC-ND 4.0
+%
+%  El mismo álbum que el de Las piezas de Miut, vestido con lo de la
+%  palestra: el papel y la arena de las fichas, la bandera en la cabecera y
+%  Listillón en la portada. Los cromos pueden llevar el campo, los tiradores,
+%  los frascos y la regla de palestra.sty.
+%
+%  La teoría de la unidad como un álbum de cromos: cada idea es un cromo
+%  numerado. El alumno lo hace en clase, lo marca cuando lo tiene y el
+%  profesor lo sella; en el índice se ve de un vistazo lo que falta.
+%  Técnica de apuntes guiados (guided notes) cuyo andamiaje se retira a lo
+%  largo del curso, hasta que el alumno hace el álbum solo.
+%
+%  CUATRO NIVELES, del mismo archivo de la unidad  (\def\nivel{...})
+%    guiado      · la frase casi entera, con huecos de tres tipos:
+%                  COMPLETA, TU EJEMPLO y CON TUS PALABRAS
+%    semiguiado  · cada cromo trae el título y la lista de lo que tiene que
+%                  llevar (\debe), y un espacio en blanco
+%    titulos     · solo el título de cada cromo y el espacio
+%    libre       · una portada con la cabecera del tema, «Mis cromos» para
+%                  que el alumno escriba los títulos que decida, y hojas de
+%                  cromo en blanco
+%  Desde semiguiado, la portada lleva la lista «Qué tiene un buen cromo»:
+%  es lo último que se retira, porque es lo que evita que «hazlo tú» se
+%  convierta en copiar la pizarra.
+%
+%  TRES SALIDAS  (\def\modo{...})
+%    alumno   · el álbum del nivel elegido                 (por defecto)
+%    oficial  · los cromos completos, rellenos en «boli»; siempre el guiado
+%    sueltos  · cada cromo oficial en su propio PDF, recortado
+%
+%  compilar.sh lo hace todo de una vez.
+% ============================================================================
+\ProvidesPackage{album}[2026/10/01 Album de teoria de la palestra]
+\RequirePackage{palestra1}
+\RequirePackage{multicol}
+% los nombres de color del álbum de Miut, con los de la palestra
+\colorlet{ambar}{oro}\colorlet{haya}{arena2!75!oro}\colorlet{p2}{der}\colorlet{lila}{morado}
+% la bandera de la cabecera (palestra.sty la llama \sello; aquí el sello es el del profe)
+\let\huella\sello
+% una casilla para marcar, o para una cifra suelta: \casilla[escala]
+\newcommand{\casilla}[1][1]{\tikz[baseline=-.7ex,scale=#1]\draw[haya!80!black,
+  line width=.6pt,fill=white,rounded corners=1pt](0,-.2)rectangle(.46,.36);}
+% Listillón en la portada, que es el que da la teoría
+\newcommand{\caramiut}[1][36mm]{\includegraphics[width=#1]{personajes/listillon.pdf}}
+% las palabras de mates de la unidad, para «Qué tiene un buen cromo»
+\providecommand{\palabrasmates}{entero, opuesto, valor absoluto…}
+\RequirePackage{fancyhdr}
+\RequirePackage{environ}
+\usetikzlibrary{shapes.geometric}
+
+% ── MODO Y NIVEL ────────────────────────────────────────────────────────────
+\providecommand{\modo}{alumno}
+\providecommand{\nivel}{guiado}
+\newif\ifoficial \newif\ifsueltos
+\def\album@of{oficial}\def\album@su{sueltos}
+\ifx\modo\album@of \oficialtrue\fi
+\ifx\modo\album@su \oficialtrue\sueltostrue\fi
+\def\album@guiado{guiado}\def\album@semi{semiguiado}
+\def\album@titulos{titulos}\def\album@libre{libre}
+\ifoficial\def\nivel{guiado}\fi
+\newcommand{\sinivel}[3]{\ifx\nivel#1#2\else#3\fi}   % \sinivel\album@libre{sí}{no}
+
+% ── PÁGINA ──────────────────────────────────────────────────────────────────
+\geometry{top=19mm,bottom=13mm,left=15mm,right=15mm,headheight=16pt,headsep=5mm}
+\definecolor{boli}{HTML}{1D4FB8}     % la respuesta, como escrita con boli azul
+\definecolor{cuad}{HTML}{DCE5EE}     % la cuadrícula de los espacios
+\definecolor{dorado}{HTML}{C69214}   % los cromos brillantes
+\newcommand{\unidad}[1]{\gdef\album@unidad{#1}}
+\newcommand{\subtitulo}[1]{\gdef\album@subtitulo{#1}}
+\unidad{Tema}\subtitulo{}
+\fancypagestyle{album}{\fancyhf{}%
+  \fancyhead[L]{\huella[4.5mm]\hspace{1.5mm}{\rotulo\footnotesize\color{ambar}ÁLBUM DE TEORÍA · \MakeUppercase{\album@unidad}}}%
+  \fancyhead[R]{{\rotulo\footnotesize\color{ambar}\ifoficial CROMOS OFICIALES\else NOMBRE:\fi}%
+    \ifoficial\else\ \rule[-1mm]{45mm}{.4pt}\fi\quad{\footnotesize\color{tinta!60}\thepage}}%
+  \renewcommand{\headrulewidth}{.5pt}\renewcommand{\headrule}{{\color{haya}\hrule height .5pt}}}
+\AtBeginDocument{\pagestyle{album}}
+
+% ── LOS HUECOS (nivel guiado) ───────────────────────────────────────────────
+% \h[ancho]{respuesta}: en el álbum, una raya; en el oficial, la respuesta
+% escrita en boli sobre la raya (que se alarga si la respuesta no cabe).
+\newlength{\album@w}
+\newcommand{\h}[2][2.4cm]{\ifoficial
+  \settowidth{\album@w}{\itshape #2}\addtolength{\album@w}{3mm}%
+  \ifdim\album@w<#1\setlength{\album@w}{#1}\fi
+  \underline{\makebox[\album@w][c]{\color{boli}\itshape #2}}\else
+  \rule[-1mm]{#1}{.5pt}\fi}
+% \hc{3}: una casilla pequeña, para una cifra o un exponente
+\newcommand{\hc}[1]{\ifoficial\text{\color{boli}\itshape #1}\else\casilla[.62]\fi}
+% \espacio[alto mínimo]{respuesta}: un trozo de cuadrícula para escribir
+\newcommand{\espacio}[2][2cm]{%
+  \begin{tcolorbox}[enhanced,colback=white,colframe=haya!45,boxrule=.4pt,arc=2pt,
+    left=2.5mm,right=2.5mm,top=2mm,bottom=1.5mm,height from=#1 to 20cm,
+    before skip=1mm,after skip=1mm,
+    underlay={\begin{tcbclipinterior}\draw[cuad,line width=.35pt,step=5mm]
+      (interior.south west) grid (interior.north east);\end{tcbclipinterior}}]
+  \ifoficial{\color{boli}\itshape #2}\fi
+  \end{tcolorbox}}
+% El tipo de hueco, delante de cada parte del cromo
+\newcommand{\tipo}[2]{\tikz[baseline=(t.base)]\node(t)[draw=#1,line width=.6pt,
+  rounded corners=4pt,inner xsep=4pt,inner ysep=1.6pt,text=#1,
+  font=\rotulo\scriptsize]{#2};\ }
+\newcommand{\completa}{\tipo{ambar}{COMPLETA}}
+\newcommand{\tuejemplo}{\tipo{p2!70!black}{TU EJEMPLO}}
+\newcommand{\palabras}{\tipo{lila!80!black}{CON TUS PALABRAS}}
+
+% ── QUÉ TIENE QUE LLEVAR (nivel semiguiado) ─────────────────────────────────
+% Antes de cada cromo:  \debe[alto del espacio]{\item … \item …}
+\newcommand{\album@debe}{}\def\album@alto{5.2cm}
+\newcommand{\debe}[2][5.2cm]{\gdef\album@debe{#2}\gdef\album@alto{#1}}
+\newcommand{\album@lista}{%
+  {\small\bfseries Tu cromo tiene que llevar:}\par\vspace{.5mm}
+  \begin{list}{\casilla[.7]}{\setlength{\leftmargin}{7mm}\setlength{\labelwidth}{5mm}
+    \setlength{\itemsep}{.4mm}\setlength{\topsep}{.5mm}\setlength{\parsep}{0pt}}\small
+  \ifx\album@debe\@empty\item la idea, con tus palabras\item un ejemplo tuyo\item un dibujo o esquema
+  \else\album@debe\fi
+  \end{list}}
+
+% ── EL NÚMERO DEL CROMO ─────────────────────────────────────────────────────
+\newcommand{\numcromo}[3][1]{\tikz[baseline=(n.base),scale=#1,every node/.style={transform shape}]{%
+  \if b#3\node(n)[star,star points=5,star point ratio=2.1,fill=dorado,draw=dorado!70!black,
+      line width=.5pt,inner sep=.4pt,minimum size=9.5mm,text=white,font=\rotulo\small]{#2};%
+  \else\node(n)[circle,fill=ambar,text=white,inner sep=0,minimum size=7mm,
+      font=\rotulo\normalsize]{#2};\fi}}
+% El rincón de la derecha: «lo tengo» y el sello del profesor
+\renewcommand{\sello}{\tikz[baseline=-.7ex]\draw[haya,dashed,line width=.6pt](0,0)circle(4.6mm);}
+\newcommand{\rincon}{\ifoficial
+  {\rotulo\scriptsize\color{boli}CROMO OFICIAL}\else
+  \begin{tabular}[t]{@{}c@{\hspace{3mm}}c@{}}
+  \casilla[1.1] & \sello\\[-.4mm]
+  {\tiny\color{tinta!60}lo tengo} & {\tiny\color{tinta!60}sello}\end{tabular}\fi}
+
+% ── EL CROMO ────────────────────────────────────────────────────────────────
+%   \debe{\item … \item …}                      (para el nivel semiguiado)
+%   \begin{cromo}{3}{Los divisores de un número}{Ficha 2 · los divisores}
+%     … el contenido guiado …
+%   \end{cromo}
+% y cromobrillante igual, para la ampliación.
+\newcounter{album@n}\newcounter{album@b}
+\tcbset{album n/.style={enhanced,colback=white,colframe=haya!75,boxrule=.9pt,arc=3mm,
+    left=4mm,right=4mm,top=3mm,bottom=3mm,before skip=0mm,after skip=4mm,before upper=\raggedright},
+  album b/.style={album n,colback=dorado!4,colframe=dorado,boxrule=1.2pt,borderline={.5pt}{1.6pt}{dorado!55}}}
+\newcommand{\album@cabeza}[4]{%
+  \begin{minipage}[t]{\dimexpr\linewidth-27mm\relax}\vspace{0pt}
+    \numcromo{#1}{#4}\hspace{2.5mm}{\large\bfseries #2}\par\vspace{.8mm}
+    {\footnotesize\color{tinta!62}\if b#4 Cromo brillante: ampliación, no es obligatorio. \fi
+     Se trabaja en: #3}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{25mm}\vspace{0pt}\raggedleft\rincon\end{minipage}\par\vspace{2.5mm}}
+\newcommand{\album@cromo}[4]{% #1 n|b · #2 número · #3 título · #4 dónde
+  \stepcounter{album@#1}%
+  \ifx\nivel\album@libre\else
+    \addcontentsline{cro}{cromo}{\protect\entradacromo{#2}{#3}{#1}}%
+    \begin{tcolorbox}[album #1]
+    \album@cabeza{#2}{#3}{#4}{#1}%
+    \ifx\nivel\album@guiado \BODY
+    \else\ifx\nivel\album@semi \album@lista\espacio[\album@alto]{}%
+    \else \espacio[6.4cm]{}\fi\fi
+    \end{tcolorbox}%
+  \fi
+  \gdef\album@debe{}\gdef\album@alto{5.2cm}}
+\NewEnviron{cromo}[3]{\album@cromo{n}{#1}{#2}{#3}}
+\NewEnviron{cromobrillante}[3]{\album@cromo{b}{#1}{#2}{#3}}
+\newcommand{\nuevapagina}{\ifsueltos\else\newpage\fi}
+
+% Cuántos cromos tiene la unidad (se sabe al compilar la segunda vez)
+\providecommand{\album@totaln}{?}\providecommand{\album@totalb}{?}
+\AtEndDocument{\immediate\write\@auxout{\gdef\string\album@totaln{\the\value{album@n}}\gdef\string\album@totalb{\the\value{album@b}}}}
+
+% ── EL ÍNDICE ───────────────────────────────────────────────────────────────
+\newcommand{\entradacromo}[4]{%
+  \noindent\makebox[11mm][c]{\numcromo[.72]{#1}{#3}}\hspace{1mm}%
+  \parbox[t]{\dimexpr\linewidth-30mm\relax}{\raggedright\small #2\if b#3\ {\footnotesize\color{dorado!80!black}(ampliación)}\fi}%
+  \hfill{\footnotesize\color{tinta!55}p.\,#4}\ifoficial\else\hspace{2.5mm}\casilla[.9]\fi\par\vspace{1.6mm}}
+\newcommand{\l@cromo}[2]{#1{#2}}
+\newcommand{\indicecromos}{\@starttoc{cro}}
+
+% ── QUÉ TIENE UN BUEN CROMO ─────────────────────────────────────────────────
+% La misma lista sirve al alumno para repasar su cromo y al profesor para
+% valorarlo: sí / a medias / todavía no, como el semáforo de las fichas.
+\newcommand{\rubrica}{%
+  \begin{tcolorbox}[enhanced,colback=white,colframe=ambar!70,boxrule=.8pt,arc=3mm,
+    left=4mm,right=4mm,top=2.5mm,bottom=2.5mm]
+  {\large\bfseries Qué tiene un buen cromo}\par\vspace{2mm}
+  \renewcommand{\arraystretch}{1.45}\small
+  \begin{tabular}{@{}l@{\hspace{2mm}}p{105mm}@{\hspace{3mm}}c@{\hspace{3mm}}c@{\hspace{3mm}}c@{}}
+  & & {\scriptsize sí} & {\scriptsize a medias} & {\scriptsize todavía no}\\
+  \paso{1} & \textbf{Un título} que dice de qué va. & \circulo & \circulo & \circulo\\
+  \paso{2} & \textbf{La idea}, en una o dos frases, con las palabras de mates
+    (\palabrasmates). & \circulo & \circulo & \circulo\\
+  \paso{3} & \textbf{Un ejemplo tuyo}, resuelto, con números distintos de los de la pizarra. & \circulo & \circulo & \circulo\\
+  \paso{4} & \textbf{Un dibujo o esquema}: el campo, la regla, una tabla, flechas… & \circulo & \circulo & \circulo\\
+  \paso{5} & \textbf{Un aviso}: el error típico, o lo que no hay que confundir. & \circulo & \circulo & \circulo\\
+  \end{tabular}
+  \end{tcolorbox}}
+
+% ── LA PORTADA ──────────────────────────────────────────────────────────────
+\newcommand{\portada}{%
+  \thispagestyle{empty}
+  \noindent\begin{minipage}[t]{.7\linewidth}\vspace{0pt}
+    \huella[7mm]\hspace{2mm}{\rotulo\color{ambar}LA PALESTRA}\\[5mm]
+    {\ifx\nivel\album@libre\fontsize{28}{30}\else\fontsize{34}{36}\fi\selectfont\bfseries \ifoficial Cromos oficiales\else Álbum de teoría\fi}\\[3mm]
+    {\Large\album@unidad}\\[1mm]
+    {\color{tinta!65}\album@subtitulo}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{.26\linewidth}\vspace{0pt}\raggedleft\caramiut[\ifx\nivel\album@libre 26mm\else 36mm\fi]\end{minipage}
+  \par\vspace{\ifx\nivel\album@libre 3mm\else 6mm\fi}
+  \ifoficial
+    \begin{tcolorbox}[colback=boli!5,colframe=boli!60,boxrule=.8pt,arc=3mm,left=5mm,right=5mm,top=3mm,bottom=3mm]
+    Estos son los cromos completos, para comprobar y terminar los tuyos.
+    Si a tu álbum le falta un cromo, cópialo \textbf{entendiéndolo}: si no lo entiendes, pregunta en clase.
+    Tu ejemplo tiene que ser tuyo, distinto del de aquí.
+    \end{tcolorbox}
+  \else
+    \noindent{\large NOMBRE:}\ \rule[-1mm]{95mm}{.5pt}\hfill{\large GRUPO:}\ \rule[-1mm]{25mm}{.5pt}
+    \ifx\nivel\album@libre\par\vspace{4mm}\noindent{\large Empiezo el}\ \rule[-1mm]{35mm}{.5pt}\qquad
+      {\large Termino el}\ \rule[-1mm]{35mm}{.5pt}\fi
+    \par\vspace{5mm}
+    \begin{tcolorbox}[colback=papel,colframe=haya,boxrule=.8pt,arc=3mm,left=5mm,right=5mm,top=3mm,bottom=3mm]
+    {\large\bfseries Cómo funciona}\par\vspace{2mm}
+    \ifx\nivel\album@guiado
+      \paso{1}En clase, completa el cromo que toque.\par\vspace{1.5mm}
+      \paso{2}Cuando esté completo, marca \casilla[.8]\ \textbf{lo tengo}.\par\vspace{1.5mm}
+    \else\ifx\nivel\album@semi
+      \paso{1}En clase, haz el cromo que toque: cada uno te dice lo que tiene que llevar.\par\vspace{1.5mm}
+      \paso{2}Repásalo con «Qué tiene un buen cromo» y marca \casilla[.8]\ \textbf{lo tengo}.\par\vspace{1.5mm}
+    \else\ifx\nivel\album@titulos
+      \paso{1}Cada cromo trae solo el título: lo que pones dentro lo decides tú.\par\vspace{1.5mm}
+      \paso{2}Repásalo con «Qué tiene un buen cromo» y marca \casilla[.8]\ \textbf{lo tengo}.\par\vspace{1.5mm}
+    \else
+      \paso{1}Tú decides qué cromos tiene el tema: apunta sus títulos en «Mis cromos».\par\vspace{1.5mm}
+      \paso{2}Haz cada cromo en una hoja de cromos, repásalo con «Qué tiene un buen cromo» y marca \casilla[.8]\ \textbf{lo tengo}.\par\vspace{1.5mm}
+    \fi\fi\fi
+    \paso{3}El profe lo revisa y le pone el \textbf{sello}.\par\vspace{1.5mm}
+    \paso{4}¿Te falta algo? Después de corregir, los cromos oficiales están en Aules.\par\vspace{2mm}
+    \ifx\nivel\album@guiado
+      {\small Hay tres tipos de hueco:\quad \completa\ \tuejemplo\ \palabras}\par\vspace{1mm}
+    \fi
+    \ifx\nivel\album@libre\else
+      {\small Los cromos con estrella \numcromo[.55]{}{b} son brillantes: ampliación, para quien quiera más.}
+    \fi
+    \end{tcolorbox}
+    \ifx\nivel\album@libre\par\vspace{2mm}\rubrica\fi
+  \fi
+  \ifx\nivel\album@libre
+    \par\vspace{1mm}{\large\bfseries Mis cromos}\par\vspace{1.5mm}
+    \begin{multicols}{2}\raggedcolumns
+    \count@=0\loop\advance\count@ by 1
+      \noindent\makebox[7mm][l]{\small\the\count@.}\rule[-1mm]{\dimexpr\linewidth-26mm\relax}{.4pt}\hfill\casilla[.8]\hspace{2mm}\scalebox{.8}{\sello}\par\vspace{.6mm}
+    \ifnum\count@<16\repeat
+    \end{multicols}
+    \newpage\hojacromos
+  \else
+    \par\vspace{4mm}{\large\bfseries Los cromos}\par\vspace{3mm}
+    \begin{multicols}{2}\raggedcolumns\indicecromos\end{multicols}
+    \ifoficial\else
+      \par\vspace{2mm}
+      \begin{tcolorbox}[colback=white,colframe=haya!60,boxrule=.6pt,arc=2mm,left=4mm,right=4mm,top=2mm,bottom=2mm,before upper=\raggedright]
+      Tengo \rule[-1mm]{12mm}{.5pt} de \album@totaln\ cromos, y \rule[-1mm]{10mm}{.5pt} de \album@totalb\ brillantes.\par\vspace{2mm}
+      Me faltan: \rule[-1mm]{140mm}{.5pt}
+      \end{tcolorbox}
+    \fi
+    \newpage
+    \ifoficial\else\ifx\nivel\album@guiado\else\rubrica\par\vspace{3mm}\fi\fi
+  \fi}
+
+% ── LA HOJA DE CROMOS EN BLANCO (nivel libre) ───────────────────────────────
+% Tres cromos vacíos por hoja; se fotocopian tantas como hagan falta.
+\newcommand{\cromoenblanco}{%
+  \begin{tcolorbox}[album n]
+  \begin{minipage}[t]{\dimexpr\linewidth-27mm\relax}\vspace{0pt}
+    \tikz[baseline=-.7ex]\draw[ambar,line width=.8pt](0,0)circle(3.5mm);\hspace{2.5mm}%
+    {\large\bfseries\rule[-1mm]{\dimexpr\linewidth-12mm\relax}{.5pt}}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{25mm}\vspace{0pt}\raggedleft\rincon\end{minipage}\par\vspace{2mm}
+  \espacio[5.7cm]{}
+  \end{tcolorbox}}
+\newcommand{\hojacromos}{\cromoenblanco\cromoenblanco\cromoenblanco}
+
+% ── CROMOS SUELTOS ──────────────────────────────────────────────────────────
+\ifsueltos
+  \RequirePackage[active,tightpage,xetex]{preview}
+  \PreviewEnvironment{cromo}\PreviewEnvironment{cromobrillante}
+  \setlength\PreviewBorder{3mm}
+\fi
